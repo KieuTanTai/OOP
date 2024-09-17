@@ -1,5 +1,5 @@
 package DTO;
 
-public class temp {
+public class temp3 {
      
 }

@@ -2,7 +2,7 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Products {
+public abstract class Products {
      private String productId;
      private String productName;
      private String productBrand;
@@ -10,9 +10,9 @@ public class Products {
      private BigDecimal productPrice;
      private int quantity;
 
-     Products () {}
+     public Products () {}
 
-     Products (String productId, String productName, String productBrand, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
+     public Products (String productId, String productName, String productBrand, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
           this.productId = productId;
           this.productName = productName;
           this.productBrand = productBrand;
@@ -68,5 +68,4 @@ public class Products {
      public void setQuantity (int quantity) {
           this.quantity = quantity;
      }
-
 }

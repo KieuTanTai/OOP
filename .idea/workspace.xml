@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e38f4ccb-b0d0-45bf-a754-7a9fd38dfb54" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Java/javaI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Java/javaI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Java/javaII.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Java/javaII.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Java/javaIII.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Java/javaIII.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Web/Front_End/Project_Web/Web-LN-Store/Assets/CSS/Style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Web/Front_End/Project_Web/Web-LN-Store/Assets/CSS/Style.css" afterDir="false" />
-    </list>
+    <list default="true" id="e38f4ccb-b0d0-45bf-a754-7a9fd38dfb54" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,9 +13,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2m6vJ7Rm81xxmhW6RZXpzospNa6" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -34,7 +26,9 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "Test",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "//wsl.localhost/ubuntu/home/thienlang18/vscode/Java",
     "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
 }]]></component>

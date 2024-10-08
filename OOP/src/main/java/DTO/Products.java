@@ -1,36 +1,35 @@
 package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public abstract class Products {
      private String productId;
      private String productName;
-     private String productBrand;
      private LocalDate releaseDate;
      private BigDecimal productPrice;
-     private int quantity;
+     private Integer quantity;
 
+     //  constructors
      public Products () {}
 
-     public Products (String productId, String productName, String productBrand, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
+     public Products (String productId, String productName, LocalDate releaseDate, BigDecimal productPrice, Integer quantity) {
+          DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+          this.releaseDate.format(convertedFormat);
           this.productId = productId;
           this.productName = productName;
-          this.productBrand = productBrand;
           this.releaseDate = releaseDate;
           this.productPrice = productPrice;
           this.quantity = quantity;
      }
 
+     // getter / setter
      public String getProductId () {
           return this.productId;
      }
 
      public String getProductName () {
           return this.productName;
-     }
-
-     public String getProductBrand () {
-          return this.productBrand;
      }
 
      public LocalDate getReleaseDate () {
@@ -53,10 +52,6 @@ public abstract class Products {
           this.productName = productName;
      }
 
-     public void setProductBrand (String productBrand) {
-          this.productBrand = productBrand;
-     }
-
      public void setReleaseDate (LocalDate releaseDate) {
           this.releaseDate = releaseDate;
      }
@@ -65,7 +60,7 @@ public abstract class Products {
           this.productPrice = productPrice;
      }
 
-     public void setQuantity (int quantity) {
+     public void setQuantity (Integer quantity) {
           this.quantity = quantity;
      }
 }

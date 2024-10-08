@@ -1,28 +1,39 @@
 package DTO;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Books extends Products {
      private String publisherId;
      private String author;
-     private String type;
-     private String genre;
+     private String typeId;
+     private String[] genreId;
      private String format;
      private String packagingSize;
      
+     // constructors
      public Books () {}
 
-     public Books (String productId, String productName, String productBrand, LocalDate releaseDate, BigDecimal productPrice, int quantity, String publisherId, String author, String type, String genre, String format, String packagingSize) {
-          super(productId, productName, productBrand, releaseDate, productPrice, quantity);
+     public Books (String productId, String productName, LocalDate releaseDate, BigDecimal productPrice, Integer quantity, String publisherId, String author, String typeId, String[] genreId, String format, String packagingSize) {
+          super (productId, productName, releaseDate, productPrice, quantity);
           this.publisherId = publisherId;
           this.author = author;
-          this.type = type;
-          this.genre = genre;
+          this.typeId = typeId;
+          this.genreId = genreId;
           this.format = format;
           this.packagingSize = packagingSize;
      }
 
+     public Books (Books bookInput) {
+          this.publisherId = bookInput.publisherId;
+          this.author = bookInput.author;
+          this.typeId = bookInput.typeId;
+          this.genreId = bookInput.genreId;
+          this.format = bookInput.format;
+          this.packagingSize = bookInput.packagingSize;
+     }
+
+
+     // getter / setter
      public String getPublisherId () {
           return this.publisherId;
      }
@@ -32,11 +43,11 @@ public class Books extends Products {
      }
 
      public String getType () {
-          return this.type;
+          return this.typeId;
      }
      
-     public String getGenre () {
-          return this.genre;
+     public String[] getGenre () {
+          return this.genreId;
      }
 
      public String getFormat () {
@@ -55,12 +66,12 @@ public class Books extends Products {
           this.author = author;
      } 
      
-     public void setType (String type) {
-          this.type = type;
+     public void setType (String typeId) {
+          this.typeId = typeId;
      } 
      
-     public void setGenre (String genre) {
-          this.genre = genre;
+     public void setGenre (String[] genreId) {
+          this.genreId = genreId;
      } 
      
      public void setFormat (String format) {

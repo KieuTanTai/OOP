@@ -11,7 +11,7 @@ import DTO.BookTypes;
 public class BooksBUS {
      private Books[] booksList;
      private int index;
-     Scanner input = new Scanner(System.in);
+     private Scanner input = new Scanner(System.in);
 
      // constructors
      public BooksBUS () {

@@ -56,6 +56,10 @@ public class Validate {
           }
      }
 
+     protected static boolean validateId (String inputId) {
+          return true;
+     }
+
      protected static boolean validateTypeOfBook (String inputType) {
           
           return true;

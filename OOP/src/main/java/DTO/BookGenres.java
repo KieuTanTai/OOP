@@ -10,19 +10,19 @@ public class BookGenres {
           this.genreName = genreName;
      }
 
-     public String getTypeId () {
+     public String getGenreId () {
           return this.genreId;
      }
      
-     public String getTypeName () {
+     public String getGenreName () {
           return this.genreName;
      }
      
-     public void setTypeId (String genreId) {
+     public void setGenreId (String genreId) {
           this.genreId = genreId;
      }
 
-     public void setTypeName (String genreName) {
+     public void setGenreName (String genreName) {
           this.genreName = genreName;
      }
 }

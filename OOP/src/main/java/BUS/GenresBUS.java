@@ -1,6 +1,5 @@
 package BUS;
 import DTO.BookGenres;
-import DTO.BookTypes;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -9,6 +8,7 @@ public class GenresBUS extends BookGenres {
      private int quantity;
      private Scanner input = new Scanner(System.in);
 
+     // constructors
      public GenresBUS () {
           this.quantity = 0;
           genresList = new BookGenres[0];
@@ -16,7 +16,7 @@ public class GenresBUS extends BookGenres {
 
      public GenresBUS (BookGenres[] genresList, int quantity) {
           this.genresList = genresList;
-          this.quantity = genresList.length;
+          this.quantity = quantity;
      }
 
      public GenresBUS (GenresBUS typeArray) {
@@ -24,7 +24,8 @@ public class GenresBUS extends BookGenres {
           this.quantity = typeArray.quantity;
      }     
 
-          public BookGenres[] getTypesList () {
+     // getter/setter
+     public BookGenres[] getBGenresList () {
           return this.genresList;
      }
 
@@ -40,6 +41,27 @@ public class GenresBUS extends BookGenres {
           this.quantity = quantity;
      }
 
+     // add edit remove find...
+     public void showGenresList () {
+          for (int i = 0; i <= this.quantity; i++)
+               System.out.printf("%10d %d\n", this.genresList[i].getGenreId(), this.genresList[i].getGenreName());
+     }
+
+     public int findGenre (String inputId)  {
+          for ( int i = 0; i < this.genresList.length; i++) {
+               if (genresList[i].getGenreId().equals(inputId))
+                    return i;
+          }
+          System.out.println("your id is not found !");
+          return -1;
+     }
+
+     public void searchGenre (String inputId) {
+          int genreIndex = findGenre(inputId);
+          if (genreIndex != -1)
+               System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[genreIndex].getGenreName());
+     }
+
      public void addGenre (BookGenres genres) {
           if (genres instanceof BookGenres) {
                genresList = Arrays.copyOf(genresList, genresList.length + 1);
@@ -48,28 +70,21 @@ public class GenresBUS extends BookGenres {
           }
      }
 
-     public void editGenreName () {
-          String isFindId;
-          boolean flag = true;
-          do {
-               System.out.print("enter the id of genre you wanna edit: ");
-               isFindId = input.nextLine().trim();
-          } while (Validate.validateId(isFindId));
-
-          for (BookGenres genre : genresList) {
-               if (genre.getTypeId().equals(isFindId)) {
-                    System.out.print("enter new genre name: ");
-                    String newTypeName = input.nextLine().trim();
-                    genre.setTypeName(newTypeName);
-                    flag = false;
-                    break;
-               }
+     public void editGenreName (String inputId) {
+          int genreIndex = findGenre(inputId);
+          if (genreIndex != -1) {
+               System.out.print("enter new genre name: ");
+               String newTypeName = input.nextLine().trim();
+               genresList[genreIndex].setGenreName(newTypeName);
           }
+     }
 
-          if (flag) {
-               System.out.println("your genre is not found! please try again!");
-               System.out.print("\033\143");
-               editGenreName();
+     public void removeGenre (String inputId) {
+          int genreIndex = findGenre(inputId);
+          if (genreIndex != -1) {
+               for (int i = genreIndex; i < genresList.length - 1; i++) 
+                    genresList[i] = genresList[i+1];
+               genresList = Arrays.copyOf(genresList, genresList.length - 1);
           }
      }
 }

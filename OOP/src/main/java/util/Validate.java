@@ -1,11 +1,11 @@
-package BUS;
+package util;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Validate {
      // return null when input from user have any error or not in option table
-     protected static int parseChooseHandler (String userChoose,  int totalOptions) {
+     public static int parseChooseHandler (String userChoose,  int totalOptions) {
           try {
                int parseChoose =  Integer.parseInt(userChoose);
                if ((parseChoose > 0) && (parseChoose <= totalOptions))
@@ -24,7 +24,7 @@ public class Validate {
      }
 
      // converted format for input date from user
-     protected static LocalDate formatInputDate (String inputDate) {
+     public static LocalDate formatInputDate (String inputDate) {
           DateTimeFormatter checkFormat = DateTimeFormatter.ofPattern("dd/MM/YYYY");
           try {
                LocalDate userInputDate = LocalDate.parse(inputDate, checkFormat); 
@@ -37,7 +37,7 @@ public class Validate {
           }
      }
 
-     protected static Integer isNumber (String inputNumber) {
+     public static Integer isNumber (String inputNumber) {
           try {
                Integer tempInt = Integer.parseInt(inputNumber);
                return tempInt;
@@ -47,7 +47,7 @@ public class Validate {
           }
      }
 
-     protected static boolean validatePrice (Object inputPrice) {
+     public static boolean validatePrice (Object inputPrice) {
           if (inputPrice instanceof BigDecimal)
                return true;
           else {
@@ -56,11 +56,11 @@ public class Validate {
           }
      }
 
-     protected static boolean validateId (String inputId) {
+     public static boolean validateId (String inputId) {
           return true;
      }
 
-     protected static boolean validateTypeOfBook (String inputType) {
+     public static boolean validateTypeOfBook (String inputType) {
           
           return true;
      }

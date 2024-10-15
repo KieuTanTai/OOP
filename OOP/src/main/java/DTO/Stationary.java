@@ -4,18 +4,19 @@ import java.time.LocalDate;
 
 public class Stationary extends Products {
      private String stationaryId;
-     private String typeId;
-     private String stationaryBrand;
+     private Types stationaryType;
+     private String brand;
      private String material;
      private String source;
 
      public Stationary () {}
 
-     public Stationary (String productId, String productName, String productBrand, LocalDate releaseDate, BigDecimal productPrice, Integer quantity, String stationaryId, String typeId, String stationaryBrand , String material, String source) {
+     public Stationary (String productId, String productName, String productBrand, LocalDate releaseDate, BigDecimal productPrice, 
+      Integer quantity, String stationaryId, String typeId, String brand , String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
           this.stationaryId = stationaryId;
-          this.typeId = typeId;
-          this.stationaryBrand = stationaryBrand;
+          this.stationaryType.getTypeId() = typeId;
+          this.brand = brand;
           this.material = material;
           this.source = source;
      }
@@ -25,11 +26,11 @@ public class Stationary extends Products {
      }
 
      public String getTypeId () {
-          return this.typeId;
+          return this.stationaryType.getTypeId();
      }
 
-     public String getStationaryBrand() {
-          return this.stationaryBrand;
+     public String getBrand() {
+          return this.brand;
      }
 
      public String getMaterial () {
@@ -45,11 +46,11 @@ public class Stationary extends Products {
      }
 
      public void setTypeId (String typeId) {
-          this.typeId = typeId;
+          this.stationaryType.setTypeId(typeId);
      }
 
-     public void setStationaryBrand (String stationaryBrand) {
-          this.stationaryBrand = stationaryBrand;
+     public void setBrand (String brand) {
+          this.brand = brand;
      }
 
      public void setMaterial (String material) {

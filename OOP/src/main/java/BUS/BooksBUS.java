@@ -5,54 +5,69 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 import DTO.Books;
-import DTO.BookGenres;
-import DTO.BookTypes;
+import util.Validate;
 
 public class BooksBUS {
      private Books[] booksList;
-     private int index;
+     private int quantity;
      private Scanner input = new Scanner(System.in);
 
      // constructors
      public BooksBUS () {
-          this.index = 0;
+          this.quantity = 0;
           this.booksList = new Books[0];
      }
 
-     public BooksBUS (int index, Books[] booksList) {
-          this.index = index;
+     public BooksBUS (int quantity, Books[] booksList) {
+          this.quantity = quantity;
           this.booksList = booksList;
      }
 
-     // when have existents booksArray before
+     // when have existences booksArray before
      public BooksBUS (BooksBUS booksArray) {
-          this.index = booksArray.index;
+          this.quantity = booksArray.quantity;
           this.booksList = booksArray.booksList;
      }
 
-     // getter setter
+     // getter / setter
      public Books[] getBooksList () {
           return this.booksList;
      }
 
      public int getIndex () {
-          return this.index;
+          return this.quantity;
      }
 
      public void setBooksList (Books[] newBooksList) {
           this.booksList = newBooksList;
      }
 
-     public void setIndex (int newIndex) {
-          this.index = newIndex;
+     public void setIndex (int newQuantity) {
+          this.quantity = newQuantity;
      }
 
-     // add methods
+     // add find remove search....
+     public int findBook (String inputId) {
+          for (int i = 0; i < booksList.length; i++)
+               if (booksList[i].getProductId().equals(inputId))
+                    return i;
+          System.out.println("your id is not found!");
+          return -1;
+     }
+
      public void addBook (Books newBook) {
           if (newBook instanceof Books) {
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
-               booksList[index] = newBook;
-               index++;
+               booksList[quantity] = newBook;
+               quantity++;
+          }
+     }
+
+     public void searchBook (String inputId) {
+          int indexBook = findBook(inputId);
+          if (indexBook != -1) {
+               String toStringHandler = composeUsingFormatter(indexBook);
+               System.out.printf("your book id is: %s\n your book detail: \n%s", inputId, toStringHandler);
           }
      }
 
@@ -64,16 +79,26 @@ public class BooksBUS {
                quantityGenre = Validate.isNumber((quantity));
           }while (quantityGenre.equals(null));
           for (int i = 0; i < quantityGenre; i++) {
-               genresList[i] = input.nextLine().trim();
+               String temp = input.nextLine().trim();
+               genresList[i] = genresList[i].concat(temp).concat(" ");
           }
           return genresList;
+     }
+
+     // remove methods
+     public void removeBook (String inputId) {
+          int indexBook = findBook(inputId);
+          if (indexBook != -1) {
+               for (int i = indexBook; i < booksList.length - 1; i++) 
+                    booksList[i] = booksList[i + 1];
+               booksList = Arrays.copyOf(booksList, booksList.length - 1);
+          }
      }
 
      // edit methods
      public void editBookHandler () {
           String userChoose;
-          boolean anchor = false;
-          int optionChoose;
+          int optionChoose, indexBook;
           System.out.printf("%20s", "-");
           System.out.println("option 1: " + "edit book's name: ");
           System.out.println("option 2: " + "edit book's release date: ");
@@ -86,6 +111,7 @@ public class BooksBUS {
           System.out.println("option 9: " + "edit book's packaging size: ");
           System.out.println("option 10: " + "exit!");
           System.out.printf("%20s", "-");
+          // validate user choose
           do {
                System.out.print("enter value of option you choose (integer): ");
                userChoose = input.nextLine().trim();
@@ -94,19 +120,10 @@ public class BooksBUS {
           // let input id from user to find book in list
           do {
                System.out.print("enter book id you wanna edit: ");
-               String userInputId = input.nextLine().trim();
-               // loop books in booksList
-               for (Books book : booksList) {
-                    if (book.getProductId().equals(userInputId)) {
-                         editBook(book, optionChoose);
-                         anchor = false;
-                         break;
-                    }
-
-                    if (book.equals(booksList[booksList.length - 1]))
-                         anchor = true;
-               }
-          } while (anchor);
+               String inputId = input.nextLine().trim();
+               indexBook = findBook(inputId);
+          } while (indexBook == -1);
+          editBook(booksList[indexBook], optionChoose);
      }
 
      // some private methods for method handlers
@@ -166,49 +183,16 @@ public class BooksBUS {
                          tempUserInput = input.nextLine().trim();
                          optionChoose = Validate.parseChooseHandler(tempUserInput, 3);
                     } while (optionChoose == 0);
-                    editGenreOfBook(book, optionChoose);
+                    
                     break;                    
 
           }
      }
 
-     
-     private void editGenreOfBook (Books book, int flag) {
-          String[] genresList = {};
-          String[] getBookGenres = book.getGenre();
-          int bookGenresLength = getBookGenres.length;
-          Integer quantityGenre = genresList.length;
-          switch (flag) {
-               case 1: 
-                    genresList = addGenreOfBook(genresList, quantityGenre);
-                    book.setGenre(genresList);
-                    break;
-               case 2:
-                    String findGenre;
-                    System.out.print("enter genre you wanna replace: ");
-                    findGenre = input.nextLine().trim();
-                    for (int i = 0; i < bookGenresLength; i++) {
-                         if (getBookGenres[i].equals(findGenre)) {
-                              System.out.print("replace name of genre: ");
-                              getBookGenres[i] = input.nextLine().trim();
-                              break;
-                         }
-                         if (i == bookGenresLength - 1) {
-                              System.out.println("not found this genre!");
-                              break;
-                         }
-                    }
-                    genresList = getBookGenres;
-                    book.setGenre(genresList);
-                    break;
-               case 3:
-                    genresList = addGenreOfBook(genresList, quantityGenre);
-                    int genresListLength = genresList.length;
-                    String[] newGenresList = new String[bookGenresLength + genresListLength];
-                    System.arraycopy(getBookGenres, 0, newGenresList, 0, bookGenresLength);
-                    System.arraycopy(genresList, 0, newGenresList, bookGenresLength, genresListLength);
-                    book.setGenre(getBookGenres);
-                    break;
-          }
+     // some other methods
+     private String composeUsingFormatter (int isFindId) {
+          Books book = booksList[isFindId];
+          return String.format(" publisher name: %s\n author: %s\n book type: %s\n format: %s\n packaging size: %s\n", 
+          book.getPublisherId(), book.getAuthor(), book.getTypeName(), book.getFormat(), book.getPackagingSize());
      }
 }

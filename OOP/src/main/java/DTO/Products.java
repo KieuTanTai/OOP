@@ -14,7 +14,7 @@ public abstract class Products {
      public Products () {}
 
      public Products (String productId, String productName, LocalDate releaseDate, BigDecimal productPrice, Integer quantity) {
-          DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+          DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
           this.releaseDate.format(convertedFormat);
           this.productId = productId;
           this.productName = productName;
@@ -40,7 +40,7 @@ public abstract class Products {
           return this.productPrice;
      }
 
-     public int getQuantity () {
+     public Integer getQuantity () {
           return this.quantity;
      }
 

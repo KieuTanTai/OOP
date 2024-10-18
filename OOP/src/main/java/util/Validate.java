@@ -25,11 +25,9 @@ public class Validate {
 
      // converted format for input date from user
      public static LocalDate formatInputDate (String inputDate) {
-          DateTimeFormatter checkFormat = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+          DateTimeFormatter checkFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
           try {
-               LocalDate userInputDate = LocalDate.parse(inputDate, checkFormat); 
-               return userInputDate;
-
+              return LocalDate.parse(inputDate, checkFormat);
           } catch (Exception e) {
                System.out.print("\033\1443");
                System.out.println("your date input is wrong!");
@@ -39,11 +37,10 @@ public class Validate {
 
      public static Integer isNumber (String inputNumber) {
           try {
-               Integer tempInt = Integer.parseInt(inputNumber);
-               return tempInt;
+              return Integer.parseInt(inputNumber);
           } catch (Exception err) {
                System.out.println("your input is wrong format! please try again!");
-               return null;
+               return -1;
           }
      }
 

@@ -10,7 +10,7 @@ import util.Validate;
 public class BooksBUS {
      private Books[] booksList;
      private int quantity;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
      // constructors
      public BooksBUS () {
@@ -56,7 +56,7 @@ public class BooksBUS {
      }
 
      public void addBook (Books newBook) {
-          if (newBook instanceof Books) {
+          if (newBook != null) {
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
                booksList[quantity] = newBook;
                quantity++;
@@ -159,7 +159,7 @@ public class BooksBUS {
                          System.out.println("enter new quantity: ");
                          tempUserInput = input.nextLine().trim();
                          newQuantity = Validate.isNumber(tempUserInput);
-                    } while (newQuantity.equals(null));
+                    } while (newQuantity.equals(-1));
                     book.setQuantity(newQuantity);
                     break;
                case 5:

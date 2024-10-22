@@ -7,7 +7,7 @@ import java.util.Scanner;
 import DTO.Books;
 import util.Validate;
 
-public class BooksBUS {
+public class BooksBUS implements RuleSets {
      private Books[] booksList;
      private int quantity;
      private final Scanner input = new Scanner(System.in);
@@ -47,27 +47,33 @@ public class BooksBUS {
      }
 
      // add find remove search....
-     public int findBook (String inputId) {
+     public int find (String bookId) {
           for (int i = 0; i < booksList.length; i++)
-               if (booksList[i].getProductId().equals(inputId))
+               if (booksList[i].getProductId().equals(bookId))
                     return i;
           System.out.println("your id is not found!");
           return -1;
      }
 
-     public void addBook (Books newBook) {
-          if (newBook != null) {
+     public void add (Object newBook) {
+          if (newBook != null && newBook instanceof Books ) {
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
-               booksList[quantity] = newBook;
+               booksList[quantity] = (Books) newBook;
                quantity++;
           }
+          else 
+               System.out.println("your new book is not instance of Books!");
      }
 
-     public void searchBook (String inputId) {
-          int indexBook = findBook(inputId);
+     public void advancedSearch () {
+
+     }
+
+     public void search (String bookId) {
+          int indexBook = find(bookId);
           if (indexBook != -1) {
                String toStringHandler = composeUsingFormatter(indexBook);
-               System.out.printf("your book id is: %s\n your book detail: \n%s", inputId, toStringHandler);
+               System.out.printf("your book id is: %s\n your book detail: \n%s", bookId, toStringHandler);
           }
      }
 
@@ -86,8 +92,8 @@ public class BooksBUS {
      }
 
      // remove methods
-     public void removeBook (String inputId) {
-          int indexBook = findBook(inputId);
+     public void remove (String inputId) {
+          int indexBook = find(inputId);
           if (indexBook != -1) {
                for (int i = indexBook; i < booksList.length - 1; i++) 
                     booksList[i] = booksList[i + 1];
@@ -96,39 +102,14 @@ public class BooksBUS {
      }
 
      // edit methods
-     public void editBookHandler () {
-          String userChoose;
-          int optionChoose, indexBook;
-          System.out.printf("%20s", "-");
-          System.out.println("option 1: " + "edit book's name: ");
-          System.out.println("option 2: " + "edit book's release date: ");
-          System.out.println("option 3: " + "edit book's price: ");
-          System.out.println("option 4: " + "edit book's quantity: ");
-          System.out.println("option 5: " + "edit book's author: ");
-          System.out.println("option 6: " + "edit book's type: ");
-          System.out.println("option 7: " + "edit book's genre: ");
-          System.out.println("option 8: " + "edit book's format: ");
-          System.out.println("option 9: " + "edit book's packaging size: ");
-          System.out.println("option 10: " + "exit!");
-          System.out.printf("%20s", "-");
-          // validate user choose
-          do {
-               System.out.print("enter value of option you choose (integer): ");
-               userChoose = input.nextLine().trim();
-               optionChoose = Validate.parseChooseHandler(userChoose, 10);
-          } while (optionChoose == 0);
-          // let input id from user to find book in list
-          do {
-               System.out.print("enter book id you wanna edit: ");
-               String inputId = input.nextLine().trim();
-               indexBook = findBook(inputId);
-          } while (indexBook == -1);
-          editBook(booksList[indexBook], optionChoose);
-     }
-
-     // some private methods for method handlers
-     private void editBook (Books book, int userChoose) {
+     public void edit (String bookId) {
           String tempUserInput;
+          if (find(bookId) == -1) {
+               System.out.println("your book is not exist !");
+               return;
+          }
+          Books book = this.booksList[find(bookId)]; 
+          int userChoose = editHandler();
           // case that user chooses
           switch (userChoose) {
                case 1:
@@ -185,8 +166,37 @@ public class BooksBUS {
                     } while (optionChoose == 0);
                     
                     break;                    
-
+     
           }
+     }
+     
+     // some private methods for method handlers
+     private int editHandler () {
+          int optionChoose;
+          String userChoose;
+          System.out.printf("%20s", "-");
+          System.out.println("option 1: " + "edit book's name: ");
+          System.out.println("option 2: " + "edit book's release date: ");
+          System.out.println("option 3: " + "edit book's price: ");
+          System.out.println("option 4: " + "edit book's quantity: ");
+          System.out.println("option 5: " + "edit book's author: ");
+          System.out.println("option 6: " + "edit book's type: ");
+          System.out.println("option 7: " + "edit book's genre: ");
+          System.out.println("option 8: " + "edit book's format: ");
+          System.out.println("option 9: " + "edit book's packaging size: ");
+          System.out.println("option 10: " + "exit!");
+          System.out.printf("%20s", "-");
+          // validate user choose
+          do {
+               System.out.print("enter value of option you choose (integer): ");
+               userChoose = input.nextLine().trim();
+               optionChoose = Validate.parseChooseHandler(userChoose, 10);
+               if (optionChoose == 10) {
+                    System.out.println("exit successfully !");
+                    return 0;
+               }
+          } while (optionChoose == -1);
+          return optionChoose;
      }
 
      // some other methods

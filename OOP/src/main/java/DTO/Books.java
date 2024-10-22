@@ -8,6 +8,7 @@ public class Books extends Products {
      private String format;
      private String packagingSize;
      private BookTypes bookType;
+     
      // constructors
      public Books () {}
 
@@ -29,7 +30,6 @@ public class Books extends Products {
           this.format = bookInput.format;
           this.packagingSize = bookInput.packagingSize;
      }
-
 
      // getter / setter
      public String getPublisherId () {
@@ -76,4 +76,8 @@ public class Books extends Products {
           this.packagingSize = packagingSize;
      } 
 
+     @Override
+     protected String productIdModifier (String bookId) {
+          return "BK" + bookId + "PD";
+     } 
 }

@@ -45,7 +45,7 @@ public abstract class Products {
      }
 
      public void setProductId (String productId) {
-          this.productId = productId;
+          this.productId = productIdModifier(productId);
      }
 
      public void setProductName (String productName) {
@@ -63,4 +63,6 @@ public abstract class Products {
      public void setQuantity (Integer quantity) {
           this.quantity = quantity;
      }
+
+     protected abstract String productIdModifier (String productId); 
 }

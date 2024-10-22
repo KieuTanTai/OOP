@@ -60,5 +60,10 @@ public class Stationary extends Products {
      public void setSource (String source) {
           this.source = source;
      }
+
+     @Override
+     protected String productIdModifier (String stationaryId) {
+          return "STN" + stationaryId + "PD";
+     }
 }
 

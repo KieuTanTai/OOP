@@ -6,12 +6,8 @@ public class App {
         TypesBUS temp = new TypesBUS();
         BookTypes test = new BookTypes("12311wsx", "hello world");
         BookTypes test1 = new BookTypes("12311w", "hello");
-        Products product = new Books();
-        product = new Stationary();
-        
-        
-        temp.addType(test);
-        temp.addType(test1);
-        temp.showTypesList();
+        temp.add(test);
+        temp.add(test1);
+        temp.showList();
     }
 }

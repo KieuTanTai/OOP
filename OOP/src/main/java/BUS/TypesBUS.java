@@ -3,7 +3,7 @@ import DTO.BookTypes;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class TypesBUS extends BookTypes {
+public class TypesBUS implements RuleSets{
      private BookTypes[] typesList;
      private int quantity;
      private Scanner input = new Scanner(System.in);
@@ -40,15 +40,14 @@ public class TypesBUS extends BookTypes {
      public void setQuantity (int quantity) {
           this.quantity = quantity;
      }
-
      
      // add remove edit find....
-     public void showTypesList () {
+     public void showList () {
           for (int i = 0; i < this.typesList.length; i++)
                System.out.printf("%s   %s\n", this.typesList[i].getTypeId(), this.typesList[i].getTypeName());
      }
 
-     public int findType (String inputId)  {
+     public int find (String inputId)  {
           for ( int i = 0; i < this.typesList.length; i++) {
                if (typesList[i].getTypeId().equals(inputId))
                     return i;
@@ -57,13 +56,13 @@ public class TypesBUS extends BookTypes {
           return -1;
      }
 
-     public void searchType (String inputId) {
-          int quantityType = findType(inputId);
-          if  (quantityType != -1)
-               System.out.printf("Your type id is: &s\n Type name: &s\n", inputId, typesList[quantityType].getTypeName());
+     public void search (String inputId) {
+          int indexType = find(inputId);
+          if  (indexType != -1)
+               System.out.printf("Your type id is: &s\n Type name: &s\n", inputId, typesList[indexType].getTypeName());
      }
 
-     public void addType (BookTypes type) {
+     public void add (Object type) {
           if (type instanceof BookTypes) {
                typesList = Arrays.copyOf(typesList, typesList.length + 1);
                typesList[quantity] = type;
@@ -71,8 +70,8 @@ public class TypesBUS extends BookTypes {
           }
      }
 
-     public void editTypeName (String inputId) {
-          int quantityType = findType(inputId); 
+     public void edit (String inputId) {
+          int quantityType = find(inputId); 
           if (quantityType != -1) {
                System.out.print("enter new type name: ");
                String newTypeName = input.nextLine().trim();
@@ -80,10 +79,10 @@ public class TypesBUS extends BookTypes {
           }
      }
 
-     public void removeType (String inputId) {
-          int quantityType = findType(inputId);
+     public void remove (String inputId) {
+          int quantityType = find(inputId);
           if (quantityType != -1) {
-               for (int i = findType(inputId); i < this.typesList.length - 1; i++)
+               for (int i = find(inputId); i < this.typesList.length - 1; i++)
                     typesList[i] = typesList[i+1];
                typesList = Arrays.copyOf(typesList, typesList.length -1);
           }

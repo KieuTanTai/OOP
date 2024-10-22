@@ -13,13 +13,13 @@ public class Validate {
                else {
                     System.out.print("\033\143");
                     System.out.println("your option is not in options table!");
-                    return 0;
+                    return -1;
                }
                     
           } catch (Exception err) {
                System.out.print("\033\143");
                System.out.println("error input please try again: " + "\n" + err);
-               return 0;
+               return -1;
           }
      }
 

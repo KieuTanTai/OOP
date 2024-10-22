@@ -8,19 +8,20 @@ public class Books extends Products {
      private String format;
      private String packagingSize;
      private BookTypes bookType;
+     private int quantity;
      
      // constructors
      public Books () {}
 
      public Books (String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
-      Integer quantity, String publisherId, String author, String typeId, String format, String packagingSize) {
-          super (productId, productName, releaseDate, productPrice, quantity);
+      int quantity, String publisherId, String author, BookTypes type, String format, String packagingSize) {
+          super (productId, productName, releaseDate, productPrice);
           this.publisherId = publisherId;
           this.author = author;
-          this.bookType.setTypeId(typeId);
+          this.bookType = type;
           this.format = format;
           this.packagingSize = packagingSize;
-          
+          this.quantity = quantity;
      }
 
      public Books (Books bookInput) {
@@ -29,6 +30,7 @@ public class Books extends Products {
           this.bookType.setTypeId(bookInput.getTypeId());
           this.format = bookInput.format;
           this.packagingSize = bookInput.packagingSize;
+          this.quantity = bookInput.quantity;
      }
 
      // getter / setter
@@ -56,6 +58,10 @@ public class Books extends Products {
           return this.packagingSize;
      }
 
+     public int getQuantity () {
+          return this.quantity;
+     }
+
      public void setPublisherId (String publisherId) {
           this.publisherId = publisherId;
      } 
@@ -76,8 +82,25 @@ public class Books extends Products {
           this.packagingSize = packagingSize;
      } 
 
+     public void setQuantity (int quantity) {
+          this.quantity = quantity;
+     }
+
      @Override
      protected String productIdModifier (String bookId) {
           return "BK" + bookId + "PD";
      } 
+
+     @Override
+     public void showInfo () {
+          System.out.println("[/-]{10}");
+          System.out.printf("book Id: %s\n", getProductId());
+          System.out.printf("book Id: %s\n", getProductId());
+          System.out.printf("book Id: %s\n", getProductId());
+          System.out.printf("book Id: %s\n", getProductId());
+          System.out.printf("book Id: %s\n", getProductId());
+          System.out.printf("book Id: %s\n", getProductId());
+          System.out.printf("book Id: %s\n", getProductId());
+          
+     }
 }

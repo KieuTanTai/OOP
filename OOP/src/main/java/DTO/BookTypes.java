@@ -5,6 +5,7 @@ public class BookTypes {
      private String typeName; 
 
      public BookTypes() {};
+     
      public BookTypes(String typeId, String typeName) {
           this.typeId = typeId;
           this.typeName = typeName;

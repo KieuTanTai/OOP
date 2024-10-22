@@ -25,7 +25,7 @@ public class GenresBUS implements RuleSets{
      }     
 
      // getter/setter
-     public BookGenres[] getBGenresList () {
+     public BookGenres[] getGenresList () {
           return this.genresList;
      }
 
@@ -41,7 +41,7 @@ public class GenresBUS implements RuleSets{
           this.quantity = quantity;
      }
 
-     // add edit remove find...
+     // add edit remove find show...
      public void showList () {
           for (int i = 0; i <= this.quantity; i++)
                System.out.printf("%10d %d\n", this.genresList[i].getGenreId(), this.genresList[i].getGenreName());
@@ -56,10 +56,10 @@ public class GenresBUS implements RuleSets{
           return -1;
      }
 
-     public void search (String genreId) {
-          int genreIndex = find(genreId);
+     public void search (String inputId) {
+          int genreIndex = find(inputId);
           if (genreIndex != -1)
-               System.out.printf("your genre id is: %s\nGenre Name: %s\n", genreId, genresList[genreIndex].getGenreName());
+               System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[genreIndex].getGenreName());
      }
 
      public void add (Object genre) {

@@ -8,17 +8,19 @@ public class Stationary extends Products {
      private String brand;
      private String material;
      private String source;
+     pritvate int quantity;
 
      public Stationary () {}
 
      public Stationary (String productId, String productName, String productBrand, LocalDate releaseDate, BigDecimal productPrice, 
-      Integer quantity, String stationaryId, String typeId, String brand , String material, String source) {
-          super(productId, productName, releaseDate, productPrice, quantity);
+      int quantity, String stationaryId, String typeId, String brand , String material, String source) {
+          super(productId, productName, releaseDate, productPrice);
           this.stationaryId = stationaryId;
           this.stationaryType.getTypeId() = typeId;
           this.brand = brand;
           this.material = material;
           this.source = source;
+          this.quantity = quantity;
      }
 
      public String getStationaryId () {
@@ -41,6 +43,10 @@ public class Stationary extends Products {
           return this.source;
      }
 
+     public int getQuantity () {
+          return this.quantity;
+     }
+
      public void setStationaryId (String stationaryId) {
           this.stationaryId = stationaryId;
      }
@@ -59,6 +65,10 @@ public class Stationary extends Products {
 
      public void setSource (String source) {
           this.source = source;
+     }
+
+     public void setQuantity (int quantity) {
+          this.quantity = quantity;
      }
 
      @Override

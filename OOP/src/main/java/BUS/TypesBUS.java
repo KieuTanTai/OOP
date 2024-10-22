@@ -41,7 +41,7 @@ public class TypesBUS implements RuleSets{
           this.quantity = quantity;
      }
      
-     // add remove edit find....
+     // add remove edit find show....
      public void showList () {
           for (int i = 0; i < this.typesList.length; i++)
                System.out.printf("%s   %s\n", this.typesList[i].getTypeId(), this.typesList[i].getTypeName());
@@ -65,7 +65,7 @@ public class TypesBUS implements RuleSets{
      public void add (Object type) {
           if (type instanceof BookTypes) {
                typesList = Arrays.copyOf(typesList, typesList.length + 1);
-               typesList[quantity] = type;
+               typesList[quantity] = (BookTypes) type;
                quantity++;
           }
      }
@@ -80,9 +80,9 @@ public class TypesBUS implements RuleSets{
      }
 
      public void remove (String inputId) {
-          int quantityType = find(inputId);
-          if (quantityType != -1) {
-               for (int i = find(inputId); i < this.typesList.length - 1; i++)
+          int typeIndex = find(inputId);
+          if (typeIndex != -1) {
+               for (int i = typeIndex; i < this.typesList.length - 1; i++)
                     typesList[i] = typesList[i+1];
                typesList = Arrays.copyOf(typesList, typesList.length -1);
           }

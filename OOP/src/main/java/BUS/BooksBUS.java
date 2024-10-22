@@ -78,18 +78,18 @@ public class BooksBUS implements RuleSets {
      }
 
      // genre of book is an array and this method is only use for edit list genre of specific books
-     private String[] addGenreOfBook (String[] genresList, Integer quantityGenre) {
-          do {
-               System.out.print("enter quantity of genre you wanna add: ");
-               String quantity = input.nextLine().trim();
-               quantityGenre = Validate.isNumber((quantity));
-          }while (quantityGenre.equals(null));
-          for (int i = 0; i < quantityGenre; i++) {
-               String temp = input.nextLine().trim();
-               genresList[i] = genresList[i].concat(temp).concat(" ");
-          }
-          return genresList;
-     }
+     // private String[] addGenreOfBook (String[] genresList, Integer quantityGenre) {
+     //      do {
+     //           System.out.print("enter quantity of genre you wanna add: ");
+     //           String quantity = input.nextLine().trim();
+     //           quantityGenre = Validate.isNumber((quantity));
+     //      }while (quantityGenre.equals(null));
+     //      for (int i = 0; i < quantityGenre; i++) {
+     //           String temp = input.nextLine().trim();
+     //           genresList[i] = genresList[i].concat(temp).concat(" ");
+     //      }
+     //      return genresList;
+     // }
 
      // remove methods
      public void remove (String inputId) {

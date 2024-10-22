@@ -4,6 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Validate {
+     public static boolean checkQuantity (int quantity) {
+          if (quantity <= 0)
+               return false;
+          return true;
+     }
+
      // return null when input from user have any error or not in option table
      public static int parseChooseHandler (String userChoose,  int totalOptions) {
           try {
@@ -59,6 +65,13 @@ public class Validate {
 
      public static boolean validateTypeOfBook (String inputType) {
           
+          return true;
+     }
+
+     public static boolean validateName (String inputName) {
+          String regex = "/^[\\p{Letter}\\s\\-.']+$/g";
+          if (!inputName.matches(regex))
+               return false;
           return true;
      }
 }

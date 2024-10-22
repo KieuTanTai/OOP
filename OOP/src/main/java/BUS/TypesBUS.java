@@ -5,23 +5,23 @@ import java.util.Scanner;
 
 public class TypesBUS implements RuleSets{
      private BookTypes[] typesList;
-     private int quantity;
+     private int many;
      private Scanner input = new Scanner(System.in);
 
      // constructors
      public TypesBUS () {
-          this.quantity = 0;
+          this.many = 0;
           typesList = new BookTypes[0];
      };
 
-     public TypesBUS (BookTypes[] typesList, int quantity) {
+     public TypesBUS (BookTypes[] typesList, int many) {
           this.typesList = typesList;
-          this.quantity = quantity;
+          this.many = many;
      }
 
      public TypesBUS (TypesBUS typeArray) {
           this.typesList = typeArray.typesList;
-          this.quantity = typeArray.quantity;
+          this.many = typeArray.many;
      }
 
      // getter / setter
@@ -30,15 +30,15 @@ public class TypesBUS implements RuleSets{
      }
 
      public int getQuantity () {
-          return this.quantity;
+          return this.many;
      }
 
      public void setTypesList (BookTypes[] typesList) {
           this.typesList = typesList;
      }
 
-     public void setQuantity (int quantity) {
-          this.quantity = quantity;
+     public void setQuantity (int many) {
+          this.many = many;
      }
      
      // add remove edit find show....
@@ -47,6 +47,7 @@ public class TypesBUS implements RuleSets{
                System.out.printf("%s   %s\n", this.typesList[i].getTypeId(), this.typesList[i].getTypeName());
      }
 
+     // find methods
      public int find (String inputId)  {
           for ( int i = 0; i < this.typesList.length; i++) {
                if (typesList[i].getTypeId().equals(inputId))
@@ -56,33 +57,57 @@ public class TypesBUS implements RuleSets{
           return -1;
      }
 
+     public int[] relativeFind (String inputValue) {
+          int index = 0;
+          int[] tempInt = new int[index];
+          for (int i = 0; i < typesList.length; i++)
+               if (typesList[i].getTypeName().contains(inputValue)) {
+                    tempInt[index] = i;
+                    index++;
+               }
+          if (index == 0)
+               return null;
+          return tempInt;
+     }
+
+     // search methods
      public void search (String inputId) {
           int indexType = find(inputId);
           if  (indexType != -1)
                System.out.printf("Your type id is: &s\n Type name: &s\n", inputId, typesList[indexType].getTypeName());
      }
 
+     public void relativeSearch (String inputValue) {
+          int[] indexList = relativeFind(inputValue);
+          if (indexList.equals(null)) {
+               System.out.println("not found any types!");
+               return;
+          }
+          for (int i = 0; i < indexList.length; i++)
+               System.out.printf("total types found : %d\ntype name : %s\n", indexList.length, typesList[indexList[i]].getTypeName());
+     }
+
      public void add (Object type) {
           if (type instanceof BookTypes) {
                typesList = Arrays.copyOf(typesList, typesList.length + 1);
-               typesList[quantity] = (BookTypes) type;
-               quantity++;
+               typesList[many] = (BookTypes) type;
+               many++;
           }
      }
 
      public void edit (String inputId) {
-          int quantityType = find(inputId); 
-          if (quantityType != -1) {
+          int index = find(inputId); 
+          if (index != -1) {
                System.out.print("enter new type name: ");
                String newTypeName = input.nextLine().trim();
-               typesList[quantityType].setTypeName(newTypeName);
+               typesList[index].setTypeName(newTypeName);
           }
      }
 
      public void remove (String inputId) {
-          int typeIndex = find(inputId);
-          if (typeIndex != -1) {
-               for (int i = typeIndex; i < this.typesList.length - 1; i++)
+          int index = find(inputId);
+          if (index != -1) {
+               for (int i = index; i < this.typesList.length - 1; i++)
                     typesList[i] = typesList[i+1];
                typesList = Arrays.copyOf(typesList, typesList.length -1);
           }

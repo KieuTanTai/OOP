@@ -8,15 +8,16 @@ public abstract class Products {
      private String productName;
      private LocalDate releaseDate;
      private BigDecimal productPrice;
-
+     private int quantity;
      //  constructors
      public Products () {}
 
-     public Products (String productId, String productName, LocalDate releaseDate, BigDecimal productPrice) {
+     public Products (String productId, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
           this.productId = productIdModifier(productId);
           this.productName = productName;
           this.releaseDate = releaseDate;
           this.productPrice = productPrice;
+          this.quantity = quantity;
      }
 
      // getter / setter
@@ -36,6 +37,10 @@ public abstract class Products {
           return this.productPrice;
      }
 
+     public int getQuantity () {
+          return this.quantity;
+     }
+
      public void setProductId (String productId) {
           this.productId = productIdModifier(productId);
      }
@@ -50,6 +55,10 @@ public abstract class Products {
 
      public void setProductPrice (BigDecimal productPrice) {
           this.productPrice = productPrice;
+     }
+
+     public void setQuantity (int quantity) {
+          this.quantity = quantity;
      }
 
      public String getFormattedReleaseDate() {

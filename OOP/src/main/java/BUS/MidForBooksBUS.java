@@ -1,12 +1,12 @@
 package BUS;
 import java.util.Arrays;
-import java.util.Scanner;
+import DTO.BookGenres;
 import DTO.MidForBooks;
+import util.Validate;
 
 public class MidForBooksBUS {
      MidForBooks[] midList;
      private int quantity;
-     Scanner input = new Scanner(System.in);
 
      // constructors
      public MidForBooksBUS () {
@@ -43,44 +43,43 @@ public class MidForBooksBUS {
 
      // add edit remove find show....
       public void showList () {
+          if (!Validate.checkQuantity(quantity)) {
+               System.out.println("you don't have any mid list in there!");
+               return;
+          }
           for (int i = 0; i < this.midList.length; i++)
-               System.out.printf("%s   %s\n", this.midList[i].getProductId(), this.midList[i].getGenreId());
+               System.out.printf("%s   %s\n", this.midList[i].getBookId(), this.midList[i].getGenreId());
      }
 
-     public String[] find (String inputId) {
-          int temp = 0;
-          String[] genresId;
-          for (int i = 0; i < midList.length; i++) {
-               if (midList[i].getProductId().equals(inputId)) {
-                    if (temp == 5)
-                         System.out.println();
-                    System.out.printf("%s\t");
-                    temp++;
+     // get genres list with specific product
+     public String[] getGenres (String inputValue) {
+          int index = 0;
+          String[] genresList = new String[index];
+          for (int i = 0; i < midList.length; i++)
+               if (midList[i].getBookId().equals(inputValue) || midList[i].getBookName().equals(inputValue)) {
+                    genresList[index] = midList[i].getGenreName();
+                    index++;
                }
-          }
-          if (temp == 0) {
+          if (index == 0) {
                System.out.println("not found!");
                return null;
           }
-          return ;
+          return genresList;
      }
 
-     public boolean find (String productId, String genreId)  {
-          for (int i = 0; i < midList.length; i++) {
-               if ((midList[i].getProductId().equals(productId)) && midList[i].getGenreId().equals(genreId))
-                    return true;
-          }          
+     // find index of specific product and genre
+     public int find (String productId, String genreId)  {
+          for (int i = 0; i < midList.length; i++)
+               if ((midList[i].getBookId().equals(productId)) && midList[i].getGenreId().equals(genreId))
+                    return i;
           System.out.println("not found!");
-          return false;
+          return -1;
      }
-     
+
      public void search (String productId, String genreId) {
-          if (find(productId, genreId))
-               System.out.printf("product id: %s\tgenre id: %s\nexist!", productId, genreId);
-     }
-
-     public void search (String inputId) {
-
+          int index = find(productId, genreId); 
+          if (index != -1)
+               System.out.printf("product name: %s\tgenre name: %s\nexist!", midList[index].getBookName(), midList[index].getGenreName());
      }
 
      public void add (Object midObject) {
@@ -91,16 +90,18 @@ public class MidForBooksBUS {
           }
      }
 
-     public void edit (String inputId) {
-          // int quantityType = find(inputId); 
-          // if (quantityType != -1) {
-          //      System.out.print("enter new type name: ");
-          //      String newTypeName = input.nextLine().trim();
-          // }
+     public void edit (String productId, BookGenres genre) {
+          int index = find (productId, genre.getGenreId()); 
+          if (index != -1)
+               midList[index].setGenre(genre);
      }
 
-     public void remove (String inputId) {
-          // int quantityType = find(inputId);
-
+     public void remove (String productId, String genreId) {
+          int index = find(productId, genreId); 
+          if (index != -1) {
+               for (int i = index; i < midList.length -1; i++)
+                    midList[i] = midList[i + 1];
+               midList = Arrays.copyOf(midList, midList.length - 1);
+          }
      }
 }

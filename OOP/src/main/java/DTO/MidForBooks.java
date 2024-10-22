@@ -1,32 +1,39 @@
 package DTO;
-
 public class MidForBooks {
-     private String productId;
-     private String genreId;   
+     private Books book;
+     private BookGenres genres;   
 
      // constructors
      public MidForBooks () {}
 
-     public MidForBooks (String productId, String genreId) {
-          this.productId = productId;
-          this.genreId = genreId;
+     public MidForBooks (Books book, BookGenres genres) {
+          this.book = book;
+          this.genres = genres;
      }
 
      // getter / setter
-     public String getProductId () {
-          return this.productId;
+     public String getBookId () {
+          return this.book.getProductId();
      }
 
      public String getGenreId () {
-          return this.genreId;
+          return this.genres.getGenreId();
      }
 
-     public void setProductId (String productId) {
-          this.productId = productId;
+     public String getBookName () {
+          return this.book.getProductName();
      }
 
-     public void setGenreId (String genreId) {
-          this.genreId = genreId;
+     public String getGenreName () {
+          return this.genres.getGenreName();
+     }
+
+     public void setBook (Books book) {
+          this.book = book;
+     }
+
+     public void setGenre (BookGenres genres) {
+          this.genres = genres;
      }
 }
 

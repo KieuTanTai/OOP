@@ -1,9 +1,10 @@
 package BUS;
+import DTO.BookGenres;
 import DTO.BookTypes;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class TypesBUS implements RuleSets{
+public class TypesBUS implements RuleSets {
      private BookTypes[] typesList;
      private int many;
      private Scanner input = new Scanner(System.in);
@@ -57,17 +58,18 @@ public class TypesBUS implements RuleSets{
           return -1;
      }
 
-     public int[] relativeFind (String inputValue) {
-          int index = 0;
-          int[] tempInt = new int[index];
+     public BookTypes[] relativeFind (String inputValue) {
+          int many = 0;
+          BookTypes[] typesArray = new BookTypes[0];
           for (int i = 0; i < typesList.length; i++)
                if (typesList[i].getTypeName().contains(inputValue)) {
-                    tempInt[index] = i;
-                    index++;
+                    typesArray = Arrays.copyOf(typesArray, typesArray.length + 1);
+                    typesArray[many] = typesArray[i];
+                    many++;
                }
-          if (index == 0)
+          if (many == 0)
                return null;
-          return tempInt;
+          return typesArray;
      }
 
      // search methods
@@ -78,13 +80,13 @@ public class TypesBUS implements RuleSets{
      }
 
      public void relativeSearch (String inputValue) {
-          int[] indexList = relativeFind(inputValue);
+          BookTypes[] indexList = relativeFind(inputValue);
           if (indexList.equals(null)) {
                System.out.println("not found any types!");
                return;
           }
           for (int i = 0; i < indexList.length; i++)
-               System.out.printf("total types found : %d\ntype name : %s\n", indexList.length, typesList[indexList[i]].getTypeName());
+               System.out.printf("total types found : %d\ntype name : %s\n", indexList.length, indexList[i].getTypeName());
      }
 
      public void add (Object type) {

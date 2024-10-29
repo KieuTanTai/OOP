@@ -55,17 +55,18 @@ public class BooksBUS implements RuleSets {
      }
 
      // return list index of products that have contain specific string
-     public int[] relativeFind (String inputValue) {
-          int index = 0;
-          int[] tempInt = new int[index];
+     public Books[] relativeFind (String inputValue) {
+          int many = 0;
+          Books[] booksArray = new Books[0];
           for (int i = 0; i < booksList.length; i++)
                if (booksList[i].getProductName().contains(inputValue)) {
-                    tempInt[index] = i;
-                    index++;
+                    booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
+                    booksArray[many] = booksList[i];
+                    many++;
                }
-          if (index == 0)
+          if (many == 0)
                return null;
-          return tempInt;
+          return booksArray;
      }
 
      public void add (Object newBook) {
@@ -82,7 +83,7 @@ public class BooksBUS implements RuleSets {
      public void search (String inputValue) {
           int indexBook = find(inputValue);
           if (indexBook != -1) {
-               String toStringHandler = composeUsingFormatter(indexBook);
+               String toStringHandler = composeUsingFormatter(booksList[indexBook]);
                System.out.printf("your book id / name is : %s\nyour book detail : \n%s", inputValue, toStringHandler);
           }
           else
@@ -90,7 +91,7 @@ public class BooksBUS implements RuleSets {
      }
 
      public void relativeSearch (String inputValue) {
-          int[] indexList = relativeFind(inputValue);
+          Books[] indexList = relativeFind(inputValue);
           if (indexList.equals(null)) {
                System.out.println("not found any books!");
                return;
@@ -200,8 +201,7 @@ public class BooksBUS implements RuleSets {
      }
 
      // some other methods
-     private String composeUsingFormatter (int isFindId) {
-          Books book = booksList[isFindId];
+     private String composeUsingFormatter (Books book) {
           return String.format(" publisher name: %s\n author: %s\n book type: %s\n format: %s\n packaging size: %s\n", 
           book.getPublisherId(), book.getAuthor(), book.getTypeName(), book.getFormat(), book.getPackagingSize());
      }

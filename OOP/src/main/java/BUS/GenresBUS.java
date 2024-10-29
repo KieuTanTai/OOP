@@ -5,23 +5,23 @@ import java.util.Scanner;
 
 public class GenresBUS implements RuleSets{
      private BookGenres[] genresList;
-     private int quantity;
+     private int many;
      private Scanner input = new Scanner(System.in);
 
      // constructors
      public GenresBUS () {
-          this.quantity = 0;
+          this.many = 0;
           genresList = new BookGenres[0];
      };
 
-     public GenresBUS (BookGenres[] genresList, int quantity) {
+     public GenresBUS (BookGenres[] genresList, int many) {
           this.genresList = genresList;
-          this.quantity = quantity;
+          this.many = many;
      }
 
      public GenresBUS (GenresBUS typeArray) {
           this.genresList = typeArray.genresList;
-          this.quantity = typeArray.quantity;
+          this.many = typeArray.many;
      }     
 
      // getter/setter
@@ -30,20 +30,20 @@ public class GenresBUS implements RuleSets{
      }
 
      public int getQuantity () {
-          return this.quantity;
+          return this.many;
      }
 
      public void setGenresList (BookGenres[] genresList) {
           this.genresList = genresList;
      }
 
-     public void setQuantity (int quantity) {
-          this.quantity = quantity;
+     public void setQuantity (int many) {
+          this.many = many;
      }
 
      // add edit remove find show...
      public void showList () {
-          for (int i = 0; i <= this.quantity; i++)
+          for (int i = 0; i <= this.many; i++)
                System.out.printf("%10d %d\n", this.genresList[i].getGenreId(), this.genresList[i].getGenreName());
      }
 
@@ -57,17 +57,18 @@ public class GenresBUS implements RuleSets{
           return -1;
      }
 
-     public int[] relativeFind (String inputValue) {
-          int index = 0;
-          int[] tempInt = new int[index];
+     public BookGenres[] relativeFind (String inputValue) {
+          int many = 0;
+          BookGenres[] genresArray = new BookGenres[0];
           for (int i = 0; i < genresList.length; i++)
                if (genresList[i].getGenreName().contains(inputValue)) {
-                    tempInt[index] = i;
-                    index++;
+                    genresArray = Arrays.copyOf(genresArray, genresArray.length + 1);
+                    genresArray[many] = genresArray[i];
+                    many++;
                }
-          if (index == 0)
+          if (many == 0)
                return null;
-          return tempInt;
+          return genresArray;
      }
 
      // search methods
@@ -78,20 +79,20 @@ public class GenresBUS implements RuleSets{
      }
 
      public void relativeSearch (String inputValue) {
-          int[] indexList = relativeFind(inputValue);
+          BookGenres[] indexList = relativeFind(inputValue);
           if (indexList.equals(null)) {
                System.out.println("not found any types!");
                return;
           }
           for (int i = 0; i < indexList.length; i++)
-               System.out.printf("total genres found : %d\ngenre name : %s\n", indexList.length, genresList[indexList[i]].getGenreName());
+               System.out.printf("total genres found : %d\ngenre name : %s\n", indexList.length, indexList[i].getGenreName());
      }
 
      public void add (Object genre) {
           if (genre instanceof BookGenres) {
                genresList = Arrays.copyOf(genresList, genresList.length + 1);
-               genresList[quantity] = (BookGenres) genre;
-               quantity++;
+               genresList[many] = (BookGenres) genre;
+               many++;
           }
           else
                System.out.println("your new genre is not instance of BookGenres!");

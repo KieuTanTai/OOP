@@ -2,14 +2,14 @@ package BUS;
 
 import DTO.StaTypes;
 import java.util.Scanner;
-public class StaTypeBUS implements RuleSets {
+public class StaTypesBUS implements RuleSets {
     private StaTypes[] typeList;
     private int count;
     private final Scanner scanner = new Scanner(System.in);
 
 
     // Constructor
-    public StaTypeBUS(int size) {
+    public StaTypesBUS(int size) {
         typeList = new StaTypes[size];
         count = 0;
     }

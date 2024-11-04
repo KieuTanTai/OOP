@@ -23,9 +23,11 @@ public class Books extends Products {
      }
 
      public Books (Books bookInput) {
+          super (bookInput.getProductId(), bookInput.getProductName(), bookInput.getReleaseDate(),
+                  bookInput.getProductPrice(), bookInput.getQuantity());
           this.publisherId = bookInput.publisherId;
           this.author = bookInput.author;
-          this.bookType.setTypeId(bookInput.getTypeId());
+          this.bookType= bookInput.bookType;
           this.format = bookInput.format;
           this.packagingSize = bookInput.packagingSize;
      }

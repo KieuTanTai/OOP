@@ -5,23 +5,23 @@ import java.util.Scanner;
 
 public class GenresBUS implements RuleSets{
      private BookGenres[] genresList;
-     private int many;
-     private Scanner input = new Scanner(System.in);
+     private int count;
+     private final Scanner input = new Scanner(System.in);
 
      // constructors
      public GenresBUS () {
-          this.many = 0;
+          this.count = 0;
           genresList = new BookGenres[0];
-     };
+     }
 
-     public GenresBUS (BookGenres[] genresList, int many) {
+     public GenresBUS (BookGenres[] genresList, int count) {
           this.genresList = genresList;
-          this.many = many;
+          this.count = count;
      }
 
      public GenresBUS (GenresBUS typeArray) {
           this.genresList = typeArray.genresList;
-          this.many = typeArray.many;
+          this.count = typeArray.count;
      }     
 
      // getter/setter
@@ -29,90 +29,106 @@ public class GenresBUS implements RuleSets{
           return this.genresList;
      }
 
-     public int getQuantity () {
-          return this.many;
+     public int getCount () {
+          return this.count;
      }
 
      public void setGenresList (BookGenres[] genresList) {
           this.genresList = genresList;
      }
 
-     public void setQuantity (int many) {
-          this.many = many;
+     public void setCount (int count) {
+          this.count = count;
      }
 
-     // add edit remove find show...
+     // all others methods like: add remove edit find show....
+     // methods shows list of genres for user (DONE)
      public void showList () {
-          for (int i = 0; i <= this.many; i++)
-               System.out.printf("%10d %d\n", this.genresList[i].getGenreId(), this.genresList[i].getGenreName());
+          for (int i = 0; i <= this.count; i++)
+               System.out.printf("%10s %s\n", this.genresList[i].getGenreId(), this.genresList[i].getGenreName());
      }
 
-     // find methods
+     // find methods (DONE)
+     //strict find
      public int find (String inputId)  {
           for ( int i = 0; i < this.genresList.length; i++) {
                if (genresList[i].getGenreId().equals(inputId))
                     return i;
           }
-          System.out.println("your id is not found !");
           return -1;
      }
 
+     // relative find
      public BookGenres[] relativeFind (String inputValue) {
-          int many = 0;
+          int count = 0;
           BookGenres[] genresArray = new BookGenres[0];
-          for (int i = 0; i < genresList.length; i++)
-               if (genresList[i].getGenreName().contains(inputValue)) {
+          for (BookGenres genre : genresList)
+               if (genre.getGenreName().contains(inputValue)) {
                     genresArray = Arrays.copyOf(genresArray, genresArray.length + 1);
-                    genresArray[many] = genresArray[i];
-                    many++;
+                    genresArray[count] = genre;
+                    count++;
                }
-          if (many == 0)
+          if (count == 0)
                return null;
           return genresArray;
      }
 
-     // search methods
+     // search methods (DONE)
+     // strict search
      public void search (String inputId) {
-          int genreIndex = find(inputId);
-          if (genreIndex != -1)
-               System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[genreIndex].getGenreName());
+          int index = find(inputId);
+          if (index == -1) {
+               System.out.println("your genre is not found !");
+               return;
+          }
+          System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[index].getGenreName());
      }
 
+     // relative search
      public void relativeSearch (String inputValue) {
-          BookGenres[] indexList = relativeFind(inputValue);
-          if (indexList.equals(null)) {
+          BookGenres[] list = relativeFind(inputValue);
+          if (list == null) {
                System.out.println("not found any types!");
                return;
           }
-          for (int i = 0; i < indexList.length; i++)
-               System.out.printf("total genres found : %d\ngenre name : %s\n", indexList.length, indexList[i].getGenreName());
+         for (BookGenres genre : list)
+             System.out.printf("genre's id  : %s\ngenre name : %s\n", genre.getGenreId(), genre.getGenreName());
      }
 
+     // add method (DONE)
      public void add (Object genre) {
           if (genre instanceof BookGenres) {
                genresList = Arrays.copyOf(genresList, genresList.length + 1);
-               genresList[many] = (BookGenres) genre;
-               many++;
+               genresList[count] = (BookGenres) genre;
+               count++;
           }
-          else
-               System.out.println("your new genre is not instance of BookGenres!");
+          else {
+               System.out.println("your new genre is not correct !");
+               return;
+          }
      }
 
+     // edit method (DONE)
      public void edit (String inputId) {
           int genreIndex = find(inputId);
-          if (genreIndex != -1) {
-               System.out.print("enter new genre name: ");
-               String newTypeName = input.nextLine().trim();
-               genresList[genreIndex].setGenreName(newTypeName);
+          if (genreIndex == -1) {
+               System.out.println("your genre is not found !");
+               return;     
           }
+          System.out.print("enter new genre name: ");
+          String newTypeName = input.nextLine().trim();
+          genresList[genreIndex].setGenreName(newTypeName);
      }
 
+     // remove method (DONE)
      public void remove (String inputId) {
           int genreIndex = find(inputId);
-          if (genreIndex != -1) {
-               for (int i = genreIndex; i < genresList.length - 1; i++) 
-                    genresList[i] = genresList[i+1];
-               genresList = Arrays.copyOf(genresList, genresList.length - 1);
+          if (genreIndex == -1) {
+               System.out.println("your genre is not found !");
+               return;
           }
+          for (int i = genreIndex; i < genresList.length - 1; i++) 
+               genresList[i] = genresList[i + 1];
+          genresList = Arrays.copyOf(genresList, genresList.length - 1);
      }
 }

@@ -29,7 +29,7 @@ public abstract class Products {
           return this.productName;
      }
 
-     public String getReleaseDate () {
+     public LocalDate getReleaseDate () {
           return getFormattedReleaseDate();
      }
 
@@ -61,9 +61,9 @@ public abstract class Products {
           this.quantity = quantity;
      }
 
-     public String getFormattedReleaseDate() {
+     public LocalDate getFormattedReleaseDate() {
           DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-          return this.releaseDate.format(convertedFormat);
+          return LocalDate.parse(this.releaseDate.format(convertedFormat));
      }
 
      protected abstract String productIdModifier (String productId); 

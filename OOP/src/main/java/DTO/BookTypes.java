@@ -4,7 +4,7 @@ public class BookTypes {
      private String typeId;
      private String typeName; 
 
-     public BookTypes() {};
+     public BookTypes() {}
      
      public BookTypes(String typeId, String typeName) {
           this.typeId = typeId;

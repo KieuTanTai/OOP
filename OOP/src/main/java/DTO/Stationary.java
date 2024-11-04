@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Stationary extends Products {
      private String stationaryId;
-     private Types stationaryType;
+     private StaTypes staTypes;
      private String brand;
      private String material;
      private String source;
@@ -15,7 +15,7 @@ public class Stationary extends Products {
       int quantity, String stationaryId, String typeId, String brand , String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
           this.stationaryId = stationaryId;
-          this.stationaryType.getTypeId() = typeId;
+          this.Statypes.getTypeId() = typeId;
           this.brand = brand;
           this.material = material;
           this.source = source;
@@ -64,6 +64,12 @@ public class Stationary extends Products {
      @Override
      protected String productIdModifier (String stationaryId) {
           return "STN" + stationaryId + "PD";
+     }
+
+     @Override
+     public void showInfo() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'showInfo'");
      }
 }
 

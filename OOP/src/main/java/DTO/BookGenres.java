@@ -4,7 +4,7 @@ public class BookGenres {
      private String genreId;
      private String genreName; 
 
-     public BookGenres() {};
+     public BookGenres() {}
      public BookGenres(String genreId, String genreName) {
           this.genreId = genreId;
           this.genreName = genreName;

@@ -9,23 +9,23 @@ import util.Validate;
 
 public class BooksBUS implements RuleSets {
      private Books[] booksList;
-     private int many;
+     private int count;
      private final Scanner input = new Scanner(System.in);
 
      // constructors
      public BooksBUS () {
-          this.many = 0;
+          this.count = 0;
           this.booksList = new Books[0];
      }
 
-     public BooksBUS (int many, Books[] booksList) {
-          this.many = many;
+     public BooksBUS (int count, Books[] booksList) {
+          this.count = count;
           this.booksList = booksList;
      }
 
      // when have existences booksArray before
      public BooksBUS (BooksBUS booksArray) {
-          this.many = booksArray.many;
+          this.count = booksArray.count;
           this.booksList = booksArray.booksList;
      }
 
@@ -34,16 +34,16 @@ public class BooksBUS implements RuleSets {
           return this.booksList;
      }
 
-     public int getIndex () {
-          return this.many;
+     public int getCount () {
+          return this.count;
      }
 
      public void setBooksList (Books[] newBooksList) {
           this.booksList = newBooksList;
      }
 
-     public void setIndex (int newQuantity) {
-          this.many = newQuantity;
+     public void setCount (int newQuantity) {
+          this.count = newQuantity;
      }
 
      // add find remove search....
@@ -54,26 +54,26 @@ public class BooksBUS implements RuleSets {
           return -1;
      }
 
-     // return list index of products that have contain specific string
+     // return list index of products that have contains specific string
      public Books[] relativeFind (String inputValue) {
-          int many = 0;
+          int count = 0;
           Books[] booksArray = new Books[0];
-          for (int i = 0; i < booksList.length; i++)
-               if (booksList[i].getProductName().contains(inputValue)) {
-                    booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
-                    booksArray[many] = booksList[i];
-                    many++;
-               }
-          if (many == 0)
+         for (Books books : booksList)
+             if (books.getProductName().contains(inputValue)) {
+                 booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
+                 booksArray[count] = books;
+                 count++;
+             }
+          if (count == 0)
                return null;
           return booksArray;
      }
 
      public void add (Object newBook) {
-          if (newBook != null && newBook instanceof Books ) {
+          if (newBook instanceof Books) {
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
-               booksList[many] = (Books) newBook;
-               many++;
+               booksList[count] = (Books) newBook;
+               count++;
           }
           else 
                System.out.println("your new book is not instance of Books!");
@@ -92,12 +92,12 @@ public class BooksBUS implements RuleSets {
 
      public void relativeSearch (String inputValue) {
           Books[] indexList = relativeFind(inputValue);
-          if (indexList.equals(null)) {
+          if (indexList == null) {
                System.out.println("not found any books!");
                return;
           }
-          for (int i = 0; i < indexList.length; i++)
-               System.out.printf("total books found : %d\ndetail : %s\n", indexList.length, composeUsingFormatter (indexList[i]));
+         for (Books books : indexList)
+             System.out.printf("book's id : %s\ndetail : %s\n", books.getProductId(), composeUsingFormatter(books));
      }
 
      public void advancedSearch () {
@@ -122,7 +122,7 @@ public class BooksBUS implements RuleSets {
                System.out.println("your book is not exist !");
                return;
           }
-          String newName = "";
+          String newName;
           do {
                System.out.print("enter a new name for this book: ");
                newName = input.nextLine();

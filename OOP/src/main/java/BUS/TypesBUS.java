@@ -45,14 +45,14 @@ public class TypesBUS implements RuleSets {
      // show list of types for user (DONE)
      public void showList () {
          for (BookTypes bookTypes : this.typesList)
-             System.out.printf("%s   %s\n", bookTypes.getTypeId(), bookTypes.getTypeName());
+             System.out.printf("%s   %s\n", bookTypes.getTypeID(), bookTypes.getTypeName());
      }
 
      // find methods (DONE)
      // strict find
      public int find (String inputId)  {
           for ( int i = 0; i < this.typesList.length; i++) {
-               if (typesList[i].getTypeId().equals(inputId))
+               if (typesList[i].getTypeID().equals(inputId))
                     return i;
           }
           return -1;
@@ -92,7 +92,7 @@ public class TypesBUS implements RuleSets {
                return;
           }
          for (BookTypes type : list)
-             System.out.printf("type's id : %s\ntype name : %s\n", type.getTypeId(), type.getTypeName());
+             System.out.printf("type's id : %s\ntype name : %s\n", type.getTypeID(), type.getTypeName());
      }
 
      // add method (DONE)
@@ -102,10 +102,8 @@ public class TypesBUS implements RuleSets {
                typesList[count] = (BookTypes) type;
                count++;
           }
-          else {
+          else
                System.out.println("your type is not correct !");
-               return;
-          }
      }
 
      // edit method (DONE)
@@ -130,5 +128,6 @@ public class TypesBUS implements RuleSets {
           for (int i = index; i < this.typesList.length - 1; i++)
                typesList[i] = typesList[i + 1];
           typesList = Arrays.copyOf(typesList, typesList.length -1);
+          count--;
      }
 }

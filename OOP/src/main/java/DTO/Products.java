@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public abstract class Products {
-     private String productId;
+     private String productID;
      private String productName;
      private LocalDate releaseDate;
      private BigDecimal productPrice;
@@ -12,8 +12,8 @@ public abstract class Products {
      //  constructors
      public Products () {}
 
-     public Products (String productId, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
-          this.productId = productIdModifier(productId);
+     public Products (String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
+          this.productID = productIDModifier(productID);
           this.productName = productName;
           this.releaseDate = releaseDate;
           this.productPrice = productPrice;
@@ -21,8 +21,8 @@ public abstract class Products {
      }
 
      // getter / setter
-     public String getProductId () {
-          return this.productId;
+     public String getProductID () {
+          return this.productID;
      }
 
      public String getProductName () {
@@ -41,8 +41,8 @@ public abstract class Products {
           return this.quantity;
      }
 
-     public void setProductId (String productId) {
-          this.productId = productIdModifier(productId);
+     public void setProductID (String productID) {
+          this.productID = productIDModifier(productID);
      }
 
      public void setProductName (String productName) {
@@ -66,6 +66,6 @@ public abstract class Products {
           return LocalDate.parse(this.releaseDate.format(convertedFormat));
      }
 
-     protected abstract String productIdModifier (String productId); 
+     protected abstract String productIDModifier (String productID); 
      public abstract void showInfo ();
 }

@@ -1,26 +1,26 @@
 package DTO;
 
 public class BookTypes {
-     private String typeId;
+     private String typeID;
      private String typeName; 
 
      public BookTypes() {}
      
-     public BookTypes(String typeId, String typeName) {
-          this.typeId = typeId;
+     public BookTypes(String typeID, String typeName) {
+          this.typeID = typeID;
           this.typeName = typeName;
      }
 
-     public String getTypeId () {
-          return this.typeId;
+     public String getTypeID () {
+          return this.typeID;
      }
      
      public String getTypeName () {
           return this.typeName;
      }
      
-     public void setTypeId (String typeId) {
-          this.typeId = typeId;
+     public void setTypeID (String typeID) {
+          this.typeID = typeID;
      }
 
      public void setTypeName (String typeName) {

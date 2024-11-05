@@ -49,13 +49,13 @@ public class MidForBooksBUS {
                return;
           }
           for (MidForBooks midForBooks : this.midList)
-              System.out.printf("%s   %s\n", midForBooks.getBookId(), midForBooks.getGenreId());
+              System.out.printf("%s   %s\n", midForBooks.getBookID(), midForBooks.getGenreID());
      }
 
      // find index of specific product and genre (DONE)
      public int find (String productId, String genreId)  {
           for (int i = 0; i < midList.length; i++)
-               if ((midList[i].getBookId().equals(productId)) && midList[i].getGenreId().equals(genreId))
+               if ((midList[i].getBookID().equals(productId)) && midList[i].getGenreID().equals(genreId))
                     return i;
           return -1;
      }
@@ -65,7 +65,7 @@ public class MidForBooksBUS {
           int count = 0;
           MidForBooks[] genresList = new MidForBooks[0];
          for (MidForBooks mid : midList)
-             if (mid.getBookId().equals(inputValue) || mid.getBookName().contains(inputValue)) {
+             if (mid.getBookID().equals(inputValue) || mid.getBookName().contains(inputValue)) {
                  genresList = Arrays.copyOf(genresList, genresList.length + 1);
                  genresList[count] = mid;
                  count++;
@@ -92,15 +92,13 @@ public class MidForBooksBUS {
                midList[count] = (MidForBooks) midObject;
                count++;
           }
-          else {
+          else
                System.out.println("your input is not correct !");
-               return;
-          }
      }
 
      // edit method (DONE)
      public void edit (String productId, BookGenres genre) {
-          int index = find (productId, genre.getGenreId()); 
+          int index = find (productId, genre.getGenreID()); 
           if (index == -1) {
                System.out.println("404 not found !");
                return;
@@ -118,5 +116,6 @@ public class MidForBooksBUS {
           for (int i = index; i < midList.length -1; i++)
                midList[i] = midList[i + 1];
           midList = Arrays.copyOf(midList, midList.length - 1);
+          count--;
      }
 }

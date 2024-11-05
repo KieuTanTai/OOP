@@ -45,14 +45,14 @@ public class GenresBUS implements RuleSets{
      // methods shows list of genres for user (DONE)
      public void showList () {
           for (int i = 0; i <= this.count; i++)
-               System.out.printf("%10s %s\n", this.genresList[i].getGenreId(), this.genresList[i].getGenreName());
+               System.out.printf("%10s %s\n", this.genresList[i].getGenreID(), this.genresList[i].getGenreName());
      }
 
      // find methods (DONE)
      //strict find
      public int find (String inputId)  {
           for ( int i = 0; i < this.genresList.length; i++) {
-               if (genresList[i].getGenreId().equals(inputId))
+               if (genresList[i].getGenreID().equals(inputId))
                     return i;
           }
           return -1;
@@ -92,7 +92,7 @@ public class GenresBUS implements RuleSets{
                return;
           }
          for (BookGenres genre : list)
-             System.out.printf("genre's id  : %s\ngenre name : %s\n", genre.getGenreId(), genre.getGenreName());
+             System.out.printf("genre's id  : %s\ngenre name : %s\n", genre.getGenreID(), genre.getGenreName());
      }
 
      // add method (DONE)
@@ -102,10 +102,8 @@ public class GenresBUS implements RuleSets{
                genresList[count] = (BookGenres) genre;
                count++;
           }
-          else {
+          else 
                System.out.println("your new genre is not correct !");
-               return;
-          }
      }
 
      // edit method (DONE)
@@ -130,5 +128,6 @@ public class GenresBUS implements RuleSets{
           for (int i = genreIndex; i < genresList.length - 1; i++) 
                genresList[i] = genresList[i + 1];
           genresList = Arrays.copyOf(genresList, genresList.length - 1);
+          count--;
      }
 }

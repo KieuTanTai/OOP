@@ -12,12 +12,12 @@ public class MidForBooks {
      }
 
      // getter / setter
-     public String getBookId () {
-          return this.book.getProductId();
+     public String getBookID () {
+          return this.book.getProductID();
      }
 
-     public String getGenreId () {
-          return this.genres.getGenreId();
+     public String getGenreID () {
+          return this.genres.getGenreID();
      }
 
      public String getBookName () {

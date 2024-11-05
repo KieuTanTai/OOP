@@ -3,7 +3,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Books extends Products {
-     private String publisherId;
+     private Publishers publisher;
      private String author;
      private String format;
      private String packagingSize;
@@ -13,9 +13,9 @@ public class Books extends Products {
      public Books () {}
 
      public Books (String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
-      int quantity, String publisherId, String author, BookTypes type, String format, String packagingSize) {
+      int quantity, Publishers publisher, String author, BookTypes type, String format, String packagingSize) {
           super (productId, productName, releaseDate, productPrice, quantity);
-          this.publisherId = publisherId;
+          this.publisher = publisher;
           this.author = author;
           this.bookType = type;
           this.format = format;
@@ -23,9 +23,9 @@ public class Books extends Products {
      }
 
      public Books (Books bookInput) {
-          super (bookInput.getProductId(), bookInput.getProductName(), bookInput.getReleaseDate(),
+          super (bookInput.getProductID(), bookInput.getProductName(), bookInput.getReleaseDate(),
                   bookInput.getProductPrice(), bookInput.getQuantity());
-          this.publisherId = bookInput.publisherId;
+          this.publisher = bookInput.publisher;
           this.author = bookInput.author;
           this.bookType= bookInput.bookType;
           this.format = bookInput.format;
@@ -33,16 +33,20 @@ public class Books extends Products {
      }
 
      // getter / setter
-     public String getPublisherId () {
-          return this.publisherId;
+     public String getPublisherID () {
+          return this.publisher.getPublisherID();
+     }
+
+     public String getPublisherName () {
+          return this.publisher.getPublisherName();
      }
 
      public String getAuthor () {
           return this.author;
      }
 
-     public String getTypeId () {
-          return this.bookType.getTypeId();
+     public String getTypeID () {
+          return this.bookType.getTypeID();
      }
      
      public String getTypeName () {
@@ -57,8 +61,8 @@ public class Books extends Products {
           return this.packagingSize;
      }
 
-     public void setPublisherId (String publisherId) {
-          this.publisherId = publisherId;
+     public void setPublisher (Publishers publisher) {
+          this.publisher = publisher;
      } 
 
      public void setAuthor (String author) {
@@ -78,12 +82,12 @@ public class Books extends Products {
      } 
 
      @Override
-     protected String productIdModifier (String bookId) {
+     protected String productIDModifier (String bookId) {
           return "BK" + bookId + "PD";
      } 
 
      public void showInfo () {
-          System.out.printf("Publisher ID: %s\n", publisherId);
+          System.out.printf("Publisher ID: %s\n", publisher);
           System.out.printf("Author: %s\n", author);
           System.out.printf("Format: %s\n", format);
           System.out.printf("Packaging Size: %s\n", packagingSize);

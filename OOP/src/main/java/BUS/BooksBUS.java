@@ -46,20 +46,23 @@ public class BooksBUS implements RuleSets {
           this.count = newQuantity;
      }
 
-     // add find remove search....
+     // all others methods like: add remove edit find show....
+     // find methods (DONE)
+     // strict find 
      public int find (String inputValue) {
           for (int i = 0; i < booksList.length; i++)
-               if (booksList[i].getProductId().equals(inputValue) || booksList[i].getProductName().equals(inputValue))
+               if (booksList[i].getProductID().equals(inputValue) || booksList[i].getProductName().equals(inputValue))
                     return i;
           return -1;
      }
 
+     // relative find
      // return list index of products that have contains specific string
-     public Books[] relativeFind (String inputValue) {
+     public Books[] relativeFind (String name) {
           int count = 0;
           Books[] booksArray = new Books[0];
          for (Books books : booksList)
-             if (books.getProductName().contains(inputValue)) {
+             if (books.getProductName().contains(name)) {
                  booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
                  booksArray[count] = books;
                  count++;
@@ -69,6 +72,7 @@ public class BooksBUS implements RuleSets {
           return booksArray;
      }
 
+     // add method (DONE)
      public void add (Object newBook) {
           if (newBook instanceof Books) {
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
@@ -79,39 +83,45 @@ public class BooksBUS implements RuleSets {
                System.out.println("your new book is not instance of Books!");
      }
 
-     // search methods
+     // search methods (CONTINUE)
+     // strict search 
      public void search (String inputValue) {
-          int indexBook = find(inputValue);
-          if (indexBook != -1) {
-               String toStringHandler = composeUsingFormatter(booksList[indexBook]);
-               System.out.printf("your book id / name is : %s\nyour book detail : \n%s", inputValue, toStringHandler);
-          }
-          else
+          int index = find(inputValue);
+          if (index == -1) {
                System.out.println("your book is not found!");
+               return;
+          }
+          String toStringHandler = composeUsingFormatter(booksList[index]);
+          System.out.printf("your book id / name is : %s\nyour book detail : \n%s", inputValue, toStringHandler);
      }
 
-     public void relativeSearch (String inputValue) {
-          Books[] indexList = relativeFind(inputValue);
+     // relative search
+     public void relativeSearch (String name) {
+          Books[] indexList = relativeFind(name);
           if (indexList == null) {
                System.out.println("not found any books!");
                return;
           }
          for (Books books : indexList)
-             System.out.printf("book's id : %s\ndetail : %s\n", books.getProductId(), composeUsingFormatter(books));
+             System.out.printf("book's id : %s\ndetail : %s\n", books.getProductID(), composeUsingFormatter(books));
      }
 
+     // advanced search
      public void advancedSearch () {
 
      }
 
-     // remove methods
+     // remove method ()
      public void remove (String inputId) {
-          int indexBook = find(inputId);
-          if (indexBook != -1) {
-               for (int i = indexBook; i < booksList.length - 1; i++) 
-                    booksList[i] = booksList[i + 1];
-               booksList = Arrays.copyOf(booksList, booksList.length - 1);
+          int index = find(inputId);
+          if (index == -1) {
+               System.out.println("your book is not found !");
+               return;
           }
+          for (int i = index; i < booksList.length - 1; i++) 
+               booksList[i] = booksList[i + 1];
+          booksList = Arrays.copyOf(booksList, booksList.length - 1);
+          count --;
      }
 
      // edit methods
@@ -203,6 +213,6 @@ public class BooksBUS implements RuleSets {
      // some other methods
      private String composeUsingFormatter (Books book) {
           return String.format(" publisher name: %s\n author: %s\n book type: %s\n format: %s\n packaging size: %s\n", 
-          book.getPublisherId(), book.getAuthor(), book.getTypeName(), book.getFormat(), book.getPackagingSize());
+          book.getPublisherName(), book.getAuthor(), book.getTypeName(), book.getFormat(), book.getPackagingSize());
      }
 }

@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class StaTypeBUS implements RuleSets {
     private StaTypes[] typeList;
     private int count;
+    private final Scanner scanner = new Scanner(System.in);
+
 
     // Constructor
     public StaTypeBUS(int size) {
@@ -64,7 +66,6 @@ public class StaTypeBUS implements RuleSets {
     public void edit(String typeID) {
         int index = find(typeID);
         if (index != -1) {
-            Scanner scanner = new Scanner(System.in);
             System.out.print("Enter new type name: ");
             String newName = scanner.nextLine();
 

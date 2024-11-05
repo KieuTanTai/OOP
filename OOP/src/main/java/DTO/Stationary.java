@@ -12,21 +12,25 @@ public class Stationary extends Products {
      public Stationary () {}
 
      public Stationary (String productId, String productName, String productBrand, LocalDate releaseDate, BigDecimal productPrice, 
-      int quantity, String stationaryId, String typeId, String brand , String material, String source) {
+      int quantity, String stationaryId, StaTypes type, String brand , String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
           this.stationaryId = stationaryId;
-          this.Statypes.getTypeId() = typeId;
+          this.staTypes = type;
           this.brand = brand;
           this.material = material;
           this.source = source;
      }
 
-     public String getStationaryId () {
+     public String getStationaryID () {
           return this.stationaryId;
      }
 
-     public String getTypeId () {
-          return this.stationaryType.getTypeId();
+     public String getTypeID () {
+          return this.staTypes.getTypeID();
+     }
+
+     public String getTypeName () {
+          return this.staTypes.getTypeName();
      }
 
      public String getBrand() {
@@ -41,12 +45,12 @@ public class Stationary extends Products {
           return this.source;
      }
 
-     public void setStationaryId (String stationaryId) {
+     public void setStationaryID (String stationaryId) {
           this.stationaryId = stationaryId;
      }
 
-     public void setTypeId (String typeId) {
-          this.stationaryType.setTypeId(typeId);
+     public void setTypeID (String typeId) {
+          this.staTypes.setTypeID(typeId);
      }
 
      public void setBrand (String brand) {
@@ -62,13 +66,12 @@ public class Stationary extends Products {
      }
 
      @Override
-     protected String productIdModifier (String stationaryId) {
+     protected String productIDModifier (String stationaryId) {
           return "STN" + stationaryId + "PD";
      }
 
      @Override
      public void showInfo() {
-          // TODO Auto-generated method stub
           throw new UnsupportedOperationException("Unimplemented method 'showInfo'");
      }
 }

@@ -1,11 +1,12 @@
 package BUS;
-
 import java.util.Scanner;
 import DTO.Publishers;
 
 public class PublishersBUS implements RuleSets {
     private Publishers[] publishersList;
     private int count;
+    private final Scanner scanner = new Scanner(System.in);
+
 
     // Constructor
     public PublishersBUS(int size) {
@@ -13,7 +14,10 @@ public class PublishersBUS implements RuleSets {
         count = 0;
     }
 
-    @Override
+    public Publishers[] getPublishersList() {
+        return publishersList;
+    }
+
     public void add(Object publisher) {
         if (publisher instanceof Publishers) {
             if (count < publishersList.length) {
@@ -28,7 +32,6 @@ public class PublishersBUS implements RuleSets {
         }
     }
 
-    @Override
     public int find(String publisherID) {
         for (int i = 0; i < count; i++) {
             if (publishersList[i].getPublisherID().equals(publisherID)) {
@@ -48,7 +51,7 @@ public class PublishersBUS implements RuleSets {
         }
     }
 
-    @Override
+    @Override // LOGIC ERROR
     public void remove(String publisherID) {
         int index = find(publisherID);
         if (index != -1) {
@@ -65,19 +68,12 @@ public class PublishersBUS implements RuleSets {
     public void edit(String publisherID) {
         int index = find(publisherID);
         if (index != -1) {
-            Scanner scanner = new Scanner(System.in);
             System.out.print("Enter new publisher name: ");
             String newName = scanner.nextLine();
-
             publishersList[index].setPublisherName(newName);
             System.out.println("Publisher edited successfully.");
         } else {
             System.out.println("Publisher not found.");
         }
-    }
-
-
-    public Publishers[] getPublishersList() {
-        return publishersList;
     }
 }

@@ -5,6 +5,7 @@ public class StaTypes {
 
     //constructor
     public StaTypes(){}
+
     public StaTypes(String typeID, String typeName) {
         this.typeID = typeID;
         this.typeName = typeName;
@@ -14,12 +15,12 @@ public class StaTypes {
     public String getTypeID() {
         return typeID;
     }
+
     public String getTypeName() {
         return typeName;
     }
 
     //setter
-
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }

@@ -136,7 +136,7 @@ public class BooksBUS implements RuleSets {
           do {
                System.out.print("enter a new name for this book: ");
                newName = input.nextLine();
-          }while (Validate.validateName(newName));
+          }while (Validate.checkName(newName));
           booksList[index].setProductName(newName);    
      }
 

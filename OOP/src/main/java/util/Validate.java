@@ -2,12 +2,14 @@ package util;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Validate {
+     private static final Scanner input = new Scanner(System.in);
+
      public static boolean checkQuantity (int quantity) {
-          if (quantity <= 0)
-               return false;
-          return true;
+         return quantity > 0;
      }
 
      // return null when input from user have any error or not in option table
@@ -17,13 +19,13 @@ public class Validate {
                if ((parseChoose > 0) && (parseChoose <= totalOptions))
                     return parseChoose;
                else {
-                    System.out.print("\033\143");
+                    // System.out.print("\033\143");
                     System.out.println("your option is not in options table!");
                     return -1;
                }
                     
           } catch (Exception err) {
-               System.out.print("\033\143");
+               // System.out.print("\033\143");
                System.out.println("error input please try again: " + "\n" + err);
                return -1;
           }
@@ -31,12 +33,12 @@ public class Validate {
 
      // converted format for input date from user
      public static LocalDate formatInputDate (String inputDate) {
-          DateTimeFormatter checkFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
           try {
-              return LocalDate.parse(inputDate, checkFormat);
-          } catch (Exception e) {
-               System.out.print("\033\1443");
-               System.out.println("your date input is wrong!");
+              return LocalDate.parse(inputDate, formatter);
+          } catch (Exception err) {
+               // System.out.print("\033\1443");
+               System.out.println("your date input is wrong!" + err);
                return null;
           }
      }
@@ -50,17 +52,21 @@ public class Validate {
           }
      }
 
-     public static boolean validatePrice (Object inputPrice) {
-          if (inputPrice instanceof BigDecimal)
-               return true;
-          else {
-               System.out.println("your input is not a price! please try again!");
-               return false;
+     public static BigDecimal isBigDecimal () {
+          try {
+               BigDecimal value;
+               value = input.nextBigDecimal();
+               return value;
+          } catch (Exception err) {
+               System.out.println("your input is not correct!\n" + err);
+               return null;
           }
      }
 
-     public static boolean validateId (String inputId) {
-          return true;
+     public static boolean validateID (String inputId) {
+          String regex = "^[a-zA-Z0-9_-](?!.*::)[^%+\\\\/#'\"]+$";
+          Pattern pattern = Pattern.compile(regex);
+         return !pattern.matcher(inputId).matches();
      }
 
      public static boolean validateTypeOfBook (String inputType) {
@@ -68,10 +74,21 @@ public class Validate {
           return true;
      }
 
-     public static boolean validateName (String inputName) {
-          String regex = "/^[\\p{Letter}\\s\\-.']+$/g";
-          if (!inputName.matches(regex))
-               return false;
-          return true;
+     public static boolean checkName (String inputName) {
+          String regex = "^[A-Za-zÀ-ÖØ-öø-ÿ0-9'\\-\\s]{1,50}$";
+          Pattern pattern = Pattern.compile(regex);
+         return pattern.matcher(inputName).matches();
+     }
+
+     public static boolean checkHumanName (String inputName) {
+          String regex = "^[A-Za-zÀ-ÖØ-öø-ÿ'\\-\\s]{1,50}$";
+          Pattern pattern = Pattern.compile(regex);
+         return pattern.matcher(inputName).matches();
+     }
+
+     public static boolean checkPackagingSize (String packagingSize) {
+          String regex = "^\\d+(\\.\\d+)?\\s*x\\s*\\d+(\\.\\d+)?\\s*cm$";
+          Pattern pattern = Pattern.compile(regex);
+          return pattern.matcher(packagingSize).matches();
      }
 }

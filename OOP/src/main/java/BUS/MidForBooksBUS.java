@@ -48,8 +48,9 @@ public class MidForBooksBUS {
                System.out.println("you don't have any mid list in there!");
                return;
           }
-          for (MidForBooks midForBooks : this.midList)
-              System.out.printf("%s   %s\n", midForBooks.getBookID(), midForBooks.getGenreID());
+          for (int i = 0; i < midList.length; i++)
+               System.out.printf("%d: %10s%s\n - %10s%s\n",  i + 1, midList[i].getBookID(), midList[i].getBookName(),
+               midList[i].getGenreID(), midList[i].getGenreName());
      }
 
      // find index of specific product and genre (DONE)

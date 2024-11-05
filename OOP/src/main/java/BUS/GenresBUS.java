@@ -45,7 +45,7 @@ public class GenresBUS implements RuleSets{
      // methods shows list of genres for user (DONE)
      public void showList () {
           for (int i = 0; i <= this.count; i++)
-               System.out.printf("%10s %s\n", this.genresList[i].getGenreID(), this.genresList[i].getGenreName());
+               System.out.printf("%d: %10s %s\n", i + 1, genresList[i].getGenreID(), genresList[i].getGenreName());
      }
 
      // find methods (DONE)

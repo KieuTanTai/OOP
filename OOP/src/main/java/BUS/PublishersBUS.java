@@ -8,7 +8,12 @@ public class PublishersBUS implements RuleSets {
     private final Scanner scanner = new Scanner(System.in);
 
 
-    // Constructor
+    // Constructor  
+    public PublishersBUS () {
+        publishersList = new Publishers[0];
+        count = 0;
+    }
+
     public PublishersBUS(int size) {
         publishersList = new Publishers[size];
         count = 0;

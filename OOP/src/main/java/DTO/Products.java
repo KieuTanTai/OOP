@@ -2,6 +2,7 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public abstract class Products {
      private String productID;
@@ -9,11 +10,12 @@ public abstract class Products {
      private LocalDate releaseDate;
      private BigDecimal productPrice;
      private int quantity;
+
      //  constructors
      public Products () {}
 
      public Products (String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
-          this.productID = productIDModifier(productID);
+          this.productID = productIDModifier(productID + UUID.randomUUID().toString());
           this.productName = productName;
           this.releaseDate = releaseDate;
           this.productPrice = productPrice;

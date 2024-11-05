@@ -44,8 +44,8 @@ public class TypesBUS implements RuleSets {
      // all others methods like: add remove edit find show....
      // show list of types for user (DONE)
      public void showList () {
-         for (BookTypes bookTypes : this.typesList)
-             System.out.printf("%s   %s\n", bookTypes.getTypeID(), bookTypes.getTypeName());
+         for (int i = 0; i < typesList.length; i++)
+              System.out.printf("%d: %10s %s\n",  i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
      }
 
      // find methods (DONE)

@@ -1,6 +1,7 @@
 package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Books extends Products {
      private Publishers publisher;
@@ -8,7 +9,8 @@ public class Books extends Products {
      private String format;
      private String packagingSize;
      private BookTypes bookType;
-     
+     private final Scanner input = new Scanner(System.in);
+
      // constructors
      public Books () {}
 
@@ -87,7 +89,7 @@ public class Books extends Products {
      } 
 
      public void showInfo () {
-          System.out.printf("Publisher ID: %s\n", publisher);
+          System.out.printf("Publisher name: %s\n", publisher.getPublisherName());
           System.out.printf("Author: %s\n", author);
           System.out.printf("Format: %s\n", format);
           System.out.printf("Packaging Size: %s\n", packagingSize);

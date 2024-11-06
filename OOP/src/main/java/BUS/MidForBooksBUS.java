@@ -65,7 +65,7 @@ public class MidForBooksBUS {
      public MidForBooks[] getGenres (String inputValue) {
           int count = 0;
           MidForBooks[] genresList = new MidForBooks[0];
-         for (MidForBooks mid : midList)
+          for (MidForBooks mid : midList)
              if (mid.getBookID().equals(inputValue) || mid.getBookName().contains(inputValue)) {
                  genresList = Arrays.copyOf(genresList, genresList.length + 1);
                  genresList[count] = mid;

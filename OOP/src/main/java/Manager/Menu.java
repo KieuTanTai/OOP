@@ -14,9 +14,10 @@ public class Menu {
      private final PublishersBUS publishersList;
      
      public Menu() {
-          editHandler();
+          // editHandler();
           typesList = new TypesBUS();
           publishersList = new PublishersBUS();
+          setBookInfo();
      }
 
      private int editHandler () {
@@ -84,7 +85,8 @@ public class Menu {
           BigDecimal price;
           do {
                System.out.print("set price : ");
-               price = Validate.isBigDecimal();
+               String value = input.nextLine();
+               price = Validate.isBigDecimal(value);
           } while (price == null);
           return price;
      }
@@ -195,7 +197,7 @@ public class Menu {
           // set book type
 
 
-          // set book genres
+          // set book genres 
           
      }
 

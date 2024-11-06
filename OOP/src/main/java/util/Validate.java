@@ -52,11 +52,9 @@ public class Validate {
           }
      }
 
-     public static BigDecimal isBigDecimal () {
+     public static BigDecimal isBigDecimal (String value) {
           try {
-               BigDecimal value;
-               value = input.nextBigDecimal();
-               return value;
+               return new BigDecimal(value);
           } catch (Exception err) {
                System.out.println("your input is not correct!\n" + err);
                return null;

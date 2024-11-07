@@ -72,7 +72,11 @@ public class Stationary extends Products {
 
      @Override
      public void showInfo() {
-          throw new UnsupportedOperationException("Unimplemented method 'showInfo'");
+          System.out.printf("Stationary Id: %s\n", stationaryId);
+          System.out.printf("Stationary type name: %s\n", staTypes.getTypeName());
+          System.out.printf("Material: %s\n", material);
+          System.out.printf("Source: %s\n", source);
+          System.out.printf("Stationary brand: %s\n", brand);
      }
 }
 

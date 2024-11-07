@@ -75,7 +75,7 @@ public class Menu {
           do {
                System.out.print("set release date : ");
                String dateInput = input.nextLine().trim();
-               date = Validate.formatInputDate(dateInput);
+               date = Validate.isCorrectDate(dateInput);
           } while (date == null);
           return date;
      }

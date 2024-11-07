@@ -1,7 +1,11 @@
+package DTO;
+
 import java.math.BigDecimal;
+import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
+
+import util.Validate;
 
 public class Bill {
     private String billId;
@@ -16,7 +20,6 @@ public class Bill {
 
     public Bill() {
     }
-
  
     public Bill(String billId, String employeeId, String customerId, String promoCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
         this.billId = billId;
@@ -26,6 +29,87 @@ public class Bill {
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;
+    }
+
+    public String setBillId() {
+        String id;
+          do {
+               System.out.print("set bill id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+     }
+
+    public String setEmployeeId() {
+        String id;
+          do {
+               System.out.print("set employee id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+    }
+
+    public String setCustomerId() {
+        String id;
+          do {
+               System.out.print("set customer id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+    }
+
+    public String setPromoCode() {
+        String code;
+          do {
+               System.out.print("set promo code : ");
+               code = sc.nextLine().trim();
+               if (Validate.validateID(code)) {
+                    System.out.println("error code !");
+                    code = "";
+               }
+          } while (code.isEmpty());
+          return code;
+    }
+
+    public BigDecimal setDiscount() {
+        BigDecimal discount;
+        do {
+             System.out.print("set discount : ");
+             String value = sc.nextLine();
+             discount = Validate.isBigDecimal(value);
+        } while (discount == null);
+        return discount;
+    }
+
+    public LocalDate setDate() {
+        LocalDate date;
+          do {
+               System.out.print("set date : ");
+               String dateInput = sc.nextLine().trim();
+               date = Validate.isCorrectDate(dateInput);
+          } while (date == null);
+          return date;
+   }
+
+    public void nhap(){
+        billId = setBillId();
+        employeeId = setEmployeeId();
+        customerId = setCustomerId();
+        promoCode = setPromoCode();
+        discount = setDiscount();
+        date = setDate();
     }
 
     public String getBillId() {
@@ -81,31 +165,10 @@ public class Bill {
         return this.date.format(formatter);
     }
 
-    public void setDate(String date1) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        this.date = LocalDate.parse(date1, dateFormat);
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
-
-    public void nhap(){
-        System.out.println("Vui long nhap ID cua bill: ");
-        setBillId(sc.nextLine());
-        System.out.println("Vui long nhap ID cua employee: ");
-        setEmployeeId(sc.nextLine());
-        System.out.println("Vui long nhap ID cua customer: ");
-        setCustomerId(sc.nextLine());
-        System.out.println("Vui long nhap ngay theo dinh dang DD-MM-YYYY: ");
-        String date1 = sc.nextLine();
-        setDate(date1);
-        System.out.println("Vui long nhap discount: ");
-        setDiscount(sc.nextBigDecimal());
-        sc.nextLine();
-        System.out.println("Vui long nhap promo code: ");
-        setPromoCode(sc.nextLine());
-        System.out.println("Vui long nhap total price: ");
-        setTotalPrice(sc.nextBigDecimal());
-        sc.nextLine();
-    }
-
+    
     @Override
     public String toString() {
         return "{" +

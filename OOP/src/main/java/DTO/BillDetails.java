@@ -1,5 +1,9 @@
+package DTO;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import util.Validate;
 
 public class BillDetails extends Bill{
     private int quanity;
@@ -40,17 +44,39 @@ public class BillDetails extends Bill{
         this.subTotal = subTotal;
     }
 
+    public int setQuanity() {
+        int quantity;
+        do {
+             System.out.print("set quantity: ");
+             String quantityInput = sc.nextLine().trim();
+             quantity = Validate.isNumber(quantityInput);
+        } while (quantity == -1);
+        return quantity;
+    }
+
+    public BigDecimal setPrice() {
+        BigDecimal price;
+          do {
+               System.out.print("set price : ");
+               String value = sc.nextLine();
+               price = Validate.isBigDecimal(value);
+          } while (price == null);
+          return price;
+    }
+
+    // public void setSubTotal() {
+    //     this.subTotal = subTotal;
+    // }
+
     public void nhap(){
         super.nhap();
-        System.out.println("Vui long nhap quanity: ");
-        setQuanity(sc.nextInt());
-        System.out.println("Vui long nhap price: ");
-        setPrice(sc.nextBigDecimal());
-        sc.nextLine();
-        System.out.println("Vui long nhap sub total: ");
-        setSubTotal(sc.nextBigDecimal());
-        sc.nextLine();
+        quanity = setQuanity();
+        price = setPrice();
+    }
 
+    public BigDecimal calcSubTotal(BigDecimal anotherPrice){
+        this.subTotal = this.subTotal.add(anotherPrice);
+        return this.subTotal;
     }
 
     @Override

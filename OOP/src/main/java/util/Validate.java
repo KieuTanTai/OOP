@@ -31,7 +31,7 @@ public class Validate {
           }
      }
 
-     // converted format for input date from user
+     // converted format for input date from user (LACK VALIDATE DATE)
      public static LocalDate formatInputDate (String inputDate) {
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
           try {

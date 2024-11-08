@@ -192,6 +192,26 @@ public class StationaryBUS implements IRuleSets {
           staList[index].setBrand(brand);;
      }
 
+     // remove methods (DONE)
+     @Override
+     public void remove() {
+          Menu.removeHandler();
+     }
+     
+     @Override
+     public void remove(String id) {
+          int index = find(id);
+          if (index == -1) {
+               System.out.println("your stationary is not found !");
+               return;
+          }
+          for (int i = index; i < staList.length - 1; i++) 
+               staList[i] = staList[i + 1];
+          staList = Arrays.copyOf(staList, staList.length - 1);
+          count --;
+          
+     }
+
      // some other methods
      private String composeUsingFormatter (Stationary stationary) {
           return String.format(" stationary id: %s\n type: %s\n brand: %s\n material: %s\n source: %s\n", 

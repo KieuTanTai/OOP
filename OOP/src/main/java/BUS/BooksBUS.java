@@ -49,6 +49,7 @@ public class BooksBUS implements RuleSets {
      // all others methods like: add remove edit find show....
      // find methods (DONE)
      // strict find 
+     @Override
      public int find (String inputValue) {
           for (int i = 0; i < booksList.length; i++)
                if (booksList[i].getProductID().equals(inputValue) || booksList[i].getProductName().equals(inputValue))
@@ -73,6 +74,7 @@ public class BooksBUS implements RuleSets {
      }
 
      // add method (DONE)
+     @Override
      public void add (Object newBook) {
           if (newBook instanceof Books) {
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
@@ -80,11 +82,12 @@ public class BooksBUS implements RuleSets {
                count++;
           }
           else 
-               System.out.println("your new book is not instance of Books!");
+               System.out.println("your new book have something not like book!");
      }
 
      // search methods (CONTINUE)
      // strict search 
+     @Override
      public void search (String inputValue) {
           int index = find(inputValue);
           if (index == -1) {
@@ -92,7 +95,7 @@ public class BooksBUS implements RuleSets {
                return;
           }
           String toStringHandler = composeUsingFormatter(booksList[index]);
-          System.out.printf("your book id / name is : %s\nyour book detail : \n%s", inputValue, toStringHandler);
+          System.out.printf("book id / name is : %s\nbook detail : \n%s", inputValue, toStringHandler);
      }
 
      // relative search
@@ -112,6 +115,7 @@ public class BooksBUS implements RuleSets {
      }
 
      // remove method ()
+     @Override
      public void remove (String inputId) {
           int index = find(inputId);
           if (index == -1) {
@@ -126,6 +130,7 @@ public class BooksBUS implements RuleSets {
 
      // edit methods
      // edit name
+     @Override
      public void edit (String bookId) {
           int index = find(bookId);
           if (index == -1) {

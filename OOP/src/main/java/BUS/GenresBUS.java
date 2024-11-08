@@ -50,6 +50,7 @@ public class GenresBUS implements RuleSets{
 
      // find methods (DONE)
      //strict find
+     @Override
      public int find (String inputId)  {
           for ( int i = 0; i < this.genresList.length; i++) {
                if (genresList[i].getGenreID().equals(inputId))
@@ -75,6 +76,7 @@ public class GenresBUS implements RuleSets{
 
      // search methods (DONE)
      // strict search
+     @Override
      public void search (String inputId) {
           int index = find(inputId);
           if (index == -1) {
@@ -96,6 +98,7 @@ public class GenresBUS implements RuleSets{
      }
 
      // add method (DONE)
+     @Override
      public void add (Object genre) {
           if (genre instanceof BookGenres) {
                genresList = Arrays.copyOf(genresList, genresList.length + 1);
@@ -107,6 +110,7 @@ public class GenresBUS implements RuleSets{
      }
 
      // edit method (DONE)
+     @Override
      public void edit (String inputId) {
           int genreIndex = find(inputId);
           if (genreIndex == -1) {
@@ -119,6 +123,7 @@ public class GenresBUS implements RuleSets{
      }
 
      // remove method (DONE)
+     @Override
      public void remove (String inputId) {
           int genreIndex = find(inputId);
           if (genreIndex == -1) {

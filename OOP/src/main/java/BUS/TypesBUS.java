@@ -50,6 +50,7 @@ public class TypesBUS implements RuleSets {
 
      // find methods (DONE)
      // strict find
+     @Override
      public int find (String inputId)  {
           for ( int i = 0; i < this.typesList.length; i++) {
                if (typesList[i].getTypeID().equals(inputId))
@@ -75,6 +76,7 @@ public class TypesBUS implements RuleSets {
 
      // search methods (DONE) 
      // strict search 
+     @Override
      public void search (String inputId) {
           int index = find(inputId);
           if  (index == -1) {
@@ -96,6 +98,7 @@ public class TypesBUS implements RuleSets {
      }
 
      // add method (DONE)
+     @Override
      public void add (Object type) {
           if (type instanceof BookTypes) {
                typesList = Arrays.copyOf(typesList, typesList.length + 1);
@@ -107,6 +110,7 @@ public class TypesBUS implements RuleSets {
      }
 
      // edit method (DONE)
+     @Override
      public void edit (String inputId) {
           int index = find(inputId); 
           if (index == -1) {
@@ -119,6 +123,7 @@ public class TypesBUS implements RuleSets {
      }
 
      // remove method (DONE)
+     @Override
      public void remove (String inputId) {
           int index = find(inputId);
           if (index == -1) {

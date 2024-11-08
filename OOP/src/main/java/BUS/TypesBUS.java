@@ -3,7 +3,7 @@ import DTO.BookTypes;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class TypesBUS implements RuleSets {
+public class TypesBUS implements IRuleSets {
      private BookTypes[] typesList;
      private int count;
      private final Scanner input = new Scanner(System.in);
@@ -129,5 +129,35 @@ public class TypesBUS implements RuleSets {
                typesList[i] = typesList[i + 1];
           typesList = Arrays.copyOf(typesList, typesList.length -1);
           count--;
+     }
+
+     @Override
+     public void add() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'add'");
+     }
+
+     @Override
+     public int find() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'find'");
+     }
+
+     @Override
+     public void search() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'search'");
+     }
+
+     @Override
+     public void remove() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'remove'");
+     }
+
+     @Override
+     public void edit() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'edit'");
      }
 }

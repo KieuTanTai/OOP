@@ -17,10 +17,15 @@ public class Menu {
           // editHandler();
           typesList = new TypesBUS();
           publishersList = new PublishersBUS();
-          setBookInfo();
+          addHandler();
+          findHandler();
+          searchHandler();
+          removeHandler();
+          editHandler();
+     
      }
 
-     private int editHandler () {
+     private int editHandlers () {
           int optionChoose;
           String userChoose;
           System.out.printf("%20s", "-");
@@ -49,60 +54,23 @@ public class Menu {
      }
 
      /*----- methods for both child of products -----*/ 
-     // set id
-     public String setID () {
-          String id;
-          do {
-               System.out.print("set id : ");
-               id = input.nextLine().trim();
-               if (Validate.validateID(id)) {
-                    System.out.println("error id !");
-                    id = "";
-               }
-          } while (id.isEmpty());
-          return id;
-     }
-
-     // set name
-     public String setName () {
-          System.out.print("set name : ");
-         return input.nextLine().trim();
-     }
-
-     // set release date
-     public LocalDate setReleaseDate () {
-          LocalDate date;
-          do {
-               System.out.print("set release date : ");
-               String dateInput = input.nextLine().trim();
-               date = Validate.isCorrectDate(dateInput);
-          } while (date == null);
-          return date;
-     }
-
-     // set price
-     public BigDecimal setPrice () {
-          BigDecimal price;
-          do {
-               System.out.print("set price : ");
-               String value = input.nextLine();
-               price = Validate.isBigDecimal(value);
-          } while (price == null);
-          return price;
-     }
-
-     // set quantity
-     public int setQuantity () {
-          int quantity;
-          do {
-               System.out.print("set quantity: ");
-               String quantityInput = input.nextLine().trim();
-               quantity = Validate.isNumber(quantityInput);
-          } while (quantity == -1);
-          return quantity;
-     }
 
      /*----- methods for only Books -----*/  
+     public BookTypes setType () {
+          int userChoose;
+          BookTypes type;
+          typesList.showList();
+          System.out.println("----------------------------");
+          do {
+               System.out.print("choose type you want (like 1, 2,etc...): ");
+               String option = input.nextLine().trim();
+               userChoose = Validate.parseChooseHandler(option, typesList.getCount());
+          } while (userChoose == -1);
+
+          type = typesList.getTypesList()[userChoose - 1];
+          return type;
+     }
+
      // set publisher
      public Publishers setPublisher () {
           String publisherID, publisherName; 
@@ -128,77 +96,10 @@ public class Menu {
           return publisher;
      }
 
-     // set author
-     public String setAuthor () {
-          String authorName;
-          do {
-               System.out.print("set author name: ");
-               authorName = input.nextLine().trim();
-               if (!Validate.checkHumanName(authorName)) {
-                    System.out.println("error name!");
-                    authorName = "";
-               }
-          } while (authorName.isEmpty());
-          return authorName;
-     }
-
-     // set format
-     public String setFormat () {
-          String[] formats = {"Hardcover", "Paperback", "Leather-bound"}; 
-          int userChoose;
-          System.out.printf("1.%s\n2.%s\n3.%s\n", formats[0], formats[1], formats[2]);
-          do {
-               System.out.print("select your option (like \"1, 2, 3\"): ");
-               userChoose = Validate.parseChooseHandler(input.nextLine().trim(),3);
-          } while (userChoose == -1);
-          return formats[userChoose - 1];
-     }
-
-     // set packaging size
-     public String setPackagingSize () {
-          String packagingSize;
-          do {
-               System.out.println("packaging size have format: \"number 'x'  number 'cm'\" ");
-               System.out.print("set packaging size: ");
-               packagingSize = input.nextLine();
-               if (!Validate.checkPackagingSize(packagingSize)) {
-                    System.out.println("error packaging size!");
-                    packagingSize = "";
-               }
-          } while (packagingSize.isEmpty());
-          return packagingSize;
-     }
-
-     public BookTypes setType () {
-          int userChoose;
-          BookTypes type;
-          typesList.showList();
-          System.out.println("----------------------------");
-          do {
-               System.out.print("choose type you want (like 1, 2,etc...): ");
-               String option = input.nextLine().trim();
-               userChoose = Validate.parseChooseHandler(option, typesList.getCount());
-          } while (userChoose == -1);
-
-          type = typesList.getTypesList()[userChoose - 1];
-          return type;
-     }
-
-     public void setBookInfo () {
-          String id = setID(), productName = setName();
-          LocalDate date = setReleaseDate();
-          BigDecimal price = setPrice();
-          int quantity = setQuantity();
-          Publishers publisher = setPublisher(); 
-          String authorName = setAuthor();
-          String format = setFormat();
-          String packagingSize = setPackagingSize();
-
-          // set book type
-
-
-          // set book genres 
-          
-     }
+     public void addHandler() {}
+     public void findHandler() {}
+     public void searchHandler() {}
+     public void removeHandler() {}
+     public void editHandler() {}
 
 }

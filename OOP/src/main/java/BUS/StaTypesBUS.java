@@ -2,7 +2,7 @@ package BUS;
 
 import DTO.StaTypes;
 import java.util.Scanner;
-public class StaTypesBUS implements RuleSets {
+public class StaTypesBUS implements IRuleSets {
     private StaTypes[] typeList;
     private int count;
     private final Scanner scanner = new Scanner(System.in);
@@ -78,5 +78,35 @@ public class StaTypesBUS implements RuleSets {
 
     public StaTypes[] getTypeList() {
         return typeList;
+    }
+
+    @Override
+    public void add() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'add'");
+    }
+
+    @Override
+    public int find() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'find'");
+    }
+
+    @Override
+    public void search() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'search'");
+    }
+
+    @Override
+    public void remove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+    }
+
+    @Override
+    public void edit() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'edit'");
     }
 }

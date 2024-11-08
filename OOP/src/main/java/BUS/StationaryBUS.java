@@ -218,8 +218,6 @@ public class StationaryBUS implements IRuleSets {
           
      }
 
-     
-
      // some other methods
      private String composeUsingFormatter (Stationary stationary) {
           return String.format(" stationary id: %s\n type: %s\n brand: %s\n material: %s\n source: %s\n", 

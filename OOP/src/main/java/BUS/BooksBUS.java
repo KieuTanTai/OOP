@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import DTO.BookTypes;
 import DTO.Books;
+import Manager.Menu;
 import util.Validate;
 
 public class BooksBUS implements IRuleSets {
@@ -48,6 +49,11 @@ public class BooksBUS implements IRuleSets {
 
      // all others methods like: add remove edit find show....
      // find methods (DONE)
+     @Override
+     public void find() {
+          Menu.findHandler();
+     }
+
      // strict find 
      public int find (String inputValue) {
           for (int i = 0; i < booksList.length; i++)
@@ -63,17 +69,25 @@ public class BooksBUS implements IRuleSets {
           int count = 0;
           Books[] booksArray = new Books[0];
          for (Books books : booksList)
-             if (books.getProductName().contains(name)) {
-                 booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
-                 booksArray[count] = books;
-                 count++;
-             }
-          if (count == 0)
+               if (books.getProductName().contains(name)) {
+                    booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
+                    booksArray[count] = books;
+                    count++;
+               }
+          if (count == 0) {
+               System.out.println("not found any books!");
                return null;
+          }
           return booksArray;
      }
 
-     // add method (DONE)
+     // add methods (DONE)
+     @Override
+     public void add() {
+          Menu.addHandler();
+     }
+
+     @Override
      public void add (Object newBook) {
           if (newBook instanceof Books) {
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
@@ -85,6 +99,11 @@ public class BooksBUS implements IRuleSets {
      }
 
      // search methods (CONTINUE)
+     @Override
+     public void search() {
+          Menu.searchHandler();
+     }
+
      // strict search 
      public void search (String inputValue) {
           int index = find(inputValue);
@@ -97,12 +116,9 @@ public class BooksBUS implements IRuleSets {
      // relative search
      public void relativeSearch (String name) {
           Books[] indexList = relativeFind(name);
-          if (indexList == null) {
-               System.out.println("not found any books!");
-               return;
-          }
-         for (Books books : indexList)
-             System.out.printf("book's id : %s\ndetail : %s\n", books.getProductID(), composeUsingFormatter(books));
+          if (indexList != null)
+               for (Books books : indexList)
+                   System.out.printf("book's id : %s\ndetail : %s\n", books.getProductID(), composeUsingFormatter(books));
      }
 
      // advanced search
@@ -110,18 +126,12 @@ public class BooksBUS implements IRuleSets {
 
      }
 
-     // remove method ()
-     public void remove (String inputId) {
-          int index = find(inputId);
-          if (index != -1) {
-               for (int i = index; i < booksList.length - 1; i++) 
-                    booksList[i] = booksList[i + 1];
-               booksList = Arrays.copyOf(booksList, booksList.length - 1);
-               count --;
-          }
+     // edit methods (DONE)
+     @Override
+     public void edit() {
+          Menu.editHandler();
      }
 
-     // edit methods
      // edit name
      public void edit (String bookId) {
           int index = find(bookId);
@@ -196,39 +206,26 @@ public class BooksBUS implements IRuleSets {
           booksList[index].setPackagingSize(newPackagingSize);
      }
 
+     // remove methods ()
+     @Override
+     public void remove() {
+          Menu.removeHandler();
+     }
+
+     @Override
+     public void remove (String inputId) {
+          int index = find(inputId);
+          if (index != -1) {
+               for (int i = index; i < booksList.length - 1; i++) 
+                    booksList[i] = booksList[i + 1];
+               booksList = Arrays.copyOf(booksList, booksList.length - 1);
+               count --;
+          }
+     }
+
      // some other methods
      private String composeUsingFormatter (Books book) {
           return String.format(" publisher name: %s\n author: %s\n book type: %s\n format: %s\n packaging size: %s\n", 
           book.getPublisherName(), book.getAuthor(), book.getTypeName(), book.getFormat(), book.getPackagingSize());
-     }
-
-     @Override
-     public void add() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'add'");
-     }
-
-     @Override
-     public int find() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'find'");
-     }
-
-     @Override
-     public void search() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'search'");
-     }
-
-     @Override
-     public void remove() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'remove'");
-     }
-
-     @Override
-     public void edit() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'edit'");
      }
 }

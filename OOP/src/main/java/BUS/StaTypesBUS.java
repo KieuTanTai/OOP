@@ -3,22 +3,33 @@ package BUS;
 import DTO.StaTypes;
 import java.util.Scanner;
 public class StaTypesBUS implements IRuleSets {
-    private StaTypes[] typeList;
-    private int count;
+    private static StaTypes[] typesList;
+    private static int count;
     private final Scanner scanner = new Scanner(System.in);
 
-
     // Constructor
-    public StaTypesBUS(int size) {
-        typeList = new StaTypes[size];
-        count = 0;
+    public StaTypesBUS () {
+        StaTypesBUS.typesList = new StaTypes[0];
+        StaTypesBUS.count = 0;
+    }
+
+    public StaTypesBUS(int size, StaTypes[] list) {
+        StaTypesBUS.typesList = list;
+        StaTypesBUS.count = 0;
+    }
+
+    // all others methods like: add remove edit find show....
+    // show list of types for user (DONE)
+    public static void showList() {
+    for (int i = 0; i < typesList.length; i++)
+            System.out.printf("%d: %10s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
     }
 
     @Override
     public void add(Object type) {
         if (type instanceof StaTypes) {
-            if (count < typeList.length) {
-                typeList[count] = (StaTypes) type;
+            if (count < typesList.length) {
+                typesList[count] = (StaTypes) type;
                 count++;
                 System.out.println("Type added successfully.");
             } else {
@@ -32,7 +43,7 @@ public class StaTypesBUS implements IRuleSets {
     @Override
     public int find(String typeID) {
         for (int i = 0; i < count; i++) {
-            if (typeList[i].getTypeID().equals(typeID)) {
+            if (typesList[i].getTypeID().equals(typeID)) {
                 return i;
             }
         }
@@ -43,7 +54,7 @@ public class StaTypesBUS implements IRuleSets {
     public void search(String typeID) {
         int index = find(typeID);
         if (index != -1) {
-            System.out.println("Found Type: " + typeList[index].getTypeName());
+            System.out.println("Found Type: " + typesList[index].getTypeName());
         } else {
             System.out.println("Type not found.");
         }
@@ -53,8 +64,8 @@ public class StaTypesBUS implements IRuleSets {
     public void remove(String typeID) {
         int index = find(typeID);
         if (index != -1) {
-            typeList[index] = typeList[count - 1];
-            typeList[count - 1] = null;
+            typesList[index] = typesList[count - 1];
+            typesList[count - 1] = null;
             count--;
             System.out.println("Type removed successfully.");
         } else {
@@ -69,7 +80,7 @@ public class StaTypesBUS implements IRuleSets {
             System.out.print("Enter new type name: ");
             String newName = scanner.nextLine();
 
-            typeList[index].setTypeName(newName);
+            typesList[index].setTypeName(newName);
             System.out.println("Type edited successfully.");
         } else {
             System.out.println("Type not found.");
@@ -77,7 +88,7 @@ public class StaTypesBUS implements IRuleSets {
     }
 
     public StaTypes[] getTypeList() {
-        return typeList;
+        return typesList;
     }
 
     @Override
@@ -87,7 +98,7 @@ public class StaTypesBUS implements IRuleSets {
     }
 
     @Override
-    public int find() {
+    public void find() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'find'");
     }

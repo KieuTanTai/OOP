@@ -4,7 +4,7 @@ public class StaTypes {
     private String typeID,typeName;
 
     //constructor
-    public StaTypes(){}
+    public StaTypes() {}
 
     public StaTypes(String typeID, String typeName) {
         this.typeID = typeID;

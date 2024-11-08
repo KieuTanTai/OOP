@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 import util.Validate;
+import DTO.BillDetails;
 
 public class Bill {
     private String billId;
@@ -15,13 +17,15 @@ public class Bill {
     private BigDecimal discount;
     private BigDecimal totalPrice;
     private LocalDate date;
+    private BillDetails[] ds;
+    private int n;
     
     Scanner sc = new Scanner(System.in);
 
     public Bill() {
     }
  
-    public Bill(String billId, String employeeId, String customerId, String promoCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
+    public Bill(String billId, String employeeId, String customerId, String promoCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date, BillDetails[] ds) {
         this.billId = billId;
         this.employeeId = employeeId;
         this.customerId = customerId;
@@ -29,6 +33,7 @@ public class Bill {
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;
+        this.ds = ds;
     }
 
     public String setBillId() {
@@ -103,13 +108,36 @@ public class Bill {
           return date;
    }
 
-    public void nhap(){
+   public void setSoLuongBill(){
+        System.out.println("insert bill quanities");
+        n = sc.nextInt();
+        ds = new BillDetails[n];
+        for(int i = 0;i < n; ++i){
+            setBillDetails();
+        }
+   }
+
+    public void setBillDetails(BillDetails bill){
+        ds = Arrays.copyOf(ds, ds.length + 1);
+        ds[n] = bill;
+        ++n;
+    }
+
+    public void setBillDetails(){
+        BillDetails ds = new BillDetails();
+        ds.setSoLuongBill();
+        setBillDetails(ds);
+    }
+
+
+    public void nhapBill(){
         billId = setBillId();
         employeeId = setEmployeeId();
         customerId = setCustomerId();
         promoCode = setPromoCode();
         discount = setDiscount();
         date = setDate();
+        ds.setBillDetails();
     }
 
     public String getBillId() {
@@ -169,6 +197,22 @@ public class Bill {
         this.date = date;
     }
     
+    public BillDetails[] getDs() {
+        return this.ds;
+    }
+
+    public void setDs(BillDetails[] ds) {
+        this.ds = ds;
+    }
+
+    public int getN(){
+        return this.n;
+    }
+
+    public void setN(int n){
+        this.n = n;
+    }
+    
     @Override
     public String toString() {
         return "{" +
@@ -178,6 +222,10 @@ public class Bill {
             ", promoCode='" + getPromoCode() + "'" +
             ", discount='" + getDiscount() + "'" +
             ", totalPrice='" + getTotalPrice() + "'" +
-            ", date='" + getDate() + "'";
+            ", date='" + getDate() + "'" +
+            ", ds='" + getDs() + "'" +
+            ", n='" + getN() + "'" + "}";
     }
+    
 }
+

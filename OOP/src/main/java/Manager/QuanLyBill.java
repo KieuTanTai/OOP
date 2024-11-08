@@ -49,6 +49,8 @@ public class QuanLyBill {
                     System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();
                     break;
+                case 6:
+                    
                 default:
                     break;
             }

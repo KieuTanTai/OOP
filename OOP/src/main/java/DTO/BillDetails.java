@@ -1,20 +1,20 @@
 package DTO;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Scanner;
 
 import util.Validate;
 
-public class BillDetails extends Bill{
+public class BillDetails{
     private int quanity;
     private BigDecimal price;
     private BigDecimal subTotal;
+    Scanner sc = new Scanner(System.in);
 
     public BillDetails() {
     }
 
-    public BillDetails(String billId, String employeeId, String customerId, String promoCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date, int quanity, BigDecimal price, BigDecimal subTotal) {
-        super(billId, employeeId, customerId, promoCode, discount, totalPrice, date);
+    public BillDetails(int quanity, BigDecimal price, BigDecimal subTotal) {
         this.quanity = quanity;
         this.price = price;
         this.subTotal = subTotal;
@@ -64,28 +64,29 @@ public class BillDetails extends Bill{
           return price;
     }
 
-    // public void setSubTotal() {
-    //     this.subTotal = subTotal;
-    // }
-
     public void nhap(){
-        super.nhap();
         quanity = setQuanity();
         price = setPrice();
     }
 
-    public BigDecimal calcSubTotal(BigDecimal anotherPrice){
-        this.subTotal = this.subTotal.add(anotherPrice);
+    public BigDecimal calcSubTotal(){
+        BigDecimal quanityDe = BigDecimal.valueOf(quanity);
+        this.subTotal = price.multiply(quanityDe);
         return this.subTotal;
     }
 
     @Override
     public String toString() {
-        return super.toString() + "," +
+        return "{" +
             " quanity='" + getQuanity() + "'" +
             ", price='" + getPrice() + "'" +
             ", subTotal='" + getSubTotal() + "'" +
             "}";
+    }
+
+    public void setSoLuongBill() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setSoLuongBill'");
     }
     
 }

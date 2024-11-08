@@ -11,15 +11,15 @@ import util.Validate;
 
 public class BillBus{
     Scanner sc = new Scanner(System.in);
-    private BillDetails[] ds;
+    private Bill[] ds;
     private int n;
 
     public BillBus(){
         n = 0;
-        ds = new BillDetails[0];
+        ds = new Bill[0];
     }
 
-    public BillBus(BillDetails[] ds, int n){
+    public BillBus(Bill[] ds, int n){
         this.ds = ds;
         this.n = n;
     }
@@ -29,7 +29,7 @@ public class BillBus{
         n = list.n;
     }
 
-    public BillDetails[] getds(){
+    public Bill[] getds(){
         return ds;
     }
 
@@ -37,7 +37,7 @@ public class BillBus{
         return n;
     }
 
-    public void setds(BillDetails[] ds){
+    public void setds(Bill[] ds){
         this.ds = ds;
     }
 
@@ -48,7 +48,7 @@ public class BillBus{
     public void nhap(){
         System.out.println("Vui long nhap so luong bill");
         n = sc.nextInt();
-        ds = new BillDetails[n];
+        ds = new Bill[n];
         for(int i = 0; i < n; ++i){
             them();
         }
@@ -60,14 +60,14 @@ public class BillBus{
         }
     }
 
-    public void them(BillDetails bill){
+    public void them(Bill bill){
         ds = Arrays.copyOf(ds, ds.length +1);
         ds[n] = bill;
         ++n;
     }
 
     public void them(){
-        BillDetails ds = new BillDetails();
+        Bill ds = new Bill();
         ds.nhap();
         them(ds);
     }

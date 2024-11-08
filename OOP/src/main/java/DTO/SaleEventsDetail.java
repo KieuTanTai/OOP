@@ -2,7 +2,7 @@ package DTO;
 
 import java.math.BigDecimal;
 
-public class SaleEventsDetal {
+public class SaleEventsDetail {
     private String saleEvId;
     private String promoCode;
     private BigDecimal minPrice;
@@ -10,10 +10,10 @@ public class SaleEventsDetal {
     private BigDecimal maxPriceDiscount;
 
     // constructor
-    public SaleEventsDetal() {
+    public SaleEventsDetail() {
     }
 
-    public SaleEventsDetal(String saleEvId, String promoCode, BigDecimal minPrice, BigDecimal discount, BigDecimal maxPriceDiscount) {
+    public SaleEventsDetail(String saleEvId, String promoCode, BigDecimal minPrice, BigDecimal discount, BigDecimal maxPriceDiscount) {
         this.saleEvId = saleEvId;
         this.promoCode = promoCode;
         this.minPrice = minPrice;

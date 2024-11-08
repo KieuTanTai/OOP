@@ -16,8 +16,7 @@ public class Books extends Products {
     private BookTypes bookType;
 
     // constructors
-    public Books() {
-    }
+    public Books() {}
 
     public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
             int quantity, Publishers publisher, String author, BookTypes type, String format, String packagingSize) {

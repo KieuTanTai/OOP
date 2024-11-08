@@ -4,7 +4,7 @@ public class Publishers {
     private String publisherID,publisherName;
 
     //constructor
-    public Publishers(){}
+    public Publishers() {}
 
     public Publishers(String publisherID, String publisherName) {
         this.publisherID = publisherID;

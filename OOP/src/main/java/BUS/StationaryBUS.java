@@ -1,12 +1,14 @@
 package BUS;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import DTO.Books;
+import DTO.StaTypes;
 import DTO.Stationary;
+import util.Validate;
 
-
-public class StationaryBUS implements RuleSets{
+public class StationaryBUS implements IRuleSets {
      private Stationary[] staList;
      private int count;
      private static final Scanner input = new Scanner(System.in);
@@ -90,8 +92,24 @@ public class StationaryBUS implements RuleSets{
                return;
           }
           String toStringHandler = composeUsingFormatter(staList[index]);
-          System.out.printf("stationary id / name is : %s\nstationary detail : \n%s", inputValue, toStringHandler);
+          System.out.printf("stationary's id / name is : %s\nstationary detail : \n%s", inputValue, toStringHandler);
      } 
+
+     // relative search
+     public void relativeSearch (String name) {
+          Stationary[] indexList = relativeFind(name);
+          if (indexList == null) {
+               System.out.println("not found any stationary!");
+               return;
+          }
+         for (Stationary stationary : indexList)
+             System.out.printf("stationary's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
+     }
+
+     // advanced search
+     public void advancedSearch () {
+
+     }
 
      // remove method (DONE)
      @Override
@@ -111,13 +129,102 @@ public class StationaryBUS implements RuleSets{
      // edit methods
      @Override
      public void edit(String id) {
-          // TODO Auto-generated method stub
-          
+          int index = find(id);
+          if (index == -1) {
+               System.out.println("your stationary is not exist !");
+               return;
+          }
+          String newName;
+          do {
+               System.out.print("enter a new name for this stationary: ");
+               newName = input.nextLine();
+          }while (Validate.checkName(newName));
+          staList[index].setProductName(newName);    
+     }
+
+     // edit release date
+     public void edit (String id, LocalDate newDate) {
+          int index = find(id);
+          if (index == -1) {
+               System.out.println("your book is not exist !");
+               return;
+          }
+          staList[index].setReleaseDate(newDate);    
+     }
+
+     // edit price
+     public void edit (String id, BigDecimal newPrice) {
+          int index = find(id);
+          if (index == -1) {
+               System.out.println("your book is not exist !");
+               return;
+          }
+          staList[index].setProductPrice(newPrice);
+     }
+
+     // edit quantity
+     public void edit (String id, int newQuantity) {
+          int index = find(id);
+          if (index == -1) {
+               System.out.println("your book is not exist !");
+               return;
+          }
+          staList[index].setQuantity(newQuantity);
+     }
+
+     // edit type 
+     public void edit (String id, StaTypes newType) {
+          int index = find(id);
+          if (index == -1) {
+               System.out.println("your book is not exist !");
+               return;
+          }
+          staList[index].setType(newType);
+     }
+
+     // edit brand
+     public void edit (String id, String brand) {
+          int index = find(id);
+          if (index == -1) {
+               System.out.println("your book is not exist !");
+               return;
+          }
+          staList[index].setBrand(brand);;
      }
 
      // some other methods
      private String composeUsingFormatter (Stationary stationary) {
           return String.format(" stationary id: %s\n type: %s\n brand: %s\n material: %s\n source: %s\n", 
           stationary.getStationaryID(), stationary.getTypeName(), stationary.getBrand(), stationary.getMaterial(), stationary.getSource());
+     }
+
+     @Override
+     public void add() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'add'");
+     }
+
+     @Override
+     public int find() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'find'");
+     }
+
+     @Override
+     public void search() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'search'");
+     }
+
+     @Override
+     public void remove() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'remove'");
+     }
+
+     @Override
+     public void edit() {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'edit'");
      }
 }

@@ -1,4 +1,6 @@
 package DTO;
+import Manager.Menu;
+import util.Validate;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -61,6 +63,7 @@ public class Books extends Products {
           return this.packagingSize;
      }
 
+     // set have params
      public void setPublisher (Publishers publisher) {
           this.publisher = publisher;
      } 
@@ -81,11 +84,62 @@ public class Books extends Products {
           this.packagingSize = packagingSize;
      } 
 
+     // set no params
+     // set author
+     public String setAuthor () {
+          String authorName;
+          do {
+               System.out.print("set author name: ");
+               authorName = input.nextLine().trim();
+               if (!Validate.checkHumanName(authorName)) {
+                    System.out.println("error name!");
+                    authorName = "";
+               }
+          } while (authorName.isEmpty());
+          return authorName;
+     }
+
+     // set format
+     public String setFormat () {
+          String[] formats = {"Hardcover", "Paperback", "Leather-bound"}; 
+          int userChoose;
+          System.out.printf("1.%s\n2.%s\n3.%s\n", formats[0], formats[1], formats[2]);
+          do {
+               System.out.print("select your option (like \"1, 2, 3\"): ");
+               userChoose = Validate.parseChooseHandler(input.nextLine().trim(),3);
+          } while (userChoose == -1);
+          return formats[userChoose - 1];
+     }
+
+     // set packaging size
+     public String setPackagingSize () {
+          String packagingSize;
+          do {
+               System.out.println("packaging size have format: \"number 'x'  number 'cm'\" ");
+               System.out.print("set packaging size: ");
+               packagingSize = input.nextLine();
+               if (!Validate.checkPackagingSize(packagingSize)) {
+                    System.out.println("error packaging size!");
+                    packagingSize = "";
+               }
+          } while (packagingSize.isEmpty());
+          return packagingSize;
+     }
+
+     // other methods
      @Override
      protected String productIDModifier (String bookId) {
           return "BK" + bookId + "PD";
      } 
 
+     // set info
+     @Override
+     public void setInfo() {
+          
+     }
+
+     // show info
+     @Override
      public void showInfo () {
           System.out.printf("Publisher name: %s\n", publisher.getPublisherName());
           System.out.printf("Author: %s\n", author);

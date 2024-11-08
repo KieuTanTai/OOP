@@ -49,8 +49,8 @@ public class Stationary extends Products {
           this.stationaryId = stationaryId;
      }
 
-     public void setTypeID (String typeId) {
-          this.staTypes.setTypeID(typeId);
+     public void setType (StaTypes type) {
+          this.staTypes = type;
      }
 
      public void setBrand (String brand) {
@@ -65,9 +65,15 @@ public class Stationary extends Products {
           this.source = source;
      }
 
+     // other methods
      @Override
      protected String productIDModifier (String stationaryId) {
           return "STN" + stationaryId + "PD";
+     }
+
+     @Override
+     public void setInfo() {
+
      }
 
      @Override

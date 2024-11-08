@@ -2,7 +2,10 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 import java.util.UUID;
+
+import util.Validate;
 
 public abstract class Products {
      private String productID;
@@ -10,6 +13,7 @@ public abstract class Products {
      private LocalDate releaseDate;
      private BigDecimal productPrice;
      private int quantity;
+     protected static final Scanner input = new Scanner(System.in);
 
      //  constructors
      public Products () {}
@@ -43,6 +47,7 @@ public abstract class Products {
           return this.quantity;
      }
 
+     // set have param
      public void setProductID (String productID) {
           this.productID = productIDModifier(productID);
      }
@@ -63,11 +68,62 @@ public abstract class Products {
           this.quantity = quantity;
      }
 
+     // set not param
+     public String setID () {
+          String id;
+          do {
+               System.out.print("set id : ");
+               id = input.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+     }
+
+     public String setName () {
+          System.out.print("set name : ");
+         return input.nextLine().trim();
+     }
+
+     public LocalDate setReleaseDate () {
+          LocalDate date;
+          do {
+               System.out.print("set release date : ");
+               String dateInput = input.nextLine().trim();
+               date = Validate.isCorrectDate(dateInput);
+          } while (date == null);
+          return date;
+     }
+
+     public BigDecimal setPrice () {
+          BigDecimal price;
+          do {
+               System.out.print("set price : ");
+               String value = input.nextLine();
+               price = Validate.isBigDecimal(value);
+          } while (price == null);
+          return price;
+     }
+
+     public int setQuantity () {
+          int quantity;
+          do {
+               System.out.print("set quantity: ");
+               String quantityInput = input.nextLine().trim();
+               quantity = Validate.isNumber(quantityInput);
+          } while (quantity == -1);
+          return quantity;
+     }
+
+     // other methods
      public LocalDate getFormattedReleaseDate() {
           DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
           return LocalDate.parse(this.releaseDate.format(convertedFormat));
      }
 
-     protected abstract String productIDModifier (String productID); 
+     public abstract void setInfo ();
      public abstract void showInfo ();
+     protected abstract String productIDModifier (String productID); 
 }

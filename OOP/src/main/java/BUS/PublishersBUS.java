@@ -2,7 +2,7 @@ package BUS;
 import java.util.Scanner;
 import DTO.Publishers;
 
-public class PublishersBUS implements RuleSets {
+public class PublishersBUS implements IRuleSets {
     private Publishers[] publishersList;
     private int count;
     private final Scanner scanner = new Scanner(System.in);
@@ -80,5 +80,35 @@ public class PublishersBUS implements RuleSets {
         } else {
             System.out.println("Publisher not found.");
         }
+    }
+
+    @Override
+    public void add() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'add'");
+    }
+
+    @Override
+    public int find() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'find'");
+    }
+
+    @Override
+    public void search() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'search'");
+    }
+
+    @Override
+    public void remove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+    }
+
+    @Override
+    public void edit() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'edit'");
     }
 }

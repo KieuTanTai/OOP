@@ -1,66 +1,71 @@
 package BUS;
+
+import Manager.Menu;
 import DTO.BookTypes;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class TypesBUS implements IRuleSets {
-     private BookTypes[] typesList;
-     private int count;
+     private static BookTypes[] typesList;
+     private static int count;
      private final Scanner input = new Scanner(System.in);
 
-     // constructors
-     public TypesBUS () {
-          this.count = 0;
+    // constructors
+     public TypesBUS() {
+          TypesBUS.count = 0;
           typesList = new BookTypes[0];
      }
 
-     public TypesBUS (BookTypes[] typesList, int count) {
-          this.typesList = typesList;
-          this.count = count;
-     }
-
-     public TypesBUS (TypesBUS typeArray) {
-          this.typesList = typeArray.typesList;
-          this.count = typeArray.count;
+     public TypesBUS(BookTypes[] typesList, int count) {
+          TypesBUS.typesList = typesList;
+          TypesBUS.count = count;
      }
 
      // getter / setter
-     public BookTypes[] getTypesList () {
-          return this.typesList;
+     public static BookTypes[] getTypesList() {
+          return Arrays.copyOf(TypesBUS.typesList, TypesBUS.count);
      }
 
-     public int getCount () {
-          return this.count;
+     public static int getCount() {
+          return count;
      }
 
-     public void setTypesList (BookTypes[] typesList) {
-          this.typesList = typesList;
+     public void setTypesList(BookTypes[] typesList) {
+          TypesBUS.typesList = typesList;
      }
 
-     public void setCount (int count) {
-          this.count = count;
+     public void setCount(int count) {
+          TypesBUS.count = count;
      }
-     
+
      // all others methods like: add remove edit find show....
      // show list of types for user (DONE)
-     public void showList () {
-         for (int i = 0; i < typesList.length; i++)
-              System.out.printf("%d: %10s %s\n",  i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
+     public static void showList() {
+          for (int i = 0; i < typesList.length; i++)
+               System.out.printf("%d: %10s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
      }
 
+     // read / write file
+     public void writeFile() {}
+
+     public void readFile() {}
+
      // find methods (DONE)
-     // strict find
      @Override
-     public int find (String inputId)  {
-          for ( int i = 0; i < this.typesList.length; i++) {
+     public void find() {
+          Menu.addHandler();
+     }
+
+     @Override
+     public int find(String inputId) {
+          for (int i = 0; i < typesList.length; i++) {
                if (typesList[i].getTypeID().equals(inputId))
                     return i;
           }
           return -1;
      }
 
-     // relative find
-     public BookTypes[] relativeFind (String name) {
+     public BookTypes[] relativeFind(String name) {
           int count = 0;
           BookTypes[] typesArray = new BookTypes[0];
           for (BookTypes type : typesList)
@@ -74,45 +79,57 @@ public class TypesBUS implements IRuleSets {
           return typesArray;
      }
 
-     // search methods (DONE) 
-     // strict search 
+     // search methods (DONE)
      @Override
-     public void search (String inputId) {
+     public void search() {
+          Menu.searchHandler();
+     }
+
+     @Override
+     public void search(String inputId) {
           int index = find(inputId);
-          if  (index == -1) {
+          if (index == -1) {
                System.out.println("your type is not found!");
                return;
           }
           System.out.printf("Your type id is: %s\n Type name: %s\n", inputId, typesList[index].getTypeName());
      }
 
-     // relative search
-     public void relativeSearch (String name) {
+     public void relativeSearch(String name) {
           BookTypes[] list = relativeFind(name);
           if (list == null) {
                System.out.println("not found any types!");
                return;
           }
-         for (BookTypes type : list)
-             System.out.printf("type's id : %s\ntype name : %s\n", type.getTypeID(), type.getTypeName());
+          for (BookTypes type : list)
+               System.out.printf("type's id : %s\ntype name : %s\n", type.getTypeID(), type.getTypeName());
      }
 
-     // add method (DONE)
+     // add methods (DONE)
      @Override
-     public void add (Object type) {
+     public void add() {
+          Menu.addHandler();
+     }
+
+     @Override
+     public void add(Object type) {
           if (type instanceof BookTypes) {
                typesList = Arrays.copyOf(typesList, typesList.length + 1);
                typesList[count] = (BookTypes) type;
                count++;
-          }
-          else
+          } else
                System.out.println("your type is not correct !");
      }
 
-     // edit method (DONE)
+     // edit methods (DONE)
      @Override
-     public void edit (String inputId) {
-          int index = find(inputId); 
+     public void edit() {
+          Menu.editHandler();
+     }
+
+     @Override
+     public void edit(String inputId) {
+          int index = find(inputId);
           if (index == -1) {
                System.out.println("your type is not found !");
                return;
@@ -122,47 +139,22 @@ public class TypesBUS implements IRuleSets {
           typesList[index].setTypeName(newTypeName);
      }
 
-     // remove method (DONE)
+     // remove methods (DONE)     
      @Override
-     public void remove (String inputId) {
+     public void remove() {
+          Menu.removeHandler();
+     }
+
+     @Override
+     public void remove(String inputId) {
           int index = find(inputId);
           if (index == -1) {
                System.out.println("your type is not found !");
                return;
           }
-          for (int i = index; i < this.typesList.length - 1; i++)
+          for (int i = index; i < typesList.length - 1; i++)
                typesList[i] = typesList[i + 1];
-          typesList = Arrays.copyOf(typesList, typesList.length -1);
+          typesList = Arrays.copyOf(typesList, typesList.length - 1);
           count--;
-     }
-
-     @Override
-     public void add() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'add'");
-     }
-
-     @Override
-     public int find() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'find'");
-     }
-
-     @Override
-     public void search() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'search'");
-     }
-
-     @Override
-     public void remove() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'remove'");
-     }
-
-     @Override
-     public void edit() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'edit'");
      }
 }

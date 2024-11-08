@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import DTO.StaTypes;
 import DTO.Stationary;
+import Manager.Menu;
 import util.Validate;
 
 public class StationaryBUS implements IRuleSets {
@@ -45,6 +46,11 @@ public class StationaryBUS implements IRuleSets {
 
      // all others methods like: add remove edit find show....
      // find methods (DONE)
+     @Override
+     public void find() {
+          Menu.findHandler();
+     }
+
      // strict find 
      @Override
      public int find (String inputValue) {
@@ -70,7 +76,12 @@ public class StationaryBUS implements IRuleSets {
           return staArray;
      }
      
-     // add method
+     // add methods ()
+     @Override
+     public void add() {
+          Menu.addHandler();
+     }
+
      @Override
      public void add(Object stationary) {
           if (stationary instanceof Stationary) {
@@ -84,6 +95,11 @@ public class StationaryBUS implements IRuleSets {
      }
 
      // search methods
+     @Override
+     public void search() {
+          Menu.searchHandler();
+     }
+
      @Override
      public void search (String inputValue) {
           int index = find(inputValue);
@@ -111,22 +127,12 @@ public class StationaryBUS implements IRuleSets {
 
      }
 
-     // remove method (DONE)
+     // edit methods
      @Override
-     public void remove(String id) {
-          int index = find(id);
-          if (index == -1) {
-               System.out.println("your stationary is not found !");
-               return;
-          }
-          for (int i = index; i < staList.length - 1; i++) 
-               staList[i] = staList[i + 1];
-          staList = Arrays.copyOf(staList, staList.length - 1);
-          count --;
-          
+     public void edit() {
+          Menu.findHandler();
      }
 
-     // edit methods
      @Override
      public void edit(String id) {
           int index = find(id);
@@ -192,39 +198,31 @@ public class StationaryBUS implements IRuleSets {
           staList[index].setBrand(brand);;
      }
 
+     // remove methods (DONE)
+     @Override
+     public void remove() {
+          Menu.removeHandler();
+     }
+     
+     @Override
+     public void remove(String id) {
+          int index = find(id);
+          if (index == -1) {
+               System.out.println("your stationary is not found !");
+               return;
+          }
+          for (int i = index; i < staList.length - 1; i++) 
+               staList[i] = staList[i + 1];
+          staList = Arrays.copyOf(staList, staList.length - 1);
+          count --;
+          
+     }
+
+     
+
      // some other methods
      private String composeUsingFormatter (Stationary stationary) {
           return String.format(" stationary id: %s\n type: %s\n brand: %s\n material: %s\n source: %s\n", 
           stationary.getStationaryID(), stationary.getTypeName(), stationary.getBrand(), stationary.getMaterial(), stationary.getSource());
-     }
-
-     @Override
-     public void add() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'add'");
-     }
-
-     @Override
-     public int find() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'find'");
-     }
-
-     @Override
-     public void search() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'search'");
-     }
-
-     @Override
-     public void remove() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'remove'");
-     }
-
-     @Override
-     public void edit() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'edit'");
      }
 }

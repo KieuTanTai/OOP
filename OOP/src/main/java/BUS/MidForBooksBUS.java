@@ -2,7 +2,6 @@ package BUS;
 import java.util.Arrays;
 import DTO.BookGenres;
 import DTO.MidForBooks;
-import util.Validate;
 
 public class MidForBooksBUS {
      MidForBooks[] midList;
@@ -41,49 +40,47 @@ public class MidForBooksBUS {
           this.midList = midList;
      }
 
-     // all others methods like: add remove edit find show....
-     // show list (DONE)
-      public void showList () {
-          if (!Validate.checkQuantity(count)) {
-               System.out.println("you don't have any mid list in there!");
-               return;
+     // all others methods like: add remove edit find....
+     // find methods (DONE)
+     // get genres list with specific product
+     public MidForBooks[] find (String id) {
+          int count = 0;
+          MidForBooks[] list = new MidForBooks[0];
+          for (MidForBooks mid : midList)
+             if (mid.getBookID().equals(id)) {
+                 list = Arrays.copyOf(list, list.length + 1);
+                 list[count] = mid;
+                 count++;
+             }
+          if (count == 0) {
+               System.out.println("not found any mid!");
+               return null;
           }
-          for (int i = 0; i < midList.length; i++)
-               System.out.printf("%d: %10s%s\n - %10s%s\n",  i + 1, midList[i].getBookID(), midList[i].getBookName(),
-               midList[i].getGenreID(), midList[i].getGenreName());
+          return list;
      }
-
-     // find index of specific product and genre (DONE)
+     // strict find 
      public int find (String productId, String genreId)  {
           for (int i = 0; i < midList.length; i++)
                if ((midList[i].getBookID().equals(productId)) && midList[i].getGenreID().equals(genreId))
                     return i;
+          System.out.println("404 not found !");
           return -1;
      }
 
-     // get genres list with specific product (CONTINUE)
-     public MidForBooks[] getGenres (String inputValue) {
-          int count = 0;
-          MidForBooks[] genresList = new MidForBooks[0];
-          for (MidForBooks mid : midList)
-             if (mid.getBookID().equals(inputValue) || mid.getBookName().contains(inputValue)) {
-                 genresList = Arrays.copyOf(genresList, genresList.length + 1);
-                 genresList[count] = mid;
-                 count++;
-             }
-          if (count == 0)
-               return null;
-          return genresList;
-     }
-
-     // search method (DONE)
+     // search methods (DONE)
+     // strict search
      public void search (String productId, String genreId) {
           int index = find(productId, genreId); 
-          if (index == -1) {
-               System.out.println("404 not found!");
-               return;
-          }
-          System.out.printf("product name: %s\tgenre name: %s\nexist!", midList[index].getBookName(), midList[index].getGenreName());
+          if (index != -1) 
+               System.out.printf("product's id: %10s genre's name: %10s exist!", midList[index].getBookID(), midList[index].getGenreName());
+     }
+
+     // relative search
+     public void relativeSearch (String id) {
+          MidForBooks[] list = find(id);
+          if (list != null)
+               for (MidForBooks mid : list)
+                    System.out.printf("product's id: %10s genre's id  : %10s genre name : %s\n", mid.getGenreID(), mid.getGenreName());
      }
 
      // add methods (DONE)
@@ -100,23 +97,18 @@ public class MidForBooksBUS {
      // edit method (DONE)
      public void edit (String productId, BookGenres genre) {
           int index = find (productId, genre.getGenreID()); 
-          if (index == -1) {
-               System.out.println("404 not found !");
-               return;
-          }
-          midList[index].setGenre(genre);
+          if (index != -1)
+               midList[index].setGenre(genre);
      }
 
      // remove method (DONE)
      public void remove (String productId, String genreId) {
           int index = find(productId, genreId); 
-          if (index == -1) {
-               System.out.println("404 not found !");
-               return;
+          if (index != -1) {
+               for (int i = index; i < midList.length -1; i++)
+                    midList[i] = midList[i + 1];
+               midList = Arrays.copyOf(midList, midList.length - 1);
+               count--;
           }
-          for (int i = index; i < midList.length -1; i++)
-               midList[i] = midList[i + 1];
-          midList = Arrays.copyOf(midList, midList.length - 1);
-          count--;
      }
 }

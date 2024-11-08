@@ -3,7 +3,7 @@ package BUS;
 public interface IRuleSets {
      void add();
      void add(Object objectId);
-     int find();
+     void find();
      int find(String id); //return index
      void search();
      void search(String id);

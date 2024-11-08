@@ -1,65 +1,65 @@
 package BUS;
 import DTO.BookGenres;
+import Manager.Menu;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class GenresBUS implements IRuleSets {
-     private BookGenres[] genresList;
-     private int count;
+     private static BookGenres[] genresList;
+     private static int count;
      private final Scanner input = new Scanner(System.in);
 
      // constructors
      public GenresBUS () {
-          this.count = 0;
+          GenresBUS.count = 0;
           genresList = new BookGenres[0];
      }
 
      public GenresBUS (BookGenres[] genresList, int count) {
-          this.genresList = genresList;
-          this.count = count;
+          GenresBUS.genresList = genresList;
+          GenresBUS.count = count;
      }
-
-     public GenresBUS (GenresBUS typeArray) {
-          this.genresList = typeArray.genresList;
-          this.count = typeArray.count;
-     }     
 
      // getter/setter
-     public BookGenres[] getGenresList () {
-          return this.genresList;
+     public static BookGenres[] getGenresList () {
+          return Arrays.copyOf(GenresBUS.genresList, GenresBUS.count);
      }
 
-     public int getCount () {
-          return this.count;
+     public static int getCount () {
+          return count;
      }
 
      public void setGenresList (BookGenres[] genresList) {
-          this.genresList = genresList;
+          GenresBUS.genresList = genresList;
      }
 
      public void setCount (int count) {
-          this.count = count;
+          GenresBUS.count = count;
      }
 
      // all others methods like: add remove edit find show....
      // methods shows list of genres for user (DONE)
-     public void showList () {
-          for (int i = 0; i <= this.count; i++)
+     public static void showList () {
+          for (int i = 0; i <= GenresBUS.count; i++)
                System.out.printf("%d: %10s %s\n", i + 1, genresList[i].getGenreID(), genresList[i].getGenreName());
      }
 
      // find methods (DONE)
-     //strict find
+     @Override
+     public void find() {
+          Menu.findHandler();
+     }
+
      @Override
      public int find (String inputId)  {
-          for ( int i = 0; i < this.genresList.length; i++) {
+          for ( int i = 0; i < GenresBUS.genresList.length; i++) {
                if (genresList[i].getGenreID().equals(inputId))
                     return i;
           }
           return -1;
      }
 
-     // relative find
      public BookGenres[] relativeFind (String inputValue) {
           int count = 0;
           BookGenres[] genresArray = new BookGenres[0];
@@ -75,29 +75,37 @@ public class GenresBUS implements IRuleSets {
      }
 
      // search methods (DONE)
-     // strict search
+     @Override
+     public void search() {
+          Menu.searchHandler();
+     }
+
      @Override
      public void search (String inputId) {
           int index = find(inputId);
           if (index == -1) {
-               System.out.println("your genre is not found !");
+               System.out.println("your genre is not found! ");
                return;
           }
           System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[index].getGenreName());
      }
 
-     // relative search
      public void relativeSearch (String inputValue) {
           BookGenres[] list = relativeFind(inputValue);
           if (list == null) {
-               System.out.println("not found any types!");
+               System.out.println("not found any genres!");
                return;
           }
          for (BookGenres genre : list)
              System.out.printf("genre's id  : %s\ngenre name : %s\n", genre.getGenreID(), genre.getGenreName());
      }
 
-     // add method (DONE)
+     // adds methods (DONE)
+     @Override
+     public void add() {
+          Menu.addHandler();
+     }
+
      @Override
      public void add (Object genre) {
           if (genre instanceof BookGenres) {
@@ -109,7 +117,12 @@ public class GenresBUS implements IRuleSets {
                System.out.println("your new genre is not correct !");
      }
 
-     // edit method (DONE)
+     // edit methods (DONE)
+     @Override
+     public void edit() {
+          Menu.editHandler();
+     }
+
      @Override
      public void edit (String inputId) {
           int genreIndex = find(inputId);
@@ -122,7 +135,12 @@ public class GenresBUS implements IRuleSets {
           genresList[genreIndex].setGenreName(newTypeName);
      }
 
-     // remove method (DONE)
+     // remove methods (DONE)
+     @Override
+     public void remove() {
+          Menu.removeHandler();
+     }
+
      @Override
      public void remove (String inputId) {
           int genreIndex = find(inputId);
@@ -134,35 +152,5 @@ public class GenresBUS implements IRuleSets {
                genresList[i] = genresList[i + 1];
           genresList = Arrays.copyOf(genresList, genresList.length - 1);
           count--;
-     }
-
-     @Override
-     public void add() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'add'");
-     }
-
-     @Override
-     public int find() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'find'");
-     }
-
-     @Override
-     public void search() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'search'");
-     }
-
-     @Override
-     public void remove() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'remove'");
-     }
-
-     @Override
-     public void edit() {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'edit'");
      }
 }

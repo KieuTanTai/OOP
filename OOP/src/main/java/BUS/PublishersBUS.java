@@ -1,27 +1,38 @@
 package BUS;
+import java.util.Arrays;
 import java.util.Scanner;
 import DTO.Publishers;
 
 public class PublishersBUS implements IRuleSets {
-    private Publishers[] publishersList;
-    private int count;
+    private static Publishers[] publishersList;
+    private static int count;
     private final Scanner scanner = new Scanner(System.in);
-
 
     // Constructor  
     public PublishersBUS () {
-        publishersList = new Publishers[0];
-        count = 0;
+        PublishersBUS.publishersList = new Publishers[0];
+        PublishersBUS.count = 0;
     }
 
-    public PublishersBUS(int size) {
-        publishersList = new Publishers[size];
-        count = 0;
+    public PublishersBUS(int size, Publishers[] publishers) {
+        PublishersBUS.publishersList = publishers;
+        PublishersBUS.count = size;
     }
 
-    public Publishers[] getPublishersList() {
-        return publishersList;
+    public static Publishers[] getPublishersList() {
+        return Arrays.copyOf(PublishersBUS.publishersList, PublishersBUS.count);
     }
+
+    public static int getCount () {
+        return count;
+    }
+
+     // all others methods like: add remove edit find show....
+     // show list of publisher for user (DONE)
+     public static void showList() {
+        for (int i = 0; i < publishersList.length; i++)
+             System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
+   }
 
     public void add(Object publisher) {
         if (publisher instanceof Publishers) {
@@ -89,7 +100,7 @@ public class PublishersBUS implements IRuleSets {
     }
 
     @Override
-    public int find() {
+    public void find() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'find'");
     }

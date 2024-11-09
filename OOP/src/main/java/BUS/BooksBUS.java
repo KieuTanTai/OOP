@@ -35,6 +35,13 @@ public class BooksBUS implements IRuleSets {
           return this.booksList;
      }
 
+     public Books getBook (String id) {
+          for (int i = 0; i < count; i++) 
+               if (booksList[i].getProductID().equals(id))
+                    return booksList[i];
+          return null;
+     }
+
      public int getCount () {
           return this.count;
      }

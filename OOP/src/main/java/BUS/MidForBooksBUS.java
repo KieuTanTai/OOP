@@ -1,43 +1,44 @@
 package BUS;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import DTO.BookGenres;
 import DTO.MidForBooks;
 
 public class MidForBooksBUS {
-     MidForBooks[] midList;
-     private int count;
+     private static MidForBooks[] midList;
+     private static int count;
 
      // constructors
      public MidForBooksBUS () {
-          this.count = 0;
+          MidForBooksBUS.count = 0;
           midList = new MidForBooks[0];
      }
 
      public MidForBooksBUS (int count, MidForBooks[] midList) {
-          this.count = count;
-          this.midList = midList;
-     }
-
-     public MidForBooksBUS (MidForBooksBUS MidFB) {
-          this.count = MidFB.count;
-          this.midList = MidFB.midList;
+          MidForBooksBUS.count = count;
+          MidForBooksBUS.midList = midList;
      }
 
      // getter / setter
      public int getCount () {
-          return this.count;
+          return MidForBooksBUS.count;
      }
 
      public MidForBooks[] midList () {
-          return this.midList;
+          return MidForBooksBUS.midList;
      }
 
      public void setCount (int count) {
-          this.count = count;
+          MidForBooksBUS.count = count;
      }
 
      public void setMidList (MidForBooks[] midList) {
-          this.midList = midList;
+          MidForBooksBUS.midList = midList;
      }
 
      // all others methods like: add remove edit find....
@@ -47,17 +48,18 @@ public class MidForBooksBUS {
           int count = 0;
           MidForBooks[] list = new MidForBooks[0];
           for (MidForBooks mid : midList)
-             if (mid.getBookID().equals(id)) {
-                 list = Arrays.copyOf(list, list.length + 1);
-                 list[count] = mid;
-                 count++;
-             }
+               if (mid.getBookID().equals(id)) {
+                    list = Arrays.copyOf(list, list.length + 1);
+                    list[count] = mid;
+                    count++;
+               }
           if (count == 0) {
                System.out.println("not found any mid!");
                return null;
           }
           return list;
      }
+
      // strict find 
      public int find (String productId, String genreId)  {
           for (int i = 0; i < midList.length; i++)
@@ -83,15 +85,11 @@ public class MidForBooksBUS {
                     System.out.printf("product's id: %10s genre's id  : %10s genre name : %s\n", mid.getGenreID(), mid.getGenreName());
      }
 
-     // add methods (DONE)
-     public void add (Object midObject) {
-          if (midObject instanceof MidForBooks) {
-               midList = Arrays.copyOf(midList, midList.length + 1);
-               midList[count] = (MidForBooks) midObject;
-               count++;
-          }
-          else
-               System.out.println("your input is not correct !");
+     // add methods *STATIC!!! (DONE)
+     public static void add (MidForBooks midObject) {
+          midList = Arrays.copyOf(midList, midList.length + 1);
+          midList[count] = (MidForBooks) midObject;
+          count++;
      }
 
      // edit method (DONE)
@@ -109,6 +107,45 @@ public class MidForBooksBUS {
                     midList[i] = midList[i + 1];
                midList = Arrays.copyOf(midList, midList.length - 1);
                count--;
+          }
+     }
+
+     // execute file resources
+     /*
+      * DataOutputStream ? DataInputStream ?
+      * FileOutputStream ? FileInputStream ?
+      * read and some methods read ? write and some methods write ?
+      * exception ?
+      */
+     //write file
+     public void writeFile () throws IOException {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/ListGenres", false))) {
+               file.writeInt(count);
+               for (int i = 0; i < count; i++) {
+                    file.writeUTF(midList[i].getBookID());
+                    file.writeUTF(midList[i].getGenreID());
+               }
+               System.out.println("write done!");
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
+     }
+
+
+     // read file
+     public void readFile () throws IOException {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/ListGenres"))) {
+               count = file.readInt();
+               MidForBooks[] list = new MidForBooks[count];
+               for (int i = 0; i < count; i++) {
+                    String bookID =  file.readUTF();
+                    String genreID = file.readUTF();
+                    BookGenres genre = GenresBUS.getGenre(genreID);
+                    list[i] = new MidForBooks(bookID, genre);
+               }
+
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
           }
      }
 }

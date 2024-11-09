@@ -3,11 +3,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-import java.util.Scanner;
+// import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Validate {
-     private static final Scanner input = new Scanner(System.in);
+     // private static final Scanner input = new Scanner(System.in);
      private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                
      // check quantity

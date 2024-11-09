@@ -26,6 +26,13 @@ public class GenresBUS implements IRuleSets {
           return Arrays.copyOf(GenresBUS.genresList, GenresBUS.count);
      }
 
+     public static BookGenres getGenre (String id) {
+          for (BookGenres genre : genresList)
+               if (genre.getGenreID().equals(id))
+                    return genre;
+          return null;
+     }
+
      public static int getCount () {
           return count;
      }
@@ -153,4 +160,6 @@ public class GenresBUS implements IRuleSets {
           genresList = Arrays.copyOf(genresList, genresList.length - 1);
           count--;
      }
+
+     
 }

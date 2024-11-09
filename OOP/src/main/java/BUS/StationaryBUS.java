@@ -27,7 +27,11 @@ public class StationaryBUS implements IRuleSets {
 
     // getters / setters
     public Stationary[] getStaList() {
-        return staList;
+        return this.staList;
+    }
+
+    public Stationary geStationary (int index) {
+        return this.staList[index];
     }
 
     public void setStaList(Stationary[] staList) {
@@ -40,10 +44,6 @@ public class StationaryBUS implements IRuleSets {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public static Scanner getInput() {
-        return input;
     }
 
     // all others methods like: add remove edit find show....

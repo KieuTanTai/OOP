@@ -17,8 +17,7 @@ public abstract class Products {
     protected static final Scanner input = new Scanner(System.in);
 
     //  constructors
-    public Products() {
-    }
+    public Products() {}
 
     public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
         this.productID = productIDModifier(productID + UUID.randomUUID());
@@ -89,7 +88,7 @@ public abstract class Products {
         return input.nextLine().trim();
     }
 
-    public LocalDate setReleaseDate() {
+    public LocalDate setRelDate() {
         LocalDate date;
         do {
             System.out.print("set release date : ");

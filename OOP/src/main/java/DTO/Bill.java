@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
+import java.util.ArrayList;
+import java.util.List;
 import util.Validate;
 import DTO.BillDetails;
 
@@ -17,15 +19,14 @@ public class Bill {
     private BigDecimal discount;
     private BigDecimal totalPrice;
     private LocalDate date;
-    private BillDetails[] ds;
-    private int n;
+    private List<BillDetails> dsDetails = new ArrayList<>();
     
     Scanner sc = new Scanner(System.in);
 
     public Bill() {
     }
  
-    public Bill(String billId, String employeeId, String customerId, String promoCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date, BillDetails[] ds) {
+    public Bill(String billId, String employeeId, String customerId, String promoCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
         this.billId = billId;
         this.employeeId = employeeId;
         this.customerId = customerId;
@@ -33,7 +34,28 @@ public class Bill {
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;
-        this.ds = ds;
+    }
+
+    public void setBillDetails() {
+        System.out.print("set bill details counts: ");
+        int n = Integer.parseInt(sc.nextLine());
+        
+        for (int i = 0; i < n; i++) {
+            System.out.println("set bill details number " + i + ":");
+            BillDetails detail = new BillDetails();
+            detail.nhap();
+            detail.calcSubTotal(); 
+            dsDetails.add(detail);
+        }
+    }
+
+    public void xuatBillDetails() {
+        System.out.println("bill details:");
+        for (int i = 0; i < dsDetails.size(); i++) {
+            BillDetails detail = dsDetails.get(i);
+            System.out.println("bill details number: " + i);
+            System.out.println(detail.toString());
+        }
     }
 
     public String setBillId() {
@@ -107,37 +129,15 @@ public class Bill {
           } while (date == null);
           return date;
    }
-
-   public void setSoLuongBill(){
-        System.out.println("insert bill quanities");
-        n = sc.nextInt();
-        ds = new BillDetails[n];
-        for(int i = 0;i < n; ++i){
-            setBillDetails();
-        }
-   }
-
-    public void setBillDetails(BillDetails bill){
-        ds = Arrays.copyOf(ds, ds.length + 1);
-        ds[n] = bill;
-        ++n;
-    }
-
-    public void setBillDetails(){
-        BillDetails ds = new BillDetails();
-        ds.setSoLuongBill();
-        setBillDetails(ds);
-    }
-
-
-    public void nhapBill(){
+   
+    public void nhap(){
         billId = setBillId();
         employeeId = setEmployeeId();
         customerId = setCustomerId();
         promoCode = setPromoCode();
         discount = setDiscount();
         date = setDate();
-        ds.setBillDetails();
+        setBillDetails();
     }
 
     public String getBillId() {
@@ -181,6 +181,11 @@ public class Bill {
     }
 
     public BigDecimal getTotalPrice() {
+        // for(int i = 0; i < dsDetails.size(); ++i){
+        //     BillDetails detail = dsDetails.get(i);
+        //     this.totalPrice = totalPrice.add(detail.calcSubTotal());
+        // }
+        //broken
         return this.totalPrice;
     }
 
@@ -196,23 +201,7 @@ public class Bill {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    
-    public BillDetails[] getDs() {
-        return this.ds;
-    }
 
-    public void setDs(BillDetails[] ds) {
-        this.ds = ds;
-    }
-
-    public int getN(){
-        return this.n;
-    }
-
-    public void setN(int n){
-        this.n = n;
-    }
-    
     @Override
     public String toString() {
         return "{" +
@@ -222,10 +211,9 @@ public class Bill {
             ", promoCode='" + getPromoCode() + "'" +
             ", discount='" + getDiscount() + "'" +
             ", totalPrice='" + getTotalPrice() + "'" +
-            ", date='" + getDate() + "'" +
-            ", ds='" + getDs() + "'" +
-            ", n='" + getN() + "'" + "}";
+            ", date='" + getDate() + "'" + "}";
     }
     
 }
+
 

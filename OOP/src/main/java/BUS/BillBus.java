@@ -57,6 +57,7 @@ public class BillBus{
     public void xuat(){
         for(int i = 0; i < n; ++i){
             System.out.println(ds[i].toString());
+            
         }
     }
 

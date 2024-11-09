@@ -9,6 +9,7 @@ public class BillDetails{
     private int quanity;
     private BigDecimal price;
     private BigDecimal subTotal;
+
     Scanner sc = new Scanner(System.in);
 
     public BillDetails() {
@@ -80,13 +81,9 @@ public class BillDetails{
         return "{" +
             " quanity='" + getQuanity() + "'" +
             ", price='" + getPrice() + "'" +
-            ", subTotal='" + getSubTotal() + "'" +
-            "}";
+            ", subTotal='" + getSubTotal() + "'" + "}";
     }
 
-    public void setSoLuongBill() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSoLuongBill'");
-    }
+
     
 }

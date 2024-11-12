@@ -1,19 +1,39 @@
 package BUS;
-
+import java.util.Arrays;
 import java.util.Scanner;
 import DTO.Publishers;
 
-public class PublishersBUS implements RuleSets {
-    private Publishers[] publishersList;
-    private int count;
+public class PublishersBUS implements IRuleSets {
+    private static Publishers[] publishersList;
+    private static int count;
+    private final Scanner scanner = new Scanner(System.in);
 
-    // Constructor
-    public PublishersBUS(int size) {
-        publishersList = new Publishers[size];
-        count = 0;
+    // Constructor  
+    public PublishersBUS () {
+        PublishersBUS.publishersList = new Publishers[0];
+        PublishersBUS.count = 0;
     }
 
-    @Override
+    public PublishersBUS(int size, Publishers[] publishers) {
+        PublishersBUS.publishersList = publishers;
+        PublishersBUS.count = size;
+    }
+
+    public static Publishers[] getPublishersList() {
+        return Arrays.copyOf(PublishersBUS.publishersList, PublishersBUS.count);
+    }
+
+    public static int getCount () {
+        return count;
+    }
+
+     // all others methods like: add remove edit find show....
+     // show list of publisher for user (DONE)
+     public static void showList() {
+        for (int i = 0; i < publishersList.length; i++)
+             System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
+   }
+
     public void add(Object publisher) {
         if (publisher instanceof Publishers) {
             if (count < publishersList.length) {
@@ -28,7 +48,6 @@ public class PublishersBUS implements RuleSets {
         }
     }
 
-    @Override
     public int find(String publisherID) {
         for (int i = 0; i < count; i++) {
             if (publishersList[i].getPublisherID().equals(publisherID)) {
@@ -48,7 +67,7 @@ public class PublishersBUS implements RuleSets {
         }
     }
 
-    @Override
+    @Override // LOGIC ERROR
     public void remove(String publisherID) {
         int index = find(publisherID);
         if (index != -1) {
@@ -65,10 +84,8 @@ public class PublishersBUS implements RuleSets {
     public void edit(String publisherID) {
         int index = find(publisherID);
         if (index != -1) {
-            Scanner scanner = new Scanner(System.in);
             System.out.print("Enter new publisher name: ");
             String newName = scanner.nextLine();
-
             publishersList[index].setPublisherName(newName);
             System.out.println("Publisher edited successfully.");
         } else {
@@ -76,8 +93,33 @@ public class PublishersBUS implements RuleSets {
         }
     }
 
+    @Override
+    public void add() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'add'");
+    }
 
-    public Publishers[] getPublishersList() {
-        return publishersList;
+    @Override
+    public void find() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'find'");
+    }
+
+    @Override
+    public void search() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'search'");
+    }
+
+    @Override
+    public void remove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+    }
+
+    @Override
+    public void edit() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'edit'");
     }
 }

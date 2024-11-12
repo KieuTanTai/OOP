@@ -1,11 +1,12 @@
 package DTO;
 
-public class Type {
+public class StaTypes {
     private String typeID,typeName;
 
     //constructor
-    public Type(){}
-    public Type(String typeID, String typeName) {
+    public StaTypes(){}
+
+    public StaTypes(String typeID, String typeName) {
         this.typeID = typeID;
         this.typeName = typeName;
     }
@@ -14,12 +15,12 @@ public class Type {
     public String getTypeID() {
         return typeID;
     }
+
     public String getTypeName() {
         return typeName;
     }
 
     //setter
-
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }

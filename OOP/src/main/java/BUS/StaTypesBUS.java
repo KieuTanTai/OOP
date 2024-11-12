@@ -1,22 +1,35 @@
 package BUS;
 
-import DTO.Type;
+import DTO.StaTypes;
 import java.util.Scanner;
-public class TypeBUS implements RuleSets {
-    private Type[] typeList;
-    private int count;
+public class StaTypesBUS implements IRuleSets {
+    private static StaTypes[] typesList;
+    private static int count;
+    private final Scanner scanner = new Scanner(System.in);
 
     // Constructor
-    public TypeBUS(int size) {
-        typeList = new Type[size];
-        count = 0;
+    public StaTypesBUS () {
+        StaTypesBUS.typesList = new StaTypes[0];
+        StaTypesBUS.count = 0;
+    }
+
+    public StaTypesBUS(int size, StaTypes[] list) {
+        StaTypesBUS.typesList = list;
+        StaTypesBUS.count = 0;
+    }
+
+    // all others methods like: add remove edit find show....
+    // show list of types for user (DONE)
+    public static void showList() {
+    for (int i = 0; i < typesList.length; i++)
+            System.out.printf("%d: %10s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
     }
 
     @Override
     public void add(Object type) {
-        if (type instanceof Type) {
-            if (count < typeList.length) {
-                typeList[count] = (Type) type;
+        if (type instanceof StaTypes) {
+            if (count < typesList.length) {
+                typesList[count] = (StaTypes) type;
                 count++;
                 System.out.println("Type added successfully.");
             } else {
@@ -30,7 +43,7 @@ public class TypeBUS implements RuleSets {
     @Override
     public int find(String typeID) {
         for (int i = 0; i < count; i++) {
-            if (typeList[i].getTypeID().equals(typeID)) {
+            if (typesList[i].getTypeID().equals(typeID)) {
                 return i;
             }
         }
@@ -41,7 +54,7 @@ public class TypeBUS implements RuleSets {
     public void search(String typeID) {
         int index = find(typeID);
         if (index != -1) {
-            System.out.println("Found Type: " + typeList[index].getTypeName());
+            System.out.println("Found Type: " + typesList[index].getTypeName());
         } else {
             System.out.println("Type not found.");
         }
@@ -51,8 +64,8 @@ public class TypeBUS implements RuleSets {
     public void remove(String typeID) {
         int index = find(typeID);
         if (index != -1) {
-            typeList[index] = typeList[count - 1];
-            typeList[count - 1] = null;
+            typesList[index] = typesList[count - 1];
+            typesList[count - 1] = null;
             count--;
             System.out.println("Type removed successfully.");
         } else {
@@ -64,18 +77,47 @@ public class TypeBUS implements RuleSets {
     public void edit(String typeID) {
         int index = find(typeID);
         if (index != -1) {
-            Scanner scanner = new Scanner(System.in);
             System.out.print("Enter new type name: ");
             String newName = scanner.nextLine();
 
-            typeList[index].setTypeName(newName);
+            typesList[index].setTypeName(newName);
             System.out.println("Type edited successfully.");
         } else {
             System.out.println("Type not found.");
         }
     }
 
-    public Type[] getTypeList() {
-        return typeList;
+    public StaTypes[] getTypeList() {
+        return typesList;
+    }
+
+    @Override
+    public void add() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'add'");
+    }
+
+    @Override
+    public void find() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'find'");
+    }
+
+    @Override
+    public void search() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'search'");
+    }
+
+    @Override
+    public void remove() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+    }
+
+    @Override
+    public void edit() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'edit'");
     }
 }

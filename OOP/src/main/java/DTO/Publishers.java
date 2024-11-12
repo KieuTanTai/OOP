@@ -5,6 +5,7 @@ public class Publishers {
 
     //constructor
     public Publishers(){}
+
     public Publishers(String publisherID, String publisherName) {
         this.publisherID = publisherID;
         this.publisherName = publisherName;
@@ -14,6 +15,7 @@ public class Publishers {
     public String getPublisherID() {
         return publisherID;
     }
+    
     public String getPublisherName() {
         return publisherName;
     }

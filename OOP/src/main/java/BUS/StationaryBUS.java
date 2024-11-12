@@ -1,228 +1,227 @@
 package BUS;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Scanner;
 
 import DTO.StaTypes;
 import DTO.Stationary;
 import Manager.Menu;
 import util.Validate;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class StationaryBUS implements IRuleSets {
-     private Stationary[] staList;
-     private int count;
-     private static final Scanner input = new Scanner(System.in);
-     
-     //constructors
-     public StationaryBUS() {}
-     
-     public StationaryBUS(Stationary[] staList, int count) {
-          this.staList = staList;
-          this.count = count;
-     }
+    private Stationary[] staList;
+    private int count;
+    private static final Scanner input = new Scanner(System.in);
+
+    //constructors
+    public StationaryBUS() {
+    }
+
+    public StationaryBUS(Stationary[] staList, int count) {
+        this.staList = staList;
+        this.count = count;
+    }
 
 
-     // getters / setters
-     public Stationary[] getStaList() {
-          return staList;
-     }
+    // getters / setters
+    public Stationary[] getStaList() {
+        return this.staList;
+    }
 
-     public void setStaList(Stationary[] staList) {
-          this.staList = staList;
-     }
+    public Stationary geStationary (int index) {
+        return this.staList[index];
+    }
 
-     public int getCount() {
-          return count;
-     }
+    public void setStaList(Stationary[] staList) {
+        this.staList = staList;
+    }
 
-     public void setCount(int count) {
-          this.count = count;
-     }
+    public int getCount() {
+        return count;
+    }
 
-     public static Scanner getInput() {
-          return input;
-     }
+    public void setCount(int count) {
+        this.count = count;
+    }
 
-     // all others methods like: add remove edit find show....
-     // find methods (DONE)
-     @Override
-     public void find() {
-          Menu.findHandler();
-     }
+    // all others methods like: add remove edit find show....
+    // find methods (DONE)
+    @Override
+    public void find() {
+        Menu.findHandler();
+    }
 
-     // strict find 
-     @Override
-     public int find (String inputValue) {
-          for (int i = 0; i < staList.length; i++)
-               if (staList[i].getProductID().equals(inputValue) || staList[i].getProductName().equals(inputValue))
-                    return i;
-          return -1;
-     }
+    // strict find
+    @Override
+    public int find(String inputValue) {
+        for (int i = 0; i < staList.length; i++)
+            if (staList[i].getProductID().equals(inputValue) || staList[i].getProductName().equals(inputValue))
+                return i;
+        return -1;
+    }
 
-     // relative find
-     // return list index of products that have contains specific string
-     public Stationary[] relativeFind (String name) {
-          int count = 0;
-          Stationary[] staArray = new Stationary[0];
-         for (Stationary stationary : staArray)
-             if (stationary.getProductName().contains(name)) {
-                 staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                 staArray[count] = stationary;
-                 count++;
-             }
-          if (count == 0)
-               return null;
-          return staArray;
-     }
-     
-     // add methods ()
-     @Override
-     public void add() {
-          Menu.addHandler();
-     }
+    // relative find
+    // return list index of products that have contains specific string
+    public Stationary[] relativeFind(String name) {
+        int count = 0;
+        Stationary[] staArray = new Stationary[0];
+        for (Stationary stationary : staArray)
+            if (stationary.getProductName().contains(name)) {
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                count++;
+            }
+        if (count == 0)
+            return null;
+        return staArray;
+    }
 
-     @Override
-     public void add(Object stationary) {
-          if (stationary instanceof Stationary) {
-               staList = Arrays.copyOf(staList, staList.length + 1);
-               staList[count] = (Stationary) stationary;
-               count++;
-          }
-          else 
-               System.out.println("your new stationary have something not like stationary!");
-          
-     }
+    // add methods ()
+    @Override
+    public void add() {
+        Menu.addHandler();
+    }
 
-     // search methods
-     @Override
-     public void search() {
-          Menu.searchHandler();
-     }
+    @Override
+    public void add(Object stationary) {
+        if (stationary instanceof Stationary) {
+            staList = Arrays.copyOf(staList, staList.length + 1);
+            staList[count] = (Stationary) stationary;
+            count++;
+        } else
+            System.out.println("your new stationary have something not like stationary!");
 
-     @Override
-     public void search (String inputValue) {
-          int index = find(inputValue);
-          if (index == -1) {
-               System.out.println("your stationary is not found!");
-               return;
-          }
-          String toStringHandler = composeUsingFormatter(staList[index]);
-          System.out.printf("stationary's id / name is : %s\nstationary detail : \n%s", inputValue, toStringHandler);
-     } 
+    }
 
-     // relative search
-     public void relativeSearch (String name) {
-          Stationary[] indexList = relativeFind(name);
-          if (indexList == null) {
-               System.out.println("not found any stationary!");
-               return;
-          }
-         for (Stationary stationary : indexList)
-             System.out.printf("stationary's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
-     }
+    // search methods
+    @Override
+    public void search() {
+        Menu.searchHandler();
+    }
 
-     // advanced search
-     public void advancedSearch () {
+    @Override
+    public void search(String inputValue) {
+        int index = find(inputValue);
+        if (index == -1) {
+            System.out.println("your stationary is not found!");
+            return;
+        }
+        String toStringHandler = composeUsingFormatter(staList[index]);
+        System.out.printf("stationer's id / name is : %s\nstationary detail : \n%s", inputValue, toStringHandler);
+    }
 
-     }
+    // relative search
+    public void relativeSearch(String name) {
+        Stationary[] indexList = relativeFind(name);
+        if (indexList == null) {
+            System.out.println("not found any stationary!");
+            return;
+        }
+        for (Stationary stationary : indexList)
+            System.out.printf("stationer's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
+    }
 
-     // edit methods
-     @Override
-     public void edit() {
-          Menu.findHandler();
-     }
+    // advanced search
+    public void advancedSearch() {
 
-     @Override
-     public void edit(String id) {
-          int index = find(id);
-          if (index == -1) {
-               System.out.println("your stationary is not exist !");
-               return;
-          }
-          String newName;
-          do {
-               System.out.print("enter a new name for this stationary: ");
-               newName = input.nextLine();
-          }while (Validate.checkName(newName));
-          staList[index].setProductName(newName);    
-     }
+    }
 
-     // edit release date
-     public void edit (String id, LocalDate newDate) {
-          int index = find(id);
-          if (index == -1) {
-               System.out.println("your book is not exist !");
-               return;
-          }
-          staList[index].setReleaseDate(newDate);    
-     }
+    // edit methods
+    @Override
+    public void edit() {
+        Menu.findHandler();
+    }
 
-     // edit price
-     public void edit (String id, BigDecimal newPrice) {
-          int index = find(id);
-          if (index == -1) {
-               System.out.println("your book is not exist !");
-               return;
-          }
-          staList[index].setProductPrice(newPrice);
-     }
+    @Override
+    public void edit(String id) {
+        int index = find(id);
+        if (index == -1) {
+            System.out.println("your stationary is not exist !");
+            return;
+        }
+        String newName;
+        do {
+            System.out.print("enter a new name for this stationary: ");
+            newName = input.nextLine();
+        } while (Validate.checkName(newName));
+        staList[index].setProductName(newName);
+    }
 
-     // edit quantity
-     public void edit (String id, int newQuantity) {
-          int index = find(id);
-          if (index == -1) {
-               System.out.println("your book is not exist !");
-               return;
-          }
-          staList[index].setQuantity(newQuantity);
-     }
+    // edit release date
+    public void edit(String id, LocalDate newDate) {
+        int index = find(id);
+        if (index == -1) {
+            System.out.println("your book is not exist !");
+            return;
+        }
+        staList[index].setReleaseDate(newDate);
+    }
 
-     // edit type 
-     public void edit (String id, StaTypes newType) {
-          int index = find(id);
-          if (index == -1) {
-               System.out.println("your book is not exist !");
-               return;
-          }
-          staList[index].setType(newType);
-     }
+    // edit price
+    public void edit(String id, BigDecimal newPrice) {
+        int index = find(id);
+        if (index == -1) {
+            System.out.println("your book is not exist !");
+            return;
+        }
+        staList[index].setProductPrice(newPrice);
+    }
 
-     // edit brand
-     public void edit (String id, String brand) {
-          int index = find(id);
-          if (index == -1) {
-               System.out.println("your book is not exist !");
-               return;
-          }
-          staList[index].setBrand(brand);;
-     }
+    // edit quantity
+    public void edit(String id, int newQuantity) {
+        int index = find(id);
+        if (index == -1) {
+            System.out.println("your book is not exist !");
+            return;
+        }
+        staList[index].setQuantity(newQuantity);
+    }
 
-     // remove methods (DONE)
-     @Override
-     public void remove() {
-          Menu.removeHandler();
-     }
-     
-     @Override
-     public void remove(String id) {
-          int index = find(id);
-          if (index == -1) {
-               System.out.println("your stationary is not found !");
-               return;
-          }
-          for (int i = index; i < staList.length - 1; i++) 
-               staList[i] = staList[i + 1];
-          staList = Arrays.copyOf(staList, staList.length - 1);
-          count --;
-          
-     }
+    // edit type
+    public void edit(String id, StaTypes newType) {
+        int index = find(id);
+        if (index == -1) {
+            System.out.println("your book is not exist !");
+            return;
+        }
+        staList[index].setType(newType);
+    }
 
-     
+    // edit brand
+    public void edit(String id, String brand) {
+        int index = find(id);
+        if (index == -1) {
+            System.out.println("your book is not exist !");
+            return;
+        }
+        staList[index].setBrand(brand);
+    }
 
-     // some other methods
-     private String composeUsingFormatter (Stationary stationary) {
-          return String.format(" stationary id: %s\n type: %s\n brand: %s\n material: %s\n source: %s\n", 
-          stationary.getStationaryID(), stationary.getTypeName(), stationary.getBrand(), stationary.getMaterial(), stationary.getSource());
-     }
+    // remove methods (DONE)
+    @Override
+    public void remove() {
+        Menu.removeHandler();
+    }
+
+    @Override
+    public void remove(String id) {
+        int index = find(id);
+        if (index == -1) {
+            System.out.println("your stationary is not found !");
+            return;
+        }
+        for (int i = index; i < staList.length - 1; i++)
+            staList[i] = staList[i + 1];
+        staList = Arrays.copyOf(staList, staList.length - 1);
+        count--;
+
+    }
+
+    // some other methods
+    private String composeUsingFormatter(Stationary stationary) {
+        return String.format(" stationary id: %s\n type: %s\n brand: %s\n material: %s\n source: %s\n",
+                stationary.getStationaryID(), stationary.getTypeName(), stationary.getBrand(), stationary.getMaterial(), stationary.getSource());
+    }
 }

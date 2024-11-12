@@ -3,11 +3,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-import java.util.Scanner;
+// import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Validate {
-     private static final Scanner input = new Scanner(System.in);
+     // private static final Scanner input = new Scanner(System.in);
      private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                
      // check quantity
@@ -94,7 +94,7 @@ public class Validate {
      public static boolean validateID (String inputId) {
           String regex = "^[a-zA-Z0-9_-](?!.*::)[^%+\\\\/#'\"]+$";
           Pattern pattern = Pattern.compile(regex);
-         return !pattern.matcher(inputId).matches();
+          return !pattern.matcher(inputId).matches();
      }
 
      public static boolean validateTypeOfBook (String inputType) {
@@ -103,15 +103,20 @@ public class Validate {
      }
 
      public static boolean checkName (String inputName) {
-          String regex = "^[A-Za-zÀ-ÖØ-öø-ÿ0-9'\\-\\s]{1,50}$";
+          String regex = "^[\\p{L}\\p{M}0-9][\\p{L}\\p{M}0-9 '\\-&^()$]{0,48}[\\p{M}\\p{L}0-9]$";;
           Pattern pattern = Pattern.compile(regex);
-         return pattern.matcher(inputName).matches();
+          if (inputName.length() < 3)
+               return false;
+          return pattern.matcher(inputName).matches();
      }
 
+     // (DONE)
      public static boolean checkHumanName (String inputName) {
-          String regex = "^[A-Za-zÀ-ÖØ-öø-ÿ'\\-\\s]{1,50}$";
+          String regex = "^[\\p{M}\\p{L}][\\p{M}\\p{L} '\\-]{0,48}[\\p{M}\\p{L}]$";
           Pattern pattern = Pattern.compile(regex);
-         return pattern.matcher(inputName).matches();
+          if (inputName.length() < 3)
+               return false;
+          return pattern.matcher(inputName).matches();
      }
 
      public static boolean checkPackagingSize (String packagingSize) {

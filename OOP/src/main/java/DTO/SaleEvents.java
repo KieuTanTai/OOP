@@ -7,10 +7,20 @@ public class SaleEvents {
     private String saleEvName;
     private String description;
     private LocalDate startDate;
-    private LocalDate enđate;
+    private LocalDate endDate;
+    private SaleEventsDetail detail;
 
     // constructor
     public SaleEvents() {
+    }
+
+    public SaleEvents(String saleEvId, String saleEvName, String description, LocalDate startDate, LocalDate enđate, SaleEventsDetail detail) {
+        this.saleEvId = saleEvId;
+        this.saleEvName = saleEvName;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = enđate;
+        this.detail = detail;
     }
 
     public SaleEvents(String saleEvId, String saleEvName, String description, LocalDate startDate, LocalDate enđate) {
@@ -18,7 +28,7 @@ public class SaleEvents {
         this.saleEvName = saleEvName;
         this.description = description;
         this.startDate = startDate;
-        this.enđate = enđate;
+        this.endDate = enđate;
     }
 
     // getter
@@ -38,8 +48,12 @@ public class SaleEvents {
         return startDate;
     }
 
-    public LocalDate getEnđate() {
-        return enđate;
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public SaleEventsDetail getDetail() {
+        return detail;
     }
 
     // setter
@@ -59,8 +73,11 @@ public class SaleEvents {
         this.startDate = startDate;
     }
 
-    public void setEnđate(LocalDate enđate) {
-        this.enđate = enđate;
+    public void setEndDate(LocalDate enđate) {
+        this.endDate = enđate;
     }
 
+    public void setDetail(SaleEventsDetail detail) {
+        this.detail = detail;
+    }
 }

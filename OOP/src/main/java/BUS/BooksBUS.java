@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import DTO.BookTypes;
 import DTO.Books;
+import DTO.Publishers;
 import Manager.Menu;
 import util.Validate;
 
@@ -241,10 +242,63 @@ public class BooksBUS implements IRuleSets {
      }
 
      // execute files
+     //write file
+     public void writeFile () throws IOException {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/ListGenres", false))) {
+               file.writeInt(count);
+               for (int i = 0; i < count; i++) {
+                    file.writeUTF(booksList[i].getProductID());
+                    file.writeUTF(booksList[i].getProductName());
+                    file.writeUTF(booksList[i].getProductPrice().toString());
+                    file.writeUTF(booksList[i].getReleaseDate().toString());
+                    file.writeUTF(booksList[i].getAuthor());
+                    file.writeUTF(booksList[i].getPublisherID());
+                    file.writeUTF(booksList[i].getType().getTypeID());
+                    file.writeInt(booksList[i].getQuantity());
+                    file.writeUTF(booksList[i].getFormat());
+                    file.writeUTF(booksList[i].getPackagingSize());
+                    file.writeUTF(System.lineSeparator());
+               }
+               System.out.println("write done!");
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
+     }
+
+
+     // read file
+     public void readFile () throws IOException {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/ListGenres"))) {
+               count = file.readInt();
+               Books[] list = new Books[count];
+               for (int i = 0; i < count; i++) {
+                    String productID =  file.readUTF();
+                    String productName = file.readUTF();
+                    BigDecimal price = new BigDecimal(file.readUTF());
+                    LocalDate releaseDate = LocalDate.parse(file.readUTF());
+                    String author = file.readUTF();
+                    String publisherID = file.readUTF();  //use as param for query publisher from class Publishers
+                    String typeID = file.readUTF();
+                    int quantity = file.readInt();
+                    String format = file.readUTF();
+                    String packagingSize = file.readUTF();
+                    file.readUTF();
+
+                    // execute IDs
+                    Publishers publisher = PublishersBUS.getPublisher(publisherID);
+                    BookTypes type = TypesBUS.getType(typeID);
+                    list[i] = new Books(productID, productName, releaseDate, price, quantity, publisher, author, type, format, packagingSize);
+               }
+               setCount(count);
+               setBooksList(list);
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
+     }
 
      // some other methods
      private String composeUsingFormatter (Books book) {
           return String.format(" publisher name: %s\n author: %s\n book type: %s\n format: %s\n packaging size: %s\n", 
-          book.getPublisherName(), book.getAuthor(), book.getTypeName(), book.getFormat(), book.getPackagingSize());
+          book.getPublisherName(), book.getAuthor(), book.getType().getTypeName(), book.getFormat(), book.getPackagingSize());
      }
 }

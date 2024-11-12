@@ -80,7 +80,7 @@ public abstract class Products {
                 id = "";
             }
         } while (id.isEmpty());
-        return id;
+        return productIDModifier(id);
     }
 
     public String setName() {

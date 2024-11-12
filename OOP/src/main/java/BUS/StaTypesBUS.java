@@ -1,6 +1,7 @@
 package BUS;
 
 import DTO.StaTypes;
+import java.util.Arrays;
 import java.util.Scanner;
 public class StaTypesBUS implements IRuleSets {
     private static StaTypes[] typesList;
@@ -16,6 +17,21 @@ public class StaTypesBUS implements IRuleSets {
     public StaTypesBUS(int size, StaTypes[] list) {
         StaTypesBUS.typesList = list;
         StaTypesBUS.count = 0;
+    }
+
+    public static StaTypes[] getTypesList() {
+        return Arrays.copyOf(typesList, typesList.length);
+    }
+
+    public static StaTypes getStaType (String id) {
+            for (StaTypes type : typesList)
+                if (type.getTypeID().equals(id))
+                    return type;
+            return null;
+        }
+
+    public static int getCount () {
+        return count;
     }
 
     // all others methods like: add remove edit find show....

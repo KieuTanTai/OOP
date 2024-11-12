@@ -55,12 +55,8 @@ public class Books extends Products {
         return this.author;
     }
 
-    public String getTypeID() {
-        return this.bookType.getTypeID();
-    }
-
-    public String getTypeName() {
-        return this.bookType.getTypeName();
+    public BookTypes getType() {
+        return this.bookType;
     }
 
     public String getFormat() {

@@ -2,6 +2,12 @@ package BUS;
 import DTO.BookGenres;
 import Manager.Menu;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -161,5 +167,42 @@ public class GenresBUS implements IRuleSets {
           count--;
      }
 
-     
+     // execute file resources
+     /*
+      * DataOutputStream ? DataInputStream ?
+      * FileOutputStream ? FileInputStream ?  
+      * read and some methods read ? write and some methods write ?
+      * exception ?
+      */
+     //write file
+     public void writeFile () throws IOException {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/ListGenres", false))) {
+               file.writeInt(count);
+               for (int i = 0; i < count; i++) {
+                    file.writeUTF(genresList[i].getGenreID());
+                    file.writeUTF(genresList[i].getGenreName());
+               }
+               System.out.println("write done!");
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
+     }
+
+
+     // read file
+     public void readFile () throws IOException {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/ListGenres"))) {
+               count = file.readInt();
+               BookGenres[] list = new BookGenres[count];
+               for (int i = 0; i < count; i++) {
+                    String genreID =  file.readUTF();
+                    String genreName = file.readUTF();
+                    list[i] = new BookGenres(genreID, genreName);
+               }
+               setCount(count);
+               setGenresList(list);
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
+     }
 }

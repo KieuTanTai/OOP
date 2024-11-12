@@ -2,6 +2,13 @@ package BUS;
 
 import Manager.Menu;
 import DTO.BookTypes;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -44,11 +51,6 @@ public class TypesBUS implements IRuleSets {
           for (int i = 0; i < typesList.length; i++)
                System.out.printf("%d: %10s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
      }
-
-     // read / write file
-     public void writeFile() {}
-
-     public void readFile() {}
 
      // find methods (DONE)
      @Override
@@ -156,5 +158,44 @@ public class TypesBUS implements IRuleSets {
                typesList[i] = typesList[i + 1];
           typesList = Arrays.copyOf(typesList, typesList.length - 1);
           count--;
+     }
+
+     // execute file resources
+     /*
+      * DataOutputStream ? DataInputStream ?
+      * FileOutputStream ? FileInputStream ?  
+      * read and some methods read ? write and some methods write ?
+      * exception ?
+      */
+     //write file
+     public void writeFile () throws IOException {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/ListGenres", false))) {
+               file.writeInt(count);
+               for (int i = 0; i < count; i++) {
+                    file.writeUTF(typesList[i].getTypeID());
+                    file.writeUTF(typesList[i].getTypeName());
+               }
+               System.out.println("write done!");
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
+     }
+
+
+     // read file
+     public void readFile () throws IOException {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/ListGenres"))) {
+               count = file.readInt();
+               BookTypes[] list = new BookTypes[count];
+               for (int i = 0; i < count; i++) {
+                    String typeID =  file.readUTF();
+                    String typeName = file.readUTF();
+                    list[i] = new BookTypes(typeID, typeName);
+               }
+               setCount(count);
+               setTypesList(list);
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
      }
 }

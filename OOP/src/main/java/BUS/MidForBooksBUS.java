@@ -113,7 +113,7 @@ public class MidForBooksBUS {
      // execute file resources
      /*
       * DataOutputStream ? DataInputStream ?
-      * FileOutputStream ? FileInputStream ?
+      * FileOutputStream ? FileInputStream ?  
       * read and some methods read ? write and some methods write ?
       * exception ?
       */
@@ -141,9 +141,11 @@ public class MidForBooksBUS {
                     String bookID =  file.readUTF();
                     String genreID = file.readUTF();
                     BookGenres genre = GenresBUS.getGenre(genreID);
-                    list[i] = new MidForBooks(bookID, genre);
+                    if (genre != null)
+                         list[i] = new MidForBooks(bookID, genre);
                }
-
+               setCount(count);
+               setMidList(list);
           } catch (FileNotFoundException err) {
                System.out.printf("404 not found!\n%s", err);
           }

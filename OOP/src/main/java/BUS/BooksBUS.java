@@ -79,7 +79,7 @@ public class BooksBUS implements IRuleSets {
           return -1;
      }
 
-     // relative find
+     // relative finds
      // return list index of products that have contains specific string
      public Books[] relativeFind (String name) {
           int count = 0;
@@ -97,21 +97,84 @@ public class BooksBUS implements IRuleSets {
           return booksArray;
      }
 
-     // add methods (DONE)
-     @Override
-     public void add() {
-          Menu.addHandler();
-     }
-
-     @Override
-     public void add (Object newBook) {
-          if (newBook instanceof Books) {
-               booksList = Arrays.copyOf(booksList, booksList.length + 1);
-               booksList[count] = (Books) newBook;
-               count++;
+     public Books[] relativeFindByPublisher(Publishers publisher) {
+          int count = 0;
+          Books[] booksArray = new Books[0];
+          for (Books books : booksList)
+               if (books.getPublisherID().equals(publisher.getPublisherID())) {
+                    booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
+                    booksArray[count] = books;
+                    count++;
+               }
+          if (count == 0) {
+               System.out.println("not found any books with the specified publisher!");
+               return null;
           }
-          else 
-               System.out.println("your new book have something not like book!");
+          return booksArray;
+     }
+          
+     public Books[] relativeFindByAuthor(String author) {
+          int count = 0;
+          Books[] booksArray = new Books[0];
+          for (Books books : booksList)
+               if (books.getAuthor().contains(author)) {
+                    booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
+                    booksArray[count] = books;
+                    count++;
+               }
+          if (count == 0) {
+               System.out.println("not found any books with the specified author!");
+               return null;
+          }
+          return booksArray;
+     }
+          
+     public Books[] relativeFindByBookType(BookTypes bookType) {
+          int count = 0;
+          Books[] booksArray = new Books[0];
+          for (Books books : booksList)
+               if (books.getType().equals(bookType)) {
+                    booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
+                    booksArray[count] = books;
+                    count++;
+               }
+          if (count == 0) {
+               System.out.println("not found any books with the specified book type!");
+               return null;
+          }
+          return booksArray;
+     }
+          
+     public Books[] relativeFindByProductPrice(BigDecimal productPrice) {
+          int count = 0;
+          Books[] booksArray = new Books[0];
+          for (Books books : booksList)
+               if (books.getProductPrice().compareTo(productPrice) == 0) {
+                    booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
+                    booksArray[count] = books;
+                    count++;
+               }
+          if (count == 0) {
+               System.out.println("not found any books with the specified price!");
+               return null;
+          }
+          return booksArray;
+     }
+          
+     public Books[] relativeFindByReleaseDate(LocalDate releaseDate) {
+          int count = 0;
+          Books[] booksArray = new Books[0];
+          for (Books books : booksList)
+               if (books.getReleaseDate().equals(releaseDate)) {
+                    booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
+                    booksArray[count] = books;
+                    count++;
+               }
+          if (count == 0) {
+               System.out.println("not found any books with the specified release date!");
+               return null;
+          }
+          return booksArray;
      }
 
      // search methods (CONTINUE)
@@ -140,7 +203,24 @@ public class BooksBUS implements IRuleSets {
 
      // advanced search
      public void advancedSearch () {
+          
+     }
 
+     // add methods (DONE)
+     @Override
+     public void add() {
+          Menu.addHandler();
+     }
+
+     @Override
+     public void add (Object newBook) {
+          if (newBook instanceof Books) {
+               booksList = Arrays.copyOf(booksList, booksList.length + 1);
+               booksList[count] = (Books) newBook;
+               count++;
+          }
+          else 
+               System.out.println("your new book have something not like book!");
      }
 
      // edit methods (DONE)

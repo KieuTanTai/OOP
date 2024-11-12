@@ -63,12 +63,13 @@ public class StationaryBUS implements IRuleSets {
     @Override
     public int find(String inputValue) {
         for (int i = 0; i < staList.length; i++)
-            if (staList[i].getProductID().equals(inputValue) || staList[i].getProductName().equals(inputValue))
-                return i;
+            if (staList[i].getProductID().equals(inputValue) || staList[i].getProductName().equals(inputValue) || staList[i].getStationaryID().equals(inputValue))
+                return i; 
+        System.out.println("your stationary is not exist! ");
         return -1;
     }
 
-    // relative find
+    // relative finds
     // return list index of products that have contains specific string
     public Stationary[] relativeFind(String name) {
         int count = 0;
@@ -79,26 +80,107 @@ public class StationaryBUS implements IRuleSets {
                 staArray[count] = stationary;
                 count++;
             }
-        if (count == 0)
+        if (count == 0) {
+            System.out.println("not found any stationeries!");
             return null;
+        }
         return staArray;
     }
-
-    // add methods ()
-    @Override
-    public void add() {
-        Menu.addHandler();
+    
+    public Stationary[] relativeFindByProductPrice(BigDecimal productPrice) {
+        int count = 0;
+        Stationary[] staArray = new Stationary[0];
+        for (Stationary stationary : staList)
+            if (stationary.getProductPrice().compareTo(productPrice) == 0) {
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                count++;
+            }
+        if (count == 0) {
+            System.out.println("not found any stationeries with the specified price!");
+            return null;
+        }
+        return staArray;
     }
-
-    @Override
-    public void add(Object stationary) {
-        if (stationary instanceof Stationary) {
-            staList = Arrays.copyOf(staList, staList.length + 1);
-            staList[count] = (Stationary) stationary;
-            count++;
-        } else
-            System.out.println("your new stationary have something not like stationary!");
-
+    
+    public Stationary[] relativeFindByReleaseDate(LocalDate releaseDate) {
+        int count = 0;
+        Stationary[] staArray = new Stationary[0];
+        for (Stationary stationary : staList)
+            if (stationary.getReleaseDate().equals(releaseDate)) {
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                count++;
+            }
+        if (count == 0) {
+            System.out.println("not found any stationeries with the specified release date!");
+            return null;
+        }
+        return staArray;
+    }
+    
+    public Stationary[] relativeFindByStaTypes(StaTypes staTypes) {
+        int count = 0;
+        Stationary[] staArray = new Stationary[0];
+        for (Stationary stationary : staList)
+            if (stationary.getStationaryID().equals(staTypes.getTypeID())) {
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                count++;
+            }
+        if (count == 0) {
+            System.out.println("not found any stationeries with the specified type!");
+            return null;
+        }
+        return staArray;
+    }
+    
+    public Stationary[] relativeFindByBrand(String brand) {
+        int count = 0;
+        Stationary[] staArray = new Stationary[0];
+        for (Stationary stationary : staList)
+            if (stationary.getBrand().equals(brand)) {
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                count++;
+            }
+        if (count == 0) {
+            System.out.println("not found any stationeries with the specified brand!");
+            return null;
+        }
+        return staArray;
+    }
+    
+    public Stationary[] relativeFindByMaterial(String material) {
+        int count = 0;
+        Stationary[] staArray = new Stationary[0];
+        for (Stationary stationary : staList)
+            if (stationary.getMaterial().equals(material)) {
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                count++;
+            }
+        if (count == 0) {
+            System.out.println("not found any stationeries with the specified material!");
+            return null;
+        }
+        return staArray;
+    }
+    
+    public Stationary[] relativeFindBySource(String source) {
+        int count = 0;
+        Stationary[] staArray = new Stationary[0];
+        for (Stationary stationary : staList)
+            if (stationary.getSource().equals(source)) {
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                count++;
+            }
+        if (count == 0) {
+            System.out.println("not found any stationeries with the specified source!");
+            return null;
+        }
+        return staArray;
     }
 
     // search methods
@@ -131,6 +213,23 @@ public class StationaryBUS implements IRuleSets {
 
     // advanced search
     public void advancedSearch() {
+
+    }
+
+    // add methods (DONE)
+    @Override
+    public void add() {
+        Menu.addHandler();
+    }
+
+    @Override
+    public void add(Object stationary) {
+        if (stationary instanceof Stationary) {
+            staList = Arrays.copyOf(staList, staList.length + 1);
+            staList[count] = (Stationary) stationary;
+            count++;
+        } else
+            System.out.println("your new stationary have something not like stationary!");
 
     }
 

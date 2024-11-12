@@ -5,6 +5,12 @@ import DTO.Stationary;
 import Manager.Menu;
 import util.Validate;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -220,8 +226,62 @@ public class StationaryBUS implements IRuleSets {
     }
 
     // some other methods
+
+    // execute files
+    //write file
+    public void writeFile () throws IOException {
+        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/ListGenres", false))) {
+            file.writeInt(count);
+            for (int i = 0; i < count; i++) {
+                    file.writeUTF(staList[i].getProductID());
+                    file.writeUTF(staList[i].getStationaryID());
+                    file.writeUTF(staList[i].getProductName());
+                    file.writeUTF(staList[i].getProductPrice().toString());
+                    file.writeUTF(staList[i].getReleaseDate().toString());
+                    file.writeUTF(staList[i].getType().getTypeID());
+                    file.writeUTF(staList[i].getBrand());
+                    file.writeInt(staList[i].getQuantity());
+                    file.writeUTF(staList[i].getMaterial());
+                    file.writeUTF(staList[i].getSource());
+                    file.writeUTF(System.lineSeparator());
+            }
+            System.out.println("write done!");
+        } catch (FileNotFoundException err) {
+            System.out.printf("404 not found!\n%s", err);
+        }
+    }
+
+    // read file
+    public void readFile () throws IOException {
+        try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/ListGenres"))) {
+            count = file.readInt();
+            Stationary[] list = new Stationary[count];
+            for (int i = 0; i < count; i++) {
+                    String productID =  file.readUTF();
+                    String stationaryID = file.readUTF();
+                    String productName = file.readUTF();
+                    BigDecimal price = new BigDecimal(file.readUTF());
+                    LocalDate releaseDate = LocalDate.parse(file.readUTF());
+                    String typeID = file.readUTF();
+                    String brand = file.readUTF();
+                    int quantity = file.readInt();
+                    String material = file.readUTF();  //use as param for query publisher from class Publishers
+                    String source = file.readUTF();
+                    file.readUTF();
+
+                    // execute IDs
+                    StaTypes type = StaTypesBUS.getStaType(typeID);
+                    list[i] = new Stationary(productID, stationaryID, productName, releaseDate, price, quantity, type, brand, material, source);
+            }
+            setCount(count);
+            setStaList(list);
+        } catch (FileNotFoundException err) {
+            System.out.printf("404 not found!\n%s", err);
+        }
+    }
+
     private String composeUsingFormatter(Stationary stationary) {
         return String.format(" stationary id: %s\n type: %s\n brand: %s\n material: %s\n source: %s\n",
-                stationary.getStationaryID(), stationary.getTypeName(), stationary.getBrand(), stationary.getMaterial(), stationary.getSource());
+                stationary.getStationaryID(), stationary.getType().getTypeName(), stationary.getBrand(), stationary.getMaterial(), stationary.getSource());
     }
 }

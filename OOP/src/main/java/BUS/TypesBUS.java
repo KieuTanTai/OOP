@@ -11,7 +11,7 @@ public class TypesBUS implements IRuleSets {
      private final Scanner input = new Scanner(System.in);
 
     // constructors
-     public TypesBUS() {
+     public TypesBUS(){
           TypesBUS.count = 0;
           typesList = new BookTypes[0];
      }
@@ -24,6 +24,13 @@ public class TypesBUS implements IRuleSets {
      // getter / setter
      public static BookTypes[] getTypesList() {
           return Arrays.copyOf(TypesBUS.typesList, TypesBUS.count);
+     }
+
+     public static BookTypes getType (String id) {
+          for (BookTypes type : typesList)
+               if (type.getTypeID().equals(id))
+                    return type;
+          return null;
      }
 
      public static int getCount() {

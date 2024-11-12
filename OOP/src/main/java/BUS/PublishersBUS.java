@@ -23,11 +23,18 @@ public class PublishersBUS implements IRuleSets {
         return Arrays.copyOf(PublishersBUS.publishersList, PublishersBUS.count);
     }
 
+    public static Publishers getPublisher (String id) {
+        for (Publishers publisher : publishersList)
+            if (publisher.getPublisherID().equals(id))
+                return publisher;
+        return null;
+     }
+
     public static int getCount () {
         return count;
     }
 
-     // all others methods like: add remove edit find show....
+    // all others methods like: add remove edit find show....
      // show list of publisher for user (DONE)
      public static void showList() {
         for (int i = 0; i < publishersList.length; i++)

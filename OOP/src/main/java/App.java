@@ -1,5 +1,4 @@
 import util.Validate;
-
 import java.io.IOException;
 import java.util.Scanner;
 import BUS.TypesBUS;

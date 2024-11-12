@@ -1,85 +1,79 @@
 package BUS;
+
+import DTO.Publishers;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
-import DTO.Publishers;
 
-public class PublishersBUS implements IRuleSets {
+public class PublishersBUS {
     private static Publishers[] publishersList;
     private static int count;
-    private final Scanner scanner = new Scanner(System.in);
 
-    // Constructor  
-    public PublishersBUS () {
-        PublishersBUS.publishersList = new Publishers[0];
+    // Constructor: Initializes with an empty list and count 0
+    public PublishersBUS() {
         PublishersBUS.count = 0;
+        publishersList = new Publishers[0];
     }
 
-    public PublishersBUS(int size, Publishers[] publishers) {
-        PublishersBUS.publishersList = publishers;
-        PublishersBUS.count = size;
+    // Constructor: Initializes with specified count and list
+    public PublishersBUS(int count, Publishers[] publishersList) {
+        PublishersBUS.count = count;
+        PublishersBUS.publishersList = publishersList;
     }
 
-    public static Publishers[] getPublishersList() {
-        return Arrays.copyOf(PublishersBUS.publishersList, PublishersBUS.count);
+    // Getter: Returns count of publishers
+    public int getCount() {
+        return PublishersBUS.count;
     }
 
-    public static Publishers getPublisher (String id) {
-        for (Publishers publisher : publishersList)
-            if (publisher.getPublisherID().equals(id))
-                return publisher;
-        return null;
-     }
-
-    public static int getCount () {
-        return count;
+    // Getter: Returns the publishers list
+    public Publishers[] getPublishersList() {
+        return PublishersBUS.publishersList;
     }
 
-    // all others methods like: add remove edit find show....
-     // show list of publisher for user (DONE)
-     public static void showList() {
-        for (int i = 0; i < publishersList.length; i++)
-             System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
-   }
+    // Setter: Sets count of publishers
+    public void setCount(int count) {
+        PublishersBUS.count = count;
+    }
 
-    public void add(Object publisher) {
-        if (publisher instanceof Publishers) {
-            if (count < publishersList.length) {
-                publishersList[count] = (Publishers) publisher;
-                count++;
-                System.out.println("Publisher added successfully.");
-            } else {
-                System.out.println("List is full, cannot add more publishers.");
-            }
-        } else {
-            System.out.println("Invalid object type. Must be a Publishers instance.");
+    // Setter: Sets publishers list
+    public void setPublishersList(Publishers[] publishersList) {
+        PublishersBUS.publishersList = publishersList;
+    }
+
+    // Show all publishers in the list
+    public static void showList() {
+        for (int i = 0; i < publishersList.length; i++) {
+            System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
         }
     }
 
+    // Add a new Publisher to the list
+    public static void add(Publishers publisher) {
+        publishersList = Arrays.copyOf(publishersList, publishersList.length + 1);
+        publishersList[count] = publisher;
+        count++;
+        System.out.println("Publisher added successfully.");
+    }
+
+    // Find the index of a Publisher by publisherID
     public int find(String publisherID) {
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < publishersList.length; i++) {
             if (publishersList[i].getPublisherID().equals(publisherID)) {
-                return i; //
+                return i;
             }
         }
         return -1;
     }
 
-    @Override
-    public void search(String publisherID) {
-        int index = find(publisherID);
-        if (index != -1) {
-            System.out.println("Found Publisher: " + publishersList[index].getPublisherName());
-        } else {
-            System.out.println("Publisher not found.");
-        }
-    }
-
-    @Override // LOGIC ERROR
+    // Remove a Publisher from the list by publisherID
     public void remove(String publisherID) {
         int index = find(publisherID);
         if (index != -1) {
-            publishersList[index] = publishersList[count - 1];
-            publishersList[count - 1] = null; //
+            for (int i = index; i < publishersList.length - 1; i++) {
+                publishersList[i] = publishersList[i + 1];
+            }
+            publishersList = Arrays.copyOf(publishersList, publishersList.length - 1);
             count--;
             System.out.println("Publisher removed successfully.");
         } else {
@@ -87,46 +81,57 @@ public class PublishersBUS implements IRuleSets {
         }
     }
 
-    @Override
-    public void edit(String publisherID) {
+    // Search for a Publisher by publisherID and display it
+    public void search(String publisherID) {
         int index = find(publisherID);
         if (index != -1) {
-            System.out.print("Enter new publisher name: ");
-            String newName = scanner.nextLine();
-            publishersList[index].setPublisherName(newName);
-            System.out.println("Publisher edited successfully.");
+            System.out.printf("Found Publisher: %s - %s\n", publishersList[index].getPublisherID(), publishersList[index].getPublisherName());
         } else {
             System.out.println("Publisher not found.");
         }
     }
 
-    @Override
-    public void add() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+    // Edit the publisherName of a Publisher by publisherID
+    public void edit(String publisherID) {
+        int index = find(publisherID);
+        if (index != -1) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter new publisher name: ");
+            String newPublisherName = scanner.nextLine();
+            publishersList[index].setPublisherName(newPublisherName);
+            System.out.println("Publisher updated successfully.");
+        } else {
+            System.out.println("Publisher not found.");
+        }
     }
 
-    @Override
-    public void find() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'find'");
+    // Write the list of Publishers to a file
+    public void writeFile() throws IOException {
+        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/Publishers", false))) {
+            file.writeInt(count);
+            for (int i = 0; i < count; i++) {
+                file.writeUTF(publishersList[i].getPublisherID());
+                file.writeUTF(publishersList[i].getPublisherName());
+            }
+            System.out.println("Write done!");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
     }
 
-    @Override
-    public void search() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'search'");
-    }
-
-    @Override
-    public void remove() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'remove'");
-    }
-
-    @Override
-    public void edit() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'edit'");
+    // Read the list of Publishers from a file
+    public void readFile() throws IOException {
+        try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/Publishers"))) {
+            count = file.readInt();
+            Publishers[] list = new Publishers[count];
+            for (int i = 0; i < count; i++) {
+                String publisherID = file.readUTF();
+                String publisherName = file.readUTF();
+                list[i] = new Publishers(publisherID, publisherName);
+            }
+            PublishersBUS.publishersList = list;
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
     }
 }

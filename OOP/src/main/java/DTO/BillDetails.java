@@ -1,21 +1,22 @@
 package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+import java.util.Scanner;
 import util.Validate;
 
 public class BillDetails{
     private String billId;
-    private int quanity;
+    private int quantity;
     private BigDecimal price;
     private BigDecimal subTotal;
+    Scanner sc = new Scanner(System.in);
 
     public BillDetails() {
     }
 
-    public BillDetails(String billId, int quanity, BigDecimal price, BigDecimal subTotal) {
+    public BillDetails(String billId, int quantity, BigDecimal price, BigDecimal subTotal) {
         this.billId = billId;
-        this.quanity = quanity;
+        this.quantity = quantity;
         this.price = price;
         this.subTotal = subTotal;
     }
@@ -28,12 +29,12 @@ public class BillDetails{
         return this.billId;
     }
 
-    public int getQuanity() {
-        return this.quanity;
+    public int getQuantity() {
+        return this.quantity;
     }
 
-    public void setQuanity(int quanity) {
-        this.quanity = quanity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public BigDecimal getPrice() {
@@ -66,7 +67,7 @@ public class BillDetails{
      }
 
     public void nhap(){
-        quanity = setQuanity();
+        quantity = setquantity();
         price = setPrice();
         billId = setBillId();
     }
@@ -76,7 +77,7 @@ public class BillDetails{
     @Override
     public String toString() {
         return "{" + "billId='" + getBillId() + 
-            " quanity='" + getQuanity() + "'" +
+            " quantity='" + getquantity() + "'" +
             ", price='" + getPrice() + "'" +
             ", subTotal='" + getSubTotal() + "'" +
             "}";

@@ -6,7 +6,7 @@ import util.Validate;
 
 public class BillDetails{
     private String billId;
-    private int quantity;
+    private int quanity;
     private BigDecimal price;
     private BigDecimal subTotal;
     Scanner sc = new Scanner(System.in);
@@ -14,15 +14,23 @@ public class BillDetails{
     public BillDetails() {
     }
 
-    public BillDetails(String billId, int quantity, BigDecimal price, BigDecimal subTotal) {
+    public BillDetails(String billId, int quanity, BigDecimal price, BigDecimal subTotal) {
         this.billId = billId;
-        this.quantity = quantity;
+        this.quanity = quanity;
         this.price = price;
         this.subTotal = subTotal;
     }
 
     public void setBillId(String id){
         this.billId = id;
+    }
+
+    public String getBillId(){
+        return this.billId;
+    }
+
+    public int getQuanity() {
+        return this.quanity;
     }
 
     public String getBillId(){
@@ -66,6 +74,29 @@ public class BillDetails{
           return id;
      }
 
+    public int setQuanity() {
+        int quantity;
+        do {
+             System.out.print("set quantity: ");
+             String quantityInput = sc.nextLine().trim();
+             quantity = Validate.isNumber(quantityInput);
+        } while (quantity == -1);
+        return quantity;
+    }
+
+    public BigDecimal setPrice() {
+        BigDecimal price;
+          do {
+               System.out.print("set bill id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+     }
+
     public void nhap(){
         quantity = setquantity();
         price = setPrice();
@@ -77,7 +108,7 @@ public class BillDetails{
     @Override
     public String toString() {
         return "{" + "billId='" + getBillId() + 
-            " quantity='" + getquantity() + "'" +
+            " quanity='" + getQuanity() + "'" +
             ", price='" + getPrice() + "'" +
             ", subTotal='" + getSubTotal() + "'" +
             "}";

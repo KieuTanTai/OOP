@@ -1,27 +1,30 @@
 package BUS;
-import DTO.Bill;
-import DTO.BillDetails;
 
 import java.util.Scanner;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.time.LocalDate;
 
-public class DSBill{
+import DTO.*;
+import util.Validate;
+
+
+public class BillBus{
     Scanner sc = new Scanner(System.in);
     private Bill[] ds;
     private int n;
 
-    public DSBill(){
+    public BillBus(){
         n = 0;
         ds = new Bill[0];
     }
 
-    public DSBill(Bill[] ds, int n){
+    public BillBus(Bill[] ds, int n){
         this.ds = ds;
         this.n = n;
     }
 
-    public DSBill(DSBill list){
+    public BillBus(BillBus list){
         ds = list.ds;
         n = list.n;
     }
@@ -54,6 +57,7 @@ public class DSBill{
     public void xuat(){
         for(int i = 0; i < n; ++i){
             System.out.println(ds[i].toString());
+            
         }
     }
 
@@ -85,7 +89,7 @@ public class DSBill{
         }
     }
 
-    public void suaTheoDate(String bd, String newDate){
+    public void suaTheoDate(String bd,LocalDate newDate){
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
                 ds[i].setDate(newDate);
@@ -118,7 +122,7 @@ public class DSBill{
     }
 
     public void sua(){
-        System.out.println("nhap bill id muon sua: ");
+        System.out.println("insert bill's id you want to edit: ");
         String fixBill = sc.nextLine();
         boolean flag = false;
         for(int i = 0; i < n; ++i){
@@ -136,30 +140,58 @@ public class DSBill{
                 sc.nextLine();
                 switch (x) {
                     case 1:
-                        System.out.println("nhap enployee id muon sua:");
-                        String newEId = sc.nextLine();
-                        ds[i].setEmployeeId(newEId);
+                        String eid;
+                    do {
+                        System.out.print("set employee id : ");
+                        eid = sc.nextLine().trim();
+                        if (Validate.validateID(eid)) {
+                        System.out.println("error id !");
+                        eid = "";
+                            }
+                        } while (eid.isEmpty());
+                        ds[i].setEmployeeId(eid);
                         break;
                     case 2:
-                        System.out.println("nhap customer id muon sua");
-                        String newCId = sc.nextLine();
-                        ds[i].setCustomerId(newCId);                      
+                        String cid;
+                    do {
+                        System.out.print("set customer id : ");
+                        cid = sc.nextLine().trim();
+                        if (Validate.validateID(cid)) {
+                              System.out.println("error id !");
+                              cid = "";
+                         }
+                    } while (cid.isEmpty());  
+                        ds[i].setCustomerId(cid);                  
                         break;
                     case 3:
-                        System.out.println("nhap ngay muon sua theo dinh dang dd-mm-yyyy");
-                        String newDate = sc.nextLine();
-                        ds[i].setDate(newDate);
+                        LocalDate date;
+                    do {
+                         System.out.print("set date : ");
+                         String dateInput = sc.nextLine().trim();
+                         date = Validate.isCorrectDate(dateInput);
+                    } while (date == null);
+                        ds[i].setDate(date);
                         break;
                     case 4:
-                        System.out.println("nhap discount muon sua");
-                        BigDecimal newDiscount = sc.nextBigDecimal();
-                        sc.nextLine();
-                        ds[i].setDiscount(newDiscount);
+                        BigDecimal discount;
+                    do {
+                         System.out.print("set discount : ");
+                         String value = sc.nextLine();
+                         discount = Validate.isBigDecimal(value);
+                    } while (discount == null);
+                        ds[i].setDiscount(discount);
                         break;
                     case 5:
-                        System.out.println("nhap promo code muon sua");
-                        String newPromo = sc.nextLine();
-                        ds[i].setPromoCode(newPromo);
+                        String code;
+                    do {
+                         System.out.print("set promo code : ");
+                         code = sc.nextLine().trim();
+                         if (Validate.validateID(code)) {
+                              System.out.println("error code !");
+                              code = "";
+                         }
+                    } while (code.isEmpty());
+                        ds[i].setPromoCode(code);
                         break;
                     case 6:
                         System.out.println("nhap total price muon sua");
@@ -241,7 +273,8 @@ public class DSBill{
         }
     }
 
-    public void timKiemTheoDate(String date){
+    @SuppressWarnings("unlikely-arg-type")
+    public void timKiemTheoDate(LocalDate date){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getDate().equals(date)){
@@ -307,38 +340,73 @@ public class DSBill{
 
         switch (m) {
             case 1:
-                System.out.println("nhap bill id muon tim");
-                String newBd = sc.nextLine();
-                timKiemTheoBillId(newBd);
+                String bid;
+            do {
+                 System.out.print("insert bill id : ");
+                 bid = sc.nextLine().trim();
+                 if (Validate.validateID(bid)) {
+                      System.out.println("error id !");
+                      bid = "";
+                 }
+            } while (bid.isEmpty());
+                timKiemTheoBillId(bid);
                 break;
             case 2:
-                System.out.println("nhap employee id muon tim");
-                String newEid = sc.nextLine();
-                timKiemTheoEmployeeId(newEid);
+                String eid;
+            do {
+                 System.out.print("set employee id : ");
+                 eid = sc.nextLine().trim();
+                 if (Validate.validateID(eid)) {
+                      System.out.println("error id !");
+                      eid = "";
+                 }
+            } while (eid.isEmpty());
+                timKiemTheoEmployeeId(eid);
                 break;
             case 3:
-                System.out.println("nhap customer id muon tim");
-                String newCid = sc.nextLine();
-                timKiemTheoCustomerId(newCid);        
+                String cid;
+            do {
+                 System.out.print("set customer id : ");
+                 cid = sc.nextLine().trim();
+                 if (Validate.validateID(cid)) {
+                      System.out.println("error id !");
+                      cid = "";
+                 }
+            } while (cid.isEmpty());
+                timKiemTheoCustomerId(cid);       
                 break;
             case 4:
-                System.out.println("nhap ngay muon tim");
-                String newDate = sc.nextLine();
-                timKiemTheoDate(newDate);        
+            LocalDate date;
+            do {
+                 System.out.print("set date : ");
+                 String dateInput = sc.nextLine().trim();
+                 date = Validate.isCorrectDate(dateInput);
+            } while (date == null);
+                timKiemTheoDate(date);   
                 break;
             case 5:
-                System.out.println("nhap discount muon tim");
-                BigDecimal newDiscount = sc.nextBigDecimal();
-                sc.nextLine();
-                timKiemTheoDiscount(newDiscount);        
+                BigDecimal discount;
+            do {
+                 System.out.print("set discount : ");
+                 String value = sc.nextLine();
+                 discount = Validate.isBigDecimal(value);
+            } while (discount == null);
+                timKiemTheoDiscount(discount);        
                 break;
             case 6:
-                System.out.println("nhap promo code muon tim");
-                String newPromo = sc.nextLine();
-                timKiemTheoPromoCode(newPromo);        
+                String code;
+            do {
+                 System.out.print("set promo code : ");
+                 code = sc.nextLine().trim();
+                 if (Validate.validateID(code)) {
+                      System.out.println("error code !");
+                      code = "";
+                 }
+            } while (code.isEmpty());
+                timKiemTheoPromoCode(code);        
                 break;
             case 7:
-                System.out.println("nhap total price muon tim");
+                System.out.println("insert total price you want to search");
                 BigDecimal newTotalPrice = sc.nextBigDecimal();
                 sc.nextLine();
                 timKiemTheoTotalPrice(newTotalPrice);        

@@ -6,6 +6,7 @@ import java.util.Scanner;
 import util.Validate;
 
 public class BillDetails{
+    private String billId;
     private int quanity;
     private BigDecimal price;
     private BigDecimal subTotal;
@@ -15,10 +16,19 @@ public class BillDetails{
     public BillDetails() {
     }
 
-    public BillDetails(int quanity, BigDecimal price, BigDecimal subTotal) {
+    public BillDetails(String billId, int quanity, BigDecimal price, BigDecimal subTotal) {
+        this.billId = billId;
         this.quanity = quanity;
         this.price = price;
         this.subTotal = subTotal;
+    }
+
+    public void setBillId(String id){
+        this.billId = id;
+    }
+
+    public String getBillId(){
+        return this.billId;
     }
 
     public int getQuanity() {
@@ -44,6 +54,19 @@ public class BillDetails{
     public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
+    
+    public String setBillId() {
+        String id;
+          do {
+               System.out.print("set bill id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+     }
 
     public int setQuanity() {
         int quantity;
@@ -68,6 +91,7 @@ public class BillDetails{
     public void nhap(){
         quanity = setQuanity();
         price = setPrice();
+        billId = setBillId();
     }
 
     public BigDecimal calcSubTotal(){
@@ -78,7 +102,7 @@ public class BillDetails{
 
     @Override
     public String toString() {
-        return "{" +
+        return "{" + "billId='" + getBillId() + 
             " quanity='" + getQuanity() + "'" +
             ", price='" + getPrice() + "'" +
             ", subTotal='" + getSubTotal() + "'" + "}";

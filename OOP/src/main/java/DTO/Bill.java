@@ -4,12 +4,8 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-
-import java.util.ArrayList;
-import java.util.List;
 import util.Validate;
-import DTO.BillDetails;
+// import DTO.BillDetails;
 
 public class Bill {
     private String billId;
@@ -19,7 +15,6 @@ public class Bill {
     private BigDecimal discount;
     private BigDecimal totalPrice;
     private LocalDate date;
-    private List<BillDetails> dsDetails = new ArrayList<>();
     
     Scanner sc = new Scanner(System.in);
 
@@ -34,28 +29,6 @@ public class Bill {
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;
-    }
-
-    public void setBillDetails() {
-        System.out.print("set bill details counts: ");
-        int n = Integer.parseInt(sc.nextLine());
-        
-        for (int i = 0; i < n; i++) {
-            System.out.println("set bill details number " + i + ":");
-            BillDetails detail = new BillDetails();
-            detail.nhap();
-            detail.calcSubTotal(); 
-            dsDetails.add(detail);
-        }
-    }
-
-    public void xuatBillDetails() {
-        System.out.println("bill details:");
-        for (int i = 0; i < dsDetails.size(); i++) {
-            BillDetails detail = dsDetails.get(i);
-            System.out.println("bill details number: " + i);
-            System.out.println(detail.toString());
-        }
     }
 
     public String setBillId() {
@@ -137,7 +110,7 @@ public class Bill {
         promoCode = setPromoCode();
         discount = setDiscount();
         date = setDate();
-        setBillDetails();
+
     }
 
     public String getBillId() {

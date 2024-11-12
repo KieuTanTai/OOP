@@ -121,30 +121,6 @@ public class BillBus{
         }
     }
 
-    public void suaTheoQuanity(String bd, int newQuanity){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setQuanity(newQuanity);
-            }
-        }
-    }
-
-    public void suaTheoPrice(String bd, BigDecimal newPrice){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setPrice(newPrice);
-            }
-        }
-    }
-
-    public void suaTheoSubTotal(String bd, BigDecimal newSubTotal){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setSubTotal(newSubTotal);
-            }
-        }
-    }
-
     public void sua(){
         System.out.println("insert bill's id you want to edit: ");
         String fixBill = sc.nextLine();
@@ -158,9 +134,6 @@ public class BillBus{
                 System.out.println("4. discount");
                 System.out.println("5. promo code");
                 System.out.println("6. total price");
-                System.out.println("7. price");
-                System.out.println("8. quanity");
-                System.out.println("9. sub total");
                 System.out.println("0. thoat");
                 System.out.println("Chon thong tin can sua: ");
                 int x = sc.nextInt();
@@ -226,30 +199,6 @@ public class BillBus{
                         sc.nextLine();
                         ds[i].setTotalPrice(newTotalPrice);
                         break;
-                    case 7:
-                        BigDecimal price;
-                    do {
-                         System.out.print("set price : ");
-                         String value = sc.nextLine();
-                         price = Validate.isBigDecimal(value);
-                    } while (price == null);
-                        ds[i].setPrice(price);
-                        break;
-                    case 8:
-                        int quantity;
-                    do {
-                         System.out.print("set quantity: ");
-                         String quantityInput = sc.nextLine().trim();
-                         quantity = Validate.isNumber(quantityInput);
-                    } while (quantity == -1);
-                        ds[i].setQuanity(quantity);
-                        break;
-                    case 9:
-                        System.out.println("nhap subtotal muon sua");
-                        BigDecimal newSubTotal = sc.nextBigDecimal();
-                        sc.nextLine();
-                        ds[i].setSubTotal(newSubTotal);
-                        break;    
                     default:
                         break;
                 }
@@ -377,45 +326,6 @@ public class BillBus{
         }
     }
 
-    public void timKiemTheoQuanity(int newquanity){
-        boolean flag = false;
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getQuanity() == newquanity){
-                ds[i].toString();
-                flag = true;
-            }
-        }
-        if(flag == false){
-            System.out.println("khong tim thay");
-        }
-    }
-
-    public void timKiemTheoPrice(BigDecimal newprice){
-        boolean flag = false;
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getPrice().equals(newprice)){
-                ds[i].toString();
-                flag = true;
-            }
-        }
-        if(flag == false){
-            System.out.println("khong tim thay");
-        }
-    }
-
-    public void timKiemTheoSubTotal(BigDecimal newsubtotal){
-        boolean flag = false;
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getSubTotal().equals(newsubtotal)){
-                ds[i].toString();
-                flag = true;
-            }
-        }
-        if(flag == false){
-            System.out.println("khong tim thay");
-        }
-    }
-
     public void timKiem(){
         System.out.println("1. search bill id");
         System.out.println("2. search employee id");
@@ -424,9 +334,6 @@ public class BillBus{
         System.out.println("5. search discount");
         System.out.println("6. search promo code");
         System.out.println("7. search total price");
-        System.out.println("8. search quanity");
-        System.out.println("9. search price");
-        System.out.println("10. search sub total");
         System.out.println("Nhap lua chon");
         int m = sc.nextInt();
         sc.nextInt();
@@ -504,31 +411,6 @@ public class BillBus{
                 sc.nextLine();
                 timKiemTheoTotalPrice(newTotalPrice);        
                 break;
-            case 8:
-                int quantity;
-            do {
-                 System.out.print("set quantity: ");
-                 String quantityInput = sc.nextLine().trim();
-                 quantity = Validate.isNumber(quantityInput);
-            } while (quantity == -1);
-                timKiemTheoQuanity(quantity);        
-                break;
-            case 9:
-                BigDecimal price;
-            do {
-                 System.out.print("set price : ");
-                 String value = sc.nextLine();
-                 price = Validate.isBigDecimal(value);
-            } while (price == null);
-                timKiemTheoPrice(price);        
-                break;
-            case 10:
-                System.out.println("insert sub total you want to search");
-                BigDecimal newSubTotal = sc.nextBigDecimal();
-                sc.nextLine();
-                timKiemTheoSubTotal(newSubTotal);        
-                break;
-        
             default:
                 break;
         }

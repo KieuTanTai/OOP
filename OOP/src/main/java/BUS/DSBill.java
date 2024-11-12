@@ -116,30 +116,6 @@ public class DSBill{
         }
     }
 
-    public void suaTheoQuanity(String bd, int newQuanity){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setQuanity(newQuanity);
-            }
-        }
-    }
-
-    public void suaTheoPrice(String bd, BigDecimal newPrice){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setPrice(newPrice);
-            }
-        }
-    }
-
-    public void suaTheoSubTotal(String bd, BigDecimal newSubTotal){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setSubTotal(newSubTotal);
-            }
-        }
-    }
-
     public void sua(){
         System.out.println("nhap bill id muon sua: ");
         String fixBill = sc.nextLine();
@@ -153,9 +129,6 @@ public class DSBill{
                 System.out.println("4. discount");
                 System.out.println("5. promo code");
                 System.out.println("6. total price");
-                System.out.println("7. price");
-                System.out.println("8. quanity");
-                System.out.println("9. sub total");
                 System.out.println("0. thoat");
                 System.out.println("Chon thong tin can sua: ");
                 int x = sc.nextInt();
@@ -193,23 +166,6 @@ public class DSBill{
                         sc.nextLine();
                         ds[i].setTotalPrice(newTotalPrice);
                         break;
-                    case 7:
-                        System.out.println("nhap price muon sua");
-                        BigDecimal newPrice = sc.nextBigDecimal();
-                        sc.nextLine();
-                        ds[i].setPrice(newPrice);
-                        break;
-                    case 8:
-                        System.out.println("nhap quanity muon sua");
-                        int newQuanity = sc.nextInt();
-                        ds[i].setQuanity(newQuanity);
-                        break;
-                    case 9:
-                        System.out.println("nhap subtotal muon sua");
-                        BigDecimal newSubTotal = sc.nextBigDecimal();
-                        sc.nextLine();
-                        ds[i].setSubTotal(newSubTotal);
-                        break;    
                     default:
                         break;
                 }
@@ -336,56 +292,14 @@ public class DSBill{
         }
     }
 
-    public void timKiemTheoQuanity(int newquanity){
-        boolean flag = false;
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getQuanity() == newquanity){
-                ds[i].toString();
-                flag = true;
-            }
-        }
-        if(flag == false){
-            System.out.println("khong tim thay");
-        }
-    }
-
-    public void timKiemTheoPrice(BigDecimal newprice){
-        boolean flag = false;
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getPrice().equals(newprice)){
-                ds[i].toString();
-                flag = true;
-            }
-        }
-        if(flag == false){
-            System.out.println("khong tim thay");
-        }
-    }
-
-    public void timKiemTheoSubTotal(BigDecimal newsubtotal){
-        boolean flag = false;
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getSubTotal().equals(newsubtotal)){
-                ds[i].toString();
-                flag = true;
-            }
-        }
-        if(flag == false){
-            System.out.println("khong tim thay");
-        }
-    }
-
     public void timKiem(){
-        System.out.println("1. tim kiem theo bill id");
-        System.out.println("2. tim kiem theo employee id");
-        System.out.println("3. tim kiem theo customer id");
-        System.out.println("4. tim kiem theo date");
-        System.out.println("5. tim kiem theo discount");
-        System.out.println("6. tim kiem theo promo code");
-        System.out.println("7. tim kiem theo total price");
-        System.out.println("8. tim kiem theo quanity");
-        System.out.println("9. tim kiem theo price");
-        System.out.println("10. tim kiem theo sub total");
+        System.out.println("1. search bill id");
+        System.out.println("2. search employee id");
+        System.out.println("3. search customer id");
+        System.out.println("4. search date");
+        System.out.println("5. search discount");
+        System.out.println("6. search promo code");
+        System.out.println("7. search total price");
         System.out.println("Nhap lua chon");
         int m = sc.nextInt();
         sc.nextInt();
@@ -428,24 +342,6 @@ public class DSBill{
                 sc.nextLine();
                 timKiemTheoTotalPrice(newTotalPrice);        
                 break;
-            case 8:
-                System.out.println("nhap quanity muon tim");
-                int newQuanity = sc.nextInt();
-                timKiemTheoQuanity(newQuanity);        
-                break;
-            case 9:
-                System.out.println("nhap price muon tim");
-                BigDecimal newPrice = sc.nextBigDecimal();
-                sc.nextLine();
-                timKiemTheoPrice(newPrice);        
-                break;
-            case 10:
-                System.out.println("nhap sub total muon tim");
-                BigDecimal newSubTotal = sc.nextBigDecimal();
-                sc.nextLine();
-                timKiemTheoSubTotal(newSubTotal);        
-                break;
-        
             default:
                 break;
         }

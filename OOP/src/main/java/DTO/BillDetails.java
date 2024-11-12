@@ -2,7 +2,10 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class BillDetails extends Bill{
+import util.Validate;
+
+public class BillDetails{
+    private String billId;
     private int quanity;
     private BigDecimal price;
     private BigDecimal subTotal;
@@ -10,11 +13,19 @@ public class BillDetails extends Bill{
     public BillDetails() {
     }
 
-    public BillDetails(String billId, String employeeId, String customerId, String promoCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date, int quanity, BigDecimal price, BigDecimal subTotal) {
-        super(billId, employeeId, customerId, promoCode, discount, totalPrice, date);
+    public BillDetails(String billId, int quanity, BigDecimal price, BigDecimal subTotal) {
+        this.billId = billId;
         this.quanity = quanity;
         this.price = price;
         this.subTotal = subTotal;
+    }
+
+    public void setBillId(String id){
+        this.billId = id;
+    }
+
+    public String getBillId(){
+        return this.billId;
     }
 
     public int getQuanity() {
@@ -40,23 +51,31 @@ public class BillDetails extends Bill{
     public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
+    
+    public String setBillId() {
+        String id;
+          do {
+               System.out.print("set bill id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+     }
 
     public void nhap(){
-        super.nhap();
-        System.out.println("Vui long nhap quanity: ");
-        setQuanity(sc.nextInt());
-        System.out.println("Vui long nhap price: ");
-        setPrice(sc.nextBigDecimal());
-        sc.nextLine();
-        System.out.println("Vui long nhap sub total: ");
-        setSubTotal(sc.nextBigDecimal());
-        sc.nextLine();
+        quanity = setQuanity();
+        price = setPrice();
+        billId = setBillId();
+    }
 
     }
 
     @Override
     public String toString() {
-        return super.toString() + "," +
+        return "{" + "billId='" + getBillId() + 
             " quanity='" + getQuanity() + "'" +
             ", price='" + getPrice() + "'" +
             ", subTotal='" + getSubTotal() + "'" +

@@ -2,7 +2,8 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
+import util.Validate;
+// import DTO.BillDetails;
 
 public class Bill {
     private String billId;
@@ -27,6 +28,88 @@ public class Bill {
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;
+    }
+
+    public String setBillId() {
+        String id;
+          do {
+               System.out.print("set bill id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+     }
+
+    public String setEmployeeId() {
+        String id;
+          do {
+               System.out.print("set employee id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+    }
+
+    public String setCustomerId() {
+        String id;
+          do {
+               System.out.print("set customer id : ");
+               id = sc.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
+          } while (id.isEmpty());
+          return id;
+    }
+
+    public String setPromoCode() {
+        String code;
+          do {
+               System.out.print("set promo code : ");
+               code = sc.nextLine().trim();
+               if (Validate.validateID(code)) {
+                    System.out.println("error code !");
+                    code = "";
+               }
+          } while (code.isEmpty());
+          return code;
+    }
+
+    public BigDecimal setDiscount() {
+        BigDecimal discount;
+        do {
+             System.out.print("set discount : ");
+             String value = sc.nextLine();
+             discount = Validate.isBigDecimal(value);
+        } while (discount == null);
+        return discount;
+    }
+
+    public LocalDate setDate() {
+        LocalDate date;
+          do {
+               System.out.print("set date : ");
+               String dateInput = sc.nextLine().trim();
+               date = Validate.isCorrectDate(dateInput);
+          } while (date == null);
+          return date;
+   }
+   
+    public void nhap(){
+        billId = setBillId();
+        employeeId = setEmployeeId();
+        customerId = setCustomerId();
+        promoCode = setPromoCode();
+        discount = setDiscount();
+        date = setDate();
+
     }
 
     public String getBillId() {

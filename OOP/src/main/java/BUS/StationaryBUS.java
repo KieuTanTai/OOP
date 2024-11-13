@@ -69,7 +69,7 @@ public class StationaryBUS implements IRuleSets {
         return -1;
     }
 
-    // relative find
+    // relative finds
     // return list index of products that have contains specific string
     public Stationary[] relativeFind (Object originalKey, String request) {
         int count = 0;
@@ -113,28 +113,28 @@ public class StationaryBUS implements IRuleSets {
         boolean flag = false;
         Stationary[] staArray = new Stationary[0];
         for (Stationary stationary : staList) {
-            BigDecimal productPrice = stationary.getProductPrice();
-            if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
-                flag = true;
-            else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
-                flag = true;
-            else if (request.equals("range")) 
-                if ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0))
-                    flag = true;
+             BigDecimal productPrice = stationary.getProductPrice();
+             if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
+                  flag = true;
+             else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
+                  flag = true;
+             else if (request.equals("range")) 
+                  if ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0))
+                       flag = true;
 
-            if (flag) {
-                staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                staArray[count] = stationary;
-                flag = false;
-                count++;
-            }
+             if (flag) {
+                  staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                  staArray[count] = stationary;
+                  flag = false;
+                  count++;
+             }
         }
         if (count == 0) {
-            System.out.println("not found any stationary!");
-            return null;
+             System.out.println("not found any stationary!");
+             return null;
         }
         return staArray;
-    }
+   }
     
     public Stationary[] advancedFind (Object originalKeyI, Object originalTimeOrKey, String request) {
         int count = 0;
@@ -218,6 +218,23 @@ public class StationaryBUS implements IRuleSets {
         if (indexList != null)
             for (Stationary stationary : indexList)
                 System.out.printf("stationer's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
+    }
+
+    // add methods (DONE)
+    @Override
+    public void add() {
+        Menu.addHandler();
+    }
+
+    @Override
+    public void add(Object stationary) {
+        if (stationary instanceof Stationary) {
+            staList = Arrays.copyOf(staList, staList.length + 1);
+            staList[count] = (Stationary) stationary;
+            count++;
+        } else
+            System.out.println("your new stationary have something not like stationary!");
+
     }
 
     // edit methods

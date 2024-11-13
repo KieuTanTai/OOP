@@ -8,6 +8,8 @@ import java.util.Scanner;
 public class SuppliersBUS {
     private static Suppliers[] suppliersList;
     private static int count;
+    private Scanner scanner = new Scanner(System.in);
+    
 
     // Constructor: Initializes with an empty list and count 0
     public SuppliersBUS() {
@@ -95,7 +97,6 @@ public class SuppliersBUS {
     public void edit(String supplierID) {
         int index = find(supplierID);
         if (index != -1) {
-            Scanner scanner = new Scanner(System.in);
             System.out.print("Enter new supplier name: ");
             String newSupplierName = scanner.nextLine();
             suppliersList[index].setSupplierName(newSupplierName);

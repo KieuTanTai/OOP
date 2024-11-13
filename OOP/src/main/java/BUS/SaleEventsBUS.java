@@ -1,9 +1,6 @@
 package BUS;
 
 import DTO.SaleEvents;
-import DTO.SaleEventsDetail;
-
-import java.time.LocalDate;
 import java.util.Arrays;
 
 public class SaleEventsBUS {

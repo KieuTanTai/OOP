@@ -32,6 +32,13 @@ public class StaTypesBUS {
         return Arrays.copyOf(typesList, typesList.length);
     }
 
+    public static StaTypes getStaType (String id) {
+        for (StaTypes staType : typesList)
+            if (staType.getTypeID().equals(id))
+                return staType;
+        return null;
+    }
+
     // Setter: Sets count of types
     public void setCount(int count) {
         StaTypesBUS.count = count;

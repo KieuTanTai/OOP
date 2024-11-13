@@ -1,8 +1,6 @@
 package BUS;
 
 import DTO.BillDetails;
-import util.Validate;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -19,11 +17,6 @@ public class BillDetailsBus {
     public BillDetailsBus(BillDetails[] ds, int n){
         BillDetailsBus.n = n;
         BillDetailsBus.ds = ds;
-    }
-
-    public BillDetailsBus(BillDetailsBus list){
-        ds = list.ds;
-        n = list.n;
     }
 
     public BillDetails[] getds(){

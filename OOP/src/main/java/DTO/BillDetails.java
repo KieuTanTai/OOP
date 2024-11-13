@@ -6,7 +6,7 @@ import util.Validate;
 
 public class BillDetails{
     private String billId;
-    private int quanity;
+    private int quantity;
     private BigDecimal price;
     private BigDecimal subTotal;
     Scanner sc = new Scanner(System.in);
@@ -14,23 +14,15 @@ public class BillDetails{
     public BillDetails() {
     }
 
-    public BillDetails(String billId, int quanity, BigDecimal price, BigDecimal subTotal) {
+    public BillDetails(String billId, int quantity, BigDecimal price, BigDecimal subTotal) {
         this.billId = billId;
-        this.quanity = quanity;
+        this.quantity = quantity;
         this.price = price;
         this.subTotal = subTotal;
     }
 
     public void setBillId(String id){
         this.billId = id;
-    }
-
-    public String getBillId(){
-        return this.billId;
-    }
-
-    public int getQuanity() {
-        return this.quanity;
     }
 
     public String getBillId(){
@@ -74,7 +66,7 @@ public class BillDetails{
           return id;
      }
 
-    public int setQuanity() {
+    public int setQuantity() {
         int quantity;
         do {
              System.out.print("set quantity: ");
@@ -108,7 +100,7 @@ public class BillDetails{
     @Override
     public String toString() {
         return "{" + "billId='" + getBillId() + 
-            " quanity='" + getQuanity() + "'" +
+            " quantity='" + getquantity() + "'" +
             ", price='" + getPrice() + "'" +
             ", subTotal='" + getSubTotal() + "'" +
             "}";

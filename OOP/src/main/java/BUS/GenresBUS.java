@@ -2,6 +2,11 @@ package BUS;
 import DTO.BookGenres;
 import Manager.Menu;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -48,7 +53,9 @@ public class GenresBUS implements IRuleSets {
      // all others methods like: add remove edit find show....
      // methods shows list of genres for user (DONE)
      public static void showList () {
-          for (int i = 0; i <= GenresBUS.count; i++)
+          if (genresList == null)
+               return;
+          for (int i = 0; i < genresList.length; i++)
                System.out.printf("%d: %10s %s\n", i + 1, genresList[i].getGenreID(), genresList[i].getGenreName());
      }
 
@@ -60,10 +67,11 @@ public class GenresBUS implements IRuleSets {
 
      @Override
      public int find (String inputId)  {
-          for ( int i = 0; i < GenresBUS.genresList.length; i++) {
+          for ( int i = 0; i < genresList.length; i++) {
                if (genresList[i].getGenreID().equals(inputId))
                     return i;
           }
+          System.out.println("your genre is not found! ");
           return -1;
      }
 
@@ -76,8 +84,10 @@ public class GenresBUS implements IRuleSets {
                     genresArray[count] = genre;
                     count++;
                }
-          if (count == 0)
+          if (count == 0) {
+               System.out.println("not found any genres!");
                return null;
+          }
           return genresArray;
      }
 
@@ -90,21 +100,18 @@ public class GenresBUS implements IRuleSets {
      @Override
      public void search (String inputId) {
           int index = find(inputId);
-          if (index == -1) {
-               System.out.println("your genre is not found! ");
-               return;
-          }
-          System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[index].getGenreName());
+          if (index != -1)
+               System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[index].getGenreName());
      }
 
      public void relativeSearch (String name) {
           BookGenres[] list = relativeFind(name);
-          if (list == null) {
-               System.out.println("not found any genres!");
-               return;
+          if (list != null) {
+               System.out.println("-----------------------------------------------");
+               for (BookGenres genre : list)
+                  System.out.printf("genre's id  : %s\ngenre name : %s\n", genre.getGenreID(), genre.getGenreName());
+               System.out.println("-----------------------------------------------");
           }
-         for (BookGenres genre : list)
-             System.out.printf("genre's id  : %s\ngenre name : %s\n", genre.getGenreID(), genre.getGenreName());
      }
 
      // adds methods (DONE)
@@ -132,14 +139,14 @@ public class GenresBUS implements IRuleSets {
 
      @Override
      public void edit (String inputId) {
-          int genreIndex = find(inputId);
-          if (genreIndex == -1) {
+          int index = find(inputId);
+          if (index == -1) {
                System.out.println("your genre is not found !");
                return;     
           }
           System.out.print("enter new genre name: ");
           String newTypeName = input.nextLine().trim();
-          genresList[genreIndex].setGenreName(newTypeName);
+          genresList[index].setGenreName(newTypeName);
      }
 
      // remove methods (DONE)
@@ -150,16 +157,55 @@ public class GenresBUS implements IRuleSets {
 
      @Override
      public void remove (String inputId) {
-          int genreIndex = find(inputId);
-          if (genreIndex == -1) {
+          int index = find(inputId);
+          if (index == -1) {
                System.out.println("your genre is not found !");
                return;
           }
-          for (int i = genreIndex; i < genresList.length - 1; i++) 
+          for (int i = index; i < genresList.length - 1; i++) 
                genresList[i] = genresList[i + 1];
           genresList = Arrays.copyOf(genresList, genresList.length - 1);
           count--;
      }
 
-     
+     // execute file resources
+     /*
+      * DataOutputStream ? DataInputStream ?
+      * FileOutputStream ? FileInputStream ?  
+      * read and some methods read ? write and some methods write ?
+      * exception ?
+     */
+
+     //write file
+     public void writeFile () throws IOException {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/BookGenres", false))) {
+               file.writeInt(count);
+               for (int i = 0; i < count; i++) {
+                    file.writeUTF(genresList[i].getGenreID());
+                    file.writeUTF(genresList[i].getGenreName());
+               }
+               System.out.println("write done!");
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
+     }
+
+
+     // read file
+     public void readFile () throws IOException {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/BookGenres"))) {
+               int count = file.readInt();
+               BookGenres[] list = new BookGenres[count];
+               for (int i = 0; i < count; i++) {
+                    String genreID =  file.readUTF();
+                    String genreName = file.readUTF();
+                    list[i] = new BookGenres(genreID, genreName);
+               }
+               setCount(count);
+               setGenresList(list);
+               System.out.println("read done!");
+          } catch (FileNotFoundException err) {
+               System.out.printf("404 not found!\n%s", err);
+          }
+     }
 }

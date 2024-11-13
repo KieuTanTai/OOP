@@ -333,7 +333,7 @@ public class StationaryBUS implements IRuleSets {
     // execute files
     //write file
     public void writeFile () throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/ListGenres", false))) {
+        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/Stationeries", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                     file.writeUTF(staList[i].getProductID());
@@ -346,7 +346,6 @@ public class StationaryBUS implements IRuleSets {
                     file.writeInt(staList[i].getQuantity());
                     file.writeUTF(staList[i].getMaterial());
                     file.writeUTF(staList[i].getSource());
-                    file.writeUTF(System.lineSeparator());
             }
             System.out.println("write done!");
         } catch (FileNotFoundException err) {
@@ -356,7 +355,7 @@ public class StationaryBUS implements IRuleSets {
 
     // read file
     public void readFile () throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/ListGenres"))) {
+        try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Stationeries"))) {
             count = file.readInt();
             Stationary[] list = new Stationary[count];
             for (int i = 0; i < count; i++) {
@@ -370,7 +369,6 @@ public class StationaryBUS implements IRuleSets {
                     int quantity = file.readInt();
                     String material = file.readUTF();  //use as param for query publisher from class Publishers
                     String source = file.readUTF();
-                    file.readUTF();
 
                     // execute IDs
                     StaTypes type = StaTypesBUS.getStaType(typeID);

@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class StaTypesBUS {
     private static StaTypes[] typesList;
     private static int count;
+    private Scanner scanner = new Scanner(System.in);
 
     // Constructor: Initializes with an empty list and count 0
     public StaTypesBUS() {
@@ -22,13 +23,13 @@ public class StaTypesBUS {
     }
 
     // Getter: Returns count of types
-    public int getCount() {
-        return StaTypesBUS.count;
+    public static int getCount() {
+        return count;
     }
 
     // Getter: Returns the types list
-    public StaTypes[] getTypesList() {
-        return StaTypesBUS.typesList;
+    public static StaTypes[] getTypesList() {
+        return Arrays.copyOf(typesList, typesList.length);
     }
 
     // Setter: Sets count of types
@@ -95,7 +96,6 @@ public class StaTypesBUS {
     public void edit(String typeID) {
         int index = find(typeID);
         if (index != -1) {
-            Scanner scanner = new Scanner(System.in);
             System.out.print("Enter new type name: ");
             String newTypeName = scanner.nextLine();
             typesList[index].setTypeName(newTypeName);
@@ -134,5 +134,4 @@ public class StaTypesBUS {
             System.out.println("File not found: " + e.getMessage());
         }
     }
-
 }

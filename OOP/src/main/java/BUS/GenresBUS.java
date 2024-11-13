@@ -67,11 +67,11 @@ public class GenresBUS implements IRuleSets {
           return -1;
      }
 
-     public BookGenres[] relativeFind (String inputValue) {
+     public BookGenres[] relativeFind (String name) {
           int count = 0;
           BookGenres[] genresArray = new BookGenres[0];
           for (BookGenres genre : genresList)
-               if (genre.getGenreName().contains(inputValue)) {
+               if (genre.getGenreName().contains(name)) {
                     genresArray = Arrays.copyOf(genresArray, genresArray.length + 1);
                     genresArray[count] = genre;
                     count++;
@@ -97,8 +97,8 @@ public class GenresBUS implements IRuleSets {
           System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[index].getGenreName());
      }
 
-     public void relativeSearch (String inputValue) {
-          BookGenres[] list = relativeFind(inputValue);
+     public void relativeSearch (String name) {
+          BookGenres[] list = relativeFind(name);
           if (list == null) {
                System.out.println("not found any genres!");
                return;

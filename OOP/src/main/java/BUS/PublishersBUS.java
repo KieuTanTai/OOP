@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class PublishersBUS {
     private static Publishers[] publishersList;
     private static int count;
+    private Scanner scanner = new Scanner(System.in);
 
     // Constructor: Initializes with an empty list and count 0
     public PublishersBUS() {
@@ -22,13 +23,13 @@ public class PublishersBUS {
     }
 
     // Getter: Returns count of publishers
-    public int getCount() {
-        return PublishersBUS.count;
+    public static int getCount() {
+        return count;
     }
 
     // Getter: Returns the publishers list
-    public Publishers[] getPublishersList() {
-        return PublishersBUS.publishersList;
+    public static Publishers[] getPublishersList() {
+        return Arrays.copyOf(publishersList, publishersList.length);
     }
 
     // Setter: Sets count of publishers
@@ -95,7 +96,6 @@ public class PublishersBUS {
     public void edit(String publisherID) {
         int index = find(publisherID);
         if (index != -1) {
-            Scanner scanner = new Scanner(System.in);
             System.out.print("Enter new publisher name: ");
             String newPublisherName = scanner.nextLine();
             publishersList[index].setPublisherName(newPublisherName);

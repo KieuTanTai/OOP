@@ -119,7 +119,7 @@ public class MidForBooksBUS {
       */
      //write file
      public void writeFile () throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/ListGenres", false))) {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/MidForBooks", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(midList[i].getBookID());
@@ -134,7 +134,7 @@ public class MidForBooksBUS {
 
      // read file
      public void readFile () throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/ListGenres"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/MidForBooks"))) {
                count = file.readInt();
                MidForBooks[] list = new MidForBooks[count];
                for (int i = 0; i < count; i++) {

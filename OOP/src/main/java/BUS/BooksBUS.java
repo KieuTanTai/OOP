@@ -344,7 +344,7 @@ public class BooksBUS implements IRuleSets {
      // execute files
      //write file
      public void writeFile () throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/ListGenres", false))) {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/Books", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(booksList[i].getProductID());
@@ -357,7 +357,6 @@ public class BooksBUS implements IRuleSets {
                     file.writeInt(booksList[i].getQuantity());
                     file.writeUTF(booksList[i].getFormat());
                     file.writeUTF(booksList[i].getPackagingSize());
-                    file.writeUTF(System.lineSeparator());
                }
                System.out.println("write done!");
           } catch (FileNotFoundException err) {
@@ -368,7 +367,7 @@ public class BooksBUS implements IRuleSets {
 
      // read file
      public void readFile () throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/ListGenres"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Books"))) {
                count = file.readInt();
                Books[] list = new Books[count];
                for (int i = 0; i < count; i++) {
@@ -382,7 +381,6 @@ public class BooksBUS implements IRuleSets {
                     int quantity = file.readInt();
                     String format = file.readUTF();
                     String packagingSize = file.readUTF();
-                    file.readUTF();
 
                     // execute IDs
                     Publishers publisher = PublishersBUS.getPublisher(publisherID);

@@ -188,11 +188,6 @@ public class Books extends Products {
     }
 
     // other methods
-    @Override
-    protected String productIDModifier(String bookId) {
-        return "BK" + bookId + "PD";
-    }
-
     // set info
     @Override
     public void setInfo() {
@@ -263,5 +258,10 @@ public class Books extends Products {
         System.out.printf("Format: %s\n", format);
         System.out.printf("Packaging Size: %s\n", packagingSize);
         System.out.printf("Book Type: %s\n", bookType != null ? bookType.getTypeName() : "Unknown");
+    }
+
+    @Override
+    protected String productIDModifier(String bookId) {
+        return "BK" + bookId + "PD";
     }
 }

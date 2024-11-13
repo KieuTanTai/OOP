@@ -1,25 +1,22 @@
-import util.Validate;
-
 import java.io.IOException;
-import java.util.Scanner;
+
+import BUS.TypesBUS;
 
 public class App {
     public static void main(String[] args) throws IOException {
-        // Menu app = new Menu();
-        Scanner input = new Scanner(System.in);
-        String tempI;
+        TypesBUS test = new TypesBUS();
+        test.readFile();
 
-        do {
-            System.out.print("test validate: ");
-            tempI = input.nextLine().trim();
-            if (!Validate.validateID(tempI)) {
-                System.out.println("error bigDecimal!");
-                tempI = "";
-            }
-        } while (tempI.isEmpty());
-        System.out.println(tempI);
+        // show list before
+        System.out.println("print list!");
+        TypesBUS.showList();
 
-        input.close();
+        // Test methods
+        test.edit("1");
 
+        // show list after
+        System.out.println("print list!");
+        TypesBUS.showList();
+        // testI.writeFile();
     }
 }

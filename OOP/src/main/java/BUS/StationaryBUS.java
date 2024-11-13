@@ -65,119 +65,125 @@ public class StationaryBUS implements IRuleSets {
         for (int i = 0; i < staList.length; i++)
             if (staList[i].getProductID().equals(inputValue) || staList[i].getProductName().equals(inputValue) || staList[i].getStationaryID().equals(inputValue))
                 return i; 
-        System.out.println("your stationary is not exist! ");
+        System.out.println("your stationary is not exist!");
         return -1;
     }
 
     // relative finds
     // return list index of products that have contains specific string
-    public Stationary[] relativeFind(String name) {
+    public Stationary[] relativeFind (Object originalKey, String request) {
         int count = 0;
+        boolean flag = false;
         Stationary[] staArray = new Stationary[0];
-        for (Stationary stationary : staArray)
-            if (stationary.getProductName().contains(name)) {
-                staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                staArray[count] = stationary;
-                count++;
+        for (Stationary stationary : staList) {
+            if (originalKey instanceof String) {
+                    String key = (String) originalKey;
+                    if (request.equals("name") && stationary.getProductName().contains(key))
+                        flag = true;
+                    else if (request.equals("brand") && stationary.getBrand().equals(key))
+                        flag = true;
+                    else if (request.equals("material") && stationary.getMaterial().equals(key))
+                        flag = true;
+                    else if (request.equals("source") && stationary.getSource().equals(key))
+                        flag = true;
+                    else if (request.equals("type") && stationary.getType().getTypeID().equals(key))
+                        flag = true;
             }
+            else if (originalKey instanceof LocalDate)
+                    if (request.equals("releaseDate") && stationary.getReleaseDate().equals((LocalDate) originalKey))
+                        flag = true;              
+
+            if (flag) {
+                    staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                    staArray[count] = stationary;
+                    flag = false;
+                    count++; 
+            }
+        }
         if (count == 0) {
-            System.out.println("not found any stationeries!");
+            System.out.println("not found any stationary!");
             return null;
         }
         return staArray;
     }
-    
-    public Stationary[] relativeFindByProductPrice(BigDecimal productPrice) {
+
+    // advanced finds
+    public Stationary[] advancedFind (BigDecimal minPrice, BigDecimal maxPrice, String request) {
         int count = 0;
+        boolean flag = false;
         Stationary[] staArray = new Stationary[0];
-        for (Stationary stationary : staList)
-            if (stationary.getProductPrice().compareTo(productPrice) == 0) {
-                staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                staArray[count] = stationary;
-                count++;
-            }
+        for (Stationary stationary : staList) {
+             BigDecimal productPrice = stationary.getProductPrice();
+             if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
+                  flag = true;
+             else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
+                  flag = true;
+             else if (request.equals("range")) 
+                  if ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0))
+                       flag = true;
+
+             if (flag) {
+                  staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                  staArray[count] = stationary;
+                  flag = false;
+                  count++;
+             }
+        }
         if (count == 0) {
-            System.out.println("not found any stationeries with the specified price!");
-            return null;
+             System.out.println("not found any stationary!");
+             return null;
         }
         return staArray;
-    }
+   }
     
-    public Stationary[] relativeFindByReleaseDate(LocalDate releaseDate) {
+    public Stationary[] advancedFind (Object originalKeyI, Object originalTimeOrKey, String request) {
         int count = 0;
+        boolean flag = false;
         Stationary[] staArray = new Stationary[0];
-        for (Stationary stationary : staList)
-            if (stationary.getReleaseDate().equals(releaseDate)) {
+        for (Stationary stationary : staList) {
+            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("Month"))) {
+                String keyI = (String) originalKeyI;
+                boolean keyII =  stationary.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
+                if ((request.equals("MatMonth")) && (stationary.getMaterial().equals(keyI) && keyII))
+                    flag = true;
+                else if ((request.equals("BrandMonth")) && (stationary.getBrand().equals(keyI) && keyII))
+                    flag = true;
+                else if ((request.equals("SourceMonth")) && (stationary.getSource().equals(keyI) && keyII))
+                    flag = true;
+                else if ((request.equals("TypeMonth")) && (stationary.getType().getTypeID().equals(keyI) && keyII))
+                    flag = true;
+                }
+            else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("year"))) {
+                String keyI = (String) originalKeyI;
+                boolean keyII =  stationary.getReleaseDate().getYear() == (int) originalTimeOrKey;
+                if ((request.equals("MatYear")) && (stationary.getMaterial().equals(keyI) && keyII))
+                    flag = true;
+                else if ((request.equals("BrandYear")) && (stationary.getBrand().equals(keyI) && keyII))
+                    flag = true;
+                else if ((request.equals("SourceMYear")) && (stationary.getSource().equals(keyI) && keyII))
+                    flag = true;
+                else if ((request.equals("TypeYear")) && (stationary.getType().getTypeID().equals(keyI) && keyII))
+                    flag = true;
+            }
+            else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
+                String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
+                if ((request.equals("TypeMat")) && (stationary.getType().getTypeID().equals(keyI) && stationary.getMaterial().equals(keyII)))
+                    flag = true;
+                else if ((request.equals("TypeSource")) && (stationary.getType().getTypeID()).equals(keyI) && stationary.getSource().equals(keyII))
+                    flag = true;
+                else if ((request.equals("TypeBrand")) && (stationary.getType().getTypeID().equals(keyI) && stationary.getBrand().equals(keyII)))
+                    flag = true;
+            }
+
+            if (flag) {
                 staArray = Arrays.copyOf(staArray, staArray.length + 1);
                 staArray[count] = stationary;
+                flag = false;
                 count++;
             }
-        if (count == 0) {
-            System.out.println("not found any stationeries with the specified release date!");
-            return null;
         }
-        return staArray;
-    }
-    
-    public Stationary[] relativeFindByStaTypes(StaTypes staTypes) {
-        int count = 0;
-        Stationary[] staArray = new Stationary[0];
-        for (Stationary stationary : staList)
-            if (stationary.getStationaryID().equals(staTypes.getTypeID())) {
-                staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                staArray[count] = stationary;
-                count++;
-            }
         if (count == 0) {
-            System.out.println("not found any stationeries with the specified type!");
-            return null;
-        }
-        return staArray;
-    }
-    
-    public Stationary[] relativeFindByBrand(String brand) {
-        int count = 0;
-        Stationary[] staArray = new Stationary[0];
-        for (Stationary stationary : staList)
-            if (stationary.getBrand().equals(brand)) {
-                staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                staArray[count] = stationary;
-                count++;
-            }
-        if (count == 0) {
-            System.out.println("not found any stationeries with the specified brand!");
-            return null;
-        }
-        return staArray;
-    }
-    
-    public Stationary[] relativeFindByMaterial(String material) {
-        int count = 0;
-        Stationary[] staArray = new Stationary[0];
-        for (Stationary stationary : staList)
-            if (stationary.getMaterial().equals(material)) {
-                staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                staArray[count] = stationary;
-                count++;
-            }
-        if (count == 0) {
-            System.out.println("not found any stationeries with the specified material!");
-            return null;
-        }
-        return staArray;
-    }
-    
-    public Stationary[] relativeFindBySource(String source) {
-        int count = 0;
-        Stationary[] staArray = new Stationary[0];
-        for (Stationary stationary : staList)
-            if (stationary.getSource().equals(source)) {
-                staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                staArray[count] = stationary;
-                count++;
-            }
-        if (count == 0) {
-            System.out.println("not found any stationeries with the specified source!");
+            System.out.println("not found any stationary!");
             return null;
         }
         return staArray;
@@ -192,28 +198,26 @@ public class StationaryBUS implements IRuleSets {
     @Override
     public void search(String inputValue) {
         int index = find(inputValue);
-        if (index == -1) {
-            System.out.println("your stationary is not found!");
-            return;
+        if (index != -1) {
+            String toStringHandler = composeUsingFormatter(staList[index]);
+            System.out.printf("stationer's id / name is : %s\nstationary detail : \n%s", inputValue, toStringHandler);
         }
-        String toStringHandler = composeUsingFormatter(staList[index]);
-        System.out.printf("stationer's id / name is : %s\nstationary detail : \n%s", inputValue, toStringHandler);
     }
 
     // relative search
-    public void relativeSearch(String name) {
-        Stationary[] indexList = relativeFind(name);
-        if (indexList == null) {
-            System.out.println("not found any stationary!");
-            return;
-        }
-        for (Stationary stationary : indexList)
-            System.out.printf("stationer's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
+    public void relativeSearch(Object key, String request) {
+        Stationary[] indexList = relativeFind(key, request);
+        if (indexList != null)
+            for (Stationary stationary : indexList)
+                System.out.printf("stationer's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
     }
 
     // advanced search
-    public void advancedSearch() {
-
+    public void advancedSearch(Object keyI, Object timeOrKey, String request) {
+        Stationary[] indexList = advancedFind(keyI, timeOrKey, request);
+        if (indexList != null)
+            for (Stationary stationary : indexList)
+                System.out.printf("stationer's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
     }
 
     // add methods (DONE)
@@ -335,7 +339,7 @@ public class StationaryBUS implements IRuleSets {
                     file.writeUTF(staList[i].getProductID());
                     file.writeUTF(staList[i].getStationaryID());
                     file.writeUTF(staList[i].getProductName());
-                    file.writeUTF(staList[i].getProductPrice().toString());
+                    file.writeUTF(staList[i].getProductPrice().setScale(0).toString());
                     file.writeUTF(staList[i].getReleaseDate().toString());
                     file.writeUTF(staList[i].getType().getTypeID());
                     file.writeUTF(staList[i].getBrand());

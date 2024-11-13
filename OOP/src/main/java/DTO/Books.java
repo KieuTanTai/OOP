@@ -43,12 +43,8 @@ public class Books extends Products {
     }
 
     // getter / setter
-    public String getPublisherID() {
-        return this.publisher.getPublisherID();
-    }
-
-    public String getPublisherName() {
-        return this.publisher.getPublisherName();
+    public Publishers getPublisher() {
+        return this.publisher;
     }
 
     public String getAuthor() {

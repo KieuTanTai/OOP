@@ -103,7 +103,7 @@ public class Books extends Products {
     public String setFormat() {
         String[] formats = { "Hardcover", "Paperback", "Leather-bound" };
         int userChoose;
-        System.out.printf("1.%s\n2.%s\n3.%s\n", formats[0], formats[1], formats[2]);
+        System.out.printf("1.%-6s 2.%-6s 3.%-6s\n", formats[0], formats[1], formats[2]);
         do {
             System.out.print("select your option (like \"1, 2, 3\"): ");
             userChoose = Validate.parseChooseHandler(input.nextLine().trim(), 3);

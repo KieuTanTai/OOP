@@ -1,15 +1,12 @@
 package BUS;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
-
 import DTO.BookTypes;
 import DTO.Books;
 import DTO.Publishers;
@@ -75,7 +72,7 @@ public class BooksBUS implements IRuleSets {
           for (int i = 0; i < booksList.length; i++)
                if (booksList[i].getProductID().equals(inputValue) || booksList[i].getProductName().equals(inputValue))
                     return i;
-          System.out.println("your book is not exist! ");
+          System.out.println("your book is not exist!");
           return -1;
      }
 
@@ -205,7 +202,7 @@ public class BooksBUS implements IRuleSets {
           int index = find(inputValue);
           if (index != -1) {
                String toStringHandler = composeUsingFormatter(booksList[index]);
-               System.out.printf("book's id / name is : %s\nbook detail : \n%s", inputValue, toStringHandler);
+               System.out.printf("book's id / name: %s\nbook detail: \n%s", inputValue, toStringHandler);
           }
      }
 
@@ -214,7 +211,7 @@ public class BooksBUS implements IRuleSets {
           Books[] list = relativeFind(key, request);
           if (list != null)
                for (Books books : list)
-                   System.out.printf("book's id : %s\ndetail : %s\n", books.getProductID(), composeUsingFormatter(books));
+                   System.out.printf("book's id: %s\ndetail: %s\n", books.getProductID(), composeUsingFormatter(books));
      }
 
      // advanced search
@@ -222,7 +219,7 @@ public class BooksBUS implements IRuleSets {
           Books[] list = advancedFind(keyI, timeOrKey, request);
           if (list != null)
                for (Books books : list)
-                   System.out.printf("book's id : %s\ndetail : %s\n", books.getProductID(), composeUsingFormatter(books));
+                   System.out.printf("book's id: %s\ndetail: %s\n", books.getProductID(), composeUsingFormatter(books));
           
      }
 
@@ -288,7 +285,7 @@ public class BooksBUS implements IRuleSets {
      public void edit (String id, String newAuthor) {
           int index = find(id);
           if (index == -1) {
-               System.out.println("your book is not exist !");
+               System.out.println("your book is not exist!");
                return;
           }
           booksList[index].setAuthor(newAuthor);
@@ -298,7 +295,7 @@ public class BooksBUS implements IRuleSets {
      public void edit (String id, BookTypes newType) {
           int index = find(id);
           if (index == -1) {
-               System.out.println("your book is not exist !");
+               System.out.println("your book is not exist!");
                return;
           }
           booksList[index].setType(newType);
@@ -308,7 +305,7 @@ public class BooksBUS implements IRuleSets {
      public void editFormat (String id, String newFormat) {
           int index = find(id);
           if (index == -1) {
-               System.out.println("your book is not exist !");
+               System.out.println("your book is not exist!");
                return;
           }
           booksList[index].setFormat(newFormat);
@@ -318,7 +315,7 @@ public class BooksBUS implements IRuleSets {
      public void editPackagingSize(String id, String newPackagingSize) {
           int index = find(id);
           if (index == -1) {
-               System.out.println("your book is not exist !");
+               System.out.println("your book is not exist!");
                return;
           }
           booksList[index].setPackagingSize(newPackagingSize);
@@ -358,16 +355,15 @@ public class BooksBUS implements IRuleSets {
                     file.writeUTF(booksList[i].getFormat());
                     file.writeUTF(booksList[i].getPackagingSize());
                }
-               System.out.println("write done!");
-          } catch (FileNotFoundException err) {
-               System.out.printf("404 not found!\n%s", err);
+          } catch (Exception err) {
+               System.out.printf("404 not found!\n%s", err.getMessage());
           }
      }
 
 
      // read file
      public void readFile () throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Books"))) {
+          try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("OOP/src/main/resources/Books"))) {
                count = file.readInt();
                Books[] list = new Books[count];
                for (int i = 0; i < count; i++) {
@@ -389,14 +385,14 @@ public class BooksBUS implements IRuleSets {
                }
                setCount(count);
                setBooksList(list);
-          } catch (FileNotFoundException err) {
-               System.out.printf("404 not found!\n%s", err);
+          } catch (Exception err) {
+               System.out.printf("404 not found!\n%s", err.getMessage());
           }
      }
 
      // some other methods
      private String composeUsingFormatter (Books book) {
-          return String.format(" publisher name: %s\n author: %s\n book type: %s\n format: %s\n packaging size: %s\n", 
+          return String.format("publisher name: %s\nauthor: %s\nbook type: %s\nformat: %s\npackaging size: %s\n", 
           book.getPublisher().getPublisherName(), book.getAuthor(), book.getType().getTypeName(), book.getFormat(), book.getPackagingSize());
      }
 }

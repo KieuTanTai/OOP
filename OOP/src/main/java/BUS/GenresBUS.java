@@ -34,7 +34,7 @@ public class GenresBUS implements IRuleSets {
      public static BookGenres getGenre (String id) {
           for (BookGenres genre : genresList)
                if (genre.getGenreID().equals(id))
-                    return genre;
+                    return new BookGenres(genre.getGenreID(), genre.getGenreName());
           return null;
      }
 

@@ -27,10 +27,14 @@ public class PublishersBUS {
         return count;
     }
 
-    // Getter: Returns the publishers list
-    public static Publishers[] getPublishersList() {
-        return Arrays.copyOf(publishersList, publishersList.length);
-    }
+    // all others methods like: add remove edit find show....
+     // show list of publisher for user (DONE)
+     public static void showList() {
+        if (publishersList == null)
+            return;
+        for (int i = 0; i < publishersList.length; i++)
+             System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
+   }
 
     // Setter: Sets count of publishers
     public void setCount(int count) {
@@ -40,13 +44,6 @@ public class PublishersBUS {
     // Setter: Sets publishers list
     public void setPublishersList(Publishers[] publishersList) {
         PublishersBUS.publishersList = publishersList;
-    }
-
-    // Show all publishers in the list
-    public static void showList() {
-        for (int i = 0; i < publishersList.length; i++) {
-            System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
-        }
     }
 
     // Add a new Publisher to the list

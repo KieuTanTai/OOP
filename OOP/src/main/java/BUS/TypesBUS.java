@@ -5,8 +5,6 @@ import DTO.BookTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -58,7 +56,7 @@ public class TypesBUS implements IRuleSets {
           if (typesList == null)
                return;
           for (int i = 0; i < typesList.length; i++)
-               System.out.printf("%d: %10s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
+               System.out.printf("%-3d: %-6s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
      }
 
      // find methods
@@ -106,7 +104,7 @@ public class TypesBUS implements IRuleSets {
      public void search(String inputId) {
           int index = find(inputId);
           if (index != -1)
-               System.out.printf("Your type id is: %s\nType name: %s\n", inputId, typesList[index].getTypeName());
+               System.out.printf("type's id: %-6s type name: %s\n", inputId, typesList[index].getTypeName());
      }
 
      // *(TEST DONE)
@@ -115,7 +113,7 @@ public class TypesBUS implements IRuleSets {
           if (list != null) {
                System.out.println("-----------------------------------------------");
                for (BookTypes type : list)
-                    System.out.printf("type's id : %s\ntype name : %s\n", type.getTypeID(), type.getTypeName());
+                    System.out.printf("type's id: %-6s type name: %s\n", type.getTypeID(), type.getTypeName());
                System.out.println("-----------------------------------------------");
           }
      }
@@ -147,13 +145,11 @@ public class TypesBUS implements IRuleSets {
      @Override
      public void edit(String inputId) {
           int index = find(inputId);
-          if (index == -1) {
-               System.out.println("your type is not found!");
-               return;
+          if (index != -1) {
+               System.out.print("enter new type name: ");
+               String newTypeName = input.nextLine().trim();
+               typesList[index].setTypeName(newTypeName);
           }
-          System.out.print("enter new type name: ");
-          String newTypeName = input.nextLine().trim();
-          typesList[index].setTypeName(newTypeName);
      }
 
      // remove methods (DONE)     
@@ -192,16 +188,15 @@ public class TypesBUS implements IRuleSets {
                     file.writeUTF(typesList[i].getTypeID());
                     file.writeUTF(typesList[i].getTypeName());
                }
-               System.out.println("write done!");
-          } catch (FileNotFoundException err) {
-               System.out.printf("404 not found!\n%s", err);
+          } catch (Exception err) {
+               System.out.printf("404 not found!\n%s", err.getMessage());
           }
      }
 
 
      // *(TEST DONE)
      public void readFile () throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/BookTypes"))) {
+          try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("/BookTypes"))) {
                count = file.readInt();
                BookTypes[] list = new BookTypes[count];
                for (int i = 0; i < count; i++) {
@@ -211,9 +206,8 @@ public class TypesBUS implements IRuleSets {
                }
                setCount(count);
                setTypesList(list);
-               System.out.println("read done!");
-          } catch (FileNotFoundException err) {
-               System.out.printf("404 not found!\n%s", err);
+          } catch (Exception err) {
+               System.out.printf("404 not found!\n%s", err.getMessage());
           }
      }
 }

@@ -7,8 +7,6 @@ import util.Validate;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -200,7 +198,7 @@ public class StationaryBUS implements IRuleSets {
         int index = find(inputValue);
         if (index != -1) {
             String toStringHandler = composeUsingFormatter(staList[index]);
-            System.out.printf("stationer's id / name is : %s\nstationary detail : \n%s", inputValue, toStringHandler);
+            System.out.printf("stationer's id / name: %s\nstationary detail: \n%s", inputValue, toStringHandler);
         }
     }
 
@@ -209,7 +207,7 @@ public class StationaryBUS implements IRuleSets {
         Stationary[] indexList = relativeFind(key, request);
         if (indexList != null)
             for (Stationary stationary : indexList)
-                System.out.printf("stationer's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
+                System.out.printf("stationer's id: %s\ndetail: %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
     }
 
     // advanced search
@@ -217,7 +215,7 @@ public class StationaryBUS implements IRuleSets {
         Stationary[] indexList = advancedFind(keyI, timeOrKey, request);
         if (indexList != null)
             for (Stationary stationary : indexList)
-                System.out.printf("stationer's id : %s\ndetail : %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
+                System.out.printf("stationer's id: %s\ndetail: %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
     }
 
     // add methods (DONE)
@@ -247,7 +245,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your stationary is not exist !");
+            System.out.println("your stationary is not exist!");
             return;
         }
         String newName;
@@ -262,7 +260,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, LocalDate newDate) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist !");
+            System.out.println("your book is not exist!");
             return;
         }
         staList[index].setReleaseDate(newDate);
@@ -272,7 +270,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, BigDecimal newPrice) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist !");
+            System.out.println("your book is not exist!");
             return;
         }
         staList[index].setProductPrice(newPrice);
@@ -282,7 +280,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, int newQuantity) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist !");
+            System.out.println("your book is not exist!");
             return;
         }
         staList[index].setQuantity(newQuantity);
@@ -292,7 +290,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, StaTypes newType) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist !");
+            System.out.println("your book is not exist!");
             return;
         }
         staList[index].setType(newType);
@@ -302,7 +300,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, String brand) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist !");
+            System.out.println("your book is not exist!");
             return;
         }
         staList[index].setBrand(brand);
@@ -318,7 +316,7 @@ public class StationaryBUS implements IRuleSets {
     public void remove(String id) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your stationary is not found !");
+            System.out.println("your stationary is not found!");
             return;
         }
         for (int i = index; i < staList.length - 1; i++)
@@ -336,53 +334,52 @@ public class StationaryBUS implements IRuleSets {
         try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/Stationeries", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
-                    file.writeUTF(staList[i].getProductID());
-                    file.writeUTF(staList[i].getStationaryID());
-                    file.writeUTF(staList[i].getProductName());
-                    file.writeUTF(staList[i].getProductPrice().setScale(0).toString());
-                    file.writeUTF(staList[i].getReleaseDate().toString());
-                    file.writeUTF(staList[i].getType().getTypeID());
-                    file.writeUTF(staList[i].getBrand());
-                    file.writeInt(staList[i].getQuantity());
-                    file.writeUTF(staList[i].getMaterial());
-                    file.writeUTF(staList[i].getSource());
+                file.writeUTF(staList[i].getProductID());
+                file.writeUTF(staList[i].getStationaryID());
+                file.writeUTF(staList[i].getProductName());
+                file.writeUTF(staList[i].getProductPrice().setScale(0).toString());
+                file.writeUTF(staList[i].getReleaseDate().toString());
+                file.writeUTF(staList[i].getType().getTypeID());
+                file.writeUTF(staList[i].getBrand());
+                file.writeInt(staList[i].getQuantity());
+                file.writeUTF(staList[i].getMaterial());
+                file.writeUTF(staList[i].getSource());
             }
-            System.out.println("write done!");
-        } catch (FileNotFoundException err) {
-            System.out.printf("404 not found!\n%s", err);
+        } catch (Exception err) {
+            System.out.printf("404 not found!\n%s", err.getMessage());
         }
     }
 
     // read file
     public void readFile () throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Stationeries"))) {
+        try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("OOP/src/main/resources/Stationeries"))) {
             count = file.readInt();
             Stationary[] list = new Stationary[count];
             for (int i = 0; i < count; i++) {
-                    String productID =  file.readUTF();
-                    String stationaryID = file.readUTF();
-                    String productName = file.readUTF();
-                    BigDecimal price = new BigDecimal(file.readUTF());
-                    LocalDate releaseDate = LocalDate.parse(file.readUTF());
-                    String typeID = file.readUTF();
-                    String brand = file.readUTF();
-                    int quantity = file.readInt();
-                    String material = file.readUTF();  //use as param for query publisher from class Publishers
-                    String source = file.readUTF();
+                String productID =  file.readUTF();
+                String stationaryID = file.readUTF();
+                String productName = file.readUTF();
+                BigDecimal price = new BigDecimal(file.readUTF());
+                LocalDate releaseDate = LocalDate.parse(file.readUTF());
+                String typeID = file.readUTF();
+                String brand = file.readUTF();
+                int quantity = file.readInt();
+                String material = file.readUTF();  //use as param for query publisher from class Publishers
+                String source = file.readUTF();
 
-                    // execute IDs
-                    StaTypes type = StaTypesBUS.getStaType(typeID);
-                    list[i] = new Stationary(productID, stationaryID, productName, releaseDate, price, quantity, type, brand, material, source);
+                // execute IDs
+                StaTypes type = StaTypesBUS.getStaType(typeID);
+                list[i] = new Stationary(productID, stationaryID, productName, releaseDate, price, quantity, type, brand, material, source);
             }
             setCount(count);
             setStaList(list);
-        } catch (FileNotFoundException err) {
-            System.out.printf("404 not found!\n%s", err);
+        } catch (Exception err) {
+            System.out.printf("404 not found!\n%s", err.getMessage());
         }
     }
 
     private String composeUsingFormatter(Stationary stationary) {
-        return String.format(" stationary id: %s\n type: %s\n brand: %s\n material: %s\n source: %s\n",
+        return String.format("stationary id: %s\ntype: %s\nbrand: %s\nmaterial: %s\nsource: %s\n",
                 stationary.getStationaryID(), stationary.getType().getTypeName(), stationary.getBrand(), stationary.getMaterial(), stationary.getSource());
     }
 }

@@ -4,7 +4,6 @@ import Manager.Menu;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -56,7 +55,7 @@ public class GenresBUS implements IRuleSets {
           if (genresList == null)
                return;
           for (int i = 0; i < genresList.length; i++)
-               System.out.printf("%d: %10s %s\n", i + 1, genresList[i].getGenreID(), genresList[i].getGenreName());
+               System.out.printf("%-3d: %-6s %s\n", i + 1, genresList[i].getGenreID(), genresList[i].getGenreName());
      }
 
      // find methods (DONE)
@@ -101,7 +100,7 @@ public class GenresBUS implements IRuleSets {
      public void search (String inputId) {
           int index = find(inputId);
           if (index != -1)
-               System.out.printf("your genre id is: %s\nGenre Name: %s\n", inputId, genresList[index].getGenreName());
+               System.out.printf("genre's id: %-6s genre name: %s\n", inputId, genresList[index].getGenreName());
      }
 
      public void relativeSearch (String name) {
@@ -109,7 +108,7 @@ public class GenresBUS implements IRuleSets {
           if (list != null) {
                System.out.println("-----------------------------------------------");
                for (BookGenres genre : list)
-                  System.out.printf("genre's id  : %s\ngenre name : %s\n", genre.getGenreID(), genre.getGenreName());
+                  System.out.printf("genre's id : %-6s genre name: %s\n", genre.getGenreID(), genre.getGenreName());
                System.out.println("-----------------------------------------------");
           }
      }
@@ -128,7 +127,7 @@ public class GenresBUS implements IRuleSets {
                count++;
           }
           else 
-               System.out.println("your new genre is not correct !");
+               System.out.println("your new genre is not correct!");
      }
 
      // edit methods (DONE)
@@ -140,13 +139,11 @@ public class GenresBUS implements IRuleSets {
      @Override
      public void edit (String inputId) {
           int index = find(inputId);
-          if (index == -1) {
-               System.out.println("your genre is not found !");
-               return;     
+          if (index != -1) {
+               System.out.print("enter new genre name: ");
+               String newTypeName = input.nextLine().trim();
+               genresList[index].setGenreName(newTypeName);
           }
-          System.out.print("enter new genre name: ");
-          String newTypeName = input.nextLine().trim();
-          genresList[index].setGenreName(newTypeName);
      }
 
      // remove methods (DONE)
@@ -159,7 +156,7 @@ public class GenresBUS implements IRuleSets {
      public void remove (String inputId) {
           int index = find(inputId);
           if (index == -1) {
-               System.out.println("your genre is not found !");
+               System.out.println("your genre is not found!");
                return;
           }
           for (int i = index; i < genresList.length - 1; i++) 
@@ -184,16 +181,15 @@ public class GenresBUS implements IRuleSets {
                     file.writeUTF(genresList[i].getGenreID());
                     file.writeUTF(genresList[i].getGenreName());
                }
-               System.out.println("write done!");
-          } catch (FileNotFoundException err) {
-               System.out.printf("404 not found!\n%s", err);
+          } catch (Exception err) {
+               System.out.printf("404 not found!\n%s", err.getMessage());
           }
      }
 
 
      // read file
      public void readFile () throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/BookGenres"))) {
+          try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("/BookGenres"))) {
                int count = file.readInt();
                BookGenres[] list = new BookGenres[count];
                for (int i = 0; i < count; i++) {
@@ -203,9 +199,8 @@ public class GenresBUS implements IRuleSets {
                }
                setCount(count);
                setGenresList(list);
-               System.out.println("read done!");
-          } catch (FileNotFoundException err) {
-               System.out.printf("404 not found!\n%s", err);
+          } catch (Exception err) {
+               System.out.printf("404 not found!\n%s", err.getMessage());
           }
      }
 }

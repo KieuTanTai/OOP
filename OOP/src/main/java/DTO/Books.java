@@ -130,7 +130,10 @@ public class Books extends Products {
     public BookTypes setType() {
         int userChoose;
         BookTypes type;
+        // show list for user choose
         TypesBUS.showList();
+        if (TypesBUS.getCount() == 0) //if not have any publisher
+            return null;
         System.out.println("----------------------------");
         do {
             System.out.print("choose type you want (like 1, 2,etc...): ");
@@ -146,7 +149,10 @@ public class Books extends Products {
     public Publishers setPublisher() {
         int userChoose;
         Publishers publisher;
+        // show list for user choose
         PublishersBUS.showList();
+        if (PublishersBUS.getCount() == 0) //if not have any types
+            return null;
         System.out.println("----------------------------");
         do {
             System.out.print("choose publisher (like 1, 2,etc...): ");
@@ -163,7 +169,10 @@ public class Books extends Products {
         int userChoose, count = 0;
         int[] list = new int[0];
         BookGenres[] listGenres = new BookGenres[0];
+        // show list for user choose
         GenresBUS.showList();
+        if(GenresBUS.getCount() == 0) //if not have any genres
+            return null;
         System.out.println("----------------------------");
         do {
             System.out.print("choose genres (like 1, 2,etc...): ");
@@ -171,11 +180,13 @@ public class Books extends Products {
             String[] splitOptions = options.split(" ");
             for (String item : splitOptions) {
                 userChoose = Validate.parseChooseHandler(item, GenresBUS.getCount());
-                if (userChoose != -1) {
-                    list = Arrays.copyOf(list, list.length);
-                    list[count] = userChoose;
-                    count++;
+                if (userChoose == -1) {
+                    count = 0;
+                    break;   
                 }
+                list = Arrays.copyOf(list, list.length);
+                list[count] = userChoose;
+                count++;
             }
         } while (count == 0);
         for (int i = 0; i < count; i++) {
@@ -242,10 +253,15 @@ public class Books extends Products {
             setPackagingSize(packagingSize);
 
             // execute list of genres for product
+            int count = 0;
+            MidForBooks[] hashArray = new MidForBooks[0];
             for (BookGenres genre : genres) {
                 MidForBooks mid = new MidForBooks(id, genre);
-                MidForBooksBUS.add(mid);
+                hashArray = Arrays.copyOf(hashArray, count + 1);
+                hashArray[count] = mid;
             }
+            MidForBooksBUS midList = new MidForBooksBUS();
+            midList.add(hashArray, count);
             System.out.println("create and set fields success");
         }
     }

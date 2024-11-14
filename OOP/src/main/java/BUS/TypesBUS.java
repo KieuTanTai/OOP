@@ -36,7 +36,7 @@ public class TypesBUS implements IRuleSets {
      public static BookTypes getType (String id) {
           for (BookTypes type : typesList)
                if (type.getTypeID().equals(id))
-                    return type;
+                    return new BookTypes(type.getTypeID(), type.getTypeName());
           return null;
      }
 

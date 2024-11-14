@@ -37,6 +37,8 @@ public class PublishersBUS implements IRuleSets {
     // all others methods like: add remove edit find show....
      // show list of publisher for user (DONE)
      public static void showList() {
+        if (publishersList == null)
+            return;
         for (int i = 0; i < publishersList.length; i++)
              System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
    }

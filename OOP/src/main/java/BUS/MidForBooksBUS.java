@@ -25,12 +25,19 @@ public class MidForBooksBUS {
      }
 
      // getter / setter
-     public int getCount () {
-          return MidForBooksBUS.count;
+     public static int getCount () {
+          return count;
      }
 
-     public MidForBooks[] midList () {
-          return MidForBooksBUS.midList;
+     public static MidForBooks[] midList () {
+          return Arrays.copyOf(midList, midList.length);
+     }
+
+     public static MidForBooks getMidForBook (String bookID) {
+          for(MidForBooks mid : midList)
+               if(mid.getBookID().equals(bookID))
+                    return new MidForBooks(mid.getBookID(), mid.getGenre());
+          return null;
      }
 
      public void setCount (int count) {
@@ -63,7 +70,7 @@ public class MidForBooksBUS {
      // strict find 
      public int find (String productId, String genreId)  {
           for (int i = 0; i < midList.length; i++)
-               if ((midList[i].getBookID().equals(productId)) && midList[i].getGenreID().equals(genreId))
+               if ((midList[i].getBookID().equals(productId)) && midList[i].getGenre().getGenreID().equals(genreId))
                     return i;
           System.out.println("404 not found !");
           return -1;
@@ -74,7 +81,7 @@ public class MidForBooksBUS {
      public void search (String productId, String genreId) {
           int index = find(productId, genreId); 
           if (index != -1) 
-               System.out.printf("product's id: %10s genre's name: %10s exist!", midList[index].getBookID(), midList[index].getGenreName());
+               System.out.printf("product's id: %10s genre's name: %10s exist!", midList[index].getBookID(), midList[index].getGenre().getGenreName());
      }
 
      // relative search
@@ -82,16 +89,27 @@ public class MidForBooksBUS {
           MidForBooks[] list = find(id);
           if (list != null)
                for (MidForBooks mid : list)
-                    System.out.printf("product's id: %10s genre's id  : %10s genre name : %s\n", mid.getGenreID(), mid.getGenreName());
+                    System.out.printf("product's id: %10s genre's id  : %10s genre name : %s\n", mid.getGenre().getGenreID(), mid.getGenre().getGenreName());
      }
 
      // add methods *STATIC!!! (DONE)
-     public static void add (MidForBooks midObject) {
+     public void add (MidForBooks midObject) {
           midList = Arrays.copyOf(midList, midList.length + 1);
           midList[count] = (MidForBooks) midObject;
           count++;
      }
 
+     public void add (MidForBooks[] midObject, int count) {
+          midList = Arrays.copyOf(midList, midList.length + midObject.length);
+
+          int tempIndex = 0;
+          int initCount = MidForBooksBUS.getCount();  
+          int total = initCount + count;
+          for (int i = initCount; i < total; i++, tempIndex ++) {
+               midList[i] = midObject[tempIndex];
+          } 
+          MidForBooksBUS.count = total;
+     }
      // edit method (DONE)
      public void edit (String productId, BookGenres genre) {
           int index = find (productId, genre.getGenreID()); 
@@ -123,7 +141,7 @@ public class MidForBooksBUS {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(midList[i].getBookID());
-                    file.writeUTF(midList[i].getGenreID());
+                    file.writeUTF(midList[i].getGenre().getGenreID());
                }
                System.out.println("write done!");
           } catch (FileNotFoundException err) {

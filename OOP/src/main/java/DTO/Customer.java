@@ -3,7 +3,7 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Customer extends person {
+public class Customer extends Person {
     // Thuộc tính (Fields) riêng của Customer
     private String address;
     private BigDecimal point;

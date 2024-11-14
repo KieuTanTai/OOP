@@ -1,11 +1,11 @@
 package BUS;
-
-public class employees {
+import DTO.*;
+public class EmployeesBUS {
     private Employees[] employeesArray;
     private int count;
 
     // Trình xây dựng có kích thước mảng cố định
-    public employees(int size) {
+    public EmployeesBUS(int size) {
         employeesArray = new Employees[size];
         count = 0;
     }

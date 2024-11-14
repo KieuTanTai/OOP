@@ -1,7 +1,7 @@
 package DTO;
 import java.time.LocalDate;
 
-public class employees extends person {
+public class Employees extends Person {
     // Thuộc tính (Fields) riêng của Employee
     private String status;
     private String username;
@@ -9,7 +9,7 @@ public class employees extends person {
     private String role;
 
     // Constructor
-    public employees(String id, String firstName, String lastName, LocalDate birthday, String phone,
+    public Employees(String id, String firstName, String lastName, LocalDate birthday, String phone,
                     String status, String username, String password, String role) {
         super(id, firstName, lastName, birthday, phone); // Gọi constructor của lớp cha (Person)
         this.status = status;

@@ -1,7 +1,7 @@
 package DTO;
 
 import java.time.LocalDate;
-public abstract class person {
+public abstract class Person {
 
     private String id;
     private String firstName;
@@ -10,7 +10,7 @@ public abstract class person {
     private String phone;
 
 
-    public person(String id, String firstName, String lastName, LocalDate birthday, String phone) {
+    public Person(String id, String firstName, String lastName, LocalDate birthday, String phone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

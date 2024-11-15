@@ -1,4 +1,5 @@
 package BUS;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -19,43 +20,43 @@ public class BooksBUS implements IRuleSets {
      private final Scanner input = new Scanner(System.in);
 
      // constructors
-     public BooksBUS () {
+     public BooksBUS() {
           this.count = 0;
           this.booksList = new Books[0];
      }
 
-     public BooksBUS (int count, Books[] booksList) {
+     public BooksBUS(int count, Books[] booksList) {
           this.count = count;
           this.booksList = booksList;
      }
 
      // when have existences booksArray before
-     public BooksBUS (BooksBUS booksArray) {
+     public BooksBUS(BooksBUS booksArray) {
           this.count = booksArray.count;
           this.booksList = booksArray.booksList;
      }
 
      // getter / setter
-     public Books[] getBooksList () {
+     public Books[] getBooksList() {
           return this.booksList;
      }
 
-     public Books getBook (String id) {
-          for (int i = 0; i < count; i++) 
+     public Books getBook(String id) {
+          for (int i = 0; i < count; i++)
                if (booksList[i].getProductID().equals(id))
                     return booksList[i];
           return null;
      }
 
-     public int getCount () {
+     public int getCount() {
           return this.count;
      }
 
-     public void setBooksList (Books[] newBooksList) {
+     public void setBooksList(Books[] newBooksList) {
           this.booksList = newBooksList;
      }
 
-     public void setCount (int newQuantity) {
+     public void setCount(int newQuantity) {
           this.count = newQuantity;
      }
 
@@ -66,11 +67,11 @@ public class BooksBUS implements IRuleSets {
           Menu.findHandler();
      }
 
-     // strict find 
+     // strict find
      @Override
-     public int find (String inputValue) {
+     public int find(String nameOrID) {
           for (int i = 0; i < booksList.length; i++)
-               if (booksList[i].getProductID().equals(inputValue) || booksList[i].getProductName().equals(inputValue))
+               if (booksList[i].getProductID().equals(nameOrID) || booksList[i].getProductName().equals(nameOrID))
                     return i;
           System.out.println("your book is not exist!");
           return -1;
@@ -78,14 +79,15 @@ public class BooksBUS implements IRuleSets {
 
      // relative finds
      // return list index of products that have contains specific string
-     public Books[] relativeFind (Object originalKey, String request) {
+     public Books[] relativeFind(Object originalKey, String request) {
           int count = 0;
           boolean flag = false;
           Books[] booksArray = new Books[0];
+          request = request.toLowerCase();
           for (Books books : booksList) {
                if (originalKey instanceof String) {
                     String key = (String) originalKey;
-                    if (request.equals("name") && books.getProductName().contains(key))
+                    if (request.equals("name") && books.getProductName().toLowerCase().contains(key.toLowerCase()))
                          flag = true;
                     else if (request.equals("author") && books.getAuthor().equals(key))
                          flag = true;
@@ -93,16 +95,15 @@ public class BooksBUS implements IRuleSets {
                          flag = true;
                     else if (request.equals("type") && books.getType().getTypeID().equals(key))
                          flag = true;
-               }
-               else if (originalKey instanceof LocalDate)
+               } else if (originalKey instanceof LocalDate)
                     if (request.equals("releaseDate") && books.getReleaseDate().equals((LocalDate) originalKey))
-                         flag = true;              
+                         flag = true;
 
                if (flag) {
                     booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
                     booksArray[count] = books;
                     flag = false;
-                    count++; 
+                    count++;
                }
           }
           if (count == 0) {
@@ -113,17 +114,18 @@ public class BooksBUS implements IRuleSets {
      }
 
      // advanced finds
-     public Books[] advancedFind (BigDecimal minPrice, BigDecimal maxPrice, String request) {
+     public Books[] advancedFind(BigDecimal minPrice, BigDecimal maxPrice, String request) {
           int count = 0;
           boolean flag = false;
           Books[] booksArray = new Books[0];
+          request = request.toLowerCase();
           for (Books books : booksList) {
                BigDecimal productPrice = books.getProductPrice();
                if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
                     flag = true;
                else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
                     flag = true;
-               else if (request.equals("range")) 
+               else if (request.equals("range"))
                     if ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0))
                          flag = true;
 
@@ -141,39 +143,51 @@ public class BooksBUS implements IRuleSets {
           return booksArray;
      }
 
-     public Books[] advancedFind (Object originalKeyI, Object originalTimeOrKey, String request) {
+     public Books[] advancedFind(Object originalKeyI, Object originalTimeOrKey, String request) {
           int count = 0;
           boolean flag = false;
           Books[] booksArray = new Books[0];
+          request = request.toLowerCase();
           for (Books books : booksList) {
-               if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("Month"))) {
+               if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("month"))) {
                     String keyI = (String) originalKeyI;
-                    boolean keyII =  books.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
-                    if ((request.equals("PubMonth")) && (books.getPublisher().getPublisherID().equals(keyI) && keyII))
+                    boolean keyII = books.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
+                    if ((request.contains("pub")) && (books.getPublisher().getPublisherID().equals(keyI) && keyII))
                          flag = true;
-                    else if ((request.equals("AuthMonth")) && (books.getAuthor().equals(keyI) && keyII))
+                    else if ((request.contains("auth")) && (books.getAuthor().equals(keyI) && keyII))
                          flag = true;
-                    else if ((request.equals("TypeMonth")) && (books.getType().getTypeID().equals(keyI) && keyII))
+                    else if ((request.contains("type")) && (books.getType().getTypeID().equals(keyI) && keyII))
                          flag = true;
-               }
-               else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("year"))) {
+               } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
+                         && (request.contains("year"))) {
                     String keyI = (String) originalKeyI;
-                    boolean keyII =  books.getReleaseDate().getYear() == (int) originalTimeOrKey;
-                    if ((request.equals("PubYear")) && (books.getPublisher().getPublisherID().equals(keyI) && keyII))
+                    boolean keyII = books.getReleaseDate().getYear() == (int) originalTimeOrKey;
+                    if ((request.contains("pub")) && (books.getPublisher().getPublisherID().equals(keyI) && keyII))
                          flag = true;
-                    else if ((request.equals("AuthYear")) && (books.getAuthor().equals(keyI) && keyII))
+                    else if ((request.contains("auth")) && (books.getAuthor().equals(keyI) && keyII))
                          flag = true;
-                    else if ((request.equals("TypeYear")) && (books.getType().getTypeID().equals(keyI) && keyII))
+                    else if ((request.contains("type")) && (books.getType().getTypeID().equals(keyI) && keyII))
                          flag = true;
-               }
-               else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
+               } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
                     String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
-                    if ((request.equals("PubType")) && (books.getPublisher().getPublisherID().equals(keyI) && books.getType().getTypeID().equals(keyII)))
+                    boolean hasPub = request.contains("pub");
+                    boolean hasType = request.contains("type");
+                    boolean hasAuth = request.contains("auth");
+
+                    String pubID = books.getPublisher().getPublisherID();
+                    String typeID = books.getType().getTypeID();
+                    String author = books.getAuthor();
+
+                    if ((hasPub && hasType) && ((pubID.equals(keyI) && typeID.equals(keyII))
+                              || (typeID.equals(keyI) && pubID.equals(keyII))))
                          flag = true;
-                    else if ((request.equals("PubAuth")) && (books.getPublisher().getPublisherID()).equals(keyI) && books.getAuthor().equals(keyII))
+                    else if ((hasPub && hasAuth) && ((pubID.equals(keyI) && author.equals(keyII))
+                              || (author.equals(keyI) && pubID.equals(keyII))))
                          flag = true;
-                    else if ((request.equals("TypeAuth")) && (books.getType().getTypeID().equals(keyI) && books.getAuthor().equals(keyII)))
+                    else if ((hasType && hasAuth) && ((typeID.equals(keyI) && author.equals(keyII))
+                              || (author.equals(keyI) && typeID.equals(keyII))))
                          flag = true;
+
                }
 
                if (flag) {
@@ -196,31 +210,34 @@ public class BooksBUS implements IRuleSets {
           Menu.searchHandler();
      }
 
-     // strict search 
+     // strict search
      @Override
-     public void search (String inputValue) {
-          int index = find(inputValue);
+     public void search(String nameOrID) {
+          int index = find(nameOrID);
           if (index != -1) {
                String toStringHandler = composeUsingFormatter(booksList[index]);
-               System.out.printf("book's id / name: %s\nbook detail: \n%s", inputValue, toStringHandler);
+               System.out.printf("id / name: %s\ndetail: \n%s", booksList[index].getProductID(),
+                         toStringHandler);
           }
      }
 
      // relative search
-     public void relativeSearch (Object key, String request) {
+     public void relativeSearch(Object key, String request) {
           Books[] list = relativeFind(key, request);
           if (list != null)
                for (Books books : list)
-                   System.out.printf("book's id: %s\ndetail: %s\n", books.getProductID(), composeUsingFormatter(books));
+                    System.out.printf("id: %s\ndetail: %s\n", books.getProductID(),
+                              composeUsingFormatter(books));
      }
 
      // advanced search
-     public void advancedSearch (Object keyI, Object timeOrKey, String request) {
+     public void advancedSearch(Object keyI, Object timeOrKey, String request) {
           Books[] list = advancedFind(keyI, timeOrKey, request);
           if (list != null)
                for (Books books : list)
-                   System.out.printf("book's id: %s\ndetail: %s\n", books.getProductID(), composeUsingFormatter(books));
-          
+                    System.out.printf("id: %s\ndetail: %s\n", books.getProductID(),
+                              composeUsingFormatter(books));
+
      }
 
      // add methods (DONE)
@@ -230,13 +247,12 @@ public class BooksBUS implements IRuleSets {
      }
 
      @Override
-     public void add (Object newBook) {
+     public void add(Object newBook) {
           if (newBook instanceof Books) {
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
                booksList[count] = (Books) newBook;
                count++;
-          }
-          else 
+          } else
                System.out.println("your new book have something not like book!");
      }
 
@@ -248,41 +264,41 @@ public class BooksBUS implements IRuleSets {
 
      // edit name
      @Override
-     public void edit (String bookId) {
+     public void edit(String bookId) {
           int index = find(bookId);
           if (index != -1) {
                String newName;
                do {
                     System.out.print("enter a new name for this book: ");
                     newName = input.nextLine();
-               }while (Validate.checkName(newName));
-               booksList[index].setProductName(newName);    
+               } while (Validate.checkName(newName));
+               booksList[index].setProductName(newName);
           }
      }
 
      // edit release date
-     public void edit (String id, LocalDate newDate) {
+     public void edit(String id, LocalDate newDate) {
           int index = find(id);
-          if (index != -1) 
-               booksList[index].setReleaseDate(newDate);    
+          if (index != -1)
+               booksList[index].setReleaseDate(newDate);
      }
 
      // edit price
-     public void edit (String id, BigDecimal newPrice) {
+     public void edit(String id, BigDecimal newPrice) {
           int index = find(id);
-          if (index != -1) 
+          if (index != -1)
                booksList[index].setProductPrice(newPrice);
      }
 
      // edit quantity
-     public void edit (String id, int newQuantity) {
+     public void edit(String id, int newQuantity) {
           int index = find(id);
-          if (index != -1) 
+          if (index != -1)
                booksList[index].setQuantity(newQuantity);
      }
-     
+
      // edit author
-     public void edit (String id, String newAuthor) {
+     public void edit(String id, String newAuthor) {
           int index = find(id);
           if (index == -1) {
                System.out.println("your book is not exist!");
@@ -292,7 +308,7 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit type
-     public void edit (String id, BookTypes newType) {
+     public void edit(String id, BookTypes newType) {
           int index = find(id);
           if (index == -1) {
                System.out.println("your book is not exist!");
@@ -302,7 +318,7 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit format
-     public void editFormat (String id, String newFormat) {
+     public void editFormat(String id, String newFormat) {
           int index = find(id);
           if (index == -1) {
                System.out.println("your book is not exist!");
@@ -328,20 +344,21 @@ public class BooksBUS implements IRuleSets {
      }
 
      @Override
-     public void remove (String inputId) {
+     public void remove(String inputId) {
           int index = find(inputId);
           if (index != -1) {
-               for (int i = index; i < booksList.length - 1; i++) 
+               for (int i = index; i < booksList.length - 1; i++)
                     booksList[i] = booksList[i + 1];
                booksList = Arrays.copyOf(booksList, booksList.length - 1);
-               count --;
+               count--;
           }
      }
 
      // execute files
-     //write file
-     public void writeFile () throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/Books", false))) {
+     // write file
+     public void writeFile() throws IOException {
+          try (DataOutputStream file = new DataOutputStream(
+                    new FileOutputStream("OOP/src/main/resources/Books", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(booksList[i].getProductID());
@@ -360,19 +377,19 @@ public class BooksBUS implements IRuleSets {
           }
      }
 
-
      // read file
-     public void readFile () throws IOException {
-          try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("OOP/src/main/resources/Books"))) {
+     public void readFile() throws IOException {
+          try (DataInputStream file = new DataInputStream(
+                    getClass().getResourceAsStream("OOP/src/main/resources/Books"))) {
                count = file.readInt();
                Books[] list = new Books[count];
                for (int i = 0; i < count; i++) {
-                    String productID =  file.readUTF();
+                    String productID = file.readUTF();
                     String productName = file.readUTF();
                     BigDecimal price = new BigDecimal(file.readUTF());
                     LocalDate releaseDate = LocalDate.parse(file.readUTF());
                     String author = file.readUTF();
-                    String publisherID = file.readUTF();  //use as param for query publisher from class Publishers
+                    String publisherID = file.readUTF(); // use as param for query publisher from class Publishers
                     String typeID = file.readUTF();
                     int quantity = file.readInt();
                     String format = file.readUTF();
@@ -381,7 +398,8 @@ public class BooksBUS implements IRuleSets {
                     // execute IDs
                     Publishers publisher = PublishersBUS.getPublisher(publisherID);
                     BookTypes type = TypesBUS.getType(typeID);
-                    list[i] = new Books(productID, productName, releaseDate, price, quantity, publisher, author, type, format, packagingSize);
+                    list[i] = new Books(productID, productName, releaseDate, price, quantity, publisher, author, type,
+                              format, packagingSize);
                }
                setCount(count);
                setBooksList(list);
@@ -391,8 +409,9 @@ public class BooksBUS implements IRuleSets {
      }
 
      // some other methods
-     private String composeUsingFormatter (Books book) {
-          return String.format("publisher name: %s\nauthor: %s\nbook type: %s\nformat: %s\npackaging size: %s\n", 
-          book.getPublisher().getPublisherName(), book.getAuthor(), book.getType().getTypeName(), book.getFormat(), book.getPackagingSize());
+     private String composeUsingFormatter(Books book) {
+          return String.format("publisher name: %s\nauthor: %s\nbook type: %s\nformat: %s\npackaging size: %s\n",
+                    book.getPublisher().getPublisherName(), book.getAuthor(), book.getType().getTypeName(),
+                    book.getFormat(), book.getPackagingSize());
      }
 }

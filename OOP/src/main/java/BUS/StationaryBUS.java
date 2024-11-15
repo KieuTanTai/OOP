@@ -19,7 +19,7 @@ public class StationaryBUS implements IRuleSets {
     private int count;
     private static final Scanner input = new Scanner(System.in);
 
-    //constructors
+    // constructors
     public StationaryBUS() {
     }
 
@@ -28,13 +28,12 @@ public class StationaryBUS implements IRuleSets {
         this.count = count;
     }
 
-
     // getters / setters
     public Stationary[] getStaList() {
         return this.staList;
     }
 
-    public Stationary geStationary (int index) {
+    public Stationary geStationary(int index) {
         return this.staList[index];
     }
 
@@ -59,43 +58,44 @@ public class StationaryBUS implements IRuleSets {
 
     // strict find
     @Override
-    public int find(String inputValue) {
+    public int find(String nameOrID) {
         for (int i = 0; i < staList.length; i++)
-            if (staList[i].getProductID().equals(inputValue) || staList[i].getProductName().equals(inputValue) || staList[i].getStationaryID().equals(inputValue))
-                return i; 
+            if (staList[i].getProductID().equals(nameOrID) || staList[i].getProductName().equals(nameOrID)
+                    || staList[i].getStationaryID().equals(nameOrID))
+                return i;
         System.out.println("your stationary is not exist!");
         return -1;
     }
 
     // relative finds
     // return list index of products that have contains specific string
-    public Stationary[] relativeFind (Object originalKey, String request) {
+    public Stationary[] relativeFind(Object originalKey, String request) {
         int count = 0;
         boolean flag = false;
         Stationary[] staArray = new Stationary[0];
+        request = request.toLowerCase();
         for (Stationary stationary : staList) {
             if (originalKey instanceof String) {
-                    String key = (String) originalKey;
-                    if (request.equals("name") && stationary.getProductName().contains(key))
-                        flag = true;
-                    else if (request.equals("brand") && stationary.getBrand().equals(key))
-                        flag = true;
-                    else if (request.equals("material") && stationary.getMaterial().equals(key))
-                        flag = true;
-                    else if (request.equals("source") && stationary.getSource().equals(key))
-                        flag = true;
-                    else if (request.equals("type") && stationary.getType().getTypeID().equals(key))
-                        flag = true;
-            }
-            else if (originalKey instanceof LocalDate)
-                    if (request.equals("releaseDate") && stationary.getReleaseDate().equals((LocalDate) originalKey))
-                        flag = true;              
+                String key = (String) originalKey;
+                if (request.equals("name") && stationary.getProductName().contains(key))
+                    flag = true;
+                else if (request.equals("brand") && stationary.getBrand().equals(key))
+                    flag = true;
+                else if (request.equals("material") && stationary.getMaterial().equals(key))
+                    flag = true;
+                else if (request.equals("source") && stationary.getSource().equals(key))
+                    flag = true;
+                else if (request.equals("type") && stationary.getType().getTypeID().equals(key))
+                    flag = true;
+            } else if (originalKey instanceof LocalDate)
+                if (request.equals("releaseDate") && stationary.getReleaseDate().equals((LocalDate) originalKey))
+                    flag = true;
 
             if (flag) {
-                    staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                    staArray[count] = stationary;
-                    flag = false;
-                    count++; 
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                flag = false;
+                count++;
             }
         }
         if (count == 0) {
@@ -106,70 +106,86 @@ public class StationaryBUS implements IRuleSets {
     }
 
     // advanced finds
-    public Stationary[] advancedFind (BigDecimal minPrice, BigDecimal maxPrice, String request) {
+    public Stationary[] advancedFind(BigDecimal minPrice, BigDecimal maxPrice, String request) {
         int count = 0;
         boolean flag = false;
         Stationary[] staArray = new Stationary[0];
+        request = request.toLowerCase();
         for (Stationary stationary : staList) {
-             BigDecimal productPrice = stationary.getProductPrice();
-             if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
-                  flag = true;
-             else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
-                  flag = true;
-             else if (request.equals("range")) 
-                  if ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0))
-                       flag = true;
+            BigDecimal productPrice = stationary.getProductPrice();
+            if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
+                flag = true;
+            else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
+                flag = true;
+            else if (request.equals("range"))
+                if ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0))
+                    flag = true;
 
-             if (flag) {
-                  staArray = Arrays.copyOf(staArray, staArray.length + 1);
-                  staArray[count] = stationary;
-                  flag = false;
-                  count++;
-             }
+            if (flag) {
+                staArray = Arrays.copyOf(staArray, staArray.length + 1);
+                staArray[count] = stationary;
+                flag = false;
+                count++;
+            }
         }
         if (count == 0) {
-             System.out.println("not found any stationary!");
-             return null;
+            System.out.println("not found any stationary!");
+            return null;
         }
         return staArray;
-   }
-    
-    public Stationary[] advancedFind (Object originalKeyI, Object originalTimeOrKey, String request) {
+    }
+
+    public Stationary[] advancedFind(Object originalKeyI, Object originalTimeOrKey, String request) {
         int count = 0;
         boolean flag = false;
         Stationary[] staArray = new Stationary[0];
+        request = request.toLowerCase();
         for (Stationary stationary : staList) {
-            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("Month"))) {
+            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("month"))) {
                 String keyI = (String) originalKeyI;
-                boolean keyII =  stationary.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
-                if ((request.equals("MatMonth")) && (stationary.getMaterial().equals(keyI) && keyII))
+                boolean keyII = stationary.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
+                if ((request.contains("mat")) && (stationary.getMaterial().equals(keyI) && keyII))
                     flag = true;
-                else if ((request.equals("BrandMonth")) && (stationary.getBrand().equals(keyI) && keyII))
+                else if ((request.contains("brand")) && (stationary.getBrand().equals(keyI) && keyII))
                     flag = true;
-                else if ((request.equals("SourceMonth")) && (stationary.getSource().equals(keyI) && keyII))
+                else if ((request.contains("source")) && (stationary.getSource().equals(keyI) && keyII))
                     flag = true;
-                else if ((request.equals("TypeMonth")) && (stationary.getType().getTypeID().equals(keyI) && keyII))
+                else if ((request.contains("type")) && (stationary.getType().getTypeID().equals(keyI) && keyII))
                     flag = true;
-                }
-            else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("year"))) {
+            } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
+                    && (request.contains("year"))) {
                 String keyI = (String) originalKeyI;
-                boolean keyII =  stationary.getReleaseDate().getYear() == (int) originalTimeOrKey;
-                if ((request.equals("MatYear")) && (stationary.getMaterial().equals(keyI) && keyII))
+                boolean keyII = stationary.getReleaseDate().getYear() == (int) originalTimeOrKey;
+                if ((request.contains("mat")) && (stationary.getMaterial().equals(keyI) && keyII))
                     flag = true;
-                else if ((request.equals("BrandYear")) && (stationary.getBrand().equals(keyI) && keyII))
+                else if ((request.contains("brand")) && (stationary.getBrand().equals(keyI) && keyII))
                     flag = true;
-                else if ((request.equals("SourceMYear")) && (stationary.getSource().equals(keyI) && keyII))
+                else if ((request.contains("source")) && (stationary.getSource().equals(keyI) && keyII))
                     flag = true;
-                else if ((request.equals("TypeYear")) && (stationary.getType().getTypeID().equals(keyI) && keyII))
+                else if ((request.contains("type")) && (stationary.getType().getTypeID().equals(keyI) && keyII))
                     flag = true;
-            }
-            else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
+            } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
                 String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
-                if ((request.equals("TypeMat")) && (stationary.getType().getTypeID().equals(keyI) && stationary.getMaterial().equals(keyII)))
+                boolean hasType = request.contains("type");
+                boolean hasMaterial = request.contains("material");
+                boolean hasSource = request.contains("source");
+                boolean hasBrand = request.contains("brand");
+
+                String typeID = stationary.getType().getTypeID();
+                String material = stationary.getMaterial();
+                String source = stationary.getSource();
+                String brand = stationary.getBrand();
+
+                if ((hasType && hasMaterial) && ((typeID.equals(keyI) && material.equals(keyII))
+                        || (typeID.equals(keyII) && material.equals(keyI))))
                     flag = true;
-                else if ((request.equals("TypeSource")) && (stationary.getType().getTypeID()).equals(keyI) && stationary.getSource().equals(keyII))
+
+                else if ((hasType && hasSource) && ((typeID.equals(keyI) && source.equals(keyII))
+                        || (typeID.equals(keyII) && source.equals(keyI))))
                     flag = true;
-                else if ((request.equals("TypeBrand")) && (stationary.getType().getTypeID().equals(keyI) && stationary.getBrand().equals(keyII)))
+
+                else if ((hasType && hasBrand) && ((typeID.equals(keyI) && brand.equals(keyII))
+                        || (typeID.equals(keyII) && brand.equals(keyI))))
                     flag = true;
             }
 
@@ -194,11 +210,11 @@ public class StationaryBUS implements IRuleSets {
     }
 
     @Override
-    public void search(String inputValue) {
-        int index = find(inputValue);
+    public void search(String nameOrID) {
+        int index = find(nameOrID);
         if (index != -1) {
             String toStringHandler = composeUsingFormatter(staList[index]);
-            System.out.printf("stationer's id / name: %s\nstationary detail: \n%s", inputValue, toStringHandler);
+            System.out.printf("id / name: %s\ndetail: \n%s", nameOrID, toStringHandler);
         }
     }
 
@@ -207,7 +223,8 @@ public class StationaryBUS implements IRuleSets {
         Stationary[] indexList = relativeFind(key, request);
         if (indexList != null)
             for (Stationary stationary : indexList)
-                System.out.printf("stationer's id: %s\ndetail: %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
+                System.out.printf("id: %s\ndetail: %s\n", stationary.getProductID(),
+                        composeUsingFormatter(stationary));
     }
 
     // advanced search
@@ -215,7 +232,8 @@ public class StationaryBUS implements IRuleSets {
         Stationary[] indexList = advancedFind(keyI, timeOrKey, request);
         if (indexList != null)
             for (Stationary stationary : indexList)
-                System.out.printf("stationer's id: %s\ndetail: %s\n", stationary.getProductID(), composeUsingFormatter(stationary));
+                System.out.printf("id: %s\ndetail: %s\n", stationary.getProductID(),
+                        composeUsingFormatter(stationary));
     }
 
     // add methods (DONE)
@@ -231,7 +249,7 @@ public class StationaryBUS implements IRuleSets {
             staList[count] = (Stationary) stationary;
             count++;
         } else
-            System.out.println("your new stationary have something not like stationary!");
+            System.out.println("your object have something not like stationary!");
 
     }
 
@@ -260,7 +278,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, LocalDate newDate) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist!");
+            System.out.println("your stationary is not exist!");
             return;
         }
         staList[index].setReleaseDate(newDate);
@@ -270,7 +288,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, BigDecimal newPrice) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist!");
+            System.out.println("your stationary is not exist!");
             return;
         }
         staList[index].setProductPrice(newPrice);
@@ -280,7 +298,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, int newQuantity) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist!");
+            System.out.println("your stationary is not exist!");
             return;
         }
         staList[index].setQuantity(newQuantity);
@@ -290,7 +308,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, StaTypes newType) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist!");
+            System.out.println("your stationary is not exist!");
             return;
         }
         staList[index].setType(newType);
@@ -300,7 +318,7 @@ public class StationaryBUS implements IRuleSets {
     public void edit(String id, String brand) {
         int index = find(id);
         if (index == -1) {
-            System.out.println("your book is not exist!");
+            System.out.println("your stationary is not exist!");
             return;
         }
         staList[index].setBrand(brand);
@@ -329,9 +347,10 @@ public class StationaryBUS implements IRuleSets {
     // some other methods
 
     // execute files
-    //write file
-    public void writeFile () throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/Stationeries", false))) {
+    // write file
+    public void writeFile() throws IOException {
+        try (DataOutputStream file = new DataOutputStream(
+                new FileOutputStream("OOP/src/main/resources/Stationeries", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(staList[i].getProductID());
@@ -351,12 +370,13 @@ public class StationaryBUS implements IRuleSets {
     }
 
     // read file
-    public void readFile () throws IOException {
-        try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("OOP/src/main/resources/Stationeries"))) {
+    public void readFile() throws IOException {
+        try (DataInputStream file = new DataInputStream(
+                getClass().getResourceAsStream("OOP/src/main/resources/Stationeries"))) {
             count = file.readInt();
             Stationary[] list = new Stationary[count];
             for (int i = 0; i < count; i++) {
-                String productID =  file.readUTF();
+                String productID = file.readUTF();
                 String stationaryID = file.readUTF();
                 String productName = file.readUTF();
                 BigDecimal price = new BigDecimal(file.readUTF());
@@ -364,12 +384,13 @@ public class StationaryBUS implements IRuleSets {
                 String typeID = file.readUTF();
                 String brand = file.readUTF();
                 int quantity = file.readInt();
-                String material = file.readUTF();  //use as param for query publisher from class Publishers
+                String material = file.readUTF(); // use as param for query publisher from class Publishers
                 String source = file.readUTF();
 
                 // execute IDs
-                StaTypes type = StaTypesBUS.getStaType(typeID);
-                list[i] = new Stationary(productID, stationaryID, productName, releaseDate, price, quantity, type, brand, material, source);
+                StaTypes type = StaTypesBUS.getType(typeID);
+                list[i] = new Stationary(productID, stationaryID, productName, releaseDate, price, quantity, type,
+                        brand, material, source);
             }
             setCount(count);
             setStaList(list);
@@ -380,6 +401,7 @@ public class StationaryBUS implements IRuleSets {
 
     private String composeUsingFormatter(Stationary stationary) {
         return String.format("stationary id: %s\ntype: %s\nbrand: %s\nmaterial: %s\nsource: %s\n",
-                stationary.getStationaryID(), stationary.getType().getTypeName(), stationary.getBrand(), stationary.getMaterial(), stationary.getSource());
+                stationary.getStationaryID(), stationary.getType().getTypeName(), stationary.getBrand(),
+                stationary.getMaterial(), stationary.getSource());
     }
 }

@@ -18,9 +18,9 @@ public class Books extends Products {
     private String packagingSize;
     private BookTypes bookType;
 
-
     // constructors
-    public Books() {}
+    public Books() {
+    }
 
     public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
             int quantity, Publishers publisher, String author, BookTypes type, String format, String packagingSize) {
@@ -132,7 +132,7 @@ public class Books extends Products {
         BookTypes type;
         // show list for user choose
         TypesBUS.showList();
-        if (TypesBUS.getCount() == 0) //if not have any publisher
+        if (TypesBUS.getCount() == 0) // if not have any publisher
             return null;
         System.out.println("----------------------------");
         do {
@@ -151,7 +151,7 @@ public class Books extends Products {
         Publishers publisher;
         // show list for user choose
         PublishersBUS.showList();
-        if (PublishersBUS.getCount() == 0) //if not have any types
+        if (PublishersBUS.getCount() == 0) // if not have any types
             return null;
         System.out.println("----------------------------");
         do {
@@ -171,7 +171,7 @@ public class Books extends Products {
         BookGenres[] listGenres = new BookGenres[0];
         // show list for user choose
         GenresBUS.showList();
-        if(GenresBUS.getCount() == 0) //if not have any genres
+        if (GenresBUS.getCount() == 0) // if not have any genres
             return null;
         System.out.println("----------------------------");
         do {
@@ -182,7 +182,7 @@ public class Books extends Products {
                 userChoose = Validate.parseChooseHandler(item, GenresBUS.getCount());
                 if (userChoose == -1) {
                     count = 0;
-                    break;   
+                    break;
                 }
                 list = Arrays.copyOf(list, list.length);
                 list[count] = userChoose;
@@ -238,8 +238,7 @@ public class Books extends Products {
         if (userChoose == 1) {
             System.out.println("ok!");
             return;
-        }
-        else {
+        } else {
             // set fields for product
             setProductID(id);
             setProductName(name);

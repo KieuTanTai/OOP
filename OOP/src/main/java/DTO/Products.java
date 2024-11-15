@@ -16,10 +16,12 @@ public abstract class Products {
     private int quantity;
     protected static final Scanner input = new Scanner(System.in);
 
-    //  constructors
-    public Products() {}
+    // constructors
+    public Products() {
+    }
 
-    public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
+    public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice,
+            int quantity) {
         this.productID = productIDModifier(productID + UUID.randomUUID());
         this.productName = productName;
         this.releaseDate = releaseDate;

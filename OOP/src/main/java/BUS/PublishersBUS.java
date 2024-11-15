@@ -1,4 +1,5 @@
 package BUS;
+
 import java.util.Arrays;
 import java.util.Scanner;
 import DTO.Publishers;
@@ -8,8 +9,8 @@ public class PublishersBUS implements IRuleSets {
     private static int count;
     private final Scanner scanner = new Scanner(System.in);
 
-    // Constructor  
-    public PublishersBUS () {
+    // Constructor
+    public PublishersBUS() {
         PublishersBUS.publishersList = new Publishers[0];
         PublishersBUS.count = 0;
     }
@@ -23,25 +24,26 @@ public class PublishersBUS implements IRuleSets {
         return Arrays.copyOf(PublishersBUS.publishersList, PublishersBUS.count);
     }
 
-    public static Publishers getPublisher (String id) {
+    public static Publishers getPublisher(String id) {
         for (Publishers publisher : publishersList)
             if (publisher.getPublisherID().equals(id))
                 return publisher;
         return null;
-     }
+    }
 
-    public static int getCount () {
+    public static int getCount() {
         return count;
     }
 
     // all others methods like: add remove edit find show....
-     // show list of publisher for user (DONE)
-     public static void showList() {
+    // show list of publisher for user (DONE)
+    public static void showList() {
         if (publishersList == null)
             return;
         for (int i = 0; i < publishersList.length; i++)
-             System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
-   }
+            System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(),
+                    publishersList[i].getPublisherName());
+    }
 
     public void add(Object publisher) {
         if (publisher instanceof Publishers) {

@@ -1,4 +1,5 @@
 package BUS;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -16,45 +17,46 @@ public class MidForBooksBUS {
      private Scanner input = new Scanner(System.in);
 
      // constructors
-     public MidForBooksBUS () {
+     public MidForBooksBUS() {
           MidForBooksBUS.count = 0;
           midList = new MidForBooks[0];
      }
 
-     public MidForBooksBUS (int count, MidForBooks[] midList) {
+     public MidForBooksBUS(int count, MidForBooks[] midList) {
           MidForBooksBUS.count = count;
           MidForBooksBUS.midList = midList;
      }
 
      // getter / setter
-     public static int getCount () {
+     public static int getCount() {
           return count;
      }
 
-     public static MidForBooks[] midList () {
+     public static MidForBooks[] getMidList() {
           return Arrays.copyOf(midList, midList.length);
      }
 
-     public static MidForBooks getMidForBook (String bookID, BookGenres genre) {
-          for(MidForBooks mid : midList)
-               if(mid.getBookID().equals(bookID) && mid.getGenre().getGenreID().equals(genre.getGenreID()) && 
-               mid.getGenre().getGenreName().equals(genre.getGenreName()))
+     public static MidForBooks getMidForBook(String bookID, BookGenres genre) {
+          for (MidForBooks mid : midList)
+               if (mid.getBookID().equals(bookID) && mid.getGenre().getGenreID().equals(genre.getGenreID()) &&
+                         mid.getGenre().getGenreName().equals(genre.getGenreName()))
                     return new MidForBooks(mid.getBookID(), mid.getGenre());
           return null;
      }
 
-     public void setCount (int count) {
+     public void setCount(int count) {
           MidForBooksBUS.count = count;
      }
 
-     public void setMid (MidForBooks now, MidForBooks newMid){
-          for(int i = 0; i < midList.length; i++)
-               if(midList[i].getBookID().equals(now.getBookID()) && midList[i].getGenre().getGenreID().equals(now.getGenre().getGenreID()) &&
-               midList[i].getGenre().getGenreName().equals(now.getGenre().getGenreName()))
+     public void setMid(MidForBooks now, MidForBooks newMid) {
+          for (int i = 0; i < midList.length; i++)
+               if (midList[i].getBookID().equals(now.getBookID())
+                         && midList[i].getGenre().getGenreID().equals(now.getGenre().getGenreID()) &&
+                         midList[i].getGenre().getGenreName().equals(now.getGenre().getGenreName()))
                     midList[i] = newMid;
      }
 
-     public void setMidList (MidForBooks[] midList) {
+     public void setMidList(MidForBooks[] midList) {
           MidForBooksBUS.midList = midList;
      }
 
@@ -65,13 +67,14 @@ public class MidForBooksBUS {
                return;
           int size = midList.length;
           for (int i = 0; i < size; i++)
-               System.out.printf("%-3d: %-6s %-6s %s\n", i + 1, midList[i].getBookID(), midList[i].getGenre().getGenreID(), midList[i].getGenre().getGenreName());
+               System.out.printf("%-3d: %-6s %-6s %s\n", i + 1, midList[i].getBookID(),
+                         midList[i].getGenre().getGenreID(), midList[i].getGenre().getGenreName());
      }
 
-     // find methods 
+     // find methods
      // get genres list with specific product
-     // *strict find (TEST DONE) 
-     public int find (String bookID, String genreID)  {
+     // *strict find (TEST DONE)
+     public int find(String bookID, String genreID) {
           int size = midList.length;
           for (int i = 0; i < size; i++)
                if ((midList[i].getBookID().equals(bookID)) && midList[i].getGenre().getGenreID().equals(genreID))
@@ -81,7 +84,7 @@ public class MidForBooksBUS {
      }
 
      // *relative find (TEST DONE)
-     public MidForBooks[] relativeFind (String id) {
+     public MidForBooks[] relativeFind(String id) {
           int count = 0;
           MidForBooks[] list = new MidForBooks[0];
           for (MidForBooks mid : midList)
@@ -97,48 +100,51 @@ public class MidForBooksBUS {
           return list;
      }
 
-     // search methods 
+     // search methods
      // *strict search (TEST DONE)
-     public void search (String bookID, String genreID) {
-          int index = find(bookID, genreID); 
-          if (index != -1) 
-               System.out.printf("book's id: %-6s genre's name: %-6s\n", midList[index].getBookID(), midList[index].getGenre().getGenreName());
+     public void search(String bookID, String genreID) {
+          int index = find(bookID, genreID);
+          if (index != -1)
+               System.out.printf("book's id: %-6s genre's name: %-6s\n", midList[index].getBookID(),
+                         midList[index].getGenre().getGenreName());
      }
 
      // *relative search (TEST DONE)
-     public void relativeSearch (String id) {
+     public void relativeSearch(String id) {
           MidForBooks[] list = relativeFind(id);
           if (list != null)
                for (MidForBooks mid : list)
-                    System.out.printf("book's id: %-6s genre's id: %-6s genre's name: %-6s\n", mid.getBookID(), mid.getGenre().getGenreID(), mid.getGenre().getGenreName());
+                    System.out.printf("book's id: %-6s genre's id: %-6s genre's name: %-6s\n", mid.getBookID(),
+                              mid.getGenre().getGenreID(), mid.getGenre().getGenreName());
      }
 
      // *add methods (TEST DONE)
-     public void add (MidForBooks midObject) {
+     public void add(MidForBooks midObject) {
           midList = Arrays.copyOf(midList, midList.length + 1);
           midList[count] = (MidForBooks) midObject;
           count++;
      }
 
-     public void add (MidForBooks[] midObject, int count) {
+     public void add(MidForBooks[] midObject, int count) {
           midList = Arrays.copyOf(midList, midList.length + midObject.length);
 
           int tempIndex = 0;
-          int initCount = MidForBooksBUS.getCount();  
+          int initCount = MidForBooksBUS.getCount();
           int total = initCount + count;
-          for (int i = initCount; i < total; i++, tempIndex ++) {
+
+          for (int i = initCount; i < total; i++, tempIndex++)
                midList[i] = midObject[tempIndex];
-          } 
           MidForBooksBUS.count = total;
      }
 
      // *edit method (TEST DONE)
-     public void edit (String bookID) {
-          MidForBooks[] list = relativeFind(bookID); 
+     public void edit(String bookID) {
+          MidForBooks[] list = relativeFind(bookID);
           if (list != null) {
                int count = list.length;
                for (int i = 0; i < count; i++)
-                    System.out.printf("%-3d: %-6s %-6s %s\n", i + 1, list[i].getBookID(), list[i].getGenre().getGenreID(), list[i].getGenre().getGenreName());
+                    System.out.printf("%-3d: %-6s %-6s %s\n", i + 1, list[i].getBookID(),
+                              list[i].getGenre().getGenreID(), list[i].getGenre().getGenreName());
                System.out.println("-----------------------------------------------");
                int userChoose, genreChoose;
                do {
@@ -160,8 +166,8 @@ public class MidForBooksBUS {
      }
 
      // *remove method (TEST DONE)
-     public void remove (String bookID, String genreID) {
-          int index = find(bookID, genreID); 
+     public void remove(String bookID, String genreID) {
+          int index = find(bookID, genreID);
           if (index != -1) {
                int size = midList.length;
                for (int i = index; i < size - 1; i++)
@@ -172,9 +178,10 @@ public class MidForBooksBUS {
      }
 
      // execute file resources
-     //*write file (TEST DONE)
-     public void writeFile () throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/MidForBooks", false))) {
+     // *write file (TEST DONE)
+     public void writeFile() throws IOException {
+          try (DataOutputStream file = new DataOutputStream(
+                    new FileOutputStream("OOP/src/main/resources/MidForBooks", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(midList[i].getBookID());
@@ -185,14 +192,13 @@ public class MidForBooksBUS {
           }
      }
 
-
      // *read file (TEST DONE)
-     public void readFile () throws IOException {
+     public void readFile() throws IOException {
           try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("/MidForBooks"))) {
                count = file.readInt();
                MidForBooks[] list = new MidForBooks[count];
                for (int i = 0; i < count; i++) {
-                    String bookID =  file.readUTF();
+                    String bookID = file.readUTF();
                     String genreID = file.readUTF();
                     BookGenres genre = GenresBUS.getGenre(genreID);
                     if (genre != null)

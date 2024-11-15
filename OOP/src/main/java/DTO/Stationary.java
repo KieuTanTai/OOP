@@ -1,4 +1,5 @@
 package DTO;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,10 +15,12 @@ public class Stationary extends Products {
      private String source;
 
      // constructors
-     public Stationary () {}
+     public Stationary() {
+     }
 
-     public Stationary (String productId, String stationaryID, String productName, LocalDate releaseDate, BigDecimal productPrice, 
-      int quantity, StaTypes type, String brand, String material, String source) {
+     public Stationary(String productId, String stationaryID, String productName, LocalDate releaseDate,
+               BigDecimal productPrice,
+               int quantity, StaTypes type, String brand, String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
           this.stationaryID = stationaryID;
           this.staTypes = type;
@@ -27,11 +30,11 @@ public class Stationary extends Products {
      }
 
      // getter / setter
-     public String getStationaryID () {
+     public String getStationaryID() {
           return this.stationaryID;
      }
 
-     public StaTypes getType () {
+     public StaTypes getType() {
           return this.staTypes;
      }
 
@@ -39,50 +42,50 @@ public class Stationary extends Products {
           return this.brand;
      }
 
-     public String getMaterial () {
+     public String getMaterial() {
           return this.material;
      }
 
-     public String getSource () {
+     public String getSource() {
           return this.source;
      }
 
      // setter have params
-     public void setStationaryID (String id) {
-          this.stationaryID =  id;
+     public void setStationaryID(String id) {
+          this.stationaryID = id;
      }
 
-     public void setType (StaTypes type) {
+     public void setType(StaTypes type) {
           this.staTypes = type;
      }
 
-     public void setBrand (String brand) {
+     public void setBrand(String brand) {
           this.brand = brand;
      }
 
-     public void setMaterial (String material) {
+     public void setMaterial(String material) {
           this.material = material;
      }
 
-     public void setSource (String source) {
+     public void setSource(String source) {
           this.source = source;
      }
 
      // setter no params
-     public String setStationaryID () {
+     public String setStationaryID() {
           String id;
           do {
-              System.out.print("set stationary id : ");
-              id = input.nextLine().trim();
-              if (Validate.validateID(id)) {
-                  System.out.println("error id !");
-                  id = "";
-              }
+               System.out.print("set stationary id : ");
+               id = input.nextLine().trim();
+               if (Validate.validateID(id)) {
+                    System.out.println("error id !");
+                    id = "";
+               }
           } while (id.isEmpty());
           return id;
      }
 
-     public StaTypes setType () {
+     public StaTypes setType() {
           int userChoose;
           StaTypes type;
           PublishersBUS.showList();
@@ -97,45 +100,44 @@ public class Stationary extends Products {
           return type;
      }
 
-     public String setBrand () {
+     public String setBrand() {
           String brand;
           do {
-              System.out.print("set brand name: ");
-              brand = input.nextLine().trim();
-              if (!Validate.checkName(brand)) {
-                  System.out.println("error name!");
-                  brand = "";
-              }
+               System.out.print("set brand name: ");
+               brand = input.nextLine().trim();
+               if (!Validate.checkName(brand)) {
+                    System.out.println("error name!");
+                    brand = "";
+               }
           } while (brand.isEmpty());
           return brand;
      }
 
-     public String setMaterial () {
+     public String setMaterial() {
           String material;
           do {
-              System.out.print("set material name: ");
-              material = input.nextLine().trim();
-              if (!Validate.checkName(material)) {
-                  System.out.println("error name!");
-                  material = "";
-              }
+               System.out.print("set material name: ");
+               material = input.nextLine().trim();
+               if (!Validate.checkName(material)) {
+                    System.out.println("error name!");
+                    material = "";
+               }
           } while (material.isEmpty());
           return material;
      }
 
-     public String setSource () {
+     public String setSource() {
           String source;
           do {
-              System.out.print("set source name (country): ");
-              source = input.nextLine().trim();
-              if (!Validate.checkHumanName(source)) {
-                  System.out.println("error name!");
-                  source = "";
-              }
+               System.out.print("set source name (country): ");
+               source = input.nextLine().trim();
+               if (!Validate.checkHumanName(source)) {
+                    System.out.println("error name!");
+                    source = "";
+               }
           } while (source.isEmpty());
           return source;
      }
-
 
      // other methods
      @Override
@@ -173,8 +175,7 @@ public class Stationary extends Products {
           if (userChoose == 1) {
                System.out.println("ok!");
                return;
-          }
-          else {
+          } else {
                // set fields for product
                setProductID(id);
                setProductName(name);
@@ -200,8 +201,7 @@ public class Stationary extends Products {
      }
 
      @Override
-     protected String productIDModifier (String stationaryID) {
+     protected String productIDModifier(String stationaryID) {
           return "STN" + stationaryID + "PD";
      }
 }
-

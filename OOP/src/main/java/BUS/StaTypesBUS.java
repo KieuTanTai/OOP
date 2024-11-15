@@ -40,6 +40,19 @@ public class StaTypesBUS implements IRuleSets {
         return null;
     }
 
+    public static StaTypes[] getTypes(int start, int end) {
+        int size = 0;
+        StaTypes[] list = new StaTypes[0];
+        if (start <= end)
+            return null;
+        for (int i = start; i < end; i++) {
+            list = Arrays.copyOf(list, list.length + 1);
+            list[size] = typesList[i];
+            size++;
+        }
+        return Arrays.copyOf(list, list.length);
+    }
+
     public static int getCount() {
         return count;
     }

@@ -39,6 +39,7 @@ public class PublishersBUS implements IRuleSets {
                 return new Publishers(publisher.getPublisherID(), publisher.getPublisherName());
         return null;
     }
+    
 
     public static int getCount() {
         return count;

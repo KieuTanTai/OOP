@@ -214,10 +214,8 @@ public class StationaryBUS implements IRuleSets {
     @Override
     public void search(String nameOrID) {
         int index = find(nameOrID);
-        if (index != -1) {
-            String toStringHandler = composeUsingFormatter(staList[index]);
-            System.out.printf("id / name: %s\ndetail: \n%s", nameOrID, toStringHandler);
-        }
+        if (index != -1)
+            staList[index].showInfo();
     }
 
     // relative search
@@ -225,8 +223,7 @@ public class StationaryBUS implements IRuleSets {
         Stationary[] indexList = relativeFind(key, request);
         if (indexList != null)
             for (Stationary stationary : indexList)
-                System.out.printf("id: %s\ndetail: %s\n", stationary.getProductID(),
-                        composeUsingFormatter(stationary));
+                stationary.showInfo();
     }
 
     // advanced search
@@ -234,8 +231,7 @@ public class StationaryBUS implements IRuleSets {
         Stationary[] indexList = advancedFind(keyI, timeOrKey, request);
         if (indexList != null)
             for (Stationary stationary : indexList)
-                System.out.printf("id: %s\ndetail: %s\n", stationary.getProductID(),
-                        composeUsingFormatter(stationary));
+                stationary.showInfo();
     }
 
     // add methods (DONE)
@@ -409,11 +405,5 @@ public class StationaryBUS implements IRuleSets {
         } catch (Exception err) {
             System.out.printf("error reading file!\n%s\n", err.getMessage());
         }
-    }
-
-    private String composeUsingFormatter(Stationary stationary) {
-        return String.format("stationary id: %s\ntype: %s\nbrand: %s\nmaterial: %s\nsource: %s\n",
-                stationary.getStationaryID(), stationary.getType().getTypeName(), stationary.getBrand(),
-                stationary.getMaterial(), stationary.getSource());
     }
 }

@@ -215,29 +215,24 @@ public class BooksBUS implements IRuleSets {
      @Override
      public void search(String nameOrID) {
           int index = find(nameOrID);
-          if (index != -1) {
-               String toStringHandler = composeUsingFormatter(booksList[index]);
-               System.out.printf("id / name: %s\ndetail: \n%s", booksList[index].getProductID(),
-                         toStringHandler);
-          }
+          if (index != -1)
+               booksList[index].showInfo();
      }
 
      // relative search
      public void relativeSearch(Object key, String request) {
           Books[] list = relativeFind(key, request);
           if (list != null)
-               for (Books books : list)
-                    System.out.printf("id: %s\ndetail: %s\n", books.getProductID(),
-                              composeUsingFormatter(books));
+               for (Books book : list)
+                    book.showInfo();
      }
 
      // advanced search
      public void advancedSearch(Object keyI, Object timeOrKey, String request) {
           Books[] list = advancedFind(keyI, timeOrKey, request);
           if (list != null)
-               for (Books books : list)
-                    System.out.printf("id: %s\ndetail: %s\n", books.getProductID(),
-                              composeUsingFormatter(books));
+               for (Books book : list)
+                    book.showInfo();
 
      }
 
@@ -417,12 +412,5 @@ public class BooksBUS implements IRuleSets {
           } catch (Exception err) {
                System.out.printf("error reading file!\nt%s\n", err.getMessage());
           }
-     }
-
-     // some other methods
-     private String composeUsingFormatter(Books book) {
-          return String.format("publisher name: %s\nauthor: %s\nbook type: %s\nformat: %s\npackaging size: %s\n",
-                    book.getPublisher().getPublisherName(), book.getAuthor(), book.getType().getTypeName(),
-                    book.getFormat(), book.getPackagingSize());
      }
 }

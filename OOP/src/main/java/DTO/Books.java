@@ -35,6 +35,17 @@ public class Books extends Products {
         this.packagingSize = packagingSize;
     }
 
+    public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
+            int quantity, Publishers publisher, String author, BookTypes type, String format, String packagingSize, BookGenres[] genres) {
+        super(productId, productName, releaseDate, productPrice, quantity);
+        this.publisher = publisher;
+        this.author = author;
+        this.bookType = type;
+        this.format = format;
+        this.packagingSize = packagingSize;
+        execGenres(productId, genres);
+    }
+
     public Books(Books bookInput) {
         super(bookInput.getProductID(), bookInput.getProductName(), bookInput.getReleaseDate(),
                 bookInput.getProductPrice(), bookInput.getQuantity());
@@ -209,6 +220,29 @@ public class Books extends Products {
         return listGenres;
     }
 
+    public void execGenres(String bookID ,BookGenres[] genres) {
+        // execute list of genres for product
+        int count = 0;
+        MidForBooks[] hashArray = new MidForBooks[0];
+        if (genres == null)
+            return;
+        for (BookGenres genre : genres) {
+            MidForBooks mid = new MidForBooks(bookID, genre);
+            hashArray = Arrays.copyOf(hashArray, count + 1);
+            hashArray[count] = mid;
+            count++;
+        }
+
+        try {
+            MidForBooksBUS midList = new MidForBooksBUS();
+            midList.readFile();
+            midList.add(hashArray);
+            midList.writeFile();
+        } catch (Exception e) {
+            System.out.println("error writing or reading file!\n" + e.getMessage());
+        }
+    }
+
     // other methods
     // *set info (TEST DONE)
     @Override
@@ -262,7 +296,8 @@ public class Books extends Products {
             setQuantity(quantity);
             setFormat(format);
             setPackagingSize(packagingSize);
-
+            execGenres(id, genres);
+            System.out.println("create and set fields success");
             // execute list of genres for product
             int count = 0;
             MidForBooks[] hashArray = new MidForBooks[0];
@@ -276,7 +311,7 @@ public class Books extends Products {
             try {
                 MidForBooksBUS midList = new MidForBooksBUS();
                 midList.readFile();
-                midList.add(hashArray, count);
+                midList.add(hashArray);
                 midList.writeFile();
                 System.out.println("create and set fields success");
             } catch (Exception e) {
@@ -291,7 +326,7 @@ public class Books extends Products {
         LocalDate date = this.getReleaseDate();
         NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
         BigDecimal price = this.getProductPrice();
-        System.out.println("=".repeat(140));
+        System.out.println("=".repeat(160));
         System.out.printf("| %-22s : %s \n", "ID", this.getProductID());
         System.out.printf("| %-22s : %s \n", "Book's Name", this.getProductName());
         System.out.printf("| %-22s : %s \n", "Release Date", 
@@ -310,31 +345,27 @@ public class Books extends Products {
             MidForBooksBUS listGenres = new MidForBooksBUS();
             listGenres.readFile();
             MidForBooks[] list = listGenres.relativeFind(this.getProductID());
-            if (list.length > 0) {
-                for (int i = 0; i < list.length; i++) {
-                    if (i == list.length - 1) {
-                        System.out.printf("%s", list[i].getGenre().getGenreName());
-                        continue;
-                    }
-
-                    if (i % 7 == 0 && i != 0) {
-                        System.out.printf("\n| %-22s   %s, ", " ", list[i].getGenre().getGenreName());
-                        continue;
-                    }
-                    
-                    System.out.printf("%s, ", list[i].getGenre().getGenreName());
+            for (int i = 0; i < list.length; i++) {
+                if (i == list.length - 1) {
+                    System.out.printf("%s", list[i].getGenre().getGenreName());
+                    continue;
                 }
-            } else {
-                System.out.print("N/A");
+
+                if (i % 7 == 0 && i != 0) {
+                    System.out.printf("\n| %-22s   %s, ", " ", list[i].getGenre().getGenreName());
+                    continue;
+                }
+                
+                System.out.printf("%s, ", list[i].getGenre().getGenreName());
             }
         } catch (Exception e) {
-            System.out.print("Error loading genres!");
+            System.out.print("| Error loading genres!");
         }
+
         System.out.println();
-    
         System.out.printf("| %-22s : %s \n", "Quantity", this.getQuantity());
         System.out.printf("| %-22s : %s \n", "Price",price != null ? formatter.format(price) : "N/A");
-        System.out.println("=".repeat(140));
+        System.out.println("=".repeat(160));
     }
 
     @Override

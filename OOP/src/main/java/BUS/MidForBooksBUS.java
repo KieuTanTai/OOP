@@ -80,7 +80,6 @@ public class MidForBooksBUS {
           for (int i = 0; i < size; i++)
                if ((midList[i].getBookID().equals(bookID)) && midList[i].getGenre().getGenreID().equals(genreID))
                     return i;
-          System.out.println("404 not found!");
           return -1;
      }
 
@@ -105,9 +104,12 @@ public class MidForBooksBUS {
      // *strict search (TEST DONE)
      public void search(String bookID, String genreID) {
           int index = find(bookID, genreID);
-          if (index != -1)
-               System.out.printf("book's id: %-6s genre's name: %-6s\n", midList[index].getBookID(),
-                         midList[index].getGenre().getGenreName());
+          if (index == -1) {
+               System.out.println("404 not found!");
+               return;
+          }
+          System.out.printf("book's id: %-6s genre's name: %-6s\n", midList[index].getBookID(),
+                    midList[index].getGenre().getGenreName());
      }
 
      // *relative search (TEST DONE)
@@ -121,21 +123,29 @@ public class MidForBooksBUS {
 
      // *add methods (TEST DONE)
      public void add(MidForBooks midObject) {
-          midList = Arrays.copyOf(midList, midList.length + 1);
-          midList[count] = (MidForBooks) midObject;
-          count++;
+          if (find(midObject.getBookID(), midObject.getGenre().getGenreID()) == -1) {
+               midList = Arrays.copyOf(midList, midList.length + 1);
+               midList[count] = midObject;
+               count++;
+          }
+
      }
 
-     public void add(MidForBooks[] midObject, int size) {
-          midList = Arrays.copyOf(midList, midList.length + midObject.length);
-
-          int tempIndex = 0;
-          int initCount = MidForBooksBUS.getCount();
-          int total = initCount + size;
-
-          for (int i = initCount; i < total; i++, tempIndex++)
-               midList[i] = midObject[tempIndex];
-          MidForBooksBUS.count = total;
+     public void add(MidForBooks[] midObject) {          
+          for (int i = 0; i < midObject.length; i++) {
+               boolean flag = false;
+               for(MidForBooks item : midList)
+                    if ((item != null) && (item.getBookID().equals(midObject[i].getBookID()) && 
+                         item.getGenre().getGenreID().equals(midObject[i].getGenre().getGenreID()))) {
+                              flag = true;
+                              break;
+                         }
+               if (flag)
+                    continue;
+               midList = Arrays.copyOf(midList, midList.length + 1);
+               midList[count] = midObject[i];
+               count++;
+          }
      }
 
      // *edit method (TEST DONE)
@@ -189,13 +199,15 @@ public class MidForBooksBUS {
 
      public void remove(String bookID, String genreID) {
           int index = find(bookID, genreID);
-          if (index != -1) {
-               int size = midList.length;
-               for (int i = index; i < size - 1; i++)
-                    midList[i] = midList[i + 1];
-               midList = Arrays.copyOf(midList, midList.length - 1);
-               count--;
+          if (index == -1) {
+               System.out.println("404 not found!");
+               return;
           }
+          int size = midList.length;
+          for (int i = index; i < size - 1; i++)
+               midList[i] = midList[i + 1];
+          midList = Arrays.copyOf(midList, midList.length - 1);
+          count--;
      }
 
      // execute file resources

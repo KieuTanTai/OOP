@@ -17,11 +17,11 @@ public class Validate {
      // check duplicate (DONE) 
      public static boolean hasDuplicates(String[] options) {
           for (int i = 0; i < options.length - 1; i++) 
-              for (int j = i + 1; j < options.length; j++) 
-                  if (options[i].equals(options[j])) 
-                      return true;
+               for (int j = i + 1; j < options.length; j++) 
+                    if (options[i].equals(options[j])) 
+                         return true;
           return false;
-      }
+     }
 
      // converted format for input date from user (DONE)
      public static LocalDate isCorrectDate(String date) {

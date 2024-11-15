@@ -198,7 +198,7 @@ public class Stationary extends Products {
      public void showInfo() {
           LocalDate date = this.getReleaseDate();
           NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
-          System.out.println("=".repeat(140));
+          System.out.println("=".repeat(160));
           System.out.printf("| %-22s : %s \n", "ID", this.getProductID());
           System.out.printf("| %-22s : %s \n", "Stationary ID", stationaryID);
           System.out.printf("| %-22s : %s \n", "Name", this.getProductName());
@@ -211,7 +211,7 @@ public class Stationary extends Products {
           System.out.printf("| %-22s : %s \n", "Brand", brand != null ? brand : "N/A");
           System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
           System.out.printf("| %-22s : %s \n", "Price", formatter.format(this.getProductPrice()));
-          System.out.println("=".repeat(140));
+          System.out.println("=".repeat(160));
      }
 
      @Override

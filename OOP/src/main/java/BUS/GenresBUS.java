@@ -6,6 +6,7 @@ import util.Validate;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -77,7 +78,7 @@ public class GenresBUS implements IRuleSets {
      @Override
      public int find(String nameOrID) {
           for (int i = 0; i < genresList.length; i++) {
-               if (genresList[i].getGenreID().equals(nameOrID) || genresList[i].getGenreName().equals(nameOrID))
+               if (genresList[i].getGenreID().equals(nameOrID) || genresList[i].getGenreName().toLowerCase().equals(nameOrID.toLowerCase()))
                     return i;
           }
           System.out.println("your genre is not found!");
@@ -94,7 +95,7 @@ public class GenresBUS implements IRuleSets {
                     count++;
                }
           if (count == 0) {
-               System.out.println("not found any genre!");
+               System.out.println("not found any genres!");
                return null;
           }
           return genresArray;
@@ -140,12 +141,12 @@ public class GenresBUS implements IRuleSets {
                System.out.println("your new genre is not correct!");
      }
 
-     public void add(BookGenres[] newGenres, int count) {
+     public void add(BookGenres[] newGenres, int size) {
           genresList = Arrays.copyOf(genresList, genresList.length + newGenres.length);
 
           int tempIndex = 0;
           int initCount = getCount();
-          int total = initCount + count;
+          int total = initCount + size;
 
           for (int i = initCount; i < total; i++, tempIndex++)
                genresList[i] = newGenres[tempIndex];
@@ -159,8 +160,8 @@ public class GenresBUS implements IRuleSets {
      }
 
      @Override
-     public void edit(String inputId) {
-          int index = find(inputId);
+     public void edit(String id) {
+          int index = find(id);
           if (index != -1) {
                String newName;
                do {
@@ -182,8 +183,8 @@ public class GenresBUS implements IRuleSets {
      }
 
      @Override
-     public void remove(String inputId) {
-          int index = find(inputId);
+     public void remove(String id) {
+          int index = find(id);
           if (index != -1) {
                for (int i = index; i < genresList.length - 1; i++)
                     genresList[i] = genresList[i + 1];
@@ -202,21 +203,20 @@ public class GenresBUS implements IRuleSets {
 
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("OOP/src/main/resources/BookGenres", false))) {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/BookGenres", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(genresList[i].getGenreID());
                     file.writeUTF(genresList[i].getGenreName());
                }
           } catch (Exception err) {
-               System.out.printf("404 not found!\n%s", err.getMessage());
+               System.out.printf("error writing file!\n%s\n", err.getMessage());
           }
      }
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("/BookGenres"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/BookGenres"))) {
                int count = file.readInt();
                BookGenres[] list = new BookGenres[count];
                for (int i = 0; i < count; i++) {
@@ -227,7 +227,7 @@ public class GenresBUS implements IRuleSets {
                setCount(count);
                setGenresList(list);
           } catch (Exception err) {
-               System.out.printf("404 not found!\n%s", err.getMessage());
+               System.out.printf("error reading file!\n%s\n", err.getMessage());
           }
      }
 }

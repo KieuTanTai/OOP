@@ -4,9 +4,7 @@ import util.Validate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-import java.util.UUID;
 
 public abstract class Products {
     private String productID;
@@ -20,9 +18,10 @@ public abstract class Products {
     public Products() {
     }
 
-    public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice,
-            int quantity) {
-        this.productID = productIDModifier(productID + UUID.randomUUID());
+    public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
+        // String inputID = productID + UUID.randomUUID();
+        // this.productID = productIDModifier(inputID);
+        this.productID = productID;
         this.productName = productName;
         this.releaseDate = releaseDate;
         this.productPrice = productPrice;
@@ -39,7 +38,7 @@ public abstract class Products {
     }
 
     public LocalDate getReleaseDate() {
-        return getFormattedReleaseDate();
+        return this.releaseDate;
     }
 
     public BigDecimal getProductPrice() {
@@ -52,7 +51,7 @@ public abstract class Products {
 
     // set have param
     public void setProductID(String productID) {
-        this.productID = productIDModifier(productID);
+        this.productID = productID;
     }
 
     public void setProductName(String productName) {
@@ -86,8 +85,16 @@ public abstract class Products {
     }
 
     public String setName() {
-        System.out.print("set name : ");
-        return input.nextLine().trim();
+        String name;
+        do {
+            System.out.print("set name : ");
+            name = input.nextLine().trim();
+            if(!Validate.checkName(name)) {
+                System.out.println("name is wrong format!");
+                name = "";
+            }
+        } while(name.isEmpty());
+        return name;
     }
 
     public LocalDate setRelDate() {
@@ -103,7 +110,7 @@ public abstract class Products {
     public BigDecimal setPrice() {
         BigDecimal price;
         do {
-            System.out.print("set price : ");
+            System.out.print("set price (VND) : ");
             String value = input.nextLine();
             price = Validate.isBigDecimal(value);
         } while (price == null);
@@ -121,10 +128,10 @@ public abstract class Products {
     }
 
     // other methods
-    public LocalDate getFormattedReleaseDate() {
-        DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(this.releaseDate.format(convertedFormat));
-    }
+    // public String getFormattedReleaseDate() {
+    //     DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    //     return this.releaseDate.format(convertedFormat);
+    // }
 
     public abstract void setInfo();
 

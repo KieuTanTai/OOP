@@ -3,8 +3,11 @@ package DTO;
 import util.Validate;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Locale;
 
 import BUS.GenresBUS;
 import BUS.MidForBooksBUS;
@@ -103,7 +106,7 @@ public class Books extends Products {
     public String setFormat() {
         String[] formats = { "Hardcover", "Paperback", "Leather-bound" };
         int userChoose;
-        System.out.printf("1.%-6s 2.%-6s 3.%-6s\n", formats[0], formats[1], formats[2]);
+        System.out.printf("1.%s\n2.%s \n3.%s\n", formats[0], formats[1], formats[2]);
         do {
             System.out.print("select your option (like \"1, 2, 3\"): ");
             userChoose = Validate.parseChooseHandler(input.nextLine().trim(), 3);
@@ -115,7 +118,7 @@ public class Books extends Products {
     public String setPackagingSize() {
         String packagingSize;
         do {
-            System.out.println("packaging size have format: \"number 'x'  number 'cm'\" ");
+            System.out.println("packaging size have format: \"number 'x' number 'cm'\" ");
             System.out.print("set packaging size: ");
             packagingSize = input.nextLine();
             if (!Validate.checkPackagingSize(packagingSize)) {
@@ -136,7 +139,7 @@ public class Books extends Products {
             return null;
         System.out.println("----------------------------");
         do {
-            System.out.print("choose type you want (like 1, 2,etc...): ");
+            System.out.print("choose type you want (like \\\"1, 2, 3,etc....\\\"): ");
             String option = input.nextLine().trim();
             userChoose = Validate.parseChooseHandler(option, TypesBUS.getCount());
         } while (userChoose == -1);
@@ -178,17 +181,25 @@ public class Books extends Products {
             System.out.print("choose genres (like 1, 2,etc...): ");
             String options = input.nextLine().trim();
             String[] splitOptions = options.split(" ");
+
+            if (Validate.hasDuplicates(splitOptions)) {
+                System.out.println("has duplicate! please try again!");
+                count = 0;
+                continue;
+            }
+
             for (String item : splitOptions) {
                 userChoose = Validate.parseChooseHandler(item, GenresBUS.getCount());
                 if (userChoose == -1) {
                     count = 0;
                     break;
                 }
-                list = Arrays.copyOf(list, list.length);
+                list = Arrays.copyOf(list, list.length + 1);
                 list[count] = userChoose;
                 count++;
             }
         } while (count == 0);
+
         for (int i = 0; i < count; i++) {
             int option = list[i];
             BookGenres genre = GenresBUS.getGenresList()[option - 1];
@@ -199,7 +210,7 @@ public class Books extends Products {
     }
 
     // other methods
-    // set info
+    // *set info (TEST DONE)
     @Override
     public void setInfo() {
         System.out.println("-----------------------------------------------");
@@ -227,18 +238,19 @@ public class Books extends Products {
         System.out.println("-----------------------------------------------");
 
         int userChoose;
-        System.out.println("***********************************************");
         System.out.println("I.Cancel ------------------- II.Submit");
         do {
             System.out.print("choose option (like 1, 2,etc...): ");
             String option = input.nextLine().trim();
             userChoose = Validate.parseChooseHandler(option, 2);
         } while (userChoose == -1);
+        System.out.println("***********************************************");
 
         if (userChoose == 1) {
             System.out.println("ok!");
             return;
-        } else {
+        } 
+        else {
             // set fields for product
             setProductID(id);
             setProductName(name);
@@ -258,21 +270,71 @@ public class Books extends Products {
                 MidForBooks mid = new MidForBooks(id, genre);
                 hashArray = Arrays.copyOf(hashArray, count + 1);
                 hashArray[count] = mid;
+                count++;
             }
-            MidForBooksBUS midList = new MidForBooksBUS();
-            midList.add(hashArray, count);
-            System.out.println("create and set fields success");
+
+            try {
+                MidForBooksBUS midList = new MidForBooksBUS();
+                midList.readFile();
+                midList.add(hashArray, count);
+                midList.writeFile();
+                System.out.println("create and set fields success");
+            } catch (Exception e) {
+                System.out.println("error writing or reading file!\n" + e.getMessage());
+            }
         }
     }
 
-    // show info
+    // *show info (TEST DONE)
     @Override
     public void showInfo() {
-        System.out.printf("Publisher name: %s\n", publisher.getPublisherName());
-        System.out.printf("Author: %s\n", author);
-        System.out.printf("Format: %s\n", format);
-        System.out.printf("Packaging Size: %s\n", packagingSize);
-        System.out.printf("Book Type: %s\n", bookType != null ? bookType.getTypeName() : "Unknown");
+        LocalDate date = this.getReleaseDate();
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
+        BigDecimal price = this.getProductPrice();
+        System.out.println("=".repeat(140));
+        System.out.printf("| %-22s : %s \n", "ID", this.getProductID());
+        System.out.printf("| %-22s : %s \n", "Book's Name", this.getProductName());
+        System.out.printf("| %-22s : %s \n", "Release Date", 
+            date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Publisher Name", 
+            publisher != null ? publisher.getPublisherName() : "N/A");
+        System.out.printf("| %-22s : %s \n", "Author", author != null ? author : "N/A");
+        System.out.printf("| %-22s : %s \n", "Format", format != null ? format : "N/A");
+        System.out.printf("| %-22s : %s \n", "Packaging Size", 
+            packagingSize != null ? packagingSize : "N/A");
+        System.out.printf("| %-22s : %s \n", "Book Type", 
+            bookType != null ? bookType.getTypeName() : "N/A");
+    
+        System.out.printf("| %-22s : ", "Genres");
+        try {
+            MidForBooksBUS listGenres = new MidForBooksBUS();
+            listGenres.readFile();
+            MidForBooks[] list = listGenres.relativeFind(this.getProductID());
+            if (list.length > 0) {
+                for (int i = 0; i < list.length; i++) {
+                    if (i == list.length - 1) {
+                        System.out.printf("%s", list[i].getGenre().getGenreName());
+                        continue;
+                    }
+
+                    if (i % 7 == 0 && i != 0) {
+                        System.out.printf("\n| %-22s   %s, ", " ", list[i].getGenre().getGenreName());
+                        continue;
+                    }
+                    
+                    System.out.printf("%s, ", list[i].getGenre().getGenreName());
+                }
+            } else {
+                System.out.print("N/A");
+            }
+        } catch (Exception e) {
+            System.out.print("Error loading genres!");
+        }
+        System.out.println();
+    
+        System.out.printf("| %-22s : %s \n", "Quantity", this.getQuantity());
+        System.out.printf("| %-22s : %s \n", "Price",price != null ? formatter.format(price) : "N/A");
+        System.out.println("=".repeat(140));
     }
 
     @Override

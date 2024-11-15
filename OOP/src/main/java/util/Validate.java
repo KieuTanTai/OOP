@@ -3,7 +3,6 @@ package util;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 public class Validate {
@@ -14,6 +13,15 @@ public class Validate {
      public static boolean checkQuantity(int quantity) {
           return quantity > 0;
      }
+
+     // check duplicate (DONE) 
+     public static boolean hasDuplicates(String[] options) {
+          for (int i = 0; i < options.length - 1; i++) 
+              for (int j = i + 1; j < options.length; j++) 
+                  if (options[i].equals(options[j])) 
+                      return true;
+          return false;
+      }
 
      // converted format for input date from user (DONE)
      public static LocalDate isCorrectDate(String date) {
@@ -26,14 +34,13 @@ public class Validate {
 
                String[] splitDate = date.split("-");
                LocalDate convertDate = LocalDate.parse(date, formatter);
-               String nowDate = formatter.format(LocalDateTime.now());
-               LocalDate convertNowDate = LocalDate.parse(nowDate, formatter);
+               LocalDate nowDate = LocalDate.now();
 
                if ((convertDate.getMonthValue() == 2) && (Integer.parseInt(splitDate[0]) > convertDate.getDayOfMonth()))
                     throw new Exception("invalid day of this month!");
 
-               if ((convertDate.compareTo(convertNowDate) > 0) || (convertDate.getYear() < 1900))
-                    throw new Exception("invalid date ! Are you time traveler ?");
+               if (convertDate.isAfter(nowDate) || (convertDate.getYear() < 1900))
+                    throw new Exception("invalid date ! Are you a time traveler ?");
 
                return convertDate;
           } catch (Exception err) {
@@ -116,7 +123,7 @@ public class Validate {
 
      // (DONE)
      public static boolean checkPackagingSize(String packagingSize) {
-          String regex = "^\\d+(\\.\\d+)?\\s*x\\s*\\d+(\\.\\d+)?\\s*cm$";
+          String regex = "^\\d+(\\.\\d+)?\\s+x\\s+\\d+(\\.\\d+)?\\s+cm$";
           Pattern pattern = Pattern.compile(regex);
           return pattern.matcher(packagingSize).matches();
      }

@@ -6,6 +6,7 @@ import util.Validate;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -68,7 +69,7 @@ public class StaTypesBUS implements IRuleSets {
             System.out.printf("%-3d: %-6s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
     }
 
-    // Find methods
+    // *Find methods (TEST DONE)
     @Override
     public void find() {
         Menu.findHandler();
@@ -77,7 +78,7 @@ public class StaTypesBUS implements IRuleSets {
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < typesList.length; i++) {
-            if (typesList[i].getTypeID().equals(nameOrID) || typesList[i].getTypeName().equals(nameOrID))
+            if (typesList[i].getTypeID().equals(nameOrID) || typesList[i].getTypeName().toLowerCase().equals(nameOrID.toLowerCase()))
                 return i;
         }
         System.out.println("your type is not found!");
@@ -94,7 +95,7 @@ public class StaTypesBUS implements IRuleSets {
                 count++;
             }
         if (count == 0) {
-            System.out.println("not found any type!");
+            System.out.println("not found any types!");
             return null;
         }
         return typesArray;
@@ -140,12 +141,12 @@ public class StaTypesBUS implements IRuleSets {
         }
     }
 
-    public void add(StaTypes[] newTypes, int count) {
+    public void add(StaTypes[] newTypes, int size) {
         typesList = Arrays.copyOf(typesList, typesList.length + newTypes.length);
 
         int tempIndex = 0;
         int initCount = getCount();
-        int total = initCount + count;
+        int total = initCount + size;
 
         for (int i = initCount; i < total; i++, tempIndex++)
             typesList[i] = newTypes[tempIndex];
@@ -194,21 +195,20 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(
-                new FileOutputStream("OOP/src/main/resources/StaTypes", false))) {
+        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/StaTypes", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(typesList[i].getTypeID());
                 file.writeUTF(typesList[i].getTypeName());
             }
         } catch (Exception err) {
-            System.out.printf("404 not found!\n%s", err.getMessage());
+            System.out.printf("error writing file!\n%s\n", err.getMessage());
         }
     }
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("/StaTypes"))) {
+        try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/StaTypes"))) {
             int count = file.readInt();
             StaTypes[] list = new StaTypes[count];
             for (int i = 0; i < count; i++) {
@@ -219,7 +219,7 @@ public class StaTypesBUS implements IRuleSets {
             setCount(count);
             setTypesList(list);
         } catch (Exception err) {
-            System.out.printf("404 not found!\n%s", err.getMessage());
+            System.out.printf("error reading file!\n%s\n", err.getMessage());
         }
     }
 }

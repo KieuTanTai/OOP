@@ -2,6 +2,7 @@ package BUS;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class MidForBooksBUS {
           midList = new MidForBooks[0];
      }
 
-     public MidForBooksBUS(int count, MidForBooks[] midList) {
+     public MidForBooksBUS(MidForBooks[] midList, int count) {
           MidForBooksBUS.count = count;
           MidForBooksBUS.midList = midList;
      }
@@ -125,12 +126,12 @@ public class MidForBooksBUS {
           count++;
      }
 
-     public void add(MidForBooks[] midObject, int count) {
+     public void add(MidForBooks[] midObject, int size) {
           midList = Arrays.copyOf(midList, midList.length + midObject.length);
 
           int tempIndex = 0;
           int initCount = MidForBooksBUS.getCount();
-          int total = initCount + count;
+          int total = initCount + size;
 
           for (int i = initCount; i < total; i++, tempIndex++)
                midList[i] = midObject[tempIndex];
@@ -166,6 +167,26 @@ public class MidForBooksBUS {
      }
 
      // *remove method (TEST DONE)
+     public void remove(String bookID) {
+          int size = 0;
+          MidForBooks[] reduceArray = new MidForBooks[0];
+          for (int i = 0; i < midList.length; i++) {
+               if (midList[i].getBookID().equals(bookID))
+                    continue;
+               reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+               reduceArray[size] = midList[i];
+               size++;
+          }
+
+          if (size == midList.length) {
+               System.out.println("not found any mid!");
+               return;
+          }
+
+          setCount(size);
+          setMidList(reduceArray);
+     }
+
      public void remove(String bookID, String genreID) {
           int index = find(bookID, genreID);
           if (index != -1) {
@@ -180,21 +201,20 @@ public class MidForBooksBUS {
      // execute file resources
      // *write file (TEST DONE)
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("OOP/src/main/resources/MidForBooks", false))) {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/MidForBooks", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(midList[i].getBookID());
                     file.writeUTF(midList[i].getGenre().getGenreID());
                }
           } catch (Exception err) {
-               System.out.printf("404 not found!\n%s", err.getMessage());
+               System.out.printf("error writing file!\n%s\n", err.getMessage());
           }
      }
 
      // *read file (TEST DONE)
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("/MidForBooks"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/MidForBooks"))) {
                count = file.readInt();
                MidForBooks[] list = new MidForBooks[count];
                for (int i = 0; i < count; i++) {
@@ -207,7 +227,7 @@ public class MidForBooksBUS {
                setCount(count);
                setMidList(list);
           } catch (Exception err) {
-               System.out.printf("404 not found!\n%s", err.getMessage());
+               System.out.printf("error reading file!\n%s\n", err.getMessage());
           }
      }
 }

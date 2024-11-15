@@ -2,6 +2,7 @@ package BUS;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -71,7 +72,7 @@ public class BooksBUS implements IRuleSets {
      @Override
      public int find(String nameOrID) {
           for (int i = 0; i < booksList.length; i++)
-               if (booksList[i].getProductID().equals(nameOrID) || booksList[i].getProductName().equals(nameOrID))
+               if (booksList[i].getProductID().equals(nameOrID) || booksList[i].getProductName().toLowerCase().equals(nameOrID.toLowerCase()))
                     return i;
           System.out.println("your book is not exist!");
           return -1;
@@ -256,6 +257,18 @@ public class BooksBUS implements IRuleSets {
                System.out.println("your new book have something not like book!");
      }
 
+     public void add(Books[] newBooks, int size) {
+          booksList = Arrays.copyOf(booksList, booksList.length + newBooks.length);
+  
+          int tempIndex = 0;
+          int initCount = this.getCount();
+          int total = initCount + size;
+  
+          for (int i = initCount; i < total; i++, tempIndex++)
+              booksList[i] = newBooks[tempIndex];
+          this.count = total;
+      }
+
      // edit methods (DONE)
      @Override
      public void edit() {
@@ -357,8 +370,7 @@ public class BooksBUS implements IRuleSets {
      // execute files
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("OOP/src/main/resources/Books", false))) {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/Books", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(booksList[i].getProductID());
@@ -373,14 +385,13 @@ public class BooksBUS implements IRuleSets {
                     file.writeUTF(booksList[i].getPackagingSize());
                }
           } catch (Exception err) {
-               System.out.printf("404 not found!\n%s", err.getMessage());
+               System.out.printf("error writing file!\nt%s\n", err.getMessage());
           }
      }
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(
-                    getClass().getResourceAsStream("OOP/src/main/resources/Books"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Books"))) {
                count = file.readInt();
                Books[] list = new Books[count];
                for (int i = 0; i < count; i++) {
@@ -404,7 +415,7 @@ public class BooksBUS implements IRuleSets {
                setCount(count);
                setBooksList(list);
           } catch (Exception err) {
-               System.out.printf("404 not found!\n%s", err.getMessage());
+               System.out.printf("error reading file!\nt%s\n", err.getMessage());
           }
      }
 

@@ -6,6 +6,7 @@ import DTO.BookTypes;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -78,7 +79,7 @@ public class TypesBUS implements IRuleSets {
      @Override
      public int find(String nameOrID) {
           for (int i = 0; i < typesList.length; i++)
-               if (typesList[i].getTypeID().equals(nameOrID) || typesList[i].getTypeName().equals(nameOrID))
+               if (typesList[i].getTypeID().equals(nameOrID) || typesList[i].getTypeName().toLowerCase().equals(nameOrID.toLowerCase()))
                     return i;
           System.out.println("your type is not found!");
           return -1;
@@ -95,7 +96,7 @@ public class TypesBUS implements IRuleSets {
                     count++;
                }
           if (count == 0) {
-               System.out.println("not found any type!");
+               System.out.println("not found any types!");
                return null;
           }
           return typesArray;
@@ -145,12 +146,12 @@ public class TypesBUS implements IRuleSets {
                System.out.println("your type is not correct!");
      }
 
-     public void add(BookTypes[] newTypes, int count) {
+     public void add(BookTypes[] newTypes, int size) {
           typesList = Arrays.copyOf(typesList, typesList.length + newTypes.length);
 
           int tempIndex = 0;
           int initCount = getCount();
-          int total = initCount + count;
+          int total = initCount + size;
 
           for (int i = initCount; i < total; i++, tempIndex++)
                typesList[i] = newTypes[tempIndex];
@@ -209,21 +210,20 @@ public class TypesBUS implements IRuleSets {
 
      // *(TEST DONE)
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("OOP/src/main/resources/BookTypes", false))) {
+          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/BookTypes", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(typesList[i].getTypeID());
                     file.writeUTF(typesList[i].getTypeName());
                }
           } catch (Exception err) {
-               System.out.printf("404 not found!\n%s", err.getMessage());
+               System.out.printf("error writing file!\n%s\n", err.getMessage());
           }
      }
 
      // *(TEST DONE)
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(getClass().getResourceAsStream("/BookTypes"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/BookTypes"))) {
                count = file.readInt();
                BookTypes[] list = new BookTypes[count];
                for (int i = 0; i < count; i++) {
@@ -234,7 +234,7 @@ public class TypesBUS implements IRuleSets {
                setCount(count);
                setTypesList(list);
           } catch (Exception err) {
-               System.out.printf("404 not found!\n%s", err.getMessage());
+               System.out.printf("error reading file!\n%s\n", err.getMessage());
           }
      }
 }

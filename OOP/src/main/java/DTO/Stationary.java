@@ -1,7 +1,10 @@
 package DTO;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import BUS.PublishersBUS;
 import BUS.StaTypesBUS;
@@ -178,11 +181,11 @@ public class Stationary extends Products {
           } else {
                // set fields for product
                setProductID(id);
+               setStationaryID(staID);
                setProductName(name);
                setProductPrice(price);
                setReleaseDate(releaseDate);
                setQuantity(quantity);
-               setStationaryID(staID);
                setType(type);
                setBrand(brand);
                setMaterial(material);
@@ -193,11 +196,22 @@ public class Stationary extends Products {
 
      @Override
      public void showInfo() {
-          System.out.printf("Stationary ID: %s\n", stationaryID);
-          System.out.printf("Stationary type name: %s\n", staTypes.getTypeName());
-          System.out.printf("Material: %s\n", material);
-          System.out.printf("Source: %s\n", source);
-          System.out.printf("Stationary brand: %s\n", brand);
+          LocalDate date = this.getReleaseDate();
+          NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
+          System.out.println("=".repeat(140));
+          System.out.printf("| %-22s : %s \n", "ID", this.getProductID());
+          System.out.printf("| %-22s : %s \n", "Stationary ID", stationaryID);
+          System.out.printf("| %-22s : %s \n", "Name", this.getProductName());
+          System.out.printf("| %-22s : %s \n", "Release Date", 
+                  date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+          System.out.printf("| %-22s : %s \n", "Type", 
+                  staTypes != null ? staTypes.getTypeName() : "N/A");
+          System.out.printf("| %-22s : %s \n", "Material", material != null ? material : "N/A");
+          System.out.printf("| %-22s : %s \n", "Source", source != null ? source : "N/A");
+          System.out.printf("| %-22s : %s \n", "Brand", brand != null ? brand : "N/A");
+          System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
+          System.out.printf("| %-22s : %s \n", "Price", formatter.format(this.getProductPrice()));
+          System.out.println("=".repeat(140));
      }
 
      @Override

@@ -7,6 +7,7 @@ import util.Validate;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -60,7 +61,7 @@ public class StationaryBUS implements IRuleSets {
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < staList.length; i++)
-            if (staList[i].getProductID().equals(nameOrID) || staList[i].getProductName().equals(nameOrID)
+            if (staList[i].getProductID().equals(nameOrID) || staList[i].getProductName().toLowerCase().equals(nameOrID.toLowerCase())
                     || staList[i].getStationaryID().equals(nameOrID))
                 return i;
         System.out.println("your stationary is not exist!");
@@ -141,7 +142,8 @@ public class StationaryBUS implements IRuleSets {
         Stationary[] staArray = new Stationary[0];
         request = request.toLowerCase();
         for (Stationary stationary : staList) {
-            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("month"))) {
+            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
+                    && (request.contains("month"))) {
                 String keyI = (String) originalKeyI;
                 boolean keyII = stationary.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
                 if ((request.contains("mat")) && (stationary.getMaterial().equals(keyI) && keyII))
@@ -253,6 +255,18 @@ public class StationaryBUS implements IRuleSets {
 
     }
 
+    public void add(Stationary[] newStationary, int size) {
+        staList = Arrays.copyOf(staList, staList.length + newStationary.length);
+
+        int tempIndex = 0;
+        int initCount = this.getCount();
+        int total = initCount + size;
+
+        for (int i = initCount; i < total; i++, tempIndex++)
+            staList[i] = newStationary[tempIndex];
+        this.count = total;
+    }
+
     // edit methods
     @Override
     public void edit() {
@@ -349,8 +363,7 @@ public class StationaryBUS implements IRuleSets {
     // execute files
     // write file
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(
-                new FileOutputStream("OOP/src/main/resources/Stationeries", false))) {
+        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/Stationeries", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(staList[i].getProductID());
@@ -365,14 +378,13 @@ public class StationaryBUS implements IRuleSets {
                 file.writeUTF(staList[i].getSource());
             }
         } catch (Exception err) {
-            System.out.printf("404 not found!\n%s", err.getMessage());
+            System.out.printf("error writing file!\n%s\n", err.getMessage());
         }
     }
 
     // read file
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(
-                getClass().getResourceAsStream("OOP/src/main/resources/Stationeries"))) {
+        try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Stationeries"))) {
             count = file.readInt();
             Stationary[] list = new Stationary[count];
             for (int i = 0; i < count; i++) {
@@ -395,7 +407,7 @@ public class StationaryBUS implements IRuleSets {
             setCount(count);
             setStaList(list);
         } catch (Exception err) {
-            System.out.printf("404 not found!\n%s", err.getMessage());
+            System.out.printf("error reading file!\n%s\n", err.getMessage());
         }
     }
 

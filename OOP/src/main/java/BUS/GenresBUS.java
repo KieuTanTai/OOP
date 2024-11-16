@@ -91,7 +91,7 @@ public class GenresBUS implements IRuleSets {
      @Override
      public int find(String nameOrID) {
           for (int i = 0; i < genresList.length; i++) {
-               if (genresList[i].getGenreID().equals(nameOrID) || genresList[i].getGenreName().toLowerCase().equals(nameOrID.toLowerCase()))
+               if (genresList[i].getGenreID().equals(nameOrID) || genresList[i].getGenreName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                     return i;
           }
           System.out.println("your genre is not found!");

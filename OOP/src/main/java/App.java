@@ -18,7 +18,6 @@ public class App {
         TypesBUS testList = new TypesBUS();
         StaTypesBUS newTest = new StaTypesBUS();
         PublishersBUS testPublishers = new PublishersBUS();
-        BooksBUS listBooks = new BooksBUS();
 
         initList.readFile();
         testList.readFile();
@@ -36,7 +35,7 @@ public class App {
             new Books("BK005PD", "Nghệ Thuật Lãnh Đạo", LocalDate.of(2024, 6, 10), new BigDecimal("180000"), 70, PublishersBUS.getPublishersList()[4], "Nguyễn Thái E", TypesBUS.getTypesList()[5], formats[1], "30x20 cm", GenresBUS.getGenres(12, 14)),
             new Books("BK006PD", "Trí Tuệ Nhân Tạo", LocalDate.of(2024, 7, 22), new BigDecimal("250000"), 60, PublishersBUS.getPublishersList()[5], "Đặng Minh F", TypesBUS.getTypesList()[21], formats[2], "25x18 cm", GenresBUS.getGenres(15, 17)),
             new Books("BK007PD", "Tâm Lý Học Xã Hội", LocalDate.of(2024, 8, 30), new BigDecimal("220000"), 55, PublishersBUS.getPublishersList()[6], "Hà Lan G", TypesBUS.getTypesList()[2], formats[0], "20x15 cm", GenresBUS.getGenres(18, 20)),
-            new Books("BK008PD", "Bí Mật Tâm Hồn", LocalDate.of(2024, 9, 12), new BigDecimal("170000"), 110, PublishersBUS.getPublishersList()[7], "Nguyễn Hoàng H", TypesBUS.getTypesList()[17], formats[1], "22x17 cm", GenresBUS.getGenres(0, 3)),
+            new Books("BK008PD", "Bí Mật Tâm Hồn", LocalDate.of(2024, 9, 12), new BigDecimal("170000"), 110, PublishersBUS.getPublishersList()[9], "Nguyễn Hoàng H", TypesBUS.getTypesList()[17], formats[1], "22x17 cm", GenresBUS.getGenres(0, 3)),
             new Books("BK009PD", "Khám Phá Thế Giới Kỳ Bí", LocalDate.of(2024, 10, 5), new BigDecimal("130000"), 90, PublishersBUS.getPublishersList()[2], "Vũ Minh I", TypesBUS.getTypesList()[3], formats[2], "28x20 cm", GenresBUS.getGenres(4, 7)),
             new Books("BK010PD", "Chuyện Của Một Đời Người", LocalDate.of(2024, 11, 1), new BigDecimal("160000"), 95, PublishersBUS.getPublishersList()[1], "Nguyễn Văn K", TypesBUS.getTypesList()[22], formats[0], "25x18 cm", GenresBUS.getGenres(8, 11)),
             new Books("BK011PD", "Đi Để Trở Lại", LocalDate.of(2024, 5, 10), new BigDecimal("140000"), 65, PublishersBUS.getPublishersList()[10], "Lê Thanh L", TypesBUS.getTypesList()[9], formats[1], "30x20 cm", GenresBUS.getGenres(12, 14)),
@@ -79,10 +78,10 @@ public class App {
         System.out.println("------------------------BEFORE-----------------------");
 
         // !TEST METHODS
-        // book1.setInfo();
-        // book1.showInfo();
-        listBooks.add(books, 20);
-        listBooks.search("BK001PD");
+        BooksBUS listBooks = new BooksBUS(books, 20);
+        // listBooks.add(books, 20);
+        listBooks.setCount(200);
+        listBooks.relativeSearch("IPM", "publisher");
 
         // !SHOW DURING
         // System.out.println("------------------------DURING-----------------------");

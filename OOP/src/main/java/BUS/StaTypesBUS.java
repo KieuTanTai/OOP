@@ -91,7 +91,7 @@ public class StaTypesBUS implements IRuleSets {
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < typesList.length; i++) {
-            if (typesList[i].getTypeID().equals(nameOrID) || typesList[i].getTypeName().toLowerCase().equals(nameOrID.toLowerCase()))
+            if (typesList[i].getTypeID().equals(nameOrID) || typesList[i].getTypeName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                 return i;
         }
         System.out.println("your type is not found!");

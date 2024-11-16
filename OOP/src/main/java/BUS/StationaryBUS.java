@@ -61,7 +61,7 @@ public class StationaryBUS implements IRuleSets {
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < staList.length; i++)
-            if (staList[i].getProductID().equals(nameOrID) || staList[i].getProductName().toLowerCase().equals(nameOrID.toLowerCase())
+            if (staList[i].getProductID().equals(nameOrID) || staList[i].getProductName().toLowerCase().equals(nameOrID.toLowerCase().trim())
                     || staList[i].getStationaryID().equals(nameOrID))
                 return i;
         System.out.println("your stationary is not exist!");
@@ -74,20 +74,30 @@ public class StationaryBUS implements IRuleSets {
         int count = 0;
         boolean flag = false;
         Stationary[] staArray = new Stationary[0];
-        request = request.toLowerCase();
+        request = request.toLowerCase().trim();
         for (Stationary stationary : staList) {
             if (originalKey instanceof String) {
                 String key = (String) originalKey;
-                if (request.equals("name") && stationary.getProductName().contains(key))
+                String brand = stationary.getBrand().toLowerCase();
+                String source = stationary.getSource().toLowerCase();
+                String staName = stationary.getProductName().toLowerCase();
+                String typeID = stationary.getType().getTypeID(), typeName = stationary.getType().getTypeName().toLowerCase();
+                
+                if (request.equals("name") && staName.contains(key.toLowerCase()))
                     flag = true;
-                else if (request.equals("brand") && stationary.getBrand().equals(key))
+
+                else if (request.equals("brand") && brand.equals(key))
                     flag = true;
+
+                else if (request.equals("source") && source.equals(key))
+                    flag = true;
+
                 else if (request.equals("material") && stationary.getMaterial().equals(key))
                     flag = true;
-                else if (request.equals("source") && stationary.getSource().equals(key))
+
+                else if (request.equals("type") && (typeID.equals(key) || typeName.equals(key.toLowerCase())))
                     flag = true;
-                else if (request.equals("type") && stationary.getType().getTypeID().equals(key))
-                    flag = true;
+
             } else if (originalKey instanceof LocalDate)
                 if (request.equals("releaseDate") && stationary.getReleaseDate().equals((LocalDate) originalKey))
                     flag = true;
@@ -111,15 +121,17 @@ public class StationaryBUS implements IRuleSets {
         int count = 0;
         boolean flag = false;
         Stationary[] staArray = new Stationary[0];
-        request = request.toLowerCase();
+        request = request.toLowerCase().trim();
         for (Stationary stationary : staList) {
             BigDecimal productPrice = stationary.getProductPrice();
+
             if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
                 flag = true;
+
             else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
                 flag = true;
-            else if (request.equals("range"))
-                if ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0))
+
+            else if (request.equals("range") && ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0)))
                     flag = true;
 
             if (flag) {
@@ -140,32 +152,45 @@ public class StationaryBUS implements IRuleSets {
         int count = 0;
         boolean flag = false;
         Stationary[] staArray = new Stationary[0];
-        request = request.toLowerCase();
+        request = request.toLowerCase().trim();
         for (Stationary stationary : staList) {
-            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
-                    && (request.contains("month"))) {
+            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("month"))) {
                 String keyI = (String) originalKeyI;
                 boolean keyII = stationary.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
-                if ((request.contains("mat")) && (stationary.getMaterial().equals(keyI) && keyII))
+                String typeID = stationary.getType().getTypeID(), typeName = stationary.getType().getTypeName().toLowerCase();
+                String material = stationary.getMaterial();
+                String source = stationary.getSource();
+                String brand = stationary.getBrand();
+
+                if ((request.contains("mat")) && (material.equals(keyI.toLowerCase()) && keyII))
                     flag = true;
-                else if ((request.contains("brand")) && (stationary.getBrand().equals(keyI) && keyII))
+                else if ((request.contains("brand")) && (brand.equals(keyI.toLowerCase()) && keyII))
                     flag = true;
-                else if ((request.contains("source")) && (stationary.getSource().equals(keyI) && keyII))
+                else if ((request.contains("source")) && (source.equals(keyI.toLowerCase()) && keyII))
                     flag = true;
-                else if ((request.contains("type")) && (stationary.getType().getTypeID().equals(keyI) && keyII))
+                else if ((request.contains("type")) && ((typeID.equals(keyI) && keyII) || (typeName.equals(keyI.toLowerCase()) && keyII)))
                     flag = true;
-            } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
-                    && (request.contains("year"))) {
+
+            } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("year"))) {
                 String keyI = (String) originalKeyI;
                 boolean keyII = stationary.getReleaseDate().getYear() == (int) originalTimeOrKey;
-                if ((request.contains("mat")) && (stationary.getMaterial().equals(keyI) && keyII))
+                String typeID = stationary.getType().getTypeID(), typeName = stationary.getType().getTypeName().toLowerCase();
+                String material = stationary.getMaterial();
+                String source = stationary.getSource();
+                String brand = stationary.getBrand();
+
+                if ((request.contains("mat")) && (material.equals(keyI.toLowerCase()) && keyII))
                     flag = true;
-                else if ((request.contains("brand")) && (stationary.getBrand().equals(keyI) && keyII))
+
+                else if ((request.contains("brand")) && (brand.equals(keyI.toLowerCase()) && keyII))
                     flag = true;
-                else if ((request.contains("source")) && (stationary.getSource().equals(keyI) && keyII))
+
+                else if ((request.contains("source")) && (source.equals(keyI.toLowerCase()) && keyII))
                     flag = true;
-                else if ((request.contains("type")) && (stationary.getType().getTypeID().equals(keyI) && keyII))
+
+                else if ((request.contains("type")) && ((typeID.equals(keyI) && keyII) || (typeName.equals(keyI.toLowerCase()) && keyII)))
                     flag = true;
+
             } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
                 String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
                 boolean hasType = request.contains("type");
@@ -173,22 +198,29 @@ public class StationaryBUS implements IRuleSets {
                 boolean hasSource = request.contains("source");
                 boolean hasBrand = request.contains("brand");
 
-                String typeID = stationary.getType().getTypeID();
+                String typeID = stationary.getType().getTypeID(), typeName = stationary.getType().getTypeName().toLowerCase();
                 String material = stationary.getMaterial();
                 String source = stationary.getSource();
                 String brand = stationary.getBrand();
 
-                if ((hasType && hasMaterial) && ((typeID.equals(keyI) && material.equals(keyII))
-                        || (typeID.equals(keyII) && material.equals(keyI))))
+                if ((hasType && hasMaterial) && ((typeID.equals(keyI) && material.equals(keyII.toLowerCase())) || 
+                        (typeID.equals(keyII) && material.equals(keyI.toLowerCase())) || 
+                        (typeName.equals(keyI.toLowerCase()) && material.equals(keyII.toLowerCase())) ||
+                        (typeName.equals(keyII.toLowerCase()) && material.equals(keyI.toLowerCase()))))
                     flag = true;
 
-                else if ((hasType && hasSource) && ((typeID.equals(keyI) && source.equals(keyII))
-                        || (typeID.equals(keyII) && source.equals(keyI))))
+                else if ((hasType && hasBrand) && ((typeID.equals(keyI) && brand.equals(keyII.toLowerCase())) || 
+                        (typeID.equals(keyII) && brand.equals(keyI.toLowerCase())) || 
+                        (typeName.equals(keyI.toLowerCase()) && brand.equals(keyII.toLowerCase())) ||
+                        (typeName.equals(keyII.toLowerCase()) && brand.equals(keyI.toLowerCase()))))
                     flag = true;
 
-                else if ((hasType && hasBrand) && ((typeID.equals(keyI) && brand.equals(keyII))
-                        || (typeID.equals(keyII) && brand.equals(keyI))))
+                else if ((hasType && hasSource) && ((typeID.equals(keyI) && source.equals(keyII.toLowerCase())) ||
+                        (typeID.equals(keyII) && source.equals(keyI.toLowerCase())) || 
+                        (typeName.equals(keyI.toLowerCase()) && source.equals(keyII.toLowerCase())) ||
+                        (typeName.equals(keyII.toLowerCase()) && source.equals(keyI.toLowerCase()))))
                     flag = true;
+
             }
 
             if (flag) {

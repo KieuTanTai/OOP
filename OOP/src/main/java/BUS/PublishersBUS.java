@@ -79,7 +79,7 @@ public class PublishersBUS implements IRuleSets {
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < publishersList.length; i++) {
-            if (publishersList[i].getPublisherID().equals(nameOrID) || publishersList[i].getPublisherName().toLowerCase().equals(nameOrID.toLowerCase()))
+            if (publishersList[i].getPublisherID().equals(nameOrID) || publishersList[i].getPublisherName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                 return i;
         }
         System.out.println("your publisher is not found!");

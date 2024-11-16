@@ -20,13 +20,13 @@ public class BooksBUS implements IRuleSets {
      private int count;
      private final Scanner input = new Scanner(System.in);
 
-     // constructors
+     // *constructors (TEST DONE) 
      public BooksBUS() {
           this.count = 0;
           this.booksList = new Books[0];
      }
 
-     public BooksBUS(int count, Books[] booksList) {
+     public BooksBUS(Books[] booksList, int count) {
           this.count = count;
           this.booksList = booksList;
      }
@@ -37,7 +37,7 @@ public class BooksBUS implements IRuleSets {
           this.booksList = booksArray.booksList;
      }
 
-     // getter / setter
+     // *getter / setter (TEST DONE)
      public Books[] getBooksList() {
           return this.booksList;
      }
@@ -84,25 +84,35 @@ public class BooksBUS implements IRuleSets {
           int count = 0;
           boolean flag = false;
           Books[] booksArray = new Books[0];
-          request = request.toLowerCase();
-          for (Books books : booksList) {
+          request = request.toLowerCase().trim();
+
+          for (Books book : booksList) {
                if (originalKey instanceof String) {
                     String key = (String) originalKey;
-                    if (request.equals("name") && books.getProductName().toLowerCase().contains(key.toLowerCase()))
+                    String author = book.getAuthor().toLowerCase();
+                    String bookName = book.getProductName().toLowerCase();
+                    String typeID = book.getType().getTypeID(), typeName = book.getType().getTypeName().toLowerCase();
+                    String publisherID = book.getPublisher().getPublisherID(), publisherName = book.getPublisher().getPublisherName().toLowerCase();
+
+                    if (request.equals("name") && bookName.contains(key.toLowerCase()))
                          flag = true;
-                    else if (request.equals("author") && books.getAuthor().equals(key))
+
+                    else if (request.equals("author") && author.equals(key.toLowerCase()))
                          flag = true;
-                    else if (request.equals("publisher") && books.getPublisher().getPublisherID().equals(key))
+
+                    else if (request.equals("type") && (typeID.equals(key) || typeName.equals(key.toLowerCase())))
                          flag = true;
-                    else if (request.equals("type") && books.getType().getTypeID().equals(key))
+
+                    else if (request.equals("publisher") && (publisherID.equals(key) || publisherName.equals(key.toLowerCase())))
                          flag = true;
+
                } else if (originalKey instanceof LocalDate)
-                    if (request.equals("releaseDate") && books.getReleaseDate().equals((LocalDate) originalKey))
+                    if (request.equals("releaseDate") && book.getReleaseDate().equals((LocalDate) originalKey))
                          flag = true;
 
                if (flag) {
                     booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
-                    booksArray[count] = books;
+                    booksArray[count] = book;
                     flag = false;
                     count++;
                }
@@ -119,20 +129,22 @@ public class BooksBUS implements IRuleSets {
           int count = 0;
           boolean flag = false;
           Books[] booksArray = new Books[0];
-          request = request.toLowerCase();
-          for (Books books : booksList) {
-               BigDecimal productPrice = books.getProductPrice();
+          request = request.toLowerCase().trim();
+          for (Books book : booksList) {
+               BigDecimal productPrice = book.getProductPrice();
+
                if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
                     flag = true;
+
                else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
                     flag = true;
-               else if (request.equals("range"))
-                    if ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0))
-                         flag = true;
+
+               else if (request.equals("range") && ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0)))
+                    flag = true;
 
                if (flag) {
                     booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
-                    booksArray[count] = books;
+                    booksArray[count] = book;
                     flag = false;
                     count++;
                }
@@ -148,52 +160,72 @@ public class BooksBUS implements IRuleSets {
           int count = 0;
           boolean flag = false;
           Books[] booksArray = new Books[0];
-          request = request.toLowerCase();
-          for (Books books : booksList) {
+          request = request.toLowerCase().trim();
+          for (Books book : booksList) {
                if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("month"))) {
                     String keyI = (String) originalKeyI;
-                    boolean keyII = books.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
-                    if ((request.contains("pub")) && (books.getPublisher().getPublisherID().equals(keyI) && keyII))
+                    boolean keyII = book.getReleaseDate().getMonthValue() == (int) originalTimeOrKey;
+                    String author = book.getAuthor().toLowerCase();
+                    String typeID = book.getType().getTypeID(), typeName = book.getType().getTypeName().toLowerCase();
+                    String publisherID = book.getPublisher().getPublisherID(), publisherName = book.getPublisher().getPublisherName().toLowerCase();
+                    
+                    if ((request.contains("auth")) && (author.equals(keyI.toLowerCase()) && keyII))
                          flag = true;
-                    else if ((request.contains("auth")) && (books.getAuthor().equals(keyI) && keyII))
+                         
+                    else if ((request.contains("type")) && ((typeID.equals(keyI) && keyII) || (typeName.equals(keyI.toLowerCase()) && keyII)))
                          flag = true;
-                    else if ((request.contains("type")) && (books.getType().getTypeID().equals(keyI) && keyII))
+
+                    else if ((request.contains("pub")) && ((publisherID.equals(keyI) && keyII) || (publisherName.equals(keyI.toLowerCase()) && keyII)))
                          flag = true;
-               } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
-                         && (request.contains("year"))) {
+
+               } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("year"))) {
                     String keyI = (String) originalKeyI;
-                    boolean keyII = books.getReleaseDate().getYear() == (int) originalTimeOrKey;
-                    if ((request.contains("pub")) && (books.getPublisher().getPublisherID().equals(keyI) && keyII))
+                    boolean keyII = book.getReleaseDate().getYear() == (int) originalTimeOrKey;
+                    String author = book.getAuthor().toLowerCase();
+                    String typeID = book.getType().getTypeID(), typeName = book.getType().getTypeName().toLowerCase();
+                    String publisherID = book.getPublisher().getPublisherID(), publisherName = book.getPublisher().getPublisherName().toLowerCase();
+
+                    if ((request.contains("auth")) && (author.equals(keyI.toLowerCase()) && keyII))
                          flag = true;
-                    else if ((request.contains("auth")) && (books.getAuthor().equals(keyI) && keyII))
+
+                    else if ((request.contains("type")) && ((typeID.equals(keyI) && keyII) || (typeName.equals(keyI.toLowerCase()) && keyII)))
                          flag = true;
-                    else if ((request.contains("type")) && (books.getType().getTypeID().equals(keyI) && keyII))
+
+                    else if ((request.contains("pub")) && ((publisherID.equals(keyI) && keyII) || (publisherName.equals(keyI.toLowerCase()) && keyII)))
                          flag = true;
+
                } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
                     String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
                     boolean hasPub = request.contains("pub");
                     boolean hasType = request.contains("type");
                     boolean hasAuth = request.contains("auth");
-
-                    String pubID = books.getPublisher().getPublisherID();
-                    String typeID = books.getType().getTypeID();
-                    String author = books.getAuthor();
-
-                    if ((hasPub && hasType) && ((pubID.equals(keyI) && typeID.equals(keyII))
-                              || (typeID.equals(keyI) && pubID.equals(keyII))))
-                         flag = true;
-                    else if ((hasPub && hasAuth) && ((pubID.equals(keyI) && author.equals(keyII))
-                              || (author.equals(keyI) && pubID.equals(keyII))))
-                         flag = true;
-                    else if ((hasType && hasAuth) && ((typeID.equals(keyI) && author.equals(keyII))
-                              || (author.equals(keyI) && typeID.equals(keyII))))
-                         flag = true;
-
+                    
+                    String typeID = book.getType().getTypeID();
+                    String pubID = book.getPublisher().getPublisherID();
+                    String author = book.getAuthor().toLowerCase();
+                    String typeName = book.getType().getTypeName().toLowerCase();
+                    String publisherName = book.getPublisher().getPublisherName().toLowerCase();
+                    
+                    if ((hasPub && hasType) && ((pubID.equals(keyI) && typeID.equals(keyII)) || (typeID.equals(keyI) && pubID.equals(keyII)) ||
+                              (publisherName.equals(keyI.toLowerCase()) && typeName.equals(keyII.toLowerCase())) ||
+                              (typeName.equals(keyI.toLowerCase()) && publisherName.equals(keyII.toLowerCase()))))
+                        flag = true;
+                    
+                    else if ((hasPub && hasAuth) && ((pubID.equals(keyI) && author.equals(keyII)) || (author.equals(keyI) && pubID.equals(keyII)) ||
+                              (publisherName.equals(keyI.toLowerCase()) && author.equals(keyII.toLowerCase())) ||
+                              (author.equals(keyI.toLowerCase()) && publisherName.equals(keyII.toLowerCase()))))
+                        flag = true;
+                    
+                    else if ((hasType && hasAuth) && ((typeID.equals(keyI) && author.equals(keyII)) || (author.equals(keyI) && typeID.equals(keyII)) ||
+                              (typeName.equals(keyI.toLowerCase()) && author.equals(keyII.toLowerCase())) ||
+                              (author.equals(keyI.toLowerCase()) && typeName.equals(keyII.toLowerCase()))))
+                        flag = true;
+                    
                }
 
                if (flag) {
                     booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
-                    booksArray[count] = books;
+                    booksArray[count] = book;
                     flag = false;
                     count++;
                }

@@ -9,24 +9,26 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Locale;
 
+import BUS.BookFormatsBUS;
 import BUS.GenresBUS;
 import BUS.MidForBooksBUS;
 import BUS.PublishersBUS;
 import BUS.TypesBUS;
 
 public class Books extends Products {
-    private Publishers publisher;
     private String author;
-    private String format;
-    private String packagingSize;
+    private Publishers publisher;
+    private BookFormats format;
     private BookTypes bookType;
+    private String packagingSize;
 
     // constructors
     public Books() {
     }
 
     public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
-            int quantity, Publishers publisher, String author, BookTypes type, String format, String packagingSize) {
+            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format,
+            String packagingSize) {
         super(productId, productName, releaseDate, productPrice, quantity);
         this.publisher = publisher;
         this.author = author;
@@ -36,7 +38,8 @@ public class Books extends Products {
     }
 
     public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
-            int quantity, Publishers publisher, String author, BookTypes type, String format, String packagingSize, BookGenres[] genres) {
+            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format, String packagingSize,
+            BookGenres[] genres) {
         super(productId, productName, releaseDate, productPrice, quantity);
         this.publisher = publisher;
         this.author = author;
@@ -69,7 +72,7 @@ public class Books extends Products {
         return this.bookType;
     }
 
-    public String getFormat() {
+    public BookFormats getFormat() {
         return this.format;
     }
 
@@ -90,7 +93,7 @@ public class Books extends Products {
         this.bookType = type;
     }
 
-    public void setFormat(String format) {
+    public void setFormat(BookFormats format) {
         this.format = format;
     }
 
@@ -114,15 +117,22 @@ public class Books extends Products {
     }
 
     // set format
-    public String setFormat() {
-        String[] formats = { "Hardcover", "Paperback", "Leather-bound" };
+    public BookFormats setFormat() {
         int userChoose;
-        System.out.printf("1.%s\n2.%s \n3.%s\n", formats[0], formats[1], formats[2]);
+        // show list for user choose
+        BookFormatsBUS.showList();
+        if (BookFormatsBUS.getCount() == 0) // if not have any format
+            return null;
+
+        System.out.println("----------------------------");
         do {
-            System.out.print("select your option (like \"1, 2, 3\"): ");
-            userChoose = Validate.parseChooseHandler(input.nextLine().trim(), 3);
+            System.out.print("choose format (like 1, 2,etc...): ");
+            String option = input.nextLine().trim();
+            userChoose = Validate.parseChooseHandler(option, BookFormatsBUS.getCount());
         } while (userChoose == -1);
-        return formats[userChoose - 1];
+
+        BookFormats format = BookFormatsBUS.getFormatsList()[userChoose - 1];
+        return format;
     }
 
     // set packaging size
@@ -145,11 +155,11 @@ public class Books extends Products {
         int userChoose;
         // show list for user choose
         TypesBUS.showList();
-        if (TypesBUS.getCount() == 0) // if not have any publisher
+        if (TypesBUS.getCount() == 0) // if not have any types
             return null;
         System.out.println("----------------------------");
         do {
-            System.out.print("choose type you want (like \\\"1, 2, 3,etc....\\\"): ");
+            System.out.print("choose type you want (like \"1, 2, 3,etc....\"): ");
             String option = input.nextLine().trim();
             userChoose = Validate.parseChooseHandler(option, TypesBUS.getCount());
         } while (userChoose == -1);
@@ -163,7 +173,7 @@ public class Books extends Products {
         int userChoose;
         // show list for user choose
         PublishersBUS.showList();
-        if (PublishersBUS.getCount() == 0) // if not have any types
+        if (PublishersBUS.getCount() == 0) // if not have any publisher
             return null;
         System.out.println("----------------------------");
         do {
@@ -218,7 +228,7 @@ public class Books extends Products {
         return listGenres;
     }
 
-    public void execGenres(String bookID ,BookGenres[] genres) {
+    public void execGenres(String bookID, BookGenres[] genres) {
         // execute list of genres for product
         int count = 0;
         MidForBooks[] hashArray = new MidForBooks[0];
@@ -264,7 +274,7 @@ public class Books extends Products {
         System.out.println("-----------------------------------------------");
         int quantity = setQuantity();
         System.out.println("-----------------------------------------------");
-        String format = setFormat();
+        BookFormats format = setFormat();
         System.out.println("-----------------------------------------------");
         String packagingSize = setPackagingSize();
         System.out.println("-----------------------------------------------");
@@ -281,8 +291,7 @@ public class Books extends Products {
         if (userChoose == 1) {
             System.out.println("ok!");
             return;
-        } 
-        else {
+        } else {
             // set fields for product
             setProductID(id);
             setProductName(name);
@@ -327,17 +336,17 @@ public class Books extends Products {
         System.out.println("=".repeat(160));
         System.out.printf("| %-22s : %s \n", "ID", this.getProductID());
         System.out.printf("| %-22s : %s \n", "Book's Name", this.getProductName());
-        System.out.printf("| %-22s : %s \n", "Release Date", 
-            date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
-        System.out.printf("| %-22s : %s \n", "Publisher Name", 
-            publisher != null ? publisher.getPublisherName() : "N/A");
+        System.out.printf("| %-22s : %s \n", "Release Date",
+                date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Publisher Name",
+                publisher != null ? publisher.getPublisherName() : "N/A");
         System.out.printf("| %-22s : %s \n", "Author", author != null ? author : "N/A");
-        System.out.printf("| %-22s : %s \n", "Format", format != null ? format : "N/A");
-        System.out.printf("| %-22s : %s \n", "Packaging Size", 
-            packagingSize != null ? packagingSize : "N/A");
-        System.out.printf("| %-22s : %s \n", "Book Type", 
-            bookType != null ? bookType.getTypeName() : "N/A");
-    
+        System.out.printf("| %-22s : %s \n", "Format", format != null ? format.getFormatName() : "N/A");
+        System.out.printf("| %-22s : %s \n", "Packaging Size",
+                packagingSize != null ? packagingSize : "N/A");
+        System.out.printf("| %-22s : %s \n", "Book Type",
+                bookType != null ? bookType.getTypeName() : "N/A");
+
         System.out.printf("| %-22s : ", "Genres");
         try {
             MidForBooksBUS listGenres = new MidForBooksBUS();
@@ -349,11 +358,11 @@ public class Books extends Products {
                     continue;
                 }
 
-                if (i % 7 == 0 && i != 0) {
+                if (i % 8 == 0 && i != 0) {
                     System.out.printf("\n| %-22s   %s, ", " ", list[i].getGenre().getGenreName());
                     continue;
                 }
-                
+
                 System.out.printf("%s, ", list[i].getGenre().getGenreName());
             }
         } catch (Exception e) {
@@ -362,12 +371,18 @@ public class Books extends Products {
 
         System.out.println();
         System.out.printf("| %-22s : %s \n", "Quantity", this.getQuantity());
-        System.out.printf("| %-22s : %s \n", "Price",price != null ? formatter.format(price) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Price", price != null ? formatter.format(price) : "N/A");
         System.out.println("=".repeat(160));
     }
 
     @Override
-    protected String productIDModifier(String bookId) {
-        return "BK" + bookId + "PD";
+    protected String productIDModifier(String bookID) {
+        if (bookID.startsWith("ST") && bookID.endsWith("PD") && bookID.length() == 12)
+            return bookID;
+        if (!Validate.validateID(bookID)) {
+            System.out.println("error id");
+            return "N/A";
+        }
+        return "BK" + bookID + "PD";
     }
 }

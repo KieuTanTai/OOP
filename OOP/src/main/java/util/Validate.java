@@ -14,6 +14,17 @@ public class Validate {
           return quantity > 0;
      }
 
+     public static boolean requiredNotNull (Object input) {
+          try {
+               if (input == null)
+                    return false;
+               return true;
+          } catch (Exception e) {
+               System.out.println("something went wrong!" + e.getMessage());
+               return false;
+          }
+     }
+
      // check duplicate (DONE) 
      public static boolean hasDuplicates(String[] options) {
           for (int i = 0; i < options.length - 1; i++) 
@@ -92,7 +103,7 @@ public class Validate {
 
      // (DONE)
      public static boolean validateID(String inputId) {
-          String regex = "^(?=[a-zA-Z0-9_-]{10}$)[^%+\\\\/#'::\":]+$";
+          String regex = "^(?=[a-zA-Z0-9_-]{8}$)[^%+\\\\/#'::\":]+$";
           Pattern pattern = Pattern.compile(regex);
           return pattern.matcher(inputId).matches();
      }

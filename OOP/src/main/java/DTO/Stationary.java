@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import BUS.PublishersBUS;
 import BUS.StaTypesBUS;
@@ -21,11 +22,10 @@ public class Stationary extends Products {
      public Stationary() {
      }
 
-     public Stationary(String productId, String stationaryID, String productName, LocalDate releaseDate,
-               BigDecimal productPrice,
+     public Stationary(String productId, String stationaryID, String productName, LocalDate releaseDate, BigDecimal productPrice,
                int quantity, StaTypes type, String brand, String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
-          this.stationaryID = stationaryID;
+          this.stationaryID = stationaryIDModifier(stationaryID);
           this.staTypes = type;
           this.brand = brand;
           this.material = material;
@@ -54,8 +54,8 @@ public class Stationary extends Products {
      }
 
      // setter have params
-     public void setStationaryID(String id) {
-          this.stationaryID = id;
+     public void setStationaryID(String stationaryID) {
+          this.stationaryID = stationaryIDModifier(stationaryID);
      }
 
      public void setType(StaTypes type) {
@@ -201,10 +201,8 @@ public class Stationary extends Products {
           System.out.printf("| %-22s : %s \n", "ID", this.getProductID());
           System.out.printf("| %-22s : %s \n", "Stationary ID", stationaryID);
           System.out.printf("| %-22s : %s \n", "Name", this.getProductName());
-          System.out.printf("| %-22s : %s \n", "Release Date", 
-                  date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
-          System.out.printf("| %-22s : %s \n", "Type", 
-                  staTypes != null ? staTypes.getTypeName() : "N/A");
+          System.out.printf("| %-22s : %s \n", "Release Date", date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+          System.out.printf("| %-22s : %s \n", "Type", staTypes != null ? staTypes.getTypeName() : "N/A");
           System.out.printf("| %-22s : %s \n", "Material", material != null ? material : "N/A");
           System.out.printf("| %-22s : %s \n", "Source", source != null ? source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", brand != null ? brand : "N/A");
@@ -213,8 +211,26 @@ public class Stationary extends Products {
           System.out.println("=".repeat(160));
      }
 
+     private String stationaryIDModifier(String stationaryID) {
+          if (stationaryID.startsWith("STA") && stationaryID.length() == 8)
+               return stationaryID;
+          String regex = "^(?=[a-zA-Z0-9_-]{5}$)[^%+\\/#'::\":]+$";
+          Pattern pattern = Pattern.compile(regex);
+          if (!pattern.matcher(stationaryID).matches()) {
+               System.out.println("error id");
+               return "N/A";
+          }
+          return "STA" + stationaryID;
+     }
+
      @Override
      protected String productIDModifier(String stationaryID) {
-          return "STN" + stationaryID + "PD";
+          if (stationaryID.startsWith("ST") && stationaryID.endsWith("PD") && stationaryID.length() == 12)
+               return stationaryID;
+          if (!Validate.validateID(stationaryID)) {
+               System.out.println("error id");
+               return "N/A";
+          }
+          return "ST" + stationaryID + "PD";
      }
 }

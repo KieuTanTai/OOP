@@ -20,8 +20,7 @@ public abstract class Products {
 
     public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
         // String inputID = productID + UUID.randomUUID();
-        // this.productID = productIDModifier(inputID);
-        this.productID = productID;
+        this.productID = productIDModifier(productID);
         this.productName = productName;
         this.releaseDate = releaseDate;
         this.productPrice = productPrice;
@@ -51,7 +50,7 @@ public abstract class Products {
 
     // set have param
     public void setProductID(String productID) {
-        this.productID = productID;
+        this.productID = productIDModifier(productID);
     }
 
     public void setProductName(String productName) {

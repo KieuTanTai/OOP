@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import DTO.BookFormats;
 import DTO.BookGenres;
 import DTO.BookTypes;
 import DTO.Books;
@@ -65,7 +66,15 @@ public class BooksBUS implements IRuleSets {
      }
 
      // all others methods like: add remove edit find show....
-     // find methods
+     // *methods showList (TEST DONE)
+     public void showList() {
+          if (booksList == null)
+               return;
+          for (Books book : booksList)
+               book.showInfo();
+     }
+     
+     // *find methods (TEST DONE)
      @Override
      public void find() {
           Menu.findHandler();
@@ -92,17 +101,33 @@ public class BooksBUS implements IRuleSets {
 
           for (Books book : booksList) {
                if (originalKey instanceof String) {
+                    BookTypes types = book.getType();
+                    BookFormats formats = book.getFormat();
+                    Publishers publishers = book.getPublisher();
+                    String author = book.getAuthor();
+                    String bookName = book.getProductName();
                     String key = (String) originalKey;
-                    String author = book.getAuthor().toLowerCase();
-                    String bookName = book.getProductName().toLowerCase();
-                    String typeID = book.getType().getTypeID(), typeName = book.getType().getTypeName().toLowerCase();
-                    String publisherID = book.getPublisher().getPublisherID(),
-                              publisherName = book.getPublisher().getPublisherName().toLowerCase();
-
+                    
+                    // assign and check null
+                    author = Validate.requiredNotNull(author) ? author.toLowerCase() : "";
+                    bookName = Validate.requiredNotNull(bookName) ? bookName.toLowerCase() : "";
+                    
+                    String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
+                           typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
+                    
+                    String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
+                           formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase() : "";
+                    
+                    String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
+                           publisherName = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherName().toLowerCase() : "";
+                    
                     if (request.equals("name") && bookName.contains(key.toLowerCase()))
                          flag = true;
 
                     else if (request.equals("author") && author.contains(key.toLowerCase()))
+                         flag = true;
+
+                    else if (request.equals("format") && (formatID.equals(key) || formatName.contains(key.toLowerCase())))
                          flag = true;
 
                     else if (request.equals("type") && (typeID.equals(key) || typeName.contains(key.toLowerCase())))
@@ -177,80 +202,116 @@ public class BooksBUS implements IRuleSets {
           request = request.toLowerCase().trim();
 
           for (Books book : booksList) {
-               if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
-                         && (request.contains("month"))) {
-                    int tempKey = Validate.isNumber((String) originalTimeOrKey);
-                    if (tempKey == -1) {
-                         System.out.println("something went wrong!")
+               int inputTime = 0;
+               BookTypes types = book.getType();
+               BookFormats formats = book.getFormat();
+               Publishers publishers = book.getPublisher();
+               String author = book.getAuthor();
+
+               // assign and check null
+               author = Validate.requiredNotNull(author) ? author.toLowerCase() : "";
+               
+               String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
+                         typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
+               
+               String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
+                         formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase() : "";
+               
+               String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
+                         publisherName = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherName().toLowerCase() : "";
+                    
+               // execute request
+               if ((request.contains("month")) || (request.contains("year"))) {
+                    inputTime = Validate.isNumber((String) originalTimeOrKey);
+                    if (inputTime == -1) {
+                         System.out.println("something went wrong!");
                          return null;
                     }
+               }
 
+               if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
+                         && (request.contains("month"))) {
                     String keyI = (String) originalKeyI;
-                    String author = book.getAuthor().toLowerCase();
-                    boolean keyII = book.getReleaseDate().getMonthValue() ==  tempKey;
-                    String typeID = book.getType().getTypeID(), typeName = book.getType().getTypeName().toLowerCase();
-                    String publisherID = book.getPublisher().getPublisherID(),
-                              publisherName = book.getPublisher().getPublisherName().toLowerCase();
+                    boolean keyII = book.getReleaseDate().getMonthValue() == inputTime;
 
-                    if ((request.contains("auth")) && (author.equals(keyI.toLowerCase()) && keyII))
+                    if ((request.contains("auth")) && (author.contains(keyI.toLowerCase()) && keyII))
+                         flag = true;
+
+                    else if ((request.contains("format")) && ((formatID.equals(keyI) && keyII) || (formatName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
                     else if ((request.contains("type"))
-                              && ((typeID.equals(keyI) && keyII) || (typeName.equals(keyI.toLowerCase()) && keyII)))
+                              && ((typeID.equals(keyI) && keyII) || (typeName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
                     else if ((request.contains("pub")) && ((publisherID.equals(keyI) && keyII)
-                              || (publisherName.equals(keyI.toLowerCase()) && keyII)))
+                              || (publisherName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
                } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
                          && (request.contains("year"))) {
                     String keyI = (String) originalKeyI;
-                    String author = book.getAuthor().toLowerCase();
-                    boolean keyII = book.getReleaseDate().getYear() == (int) originalTimeOrKey;
-                    String typeID = book.getType().getTypeID(), typeName = book.getType().getTypeName().toLowerCase();
-                    String publisherID = book.getPublisher().getPublisherID(),
-                              publisherName = book.getPublisher().getPublisherName().toLowerCase();
+                    boolean keyII = book.getReleaseDate().getYear() == inputTime;
 
-                    if ((request.contains("auth")) && (author.equals(keyI.toLowerCase()) && keyII))
+                    if ((request.contains("auth")) && (author.contains(keyI.toLowerCase()) && keyII))
+                         flag = true;
+
+                    else if ((request.contains("format")) && ((formatID.equals(keyI) && keyII) || (formatName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
                     else if ((request.contains("type"))
-                              && ((typeID.equals(keyI) && keyII) || (typeName.equals(keyI.toLowerCase()) && keyII)))
+                              && ((typeID.equals(keyI) && keyII) || (typeName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
                     else if ((request.contains("pub")) && ((publisherID.equals(keyI) && keyII)
-                              || (publisherName.equals(keyI.toLowerCase()) && keyII)))
+                              || (publisherName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
-               } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
+               }
+               if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
                     String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
                     boolean hasPub = request.contains("pub");
                     boolean hasType = request.contains("type");
                     boolean hasAuth = request.contains("auth");
+                    boolean hasFormat = request.contains("for");
 
-                    String pubID = book.getPublisher().getPublisherID();
-                    String typeID = book.getType().getTypeID();
-                    String author = book.getAuthor().toLowerCase();
-                    String typeName = book.getType().getTypeName().toLowerCase();
-                    String publisherName = book.getPublisher().getPublisherName().toLowerCase();
+                    boolean isPubAndType = (hasPub && hasType) && ((publisherID.equals(keyI) && typeID.equals(keyII))
+                              || (typeID.equals(keyI) && publisherID.equals(keyII))
+                              || (publisherName.contains(keyI.toLowerCase()) && typeName.contains(keyII.toLowerCase()))
+                              || (typeName.contains(keyI.toLowerCase()) && publisherName.contains(keyII.toLowerCase())));
 
-                    if ((hasPub && hasType) && ((pubID.equals(keyI) && typeID.equals(keyII))
-                              || (typeID.equals(keyI) && pubID.equals(keyII)) ||
-                              (publisherName.equals(keyI.toLowerCase()) && typeName.equals(keyII.toLowerCase())) ||
-                              (typeName.equals(keyI.toLowerCase()) && publisherName.equals(keyII.toLowerCase()))))
-                         flag = true;
+                    boolean isPubAndAuth = (hasPub && hasAuth) && ((publisherID.equals(keyI)
+                              && author.contains(keyII.toLowerCase()))
+                              || (author.contains(keyI.toLowerCase()) && publisherID.equals(keyII))
+                              || (publisherName.contains(keyI.toLowerCase()) && author.contains(keyII.toLowerCase()))
+                              || (author.contains(keyI.toLowerCase()) && publisherName.contains(keyII.toLowerCase())));
 
-                    else if ((hasPub && hasAuth) && ((pubID.equals(keyI) && author.equals(keyII))
-                              || (author.equals(keyI) && pubID.equals(keyII)) ||
-                              (publisherName.equals(keyI.toLowerCase()) && author.equals(keyII.toLowerCase())) ||
-                              (author.equals(keyI.toLowerCase()) && publisherName.equals(keyII.toLowerCase()))))
-                         flag = true;
+                    boolean isTypeAndAuth = (hasType && hasAuth) && ((typeID.equals(keyI)
+                              && author.contains(keyII.toLowerCase()))
+                              || (author.contains(keyI.toLowerCase()) && typeID.equals(keyII))
+                              || (typeName.contains(keyI.toLowerCase()) && author.contains(keyII.toLowerCase()))
+                              || (author.contains(keyI.toLowerCase()) && typeName.contains(keyII.toLowerCase())));
 
-                    else if ((hasType && hasAuth) && ((typeID.equals(keyI) && author.equals(keyII))
-                              || (author.equals(keyI) && typeID.equals(keyII)) ||
-                              (typeName.equals(keyI.toLowerCase()) && author.equals(keyII.toLowerCase())) ||
-                              (author.equals(keyI.toLowerCase()) && typeName.equals(keyII.toLowerCase()))))
+                    boolean isPubAndFormat = (hasPub && hasFormat) && ((publisherID.equals(keyI)
+                              && formatID.equals(keyII))
+                              || (formatID.equals(keyI) && publisherID.equals(keyII))
+                              || (publisherName.contains(keyI.toLowerCase()) && formatName.contains(keyII.toLowerCase()))
+                              || (formatName.contains(keyI.toLowerCase()) && publisherName.contains(keyII.toLowerCase())));
+                      
+                    boolean isTypeAndFormat = (hasType && hasFormat) && ((typeID.equals(keyI)
+                              && formatID.equals(keyII))
+                              || (formatID.equals(keyI) && typeID.equals(keyII))
+                              || (typeName.contains(keyI.toLowerCase()) && formatName.contains(keyII.toLowerCase()))
+                              || (formatName.contains(keyI.toLowerCase()) && typeName.contains(keyII.toLowerCase())));
+                      
+                    boolean isAuthAndFormat = (hasAuth && hasFormat) && ((author.contains(keyI.toLowerCase())
+                              && formatName.contains(keyII.toLowerCase()))
+                              || (formatName.contains(keyI.toLowerCase()) && author.contains(keyII.toLowerCase()))
+                              || (publisherName.contains(keyI.toLowerCase()) && formatName.contains(keyII.toLowerCase()))
+                              || (formatName.contains(keyI.toLowerCase()) && publisherName.contains(keyII.toLowerCase())));
+                      
+                    // assign flag
+                    if (isPubAndType || isPubAndAuth || isTypeAndAuth || isPubAndFormat || isTypeAndFormat || isAuthAndFormat)
                          flag = true;
                }
 
@@ -262,13 +323,13 @@ public class BooksBUS implements IRuleSets {
                }
           }
           if (count == 0) {
-               System.out.println("not found any books with the specified price!");
+               System.out.println("not found any books!");
                return null;
           }
           return booksArray;
      }
 
-     // search methods (CONTINUE)
+     // *search methods (TEST DONE)
      @Override
      public void search() {
           Menu.searchHandler();
@@ -343,6 +404,18 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookID);
           if (index != -1) {
                String name;
+               int userChoose;
+               // show list for user choose
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+               
                do {
                     System.out.print("new name : ");
                     name = input.nextLine().trim();
@@ -360,6 +433,18 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookID);
           if (index != -1) {
                LocalDate date;
+               int userChoose;
+               // show list for user choose
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                do {
                     System.out.print("new release date : ");
                     String dateInput = input.nextLine().trim();
@@ -374,6 +459,18 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookID);
           if (index != -1) {
                BigDecimal price;
+               int userChoose;
+               // show list for user choose
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                do {
                     System.out.print("new price (VND) : ");
                     String value = input.nextLine();
@@ -387,7 +484,18 @@ public class BooksBUS implements IRuleSets {
      public void editQuantity(String bookID) {
           int index = find(bookID);
           if (index != -1) {
-               int quantity;
+               int quantity, userChoose;
+               // show list for user choose
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                do {
                     System.out.print("new quantity: ");
                     String quantityInput = input.nextLine().trim();
@@ -402,6 +510,18 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookID);
           if (index != -1) {
                String authorName;
+               int userChoose;
+               // show list for user choose
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                do {
                     System.out.print("new author name: ");
                     authorName = input.nextLine().trim();
@@ -416,14 +536,26 @@ public class BooksBUS implements IRuleSets {
 
      // edit publisher
      public void editPublisher(String bookID) {
+          if (PublishersBUS.getCount() == 0) {
+               System.out.println("not have any publisher for edit!");     
+               return;
+          }
+
           int index = find(bookID);
           if (index != -1) {
                int userChoose;
                // show list for user choose
-               PublishersBUS.showList();
-               if (PublishersBUS.getCount() == 0) // if not have any types
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
                     return;
-               System.out.println("----------------------------");
+
+               PublishersBUS.showList();
                do {
                     System.out.print("choose publisher (like 1, 2,etc...): ");
                     String option = input.nextLine().trim();
@@ -437,14 +569,26 @@ public class BooksBUS implements IRuleSets {
 
      // edit type
      public void editType(String bookID) {
+          if (TypesBUS.getCount() == 0) {
+               System.out.println("not have any type for edit!");     
+               return;
+          }
+
           int index = find(bookID);
           if (index != -1) {
                int userChoose;
                // show list for user choose
-               TypesBUS.showList();
-               if (TypesBUS.getCount() == 0) // if not have any publisher
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
                     return;
-               System.out.println("----------------------------");
+
+                    TypesBUS.showList();
                do {
                     System.out.print("choose type you want (like \\\"1, 2, 3,etc....\\\"): ");
                     String option = input.nextLine().trim();
@@ -470,7 +614,7 @@ public class BooksBUS implements IRuleSets {
 
                     // show list of now genres for user know
                     MidForBooksBUS.showAsTable(nowGenres);
-                    System.out.println("I.Cancel ------------------- II.Edit");
+                    System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                     do {
                          System.out.print("choose option (like 1, 2,etc...): ");
                          String option = input.nextLine().trim();
@@ -528,16 +672,35 @@ public class BooksBUS implements IRuleSets {
 
      // edit format
      public void editFormat(String bookID) {
+          if (BookFormatsBUS.getCount() == 0) {
+               System.out.println("not have any format for edit!");     
+               return;
+          }
+
           int index = find(bookID);
           if (index != -1) {
-               String[] formats = { "Hardcover", "Paperback", "Leather-bound" };
                int userChoose;
-               System.out.printf("1.%s\n2.%s \n3.%s\n", formats[0], formats[1], formats[2]);
+               // show list for user choose
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("select your option (like \"1, 2, 3\"): ");
-                    userChoose = Validate.parseChooseHandler(input.nextLine().trim(), 3);
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
-               booksList[index].setFormat(formats[userChoose - 1]);
+               if (userChoose == 1)
+                    return;
+
+
+               BookFormatsBUS.showList();
+               do {
+                    System.out.print("choose format (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, BookFormatsBUS.getCount());
+               } while (userChoose == -1);
+
+               BookFormats format = BookFormatsBUS.getFormatsList()[userChoose - 1];
+               booksList[index].setFormat(format);
           }
      }
 
@@ -546,6 +709,18 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookID);
           if (index != -1) {
                String packagingSize;
+               int userChoose;
+               // show list for user choose
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (like 1, 2,etc...): ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                do {
                     System.out.println("packaging size have format: \"number 'x' number 'cm'\" ");
                     System.out.print("new packaging size: ");
@@ -569,6 +744,18 @@ public class BooksBUS implements IRuleSets {
      public void remove(String bookID) {
           int index = find(bookID);
           if (index != -1) {
+               int userChoose;
+               // show list for user choose
+               booksList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
+               do {
+                   System.out.print("choose option (like 1, 2,etc...): ");
+                   String option = input.nextLine().trim();
+                   userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                   return;
+
                for (int i = index; i < booksList.length - 1; i++)
                     booksList[i] = booksList[i + 1];
                booksList = Arrays.copyOf(booksList, booksList.length - 1);
@@ -591,7 +778,7 @@ public class BooksBUS implements IRuleSets {
                     file.writeUTF(booksList[i].getPublisher().getPublisherID());
                     file.writeUTF(booksList[i].getType().getTypeID());
                     file.writeInt(booksList[i].getQuantity());
-                    file.writeUTF(booksList[i].getFormat());
+                    file.writeUTF(booksList[i].getFormat().getFormatID());
                     file.writeUTF(booksList[i].getPackagingSize());
                }
           } catch (Exception err) {
@@ -613,12 +800,13 @@ public class BooksBUS implements IRuleSets {
                     String publisherID = file.readUTF(); // use as param for query publisher from class Publishers
                     String typeID = file.readUTF();
                     int quantity = file.readInt();
-                    String format = file.readUTF();
+                    String formatID = file.readUTF();
                     String packagingSize = file.readUTF();
 
                     // execute IDs
                     Publishers publisher = PublishersBUS.getPublisher(publisherID);
                     BookTypes type = TypesBUS.getType(typeID);
+                    BookFormats format = BookFormatsBUS.getFormat(formatID);
                     list[i] = new Books(productID, productName, releaseDate, price, quantity, publisher, author, type,
                               format, packagingSize);
                }

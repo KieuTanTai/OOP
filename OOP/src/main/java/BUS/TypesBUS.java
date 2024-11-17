@@ -245,7 +245,7 @@ public class TypesBUS implements IRuleSets {
      // *(TEST DONE)
      public void writeFile() throws IOException {
           try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("OOP/src/main/resources/BookTypes", false))) {
+                    new FileOutputStream("src/main/resources/BookTypes", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(typesList[i].getTypeID());
@@ -258,7 +258,7 @@ public class TypesBUS implements IRuleSets {
 
      // *(TEST DONE)
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/BookTypes"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/BookTypes"))) {
                count = file.readInt();
                BookTypes[] list = new BookTypes[count];
                for (int i = 0; i < count; i++) {

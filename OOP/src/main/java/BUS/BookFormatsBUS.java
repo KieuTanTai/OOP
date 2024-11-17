@@ -224,7 +224,7 @@ public class BookFormatsBUS implements IRuleSets {
      // File handling methods
      public void writeFile() throws IOException {
           try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("OOP/src/main/resources/BookFormats", false))) {
+                    new FileOutputStream("src/main/resources/BookFormats", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(formatsList[i].getFormatID());
@@ -236,7 +236,7 @@ public class BookFormatsBUS implements IRuleSets {
      }
 
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/BookFormats"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/BookFormats"))) {
                count = file.readInt();
                BookFormats[] list = new BookFormats[count];
                for (int i = 0; i < count; i++) {

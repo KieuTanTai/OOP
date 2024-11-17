@@ -629,7 +629,7 @@ public class StationeriesBUS implements IRuleSets {
     // write file
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(
-                new FileOutputStream("OOP/src/main/resources/Stationeries", false))) {
+                new FileOutputStream("src/main/resources/Stationeries", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(staList[i].getProductID());
@@ -650,7 +650,7 @@ public class StationeriesBUS implements IRuleSets {
 
     // read file
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Stationeries"))) {
+        try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Stationeries"))) {
             count = file.readInt();
             Stationeries[] list = new Stationeries[count];
             for (int i = 0; i < count; i++) {

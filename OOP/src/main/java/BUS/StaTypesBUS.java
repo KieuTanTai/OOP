@@ -231,7 +231,7 @@ public class StaTypesBUS implements IRuleSets {
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(
-                new FileOutputStream("OOP/src/main/resources/StaTypes", false))) {
+                new FileOutputStream("src/main/resources/StaTypes", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(typesList[i].getTypeID());
@@ -244,7 +244,7 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/StaTypes"))) {
+        try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/StaTypes"))) {
             int count = file.readInt();
             StaTypes[] list = new StaTypes[count];
             for (int i = 0; i < count; i++) {

@@ -238,7 +238,7 @@ public class GenresBUS implements IRuleSets {
      // write file
      public void writeFile() throws IOException {
           try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("OOP/src/main/resources/BookGenres", false))) {
+                    new FileOutputStream("src/main/resources/BookGenres", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(genresList[i].getGenreID());
@@ -251,7 +251,7 @@ public class GenresBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/BookGenres"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/BookGenres"))) {
                int count = file.readInt();
                BookGenres[] list = new BookGenres[count];
                for (int i = 0; i < count; i++) {

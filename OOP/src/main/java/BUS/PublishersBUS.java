@@ -218,7 +218,7 @@ public class PublishersBUS implements IRuleSets {
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(
-                new FileOutputStream("OOP/src/main/resources/Publishers", false))) {
+                new FileOutputStream("src/main/resources/Publishers", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(publishersList[i].getPublisherID());
@@ -231,7 +231,7 @@ public class PublishersBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Publishers"))) {
+        try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Publishers"))) {
             int count = file.readInt();
             Publishers[] list = new Publishers[count];
             for (int i = 0; i < count; i++) {

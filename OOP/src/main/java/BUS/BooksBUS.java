@@ -767,7 +767,7 @@ public class BooksBUS implements IRuleSets {
      // write file
      public void writeFile() throws IOException {
           try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("OOP/src/main/resources/Books", false))) {
+                    new FileOutputStream("src/main/resources/Books", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(booksList[i].getProductID());
@@ -788,7 +788,7 @@ public class BooksBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Books"))) {
+          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Books"))) {
                count = file.readInt();
                Books[] list = new Books[count];
                for (int i = 0; i < count; i++) {

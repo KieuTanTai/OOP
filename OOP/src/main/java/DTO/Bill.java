@@ -2,6 +2,8 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
 import util.Validate;
 // import DTO.BillDetails;
 
@@ -13,8 +15,8 @@ public class Bill {
     private BigDecimal discount;
     private BigDecimal totalPrice;
     private LocalDate date;
+    private Scanner sc = new Scanner(System.in);
     
-    Scanner sc = new Scanner(System.in);
 
     public Bill() {
     }

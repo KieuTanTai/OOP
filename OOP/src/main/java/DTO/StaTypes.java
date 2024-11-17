@@ -1,17 +1,18 @@
 package DTO;
 
 public class StaTypes {
-    private String typeID,typeName;
+    private String typeID, typeName;
 
-    //constructor
-    public StaTypes() {}
+    // constructor
+    public StaTypes() {
+    }
 
     public StaTypes(String typeID, String typeName) {
         this.typeID = typeID;
         this.typeName = typeName;
     }
 
-    //getter
+    // getter
     public String getTypeID() {
         return typeID;
     }
@@ -20,7 +21,7 @@ public class StaTypes {
         return typeName;
     }
 
-    //setter
+    // setter
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
@@ -29,4 +30,3 @@ public class StaTypes {
         this.typeID = typeID;
     }
 }
-

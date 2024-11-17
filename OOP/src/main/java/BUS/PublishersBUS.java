@@ -1,134 +1,248 @@
 package BUS;
 
 import DTO.Publishers;
-import java.io.*;
+import Manager.Menu;
+import util.Validate;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class PublishersBUS {
+public class PublishersBUS implements IRuleSets {
     private static Publishers[] publishersList;
     private static int count;
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
-    // Constructor: Initializes with an empty list and count 0
+    // *Constructors (TEST DONE)
     public PublishersBUS() {
         PublishersBUS.count = 0;
         publishersList = new Publishers[0];
     }
 
-    // Constructor: Initializes with specified count and list
-    public PublishersBUS(int count, Publishers[] publishersList) {
-        PublishersBUS.count = count;
+    public PublishersBUS(Publishers[] publishersList, int count) {
         PublishersBUS.publishersList = publishersList;
+        PublishersBUS.count = count;
     }
 
-    // Getter: Returns count of publishers
+    // *Getter / Setter (TEST DONE)
+    public static Publishers[] getPublishersList() {
+        return Arrays.copyOf(PublishersBUS.publishersList, PublishersBUS.count);
+    }
+
+    public static Publishers getPublisher(String id) {
+        for (Publishers publisher : publishersList)
+            if (publisher.getPublisherID().equals(id))
+                return new Publishers(publisher.getPublisherID(), publisher.getPublisherName());
+        return null;
+    }
+
     public static int getCount() {
         return count;
     }
 
-    // all others methods like: add remove edit find show....
-     // show list of publisher for user (DONE)
-     public static void showList() {
-        if (publishersList == null)
-            return;
-        for (int i = 0; i < publishersList.length; i++)
-             System.out.printf("%d: %10s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
-   }
-
-    // Setter: Sets count of publishers
-    public void setCount(int count) {
-        PublishersBUS.count = count;
-    }
-
-    // Setter: Sets publishers list
     public void setPublishersList(Publishers[] publishersList) {
         PublishersBUS.publishersList = publishersList;
     }
 
-    // Add a new Publisher to the list
-    public static void add(Publishers publisher) {
-        publishersList = Arrays.copyOf(publishersList, publishersList.length + 1);
-        publishersList[count] = publisher;
-        count++;
-        System.out.println("Publisher added successfully.");
+    public void setPublisher(String publisherID, Publishers newPublisher) {
+        for (int i = 0; i < count; i++)
+            if (publishersList[i].getPublisherID().equals(publisherID)) {
+                publishersList[i] = newPublisher;
+                return;
+            }
     }
 
-    // Find the index of a Publisher by publisherID
-    public int find(String publisherID) {
+    public void setCount(int count) {
+        PublishersBUS.count = count;
+    }
+
+    // all others methods like: add remove edit find show....
+    // display list of types for user
+    public static void showList() {
+        if (publishersList == null)
+            return;
+        showAsTable(publishersList);
+    }
+
+    // *Find methods (TEST DONE)
+    @Override
+    public void find() {
+        Menu.findHandler();
+    }
+
+    @Override
+    public int find(String nameOrID) {
         for (int i = 0; i < publishersList.length; i++) {
-            if (publishersList[i].getPublisherID().equals(publisherID)) {
+            if (publishersList[i].getPublisherID().equals(nameOrID)
+                    || publishersList[i].getPublisherName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                 return i;
-            }
         }
+        System.out.println("your publisher is not found!");
         return -1;
     }
 
-    // Remove a Publisher from the list by publisherID
-    public void remove(String publisherID) {
-        int index = find(publisherID);
-        if (index != -1) {
-            for (int i = index; i < publishersList.length - 1; i++) {
-                publishersList[i] = publishersList[i + 1];
+    public Publishers[] relativeFind(String name) {
+        int count = 0;
+        Publishers[] publishersArray = new Publishers[0];
+        for (Publishers publisher : publishersList)
+            if (publisher.getPublisherName().toLowerCase().contains(name.toLowerCase())) {
+                publishersArray = Arrays.copyOf(publishersArray, publishersArray.length + 1);
+                publishersArray[count] = publisher;
+                count++;
             }
+        if (count == 0) {
+            System.out.println("not found any publishers!");
+            return null;
+        }
+        return publishersArray;
+    }
+
+    // *Search methods (TEST DONE)
+    @Override
+    public void search() {
+        Menu.searchHandler();
+    }
+
+    @Override
+    public void search(String nameOrID) {
+        int index = find(nameOrID);
+        if (index != -1)
+            showAsTable(publishersList[index]);
+    }
+
+    public void relativeSearch(String name) {
+        Publishers[] list = relativeFind(name);
+        if (list != null) 
+            showAsTable(list);
+    }
+
+    // *Add methods (TEST DONE)
+    @Override
+    public void add() {
+        Menu.addHandler();
+    }
+
+    @Override
+    public void add(Object publisher) {
+        if (publisher instanceof Publishers) {
+            publishersList = Arrays.copyOf(publishersList, publishersList.length + 1);
+            publishersList[count] = (Publishers) publisher;
+            count++;
+        } else {
+            System.out.println("your new publisher is not correct!");
+        }
+    }
+
+    public void add(Publishers[] newPublishers, int size) {
+        publishersList = Arrays.copyOf(publishersList, publishersList.length + newPublishers.length);
+
+        int tempIndex = 0;
+        int initCount = getCount();
+        int total = initCount + size;
+
+        for (int i = initCount; i < total; i++, tempIndex++)
+            publishersList[i] = newPublishers[tempIndex];
+        PublishersBUS.count = total;
+    }
+
+    // *Edit methods (TEST DONE)
+    @Override
+    public void edit() {
+        Menu.editHandler();
+    }
+
+    @Override
+    public void edit(String nameOrID) {
+        int index = find(nameOrID);
+        if (index != -1) {
+            String newName;
+            do {
+                System.out.print("enter new name: ");
+                newName = scanner.nextLine().trim();
+                if (!Validate.checkName(newName)) {
+                    System.out.println("invalid name format!");
+                    newName = "";
+                }
+            } while (newName.isEmpty());
+            publishersList[index].setPublisherName(newName);
+        }
+    }
+
+    // *Remove methods (TEST DONE)
+    @Override
+    public void remove() {
+        Menu.removeHandler();
+    }
+
+    @Override
+    public void remove(String nameOrID) {
+        int index = find(nameOrID);
+        if (index != -1) {
+            for (int i = index; i < publishersList.length - 1; i++)
+                publishersList[i] = publishersList[i + 1];
             publishersList = Arrays.copyOf(publishersList, publishersList.length - 1);
             count--;
-            System.out.println("Publisher removed successfully.");
-        } else {
-            System.out.println("Publisher not found.");
         }
     }
 
-    // Search for a Publisher by publisherID and display it
-    public void search(String publisherID) {
-        int index = find(publisherID);
-        if (index != -1) {
-            System.out.printf("Found Publisher: %s - %s\n", publishersList[index].getPublisherID(), publishersList[index].getPublisherName());
-        } else {
-            System.out.println("Publisher not found.");
+    // show as table methods
+    public static void showAsTable(Publishers[] list) {
+        if (list == null)
+            return;
+        System.out.println("=".repeat(110));
+        System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Publishers ID", "Publishers Name");
+        System.out.println("=".repeat(110));
+        for (int i = 0; i < list.length; i++) {
+            if (i > 0)
+                System.out.println("|" + "-".repeat(108) + "|");
+            System.out.printf("| \t%-21s %-19s %-58s |\n", i + 1, list[i].getPublisherID(), list[i].getPublisherName());
         }
+        System.out.println("=".repeat(110));
     }
 
-    // Edit the publisherName of a Publisher by publisherID
-    public void edit(String publisherID) {
-        int index = find(publisherID);
-        if (index != -1) {
-            System.out.print("Enter new publisher name: ");
-            String newPublisherName = scanner.nextLine();
-            publishersList[index].setPublisherName(newPublisherName);
-            System.out.println("Publisher updated successfully.");
-        } else {
-            System.out.println("Publisher not found.");
-        }
+    public static void showAsTable(Publishers item) {
+        if (item == null)
+            return;
+        System.out.println("=".repeat(110));
+        System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Publishers ID", "Publishers Name");
+        System.out.println("=".repeat(110));
+        System.out.println("|" + "-".repeat(108) + "|");
+        System.out.printf("| \t%-21s %-19s %-58s |\n", 1, item.getPublisherID(), item.getPublisherName());
+        System.out.println("=".repeat(110));
     }
 
-    // Write the list of Publishers to a file
+    // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("../../resources/Publishers", false))) {
+        try (DataOutputStream file = new DataOutputStream(
+                new FileOutputStream("OOP/src/main/resources/Publishers", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(publishersList[i].getPublisherID());
                 file.writeUTF(publishersList[i].getPublisherName());
             }
-            System.out.println("Write done!");
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.getMessage());
+        } catch (Exception err) {
+            System.out.printf("error writing file!\n%s\n", err.getMessage());
         }
     }
 
-    // Read the list of Publishers from a file
+    // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("../../resources/Publishers"))) {
-            count = file.readInt();
+        try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Publishers"))) {
+            int count = file.readInt();
             Publishers[] list = new Publishers[count];
             for (int i = 0; i < count; i++) {
                 String publisherID = file.readUTF();
                 String publisherName = file.readUTF();
                 list[i] = new Publishers(publisherID, publisherName);
             }
-            PublishersBUS.publishersList = list;
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.getMessage());
+            setCount(count);
+            setPublishersList(list);
+        } catch (Exception err) {
+            System.out.printf("error reading file!\n%s\n", err.getMessage());
         }
     }
 }

@@ -30,7 +30,6 @@ public class Menu {
 
     /*----- methods for only Books -----*/
 
-
     public static void addHandler() {
     }
 

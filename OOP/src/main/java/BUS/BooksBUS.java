@@ -47,9 +47,9 @@ public class BooksBUS implements IRuleSets {
      }
 
      public Books getBook(String bookID) {
-          for (int i = 0; i < count; i++)
-               if (booksList[i].getProductID().equals(bookID))
-                    return booksList[i];
+          for (Books book : booksList)
+               if (book.getProductID().equals(bookID))
+                    return book;
           return null;
      }
 
@@ -381,11 +381,10 @@ public class BooksBUS implements IRuleSets {
      }
 
      public void add(Books[] newBooks, int size) {
-          booksList = Arrays.copyOf(booksList, booksList.length + newBooks.length);
-
           int tempIndex = 0;
           int initCount = this.getCount();
           int total = initCount + size;
+          booksList = Arrays.copyOf(booksList, booksList.length + newBooks.length);
 
           for (int i = initCount; i < total; i++, tempIndex++)
                booksList[i] = newBooks[tempIndex];
@@ -769,17 +768,17 @@ public class BooksBUS implements IRuleSets {
           try (DataOutputStream file = new DataOutputStream(
                     new FileOutputStream("src/main/resources/Books", false))) {
                file.writeInt(count);
-               for (int i = 0; i < count; i++) {
-                    file.writeUTF(booksList[i].getProductID());
-                    file.writeUTF(booksList[i].getProductName());
-                    file.writeUTF(booksList[i].getProductPrice().setScale(0).toString());
-                    file.writeUTF(booksList[i].getReleaseDate().toString());
-                    file.writeUTF(booksList[i].getAuthor());
-                    file.writeUTF(booksList[i].getPublisher().getPublisherID());
-                    file.writeUTF(booksList[i].getType().getTypeID());
-                    file.writeInt(booksList[i].getQuantity());
-                    file.writeUTF(booksList[i].getFormat().getFormatID());
-                    file.writeUTF(booksList[i].getPackagingSize());
+               for (Books book : booksList) {
+                    file.writeUTF(book.getProductID());
+                    file.writeUTF(book.getProductName());
+                    file.writeUTF(book.getProductPrice().setScale(0).toString());
+                    file.writeUTF(book.getReleaseDate().toString());
+                    file.writeUTF(book.getAuthor());
+                    file.writeUTF(book.getPublisher().getPublisherID());
+                    file.writeUTF(book.getType().getTypeID());
+                    file.writeInt(book.getQuantity());
+                    file.writeUTF(book.getFormat().getFormatID());
+                    file.writeUTF(book.getPackagingSize());
                }
           } catch (Exception err) {
                System.out.printf("error writing file!\nt%s\n", err.getMessage());

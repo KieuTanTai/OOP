@@ -235,9 +235,9 @@ public class MidForBooksBUS {
           try (DataOutputStream file = new DataOutputStream(
                     new FileOutputStream("src/main/resources/MidForBooks", false))) {
                file.writeInt(count);
-               for (int i = 0; i < count; i++) {
-                    file.writeUTF(midList[i].getBookID());
-                    file.writeUTF(midList[i].getGenre().getGenreID());
+               for (MidForBooks mid : midList) {
+                    file.writeUTF(mid.getBookID());
+                    file.writeUTF(mid.getGenre().getGenreID());
                }
           } catch (Exception err) {
                System.out.printf("error writing file!\n%s\n", err.getMessage());

@@ -247,9 +247,9 @@ public class TypesBUS implements IRuleSets {
           try (DataOutputStream file = new DataOutputStream(
                     new FileOutputStream("src/main/resources/BookTypes", false))) {
                file.writeInt(count);
-               for (int i = 0; i < count; i++) {
-                    file.writeUTF(typesList[i].getTypeID());
-                    file.writeUTF(typesList[i].getTypeName());
+               for (BookTypes type : typesList) {
+                    file.writeUTF(type.getTypeID());
+                    file.writeUTF(type.getTypeName());
                }
           } catch (Exception err) {
                System.out.printf("error writing file!\n%s\n", err.getMessage());

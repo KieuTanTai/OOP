@@ -1,8 +1,10 @@
 package util;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class Validate {
@@ -14,6 +16,19 @@ public class Validate {
           return quantity > 0;
      }
 
+     // format type of string price 
+     public static String formatPrice (BigDecimal price) { 
+          try {
+               NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
+               return formatter.format(price);
+          }catch (Exception err) {
+               System.out.println("your input is not correct!\n" + err.getMessage());
+               return "";
+          }
+
+     }
+
+     // check if input null or not (DONE)
      public static boolean requiredNotNull (Object input) {
           try {
                if (input == null)

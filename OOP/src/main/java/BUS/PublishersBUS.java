@@ -220,9 +220,9 @@ public class PublishersBUS implements IRuleSets {
         try (DataOutputStream file = new DataOutputStream(
                 new FileOutputStream("src/main/resources/Publishers", false))) {
             file.writeInt(count);
-            for (int i = 0; i < count; i++) {
-                file.writeUTF(publishersList[i].getPublisherID());
-                file.writeUTF(publishersList[i].getPublisherName());
+            for (Publishers publisher : publishersList) {
+                file.writeUTF(publisher.getPublisherID());
+                file.writeUTF(publisher.getPublisherName());
             }
         } catch (Exception err) {
             System.out.printf("error writing file!\n%s\n", err.getMessage());

@@ -3,11 +3,9 @@ package DTO;
 import util.Validate;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Locale;
 
 import BUS.BookFormatsBUS;
 import BUS.GenresBUS;
@@ -27,8 +25,7 @@ public class Books extends Products {
     }
 
     public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
-            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format,
-            String packagingSize) {
+            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format, String packagingSize) {
         super(productId, productName, releaseDate, productPrice, quantity);
         this.publisher = publisher;
         this.author = author;
@@ -38,8 +35,7 @@ public class Books extends Products {
     }
 
     public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
-            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format, String packagingSize,
-            BookGenres[] genres) {
+            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format, String packagingSize, BookGenres[] genres) {
         super(productId, productName, releaseDate, productPrice, quantity);
         this.publisher = publisher;
         this.author = author;
@@ -331,7 +327,6 @@ public class Books extends Products {
     @Override
     public void showInfo() {
         LocalDate date = this.getReleaseDate();
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
         BigDecimal price = this.getProductPrice();
         String productID = this.getProductID(), productName = this.getProductName();
         
@@ -373,7 +368,7 @@ public class Books extends Products {
 
         System.out.println();
         System.out.printf("| %-22s : %s \n", "Quantity", this.getQuantity());
-        System.out.printf("| %-22s : %s \n", "Price", price != null ? formatter.format(price) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
         System.out.println("=".repeat(160));
     }
 

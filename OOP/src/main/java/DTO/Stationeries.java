@@ -1,10 +1,8 @@
 package DTO;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 import BUS.StaTypesBUS;
@@ -197,7 +195,6 @@ public class Stationeries extends Products {
           LocalDate date = this.getReleaseDate();
           BigDecimal price = this.getProductPrice();
           String productID = this.getProductID(), productName = this.getProductName();
-          NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
 
           System.out.println("=".repeat(160));
           System.out.printf("| %-22s : %s \n", "ID", productID != null ? productID : "N/A");
@@ -209,7 +206,7 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Source", source != null ? source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", brand != null ? brand : "N/A");
           System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
-          System.out.printf("| %-22s : %s \n", "Price", price != null ? formatter.format(price) : "N/A");
+          System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
           System.out.println("=".repeat(160));
      }
 

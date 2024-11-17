@@ -38,10 +38,11 @@ public class App {
 
 
                 // !SHOW BEFORE
-                listSta.showList();
+                // listSta.showList();
                 // StaTypesBUS.showList();
                 // !TEST METHODS
                 System.out.println("*".repeat(80));
+                listBooks.getBooksList()[0].showInfo();
                 
                 // !SHOW DURING
                 // listSta.showList();

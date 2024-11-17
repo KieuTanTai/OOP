@@ -233,9 +233,9 @@ public class StaTypesBUS implements IRuleSets {
         try (DataOutputStream file = new DataOutputStream(
                 new FileOutputStream("src/main/resources/StaTypes", false))) {
             file.writeInt(count);
-            for (int i = 0; i < count; i++) {
-                file.writeUTF(typesList[i].getTypeID());
-                file.writeUTF(typesList[i].getTypeName());
+            for (StaTypes type : typesList) {
+                file.writeUTF(type.getTypeID());
+                file.writeUTF(type.getTypeName());
             }
         } catch (Exception err) {
             System.out.printf("error writing file!\n%s\n", err.getMessage());

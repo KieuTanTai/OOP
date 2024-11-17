@@ -240,9 +240,9 @@ public class GenresBUS implements IRuleSets {
           try (DataOutputStream file = new DataOutputStream(
                     new FileOutputStream("src/main/resources/BookGenres", false))) {
                file.writeInt(count);
-               for (int i = 0; i < count; i++) {
-                    file.writeUTF(genresList[i].getGenreID());
-                    file.writeUTF(genresList[i].getGenreName());
+               for (BookGenres genre : genresList) {
+                    file.writeUTF(genre.getGenreID());
+                    file.writeUTF(genre.getGenreName());
                }
           } catch (Exception err) {
                System.out.printf("error writing file!\n%s\n", err.getMessage());

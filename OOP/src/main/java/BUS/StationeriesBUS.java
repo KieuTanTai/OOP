@@ -35,9 +35,9 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     public Stationeries geStationeries(String stationaryID) {
-        for (int i = 0; i < count; i++)
-            if (staList[i].getProductID().equals(stationaryID))
-                return staList[i];
+        for (Stationeries stationary : staList)
+            if (stationary.getProductID().equals(stationaryID))
+                return stationary;
         return null;
     }
 
@@ -352,11 +352,10 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     public void add(Stationeries[] newStationeries, int size) {
-        staList = Arrays.copyOf(staList, staList.length + newStationeries.length);
-
         int tempIndex = 0;
         int initCount = this.getCount();
         int total = initCount + size;
+        staList = Arrays.copyOf(staList, staList.length + newStationeries.length);
 
         for (int i = initCount; i < total; i++, tempIndex++)
             staList[i] = newStationeries[tempIndex];
@@ -631,17 +630,17 @@ public class StationeriesBUS implements IRuleSets {
         try (DataOutputStream file = new DataOutputStream(
                 new FileOutputStream("src/main/resources/Stationeries", false))) {
             file.writeInt(count);
-            for (int i = 0; i < count; i++) {
-                file.writeUTF(staList[i].getProductID());
-                file.writeUTF(staList[i].getStationeriesID());
-                file.writeUTF(staList[i].getProductName());
-                file.writeUTF(staList[i].getProductPrice().setScale(0).toString());
-                file.writeUTF(staList[i].getReleaseDate().toString());
-                file.writeUTF(staList[i].getType().getTypeID());
-                file.writeUTF(staList[i].getBrand());
-                file.writeInt(staList[i].getQuantity());
-                file.writeUTF(staList[i].getMaterial());
-                file.writeUTF(staList[i].getSource());
+            for (Stationeries stationary : staList) {
+                file.writeUTF(stationary.getProductID());
+                file.writeUTF(stationary.getStationeriesID());
+                file.writeUTF(stationary.getProductName());
+                file.writeUTF(stationary.getProductPrice().setScale(0).toString());
+                file.writeUTF(stationary.getReleaseDate().toString());
+                file.writeUTF(stationary.getType().getTypeID());
+                file.writeUTF(stationary.getBrand());
+                file.writeInt(stationary.getQuantity());
+                file.writeUTF(stationary.getMaterial());
+                file.writeUTF(stationary.getSource());
             }
         } catch (Exception err) {
             System.out.printf("error writing file!\n%s\n", err.getMessage());

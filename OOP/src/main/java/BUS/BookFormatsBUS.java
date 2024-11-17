@@ -226,9 +226,9 @@ public class BookFormatsBUS implements IRuleSets {
           try (DataOutputStream file = new DataOutputStream(
                     new FileOutputStream("src/main/resources/BookFormats", false))) {
                file.writeInt(count);
-               for (int i = 0; i < count; i++) {
-                    file.writeUTF(formatsList[i].getFormatID());
-                    file.writeUTF(formatsList[i].getFormatName());
+               for (BookFormats format : formatsList) {
+                    file.writeUTF(format.getFormatID());
+                    file.writeUTF(format.getFormatName());
                }
           } catch (Exception err) {
                System.out.printf("error writing file!\n%s\n", err.getMessage());

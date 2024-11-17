@@ -78,8 +78,7 @@ public class StaTypesBUS implements IRuleSets {
     public static void showList() {
         if (typesList == null)
             return;
-        for (int i = 0; i < typesList.length; i++)
-            System.out.printf("%-3d: %-6s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
+        showAsTable(typesList);
     }
 
     // *Find methods (TEST DONE)
@@ -91,7 +90,8 @@ public class StaTypesBUS implements IRuleSets {
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < typesList.length; i++) {
-            if (typesList[i].getTypeID().equals(nameOrID) || typesList[i].getTypeName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
+            if (typesList[i].getTypeID().equals(nameOrID)
+                    || typesList[i].getTypeName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                 return i;
         }
         System.out.println("your type is not found!");
@@ -124,17 +124,13 @@ public class StaTypesBUS implements IRuleSets {
     public void search(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1)
-            System.out.printf("id: %-6s name: %s\n", typesList[index].getTypeID(), typesList[index].getTypeName());
+            showAsTable(typesList[index]);
     }
 
     public void relativeSearch(String name) {
         StaTypes[] list = relativeFind(name);
-        if (list != null) {
-            System.out.println("-----------------------------------------------");
-            for (StaTypes type : list)
-                System.out.printf("id: %-6s name: %s\n", type.getTypeID(), type.getTypeName());
-            System.out.println("-----------------------------------------------");
-        }
+        if (list != null) 
+            showAsTable(list);
     }
 
     // *Add methods (TEST DONE)
@@ -206,9 +202,36 @@ public class StaTypesBUS implements IRuleSets {
         }
     }
 
+    // show as table methods
+    public static void showAsTable(StaTypes[] list) {
+        if (list == null)
+            return;
+        System.out.println("=".repeat(110));
+        System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Types ID", "Types Name");
+        System.out.println("=".repeat(110));
+        for (int i = 0; i < list.length; i++) {
+            if (i > 0)
+                System.out.println("|" + "-".repeat(108) + "|");
+            System.out.printf("| \t%-21s %-19s %-58s |\n", i + 1, list[i].getTypeID(), list[i].getTypeName());
+        }
+        System.out.println("=".repeat(110));
+    }
+
+    public static void showAsTable(StaTypes item) {
+        if (item == null)
+            return;
+        System.out.println("=".repeat(110));
+        System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Types ID", "Types Name");
+        System.out.println("=".repeat(110));
+        System.out.println("|" + "-".repeat(108) + "|");
+        System.out.printf("| \t%-21s %-19s %-58s |\n", 1, item.getTypeID(), item.getTypeName());
+        System.out.println("=".repeat(110));
+    }
+
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/StaTypes", false))) {
+        try (DataOutputStream file = new DataOutputStream(
+                new FileOutputStream("OOP/src/main/resources/StaTypes", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(typesList[i].getTypeID());

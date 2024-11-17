@@ -17,7 +17,7 @@ public class PublishersBUS implements IRuleSets {
     private static int count;
     private final Scanner scanner = new Scanner(System.in);
 
-    // *Constructors (TEST DONE) 
+    // *Constructors (TEST DONE)
     public PublishersBUS() {
         PublishersBUS.count = 0;
         publishersList = new Publishers[0];
@@ -39,7 +39,6 @@ public class PublishersBUS implements IRuleSets {
                 return new Publishers(publisher.getPublisherID(), publisher.getPublisherName());
         return null;
     }
-    
 
     public static int getCount() {
         return count;
@@ -62,12 +61,11 @@ public class PublishersBUS implements IRuleSets {
     }
 
     // all others methods like: add remove edit find show....
-    // display list of types for user 
+    // display list of types for user
     public static void showList() {
         if (publishersList == null)
             return;
-        for (int i = 0; i < publishersList.length; i++)
-            System.out.printf("%-3d: %-6s %s\n", i + 1, publishersList[i].getPublisherID(), publishersList[i].getPublisherName());
+        showAsTable(publishersList);
     }
 
     // *Find methods (TEST DONE)
@@ -79,7 +77,8 @@ public class PublishersBUS implements IRuleSets {
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < publishersList.length; i++) {
-            if (publishersList[i].getPublisherID().equals(nameOrID) || publishersList[i].getPublisherName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
+            if (publishersList[i].getPublisherID().equals(nameOrID)
+                    || publishersList[i].getPublisherName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                 return i;
         }
         System.out.println("your publisher is not found!");
@@ -112,20 +111,16 @@ public class PublishersBUS implements IRuleSets {
     public void search(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1)
-            System.out.printf("id: %-6s name: %s\n", publishersList[index].getPublisherID(), publishersList[index].getPublisherName());
+            showAsTable(publishersList[index]);
     }
 
     public void relativeSearch(String name) {
         Publishers[] list = relativeFind(name);
-        if (list != null) {
-            System.out.println("-----------------------------------------------");
-            for (Publishers publisher : list)
-                System.out.printf("id: %-6s name: %s\n", publisher.getPublisherID(), publisher.getPublisherName());
-            System.out.println("-----------------------------------------------");
-        }
+        if (list != null) 
+            showAsTable(list);
     }
 
-    // *Add methods (TEST DONE) 
+    // *Add methods (TEST DONE)
     @Override
     public void add() {
         Menu.addHandler();
@@ -177,7 +172,7 @@ public class PublishersBUS implements IRuleSets {
         }
     }
 
-    // *Remove methods (TEST DONE) 
+    // *Remove methods (TEST DONE)
     @Override
     public void remove() {
         Menu.removeHandler();
@@ -194,9 +189,36 @@ public class PublishersBUS implements IRuleSets {
         }
     }
 
-    // Write file 
+    // show as table methods
+    public static void showAsTable(Publishers[] list) {
+        if (list == null)
+            return;
+        System.out.println("=".repeat(110));
+        System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Publishers ID", "Publishers Name");
+        System.out.println("=".repeat(110));
+        for (int i = 0; i < list.length; i++) {
+            if (i > 0)
+                System.out.println("|" + "-".repeat(108) + "|");
+            System.out.printf("| \t%-21s %-19s %-58s |\n", i + 1, list[i].getPublisherID(), list[i].getPublisherName());
+        }
+        System.out.println("=".repeat(110));
+    }
+
+    public static void showAsTable(Publishers item) {
+        if (item == null)
+            return;
+        System.out.println("=".repeat(110));
+        System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Publishers ID", "Publishers Name");
+        System.out.println("=".repeat(110));
+        System.out.println("|" + "-".repeat(108) + "|");
+        System.out.printf("| \t%-21s %-19s %-58s |\n", 1, item.getPublisherID(), item.getPublisherName());
+        System.out.println("=".repeat(110));
+    }
+
+    // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/Publishers", false))) {
+        try (DataOutputStream file = new DataOutputStream(
+                new FileOutputStream("OOP/src/main/resources/Publishers", false))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(publishersList[i].getPublisherID());
@@ -207,7 +229,7 @@ public class PublishersBUS implements IRuleSets {
         }
     }
 
-    // Read file 
+    // *Read file (TEST DONE)
     public void readFile() throws IOException {
         try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Publishers"))) {
             int count = file.readInt();

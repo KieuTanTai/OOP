@@ -78,8 +78,7 @@ public class TypesBUS implements IRuleSets {
      public static void showList() {
           if (typesList == null)
                return;
-          for (int i = 0; i < typesList.length; i++)
-               System.out.printf("%-3d: %-6s %s\n", i + 1, typesList[i].getTypeID(), typesList[i].getTypeName());
+          showAsTable(typesList);
      }
 
      // find methods
@@ -92,7 +91,8 @@ public class TypesBUS implements IRuleSets {
      @Override
      public int find(String nameOrID) {
           for (int i = 0; i < typesList.length; i++)
-               if (typesList[i].getTypeID().equals(nameOrID) || typesList[i].getTypeName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
+               if (typesList[i].getTypeID().equals(nameOrID)
+                         || typesList[i].getTypeName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                     return i;
           System.out.println("your type is not found!");
           return -1;
@@ -127,19 +127,14 @@ public class TypesBUS implements IRuleSets {
      public void search(String nameOrID) {
           int index = find(nameOrID);
           if (index != -1)
-               System.out.printf("id: %-6s name: %s\n", typesList[index].getTypeID(),
-                         typesList[index].getTypeName());
+               showAsTable(typesList[index]);
      }
 
      // *(TEST DONE)
      public void relativeSearch(String name) {
           BookTypes[] list = relativeFind(name);
-          if (list != null) {
-               System.out.println("-----------------------------------------------");
-               for (BookTypes type : list)
-                    System.out.printf("id: %-6s name: %s\n", type.getTypeID(), type.getTypeName());
-               System.out.println("-----------------------------------------------");
-          }
+          if (list != null) 
+               showAsTable(list);
      }
 
      // add methods (DONE)
@@ -213,6 +208,32 @@ public class TypesBUS implements IRuleSets {
           }
      }
 
+     // show as table methods
+     public static void showAsTable(BookTypes[] list) {
+          if (list == null)
+               return;
+          System.out.println("=".repeat(110));
+          System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Types ID", "Types Name");
+          System.out.println("=".repeat(110));
+          for (int i = 0; i < list.length; i++) {
+               if (i > 0)
+                    System.out.println("|" + "-".repeat(108) + "|");
+               System.out.printf("| \t%-21s %-19s %-58s |\n", i + 1, list[i].getTypeID(), list[i].getTypeName());
+          }
+          System.out.println("=".repeat(110));
+     }
+
+     public static void showAsTable(BookTypes item) {
+          if (item == null)
+               return;
+          System.out.println("=".repeat(110));
+          System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Types ID", "Types Name");
+          System.out.println("=".repeat(110));
+          System.out.println("|" + "-".repeat(108) + "|");
+          System.out.printf("| \t%-21s %-19s %-58s |\n", 1, item.getTypeID(), item.getTypeName());
+          System.out.println("=".repeat(110));
+     }
+
      // execute file resources
      /*
       * DataOutputStream ? DataInputStream ?
@@ -223,7 +244,8 @@ public class TypesBUS implements IRuleSets {
 
      // *(TEST DONE)
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/BookTypes", false))) {
+          try (DataOutputStream file = new DataOutputStream(
+                    new FileOutputStream("OOP/src/main/resources/BookTypes", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(typesList[i].getTypeID());

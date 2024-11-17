@@ -66,10 +66,7 @@ public class MidForBooksBUS {
      public static void showList() {
           if (midList == null)
                return;
-          int size = midList.length;
-          for (int i = 0; i < size; i++)
-               System.out.printf("%-3d: %-6s %-6s %s\n", i + 1, midList[i].getBookID(),
-                         midList[i].getGenre().getGenreID(), midList[i].getGenre().getGenreName());
+          showAsTable(midList);
      }
 
      // find methods
@@ -108,17 +105,14 @@ public class MidForBooksBUS {
                System.out.println("404 not found!");
                return;
           }
-          System.out.printf("book's id: %-6s genre's name: %-6s\n", midList[index].getBookID(),
-                    midList[index].getGenre().getGenreName());
+          showAsTable(midList[index]);
      }
 
      // *relative search (TEST DONE)
      public void relativeSearch(String id) {
           MidForBooks[] list = relativeFind(id);
           if (list != null)
-               for (MidForBooks mid : list)
-                    System.out.printf("book's id: %-6s genre's id: %-6s genre's name: %-6s\n", mid.getBookID(),
-                              mid.getGenre().getGenreID(), mid.getGenre().getGenreName());
+               showAsTable(list);
      }
 
      // *add methods (TEST DONE)
@@ -131,15 +125,15 @@ public class MidForBooksBUS {
 
      }
 
-     public void add(MidForBooks[] midObject) {          
+     public void add(MidForBooks[] midObject) {
           for (int i = 0; i < midObject.length; i++) {
                boolean flag = false;
-               for(MidForBooks item : midList)
-                    if ((item != null) && (item.getBookID().equals(midObject[i].getBookID()) && 
-                         item.getGenre().getGenreID().equals(midObject[i].getGenre().getGenreID()))) {
-                              flag = true;
-                              break;
-                         }
+               for (MidForBooks item : midList)
+                    if ((item != null) && (item.getBookID().equals(midObject[i].getBookID()) &&
+                              item.getGenre().getGenreID().equals(midObject[i].getGenre().getGenreID()))) {
+                         flag = true;
+                         break;
+                    }
                if (flag)
                     continue;
                midList = Arrays.copyOf(midList, midList.length + 1);
@@ -210,10 +204,36 @@ public class MidForBooksBUS {
           count--;
      }
 
+     // show as table methods
+     public static void showAsTable(MidForBooks[] list) {
+          if (list == null)
+               return;
+          System.out.println("=".repeat(110));
+          System.out.printf("| \t%-20s %-21s %-19s %-37s |\n", "No.", "Book ID", "Genre ID", "Genre Name");
+          System.out.println("=".repeat(110));
+          for (int i = 0; i < list.length; i++) {
+               if (i > 0)
+                    System.out.println("|" + "-".repeat(108) + "|");
+               System.out.printf("| \t%-20s %-21s %-19s %-37s |\n", i + 1, list[i].getBookID(), list[i].getGenre().getGenreID(), list[i].getGenre().getGenreName());
+          }
+          System.out.println("=".repeat(110));
+     }
+
+     public static void showAsTable(MidForBooks item) {
+          if (item == null)
+               return;
+               System.out.println("=".repeat(110));
+               System.out.printf("| \t%-20s %-21s %-19s %-37s |\n", "No.", "Book ID", "Genre ID", "Genre Name");
+               System.out.println("=".repeat(110));
+               System.out.printf("| \t%-20s %-21s %-19s %-37s |\n", 1, item.getBookID(), item.getGenre().getGenreID(), item.getGenre().getGenreName());
+               System.out.println("=".repeat(110));
+     }
+
      // execute file resources
      // *write file (TEST DONE)
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/MidForBooks", false))) {
+          try (DataOutputStream file = new DataOutputStream(
+                    new FileOutputStream("OOP/src/main/resources/MidForBooks", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(midList[i].getBookID());

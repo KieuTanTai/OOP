@@ -143,7 +143,6 @@ public class Books extends Products {
     // set book type
     public BookTypes setType() {
         int userChoose;
-        BookTypes type;
         // show list for user choose
         TypesBUS.showList();
         if (TypesBUS.getCount() == 0) // if not have any publisher
@@ -155,14 +154,13 @@ public class Books extends Products {
             userChoose = Validate.parseChooseHandler(option, TypesBUS.getCount());
         } while (userChoose == -1);
 
-        type = TypesBUS.getTypesList()[userChoose - 1];
+        BookTypes type = TypesBUS.getTypesList()[userChoose - 1];
         return type;
     }
 
     // set publisher
     public Publishers setPublisher() {
         int userChoose;
-        Publishers publisher;
         // show list for user choose
         PublishersBUS.showList();
         if (PublishersBUS.getCount() == 0) // if not have any types
@@ -174,7 +172,7 @@ public class Books extends Products {
             userChoose = Validate.parseChooseHandler(option, PublishersBUS.getCount());
         } while (userChoose == -1);
 
-        publisher = PublishersBUS.getPublishersList()[userChoose - 1];
+        Publishers publisher = PublishersBUS.getPublishersList()[userChoose - 1];
         return publisher;
     }
 

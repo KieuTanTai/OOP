@@ -90,7 +90,6 @@ public class Stationary extends Products {
 
      public StaTypes setType() {
           int userChoose;
-          StaTypes type;
           PublishersBUS.showList();
           System.out.println("----------------------------");
           do {
@@ -99,7 +98,7 @@ public class Stationary extends Products {
                userChoose = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
           } while (userChoose == -1);
 
-          type = StaTypesBUS.getTypesList()[userChoose - 1];
+          StaTypes type = StaTypesBUS.getTypesList()[userChoose - 1];
           return type;
      }
 

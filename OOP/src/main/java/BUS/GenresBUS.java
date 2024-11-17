@@ -78,8 +78,7 @@ public class GenresBUS implements IRuleSets {
      public static void showList() {
           if (genresList == null)
                return;
-          for (int i = 0; i < genresList.length; i++)
-               System.out.printf("%-3d: %-6s %s\n", i + 1, genresList[i].getGenreID(), genresList[i].getGenreName());
+          showAsTable(genresList);
      }
 
      // find methods (DONE)
@@ -91,7 +90,8 @@ public class GenresBUS implements IRuleSets {
      @Override
      public int find(String nameOrID) {
           for (int i = 0; i < genresList.length; i++) {
-               if (genresList[i].getGenreID().equals(nameOrID) || genresList[i].getGenreName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
+               if (genresList[i].getGenreID().equals(nameOrID)
+                         || genresList[i].getGenreName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                     return i;
           }
           System.out.println("your genre is not found!");
@@ -124,18 +124,13 @@ public class GenresBUS implements IRuleSets {
      public void search(String nameOrID) {
           int index = find(nameOrID);
           if (index != -1)
-               System.out.printf("id: %-6s name: %s\n", genresList[index].getGenreID(),
-                         genresList[index].getGenreName());
+               showAsTable(genresList[index]);
      }
 
      public void relativeSearch(String name) {
           BookGenres[] list = relativeFind(name);
-          if (list != null) {
-               System.out.println("-----------------------------------------------");
-               for (BookGenres genre : list)
-                    System.out.printf("id : %-6s name: %s\n", genre.getGenreID(), genre.getGenreName());
-               System.out.println("-----------------------------------------------");
-          }
+          if (list != null) 
+               showAsTable(list);
      }
 
      // adds methods (DONE)
@@ -206,6 +201,32 @@ public class GenresBUS implements IRuleSets {
           }
      }
 
+     // show as table methods
+     public static void showAsTable(BookGenres[] list) {
+          if (list == null)
+               return;
+          System.out.println("=".repeat(110));
+          System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Genres ID", "Genres Name");
+          System.out.println("=".repeat(110));
+          for (int i = 0; i < list.length; i++) {
+               if (i > 0)
+                    System.out.println("|" + "-".repeat(108) + "|");
+               System.out.printf("| \t%-21s %-19s %-58s |\n", i + 1, list[i].getGenreID(), list[i].getGenreName());
+          }
+          System.out.println("=".repeat(110));
+     }
+
+     public static void showAsTable(BookGenres item) {
+          if (item == null)
+               return;
+          System.out.println("=".repeat(110));
+          System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Genres ID", "Genres Name");
+          System.out.println("=".repeat(110));
+          System.out.println("|" + "-".repeat(108) + "|");
+          System.out.printf("| \t%-21s %-19s %-58s |\n", 1, item.getGenreID(), item.getGenreName());
+          System.out.println("=".repeat(110));
+     }
+
      // execute file resources
      /*
       * DataOutputStream ? DataInputStream ?
@@ -216,7 +237,8 @@ public class GenresBUS implements IRuleSets {
 
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("OOP/src/main/resources/BookGenres", false))) {
+          try (DataOutputStream file = new DataOutputStream(
+                    new FileOutputStream("OOP/src/main/resources/BookGenres", false))) {
                file.writeInt(count);
                for (int i = 0; i < count; i++) {
                     file.writeUTF(genresList[i].getGenreID());

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import BUS.StaTypesBUS;
 import util.Validate;
 
-public class Stationary extends Products {
+public class Stationeries extends Products {
      private String stationaryID;
      private StaTypes staTypes;
      private String brand;
@@ -18,10 +18,10 @@ public class Stationary extends Products {
      private String source;
 
      // constructors
-     public Stationary() {
+     public Stationeries() {
      }
 
-     public Stationary(String productId, String stationaryID, String productName, LocalDate releaseDate, BigDecimal productPrice,
+     public Stationeries(String productId, String stationaryID, String productName, LocalDate releaseDate, BigDecimal productPrice,
                int quantity, StaTypes type, String brand, String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
           this.stationaryID = stationaryIDModifier(stationaryID);
@@ -32,7 +32,7 @@ public class Stationary extends Products {
      }
 
      // getter / setter
-     public String getStationaryID() {
+     public String getStationeriesID() {
           return this.stationaryID;
      }
 
@@ -53,7 +53,7 @@ public class Stationary extends Products {
      }
 
      // setter have params
-     public void setStationaryID(String stationaryID) {
+     public void setStationeriesID(String stationaryID) {
           this.stationaryID = stationaryIDModifier(stationaryID);
      }
 
@@ -74,7 +74,7 @@ public class Stationary extends Products {
      }
 
      // setter no params
-     public String setStationaryID() {
+     public String setStationeriesID() {
           String id;
           do {
                System.out.print("set stationary id : ");
@@ -146,7 +146,7 @@ public class Stationary extends Products {
           System.out.println("-----------------------------------------------");
           String id = setID();
           System.out.println("-----------------------------------------------");
-          String staID = setStationaryID();
+          String staID = setStationeriesID();
           System.out.println("-----------------------------------------------");
           String name = setName();
           System.out.println("-----------------------------------------------");
@@ -179,7 +179,7 @@ public class Stationary extends Products {
           } else {
                // set fields for product
                setProductID(id);
-               setStationaryID(staID);
+               setStationeriesID(staID);
                setProductName(name);
                setProductPrice(price);
                setReleaseDate(releaseDate);
@@ -201,7 +201,7 @@ public class Stationary extends Products {
 
           System.out.println("=".repeat(160));
           System.out.printf("| %-22s : %s \n", "ID", productID != null ? productID : "N/A");
-          System.out.printf("| %-22s : %s \n", "Stationary ID", stationaryID != null ? stationaryID : "N/A");
+          System.out.printf("| %-22s : %s \n", "Stationeries ID", stationaryID != null ? stationaryID : "N/A");
           System.out.printf("| %-22s : %s \n", "Name", productName != null ? productName : "N/A");
           System.out.printf("| %-22s : %s \n", "Release Date", date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
           System.out.printf("| %-22s : %s \n", "Type", staTypes != null ? staTypes.getTypeName() : "N/A");

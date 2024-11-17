@@ -1,7 +1,7 @@
 package BUS;
 
 import DTO.StaTypes;
-import DTO.Stationary;
+import DTO.Stationeries;
 import Manager.Menu;
 import util.Validate;
 
@@ -15,26 +15,26 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class StationaryBUS implements IRuleSets {
-    private Stationary[] staList;
+public class StationeriesBUS implements IRuleSets {
+    private Stationeries[] staList;
     private int count;
     private static final Scanner input = new Scanner(System.in);
 
     // *constructors (TEST DONE)
-    public StationaryBUS() {
+    public StationeriesBUS() {
     }
 
-    public StationaryBUS(Stationary[] staList, int count) {
+    public StationeriesBUS(Stationeries[] staList, int count) {
         this.staList = staList;
         this.count = count;
     }
 
     // *getters / setters (TEST DONE)
-    public Stationary[] getStaList() {
+    public Stationeries[] getStaList() {
         return this.staList;
     }
 
-    public Stationary geStationary(String stationaryID) {
+    public Stationeries geStationeries(String stationaryID) {
         for (int i = 0; i < count; i++)
             if (staList[i].getProductID().equals(stationaryID))
                 return staList[i];
@@ -45,7 +45,7 @@ public class StationaryBUS implements IRuleSets {
         return count;
     }
 
-    public void setStaList(Stationary[] staList) {
+    public void setStaList(Stationeries[] staList) {
         this.staList = staList;
     }
 
@@ -58,7 +58,7 @@ public class StationaryBUS implements IRuleSets {
     public void showList() {
         if (staList == null)
             return;
-        for (Stationary stationary : staList)
+        for (Stationeries stationary : staList)
             stationary.showInfo();
     }
 
@@ -74,7 +74,7 @@ public class StationaryBUS implements IRuleSets {
         for (int i = 0; i < staList.length; i++)
             if (staList[i].getProductID().equals(nameOrID)
                     || staList[i].getProductName().toLowerCase().equals(nameOrID.toLowerCase())
-                    || staList[i].getStationaryID().equals(nameOrID))
+                    || staList[i].getStationeriesID().equals(nameOrID))
                 return i;
         System.out.println("your stationary is not exist!");
         return -1;
@@ -82,12 +82,12 @@ public class StationaryBUS implements IRuleSets {
 
     // relative finds
     // return list index of products that have contains specific string
-    public Stationary[] relativeFind(Object originalKey, String request) {
+    public Stationeries[] relativeFind(Object originalKey, String request) {
         int count = 0;
         boolean flag = false;
-        Stationary[] staArray = new Stationary[0];
+        Stationeries[] staArray = new Stationeries[0];
         request = request.toLowerCase().trim();
-        for (Stationary stationary : staList) {
+        for (Stationeries stationary : staList) {
             if (originalKey instanceof String) {
                 String key = (String) originalKey;
                 String staName = stationary.getProductName();
@@ -139,7 +139,7 @@ public class StationaryBUS implements IRuleSets {
     }
 
     // advanced finds
-    public Stationary[] advancedFind(BigDecimal minPrice, BigDecimal maxPrice, String request) {
+    public Stationeries[] advancedFind(BigDecimal minPrice, BigDecimal maxPrice, String request) {
         request = request.toLowerCase().trim();
         if (request.equals("range")
                 && ((minPrice.compareTo(maxPrice) >= 0) || (minPrice.compareTo(BigDecimal.ZERO) < 0) ||
@@ -150,8 +150,8 @@ public class StationaryBUS implements IRuleSets {
 
         int count = 0;
         boolean flag = false;
-        Stationary[] staArray = new Stationary[0];
-        for (Stationary stationary : staList) {
+        Stationeries[] staArray = new Stationeries[0];
+        for (Stationeries stationary : staList) {
             BigDecimal productPrice = stationary.getProductPrice();
 
             if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
@@ -178,12 +178,12 @@ public class StationaryBUS implements IRuleSets {
         return staArray;
     }
 
-    public Stationary[] advancedFind(Object originalKeyI, Object originalTimeOrKey, String request) {
+    public Stationeries[] advancedFind(Object originalKeyI, Object originalTimeOrKey, String request) {
         int count = 0;
         boolean flag = false;
-        Stationary[] staArray = new Stationary[0];
+        Stationeries[] staArray = new Stationeries[0];
         request = request.toLowerCase().trim();
-        for (Stationary stationary : staList) {
+        for (Stationeries stationary : staList) {
             int inputTime = 0;
             String brand = stationary.getBrand();
             String source = stationary.getSource();
@@ -316,21 +316,21 @@ public class StationaryBUS implements IRuleSets {
 
     // relative search
     public void relativeSearch(Object key, String request) {
-        Stationary[] indexList = relativeFind(key, request);
+        Stationeries[] indexList = relativeFind(key, request);
         if (indexList != null)
-            for (Stationary stationary : indexList)
+            for (Stationeries stationary : indexList)
                 stationary.showInfo();
     }
 
     // advanced search
     public void advancedSearch(Object keyI, Object timeOrKey, String request) {
-        Stationary[] indexList;
+        Stationeries[] indexList;
         if ((keyI instanceof BigDecimal) && (timeOrKey instanceof BigDecimal))
             indexList = advancedFind((BigDecimal) keyI, (BigDecimal) timeOrKey, request);
         else
             indexList = advancedFind(keyI, timeOrKey, request);
         if (indexList != null)
-            for (Stationary stationary : indexList)
+            for (Stationeries stationary : indexList)
                 stationary.showInfo();
     }
 
@@ -342,24 +342,24 @@ public class StationaryBUS implements IRuleSets {
 
     @Override
     public void add(Object stationary) {
-        if (stationary instanceof Stationary) {
+        if (stationary instanceof Stationeries) {
             staList = Arrays.copyOf(staList, staList.length + 1);
-            staList[count] = (Stationary) stationary;
+            staList[count] = (Stationeries) stationary;
             count++;
         } else
             System.out.println("your object have something not like stationary!");
 
     }
 
-    public void add(Stationary[] newStationary, int size) {
-        staList = Arrays.copyOf(staList, staList.length + newStationary.length);
+    public void add(Stationeries[] newStationeries, int size) {
+        staList = Arrays.copyOf(staList, staList.length + newStationeries.length);
 
         int tempIndex = 0;
         int initCount = this.getCount();
         int total = initCount + size;
 
         for (int i = initCount; i < total; i++, tempIndex++)
-            staList[i] = newStationary[tempIndex];
+            staList[i] = newStationeries[tempIndex];
         this.count = total;
     }
 
@@ -633,7 +633,7 @@ public class StationaryBUS implements IRuleSets {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(staList[i].getProductID());
-                file.writeUTF(staList[i].getStationaryID());
+                file.writeUTF(staList[i].getStationeriesID());
                 file.writeUTF(staList[i].getProductName());
                 file.writeUTF(staList[i].getProductPrice().setScale(0).toString());
                 file.writeUTF(staList[i].getReleaseDate().toString());
@@ -652,7 +652,7 @@ public class StationaryBUS implements IRuleSets {
     public void readFile() throws IOException {
         try (DataInputStream file = new DataInputStream(new FileInputStream("OOP/src/main/resources/Stationeries"))) {
             count = file.readInt();
-            Stationary[] list = new Stationary[count];
+            Stationeries[] list = new Stationeries[count];
             for (int i = 0; i < count; i++) {
                 String productID = file.readUTF();
                 String stationaryID = file.readUTF();
@@ -667,7 +667,7 @@ public class StationaryBUS implements IRuleSets {
 
                 // execute IDs
                 StaTypes type = StaTypesBUS.getType(typeID);
-                list[i] = new Stationary(productID, stationaryID, productName, releaseDate, price, quantity, type,
+                list[i] = new Stationeries(productID, stationaryID, productName, releaseDate, price, quantity, type,
                         brand, material, source);
             }
             setCount(count);

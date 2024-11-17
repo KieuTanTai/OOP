@@ -1,6 +1,4 @@
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Scanner;
 
 import BUS.BookFormatsBUS;
@@ -9,15 +7,11 @@ import BUS.GenresBUS;
 import BUS.MidForBooksBUS;
 import BUS.PublishersBUS;
 import BUS.StaTypesBUS;
-import BUS.StationaryBUS;
+import BUS.StationeriesBUS;
 import BUS.TypesBUS;
-import DTO.BookFormats;
-import DTO.Books;
-import DTO.StaTypes;
-import DTO.Stationary;
-import util.Validate;
 
 public class App {
+        Scanner input = new Scanner(System.in);
         public static void main(String[] args) throws IOException {
                 // !INIT OBJ
                 MidForBooksBUS testArray = new MidForBooksBUS();
@@ -26,9 +20,8 @@ public class App {
                 StaTypesBUS newTest = new StaTypesBUS();
                 PublishersBUS testPublishers = new PublishersBUS();
                 BookFormatsBUS listFormat = new BookFormatsBUS();
-                StationaryBUS listSta = new StationaryBUS();
+                StationeriesBUS listSta = new StationeriesBUS();
                 BooksBUS listBooks = new BooksBUS();
-                Scanner input = new Scanner(System.in);
                 newTest.readFile();
                 initList.readFile();
                 testList.readFile();

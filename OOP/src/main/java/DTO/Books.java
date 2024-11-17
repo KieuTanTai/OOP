@@ -333,9 +333,11 @@ public class Books extends Products {
         LocalDate date = this.getReleaseDate();
         NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
         BigDecimal price = this.getProductPrice();
+        String productID = this.getProductID(), productName = this.getProductName();
+        
         System.out.println("=".repeat(160));
-        System.out.printf("| %-22s : %s \n", "ID", this.getProductID());
-        System.out.printf("| %-22s : %s \n", "Book's Name", this.getProductName());
+        System.out.printf("| %-22s : %s \n", "ID", productID != null ? productID : "N/A");
+        System.out.printf("| %-22s : %s \n", "Book's Name", productName != null ? productName : "N/A");
         System.out.printf("| %-22s : %s \n", "Release Date",
                 date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
         System.out.printf("| %-22s : %s \n", "Publisher Name",
@@ -377,10 +379,10 @@ public class Books extends Products {
 
     @Override
     protected String productIDModifier(String bookID) {
-        if (bookID.startsWith("ST") && bookID.endsWith("PD") && bookID.length() == 12)
+        if (bookID.startsWith("BK") && bookID.endsWith("PD") && bookID.length() == 12)
             return bookID;
         if (!Validate.validateID(bookID)) {
-            System.out.println("error id");
+            System.out.println("error id!");
             return "N/A";
         }
         return "BK" + bookID + "PD";

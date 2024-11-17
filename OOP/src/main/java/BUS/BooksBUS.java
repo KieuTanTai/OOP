@@ -268,7 +268,7 @@ public class BooksBUS implements IRuleSets {
                          flag = true;
 
                }
-               if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
+               else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
                     String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
                     boolean hasPub = request.contains("pub");
                     boolean hasType = request.contains("type");

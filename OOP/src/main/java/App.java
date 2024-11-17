@@ -26,8 +26,8 @@ public class App {
                 StaTypesBUS newTest = new StaTypesBUS();
                 PublishersBUS testPublishers = new PublishersBUS();
                 BookFormatsBUS listFormat = new BookFormatsBUS();
-                BooksBUS listBooks = new BooksBUS();
                 StationaryBUS listSta = new StationaryBUS();
+                BooksBUS listBooks = new BooksBUS();
                 Scanner input = new Scanner(System.in);
                 newTest.readFile();
                 initList.readFile();
@@ -36,6 +36,7 @@ public class App {
                 listFormat.readFile();
                 testPublishers.readFile();
                 listBooks.readFile();
+                listSta.readFile();
 
                 // !INIT ARRAY
 
@@ -44,14 +45,13 @@ public class App {
 
 
                 // !SHOW BEFORE
-                listSta.readFile();
                 listSta.showList();
-
-
+                // StaTypesBUS.showList();
                 // !TEST METHODS
-                // listBooks.showList();
-
+                System.out.println("*".repeat(80));
+                
                 // !SHOW DURING
+                // listSta.showList();
 
                 // !SHOW RESULT
                 // System.out.println("------------------------AFTER(GENRES)-----------------------");

@@ -20,7 +20,7 @@ public class StationaryBUS implements IRuleSets {
     private int count;
     private static final Scanner input = new Scanner(System.in);
 
-    // constructors
+    // *constructors (TEST DONE)
     public StationaryBUS() {
     }
 
@@ -29,21 +29,24 @@ public class StationaryBUS implements IRuleSets {
         this.count = count;
     }
 
-    // getters / setters
+    // *getters / setters (TEST DONE)
     public Stationary[] getStaList() {
         return this.staList;
     }
 
-    public Stationary geStationary(int index) {
-        return this.staList[index];
-    }
-
-    public void setStaList(Stationary[] staList) {
-        this.staList = staList;
+    public Stationary geStationary(String stationaryID) {
+        for (int i = 0; i < count; i++)
+            if (staList[i].getProductID().equals(stationaryID))
+                return staList[i];
+        return null;
     }
 
     public int getCount() {
         return count;
+    }
+
+    public void setStaList(Stationary[] staList) {
+        this.staList = staList;
     }
 
     public void setCount(int count) {
@@ -51,7 +54,7 @@ public class StationaryBUS implements IRuleSets {
     }
 
     // all others methods like: add remove edit find show....
-    // show list
+    // *show list (TEST DONE)
     public void showList() {
         if (staList == null)
             return;
@@ -59,7 +62,7 @@ public class StationaryBUS implements IRuleSets {
             stationary.showInfo();
     }
 
-    // find methods (DONE)
+    // *find methods (TEST DONE)
     @Override
     public void find() {
         Menu.findHandler();
@@ -96,7 +99,7 @@ public class StationaryBUS implements IRuleSets {
                 brand = Validate.requiredNotNull(brand) ? brand.toLowerCase() : "";
                 source = Validate.requiredNotNull(source) ? source.toLowerCase() : "";
                 material = Validate.requiredNotNull(material) ? material.toLowerCase() : "";
-    
+
                 StaTypes types = stationary.getType();
                 String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
                         typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
@@ -241,32 +244,46 @@ public class StationaryBUS implements IRuleSets {
             } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
                 String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
                 boolean hasType = request.contains("type");
-                boolean hasMaterial = request.contains("material");
+                boolean hasMaterial = request.contains("mat");
                 boolean hasSource = request.contains("source");
                 boolean hasBrand = request.contains("brand");
 
                 // execute request
                 boolean isTypeAndMaterial = (hasType && hasMaterial)
                         && ((typeID.equals(keyI) && material.contains(keyII.toLowerCase()))
-                                || (typeID.equals(keyII) && material.contains(keyI.toLowerCase()))
-                                || (typeName.contains(keyI.toLowerCase()) && material.contains(keyII.toLowerCase()))
-                                || (typeName.contains(keyII.toLowerCase()) && material.contains(keyI.toLowerCase())));
+                        || (typeID.equals(keyII) && material.contains(keyI.toLowerCase()))
+                        || (typeName.contains(keyI.toLowerCase()) && material.contains(keyII.toLowerCase()))
+                        || (typeName.contains(keyII.toLowerCase()) && material.contains(keyI.toLowerCase())));
 
                 boolean isTypeAndBrand = (hasType && hasBrand)
                         && ((typeID.equals(keyI) && brand.contains(keyII.toLowerCase()))
-                                || (typeID.equals(keyII) && brand.contains(keyI.toLowerCase()))
-                                || (typeName.contains(keyI.toLowerCase()) && brand.contains(keyII.toLowerCase()))
-                                || (typeName.contains(keyII.toLowerCase()) && brand.contains(keyI.toLowerCase())));
+                        || (typeID.equals(keyII) && brand.contains(keyI.toLowerCase()))
+                        || (typeName.contains(keyI.toLowerCase()) && brand.contains(keyII.toLowerCase()))
+                        || (typeName.contains(keyII.toLowerCase()) && brand.contains(keyI.toLowerCase())));
 
                 boolean isTypeAndSource = (hasType && hasSource)
                         && ((typeID.equals(keyI) && source.contains(keyII.toLowerCase()))
-                                || (typeID.equals(keyII) && source.contains(keyI.toLowerCase()))
-                                || (typeName.contains(keyI.toLowerCase()) && source.contains(keyII.toLowerCase()))
-                                || (typeName.contains(keyII.toLowerCase()) && source.contains(keyI.toLowerCase())));
+                        || (typeID.equals(keyII) && source.contains(keyI.toLowerCase()))
+                        || (typeName.contains(keyI.toLowerCase()) && source.contains(keyII.toLowerCase()))
+                        || (typeName.contains(keyII.toLowerCase()) && source.contains(keyI.toLowerCase())));
+
+                boolean isSourceAndBrand = (hasSource && hasBrand)
+                        && ((source.contains(keyI.toLowerCase()) && brand.contains(keyII.toLowerCase()))
+                        || (source.contains(keyII.toLowerCase()) && brand.contains(keyI.toLowerCase())));
+
+                boolean isSourceAndMaterial = (hasSource && hasMaterial)
+                        && ((source.contains(keyI.toLowerCase()) && material.contains(keyII.toLowerCase()))
+                        || (source.contains(keyII.toLowerCase()) && material.contains(keyI.toLowerCase())));
+
+                boolean isMaterialAndBrand = (hasMaterial && hasBrand)
+                        && ((material.contains(keyI.toLowerCase()) && brand.contains(keyII.toLowerCase()))
+                        || (material.contains(keyII.toLowerCase()) && brand.contains(keyI.toLowerCase())));
 
                 // assign flag
-                if (isTypeAndMaterial || isTypeAndBrand || isTypeAndSource)
+                if (isTypeAndMaterial || isTypeAndBrand || isTypeAndSource || isSourceAndBrand || isSourceAndMaterial
+                        || isMaterialAndBrand) {
                     flag = true;
+                }
 
             }
 
@@ -284,7 +301,7 @@ public class StationaryBUS implements IRuleSets {
         return staArray;
     }
 
-    // search methods
+    // *search methods (TEST DONE)
     @Override
     public void search() {
         Menu.searchHandler();
@@ -317,7 +334,7 @@ public class StationaryBUS implements IRuleSets {
                 stationary.showInfo();
     }
 
-    // add methods (DONE)
+    // *add methods (TEST DONE)
     @Override
     public void add() {
         Menu.addHandler();
@@ -346,7 +363,7 @@ public class StationaryBUS implements IRuleSets {
         this.count = total;
     }
 
-    // edit methods
+    // *edit methods (TEST DONE)
     @Override
     public void edit() {
         Menu.findHandler();
@@ -463,8 +480,8 @@ public class StationaryBUS implements IRuleSets {
         if (StaTypesBUS.getCount() == 0) {
             System.out.println("not have any type for edit!");
             return;
-        } 
-        
+        }
+
         int index = find(stationaryID);
         if (index != -1) {
             int userChoose;
@@ -481,7 +498,7 @@ public class StationaryBUS implements IRuleSets {
 
             StaTypesBUS.showList();
             do {
-                System.out.print("choose type you want (like \\\"1, 2, 3,etc....\\\"): ");
+                System.out.print("choose type you want (like \"1, 2, 3,etc....\"): ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
             } while (userChoose == -1);
@@ -578,7 +595,7 @@ public class StationaryBUS implements IRuleSets {
         }
     }
 
-    // remove methods (DONE)
+    // *remove methods (TEST DONE)
     @Override
     public void remove() {
         Menu.removeHandler();
@@ -608,9 +625,7 @@ public class StationaryBUS implements IRuleSets {
 
     }
 
-    // some other methods
-
-    // execute files
+    // *execute files (TEST DONE)
     // write file
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(

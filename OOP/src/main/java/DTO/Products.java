@@ -75,8 +75,8 @@ public abstract class Products {
         do {
             System.out.print("set id : ");
             id = input.nextLine().trim();
-            if (Validate.validateID(id)) {
-                System.out.println("error id !");
+            if (!Validate.validateID(id)) {
+                System.out.println("error id!");
                 id = "";
             }
         } while (id.isEmpty());

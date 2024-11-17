@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import BUS.PublishersBUS;
 import BUS.StaTypesBUS;
 import util.Validate;
 
@@ -81,7 +80,7 @@ public class Stationary extends Products {
                System.out.print("set stationary id : ");
                id = input.nextLine().trim();
                if (Validate.validateID(id)) {
-                    System.out.println("error id !");
+                    System.out.println("error id!");
                     id = "";
                }
           } while (id.isEmpty());
@@ -90,7 +89,7 @@ public class Stationary extends Products {
 
      public StaTypes setType() {
           int userChoose;
-          PublishersBUS.showList();
+          StaTypesBUS.showList();
           System.out.println("----------------------------");
           do {
                System.out.print("choose type (like 1, 2,etc...): ");
@@ -141,7 +140,7 @@ public class Stationary extends Products {
           return source;
      }
 
-     // other methods
+     // *other methods (TEST DONE)
      @Override
      public void setInfo() {
           System.out.println("-----------------------------------------------");
@@ -196,18 +195,21 @@ public class Stationary extends Products {
      @Override
      public void showInfo() {
           LocalDate date = this.getReleaseDate();
+          BigDecimal price = this.getProductPrice();
+          String productID = this.getProductID(), productName = this.getProductName();
           NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
+
           System.out.println("=".repeat(160));
-          System.out.printf("| %-22s : %s \n", "ID", this.getProductID());
-          System.out.printf("| %-22s : %s \n", "Stationary ID", stationaryID);
-          System.out.printf("| %-22s : %s \n", "Name", this.getProductName());
+          System.out.printf("| %-22s : %s \n", "ID", productID != null ? productID : "N/A");
+          System.out.printf("| %-22s : %s \n", "Stationary ID", stationaryID != null ? stationaryID : "N/A");
+          System.out.printf("| %-22s : %s \n", "Name", productName != null ? productName : "N/A");
           System.out.printf("| %-22s : %s \n", "Release Date", date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
           System.out.printf("| %-22s : %s \n", "Type", staTypes != null ? staTypes.getTypeName() : "N/A");
           System.out.printf("| %-22s : %s \n", "Material", material != null ? material : "N/A");
           System.out.printf("| %-22s : %s \n", "Source", source != null ? source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", brand != null ? brand : "N/A");
           System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
-          System.out.printf("| %-22s : %s \n", "Price", formatter.format(this.getProductPrice()));
+          System.out.printf("| %-22s : %s \n", "Price", price != null ? formatter.format(price) : "N/A");
           System.out.println("=".repeat(160));
      }
 
@@ -217,7 +219,7 @@ public class Stationary extends Products {
           String regex = "^(?=[a-zA-Z0-9_-]{5}$)[^%+\\/#'::\":]+$";
           Pattern pattern = Pattern.compile(regex);
           if (!pattern.matcher(stationaryID).matches()) {
-               System.out.println("error id");
+               System.out.println("error id!");
                return "N/A";
           }
           return "STA" + stationaryID;
@@ -228,7 +230,7 @@ public class Stationary extends Products {
           if (stationaryID.startsWith("ST") && stationaryID.endsWith("PD") && stationaryID.length() == 12)
                return stationaryID;
           if (!Validate.validateID(stationaryID)) {
-               System.out.println("error id");
+               System.out.println("error id!");
                return "N/A";
           }
           return "ST" + stationaryID + "PD";

@@ -156,12 +156,11 @@ public class TypesBUS implements IRuleSets {
                System.out.println("your type is not correct!");
      }
 
-     public void add(BookTypes[] newTypes, int size) {
-          typesList = Arrays.copyOf(typesList, typesList.length + newTypes.length);
-
-          int tempIndex = 0;
+     public void add(BookTypes[] newTypes) {
+          int tempIndex = 0, newListLength = newTypes.length;
           int initCount = getCount();
-          int total = initCount + size;
+          int total = initCount + newListLength;
+          typesList = Arrays.copyOf(typesList, typesList.length + newListLength);
 
           for (int i = initCount; i < total; i++, tempIndex++)
                typesList[i] = newTypes[tempIndex];

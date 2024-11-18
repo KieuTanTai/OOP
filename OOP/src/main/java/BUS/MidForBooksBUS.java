@@ -128,20 +128,14 @@ public class MidForBooksBUS {
      }
 
      public void add(MidForBooks[] midObject) {
-          for (int i = 0; i < midObject.length; i++) {
-               boolean flag = false;
-               for (MidForBooks item : midList)
-                    if ((item != null) && (item.getBookID().equals(midObject[i].getBookID()) &&
-                              item.getGenre().getGenreID().equals(midObject[i].getGenre().getGenreID()))) {
-                         flag = true;
-                         break;
-                    }
-               if (flag)
-                    continue;
-               midList = Arrays.copyOf(midList, midList.length + 1);
-               midList[count] = midObject[i];
-               count++;
-          }
+          int tempIndex = 0, newListLength = midObject.length;
+          int initCount = getCount();
+          int total = initCount + newListLength;
+          midList = Arrays.copyOf(midList, midList.length + newListLength);
+  
+          for (int i = initCount; i < total; i++, tempIndex++)
+              midList[i] = midObject[tempIndex];
+          MidForBooksBUS.count = total;
      }
 
      // *edit method (TEST DONE)

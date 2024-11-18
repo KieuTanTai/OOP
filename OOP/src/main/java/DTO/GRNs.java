@@ -118,7 +118,7 @@ public class GRNs {
                list.readFile();
                System.out.println("----------------------------");
                do {
-                    System.out.print("name employee: ");
+                    System.out.print("name employee : ");
                     String name = input.nextLine().trim();
                     index = list.find(name);
                } while (index == -1);

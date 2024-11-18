@@ -78,6 +78,7 @@ public class GRNsBUS implements IRuleSets {
           Menu.findHandler();
      }
 
+     // strict find
      @Override
      public int find(String grnID) {
           for (int i = 0; i < grnList.length; i++)
@@ -87,6 +88,57 @@ public class GRNsBUS implements IRuleSets {
           return -1;
      }
 
+     // relative find
+     public GRNs[] relativeFind(Object originalKey, String request) {
+          int count = 0;
+          boolean flag = false;
+          GRNs[] resultArray = new GRNs[0];
+          request = request.toLowerCase().trim();
+
+          for (GRNs grn : grnList) {
+               if (originalKey instanceof String) {
+                    String key = (String) originalKey;
+
+                    String employeeID = (grn.getEmployee() != null) ? grn.getEmployee().getPersonID() : "";
+                    String employeeName = (grn.getEmployee() != null) ? grn.getEmployee().getFullName().toLowerCase()
+                              : "";
+
+                    String supplierID = (grn.getSupplier() != null) ? grn.getSupplier().getSupplierID() : "";
+                    String supplierName = (grn.getSupplier() != null)
+                              ? grn.getSupplier().getSupplierName().toLowerCase()
+                              : "";
+
+                    if (request.equals("employee")
+                              && (employeeID.equals(key) || employeeName.contains(key.toLowerCase())))
+                         flag = true;
+
+                    else if (request.equals("supplier")
+                              && (supplierID.equals(key) || supplierName.contains(key.toLowerCase())))
+                         flag = true;
+               } else if (originalKey instanceof LocalDate) {
+                    if (request.equals("date") && grn.getDate().isEqual((LocalDate) originalKey))
+                         flag = true;
+               } else if (originalKey instanceof BigDecimal) {
+                    if (request.equals("totalprice") && grn.getTotalPrice().compareTo((BigDecimal) originalKey) == 0)
+                         flag = true;
+               }
+
+               // Add matching GRN to result
+               if (flag) {
+                    resultArray = Arrays.copyOf(resultArray, resultArray.length + 1);
+                    resultArray[count] = grn;
+                    flag = false;
+                    count++;
+               }
+          }
+
+          if (count == 0) {
+               System.out.println("not found any GRNs!");
+               return null;
+          }
+          return resultArray;
+     }
+
      // search methods
      @Override
      public void search() {
@@ -94,10 +146,19 @@ public class GRNsBUS implements IRuleSets {
      }
 
      @Override
+     // strict search
      public void search(String grnID) {
           int index = find(grnID);
           if (index != -1)
                grnList[index].showInfo();
+     }
+
+     // relative search
+     public void relativeSearch(Object key, String request) {
+          GRNs[] list = relativeFind(key, request);
+          if (list != null)
+               for (GRNs grn : list)
+                    grn.showInfo();
      }
 
      // add methods
@@ -116,11 +177,11 @@ public class GRNsBUS implements IRuleSets {
                System.out.println("your new book have something not like book!");
      }
 
-     public void add(GRNs[] newGRN, int size) {
-          int tempIndex = 0;
+     public void add(GRNs[] newGRN) {
+          int tempIndex = 0, newListLength = newGRN.length;
           int initCount = this.getCount();
-          int total = initCount + size;
-          grnList = Arrays.copyOf(grnList, grnList.length + newGRN.length);
+          int total = initCount + newListLength;
+          grnList = Arrays.copyOf(grnList, grnList.length + newListLength);
 
           for (int i = initCount; i < total; i++, tempIndex++)
                grnList[i] = newGRN[tempIndex];
@@ -143,7 +204,7 @@ public class GRNsBUS implements IRuleSets {
                grnList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -151,11 +212,98 @@ public class GRNsBUS implements IRuleSets {
                     return;
 
                do {
-                    System.out.print("new release date : ");
+                    System.out.print("new date : ");
                     String dateInput = input.nextLine().trim();
                     date = Validate.isCorrectDate(dateInput);
                } while (date == null);
                grnList[index].setDate(date);
+          }
+     }
+
+     public void editEmployee(String grnID) {
+          int index = find(grnID);
+          if (index != -1) {
+               try {
+                    int userChoose;
+                    grnList[index].showInfo();
+                    System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+                    do {
+                         System.out.print("choose option (1 or 2) : ");
+                         String option = input.nextLine().trim();
+                         userChoose = Validate.parseChooseHandler(option, 2);
+                    } while (userChoose == -1);
+                    if (userChoose == 1)
+                         return;
+
+                    EmployeesBUS list = new EmployeesBUS();
+                    list.readFile();
+                    System.out.println("----------------------------");
+                    do {
+                         System.out.print("name employee : ");
+                         String name = input.nextLine().trim();
+                         userChoose = list.find(name);
+                    } while (userChoose == -1);
+
+                    Employees employees = list.getEmployeesList()[userChoose];
+                    grnList[index].setEmployee(employees);
+               } catch (IOException e) {
+                    System.out.println("error reading file!\n" + e.getMessage());
+               }
+
+          }
+     }
+
+     public void editSupplier(String grnID) {
+          int index = find(grnID);
+          if (index != -1) {
+               int userChoose;
+               grnList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
+               // show list for user choose
+               SuppliersBUS.showList();
+               if (SuppliersBUS.getCount() == 0) // if not have any supplier
+                    return;
+               System.out.println("----------------------------");
+               do {
+                    System.out.print("choose supplier (like 1, 2,etc...) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, SuppliersBUS.getCount());
+               } while (userChoose == -1);
+
+               Suppliers supplier = SuppliersBUS.getSupplierList()[userChoose - 1];
+               grnList[index].setSupplier(supplier);
+          }
+     }
+
+     public void editTotalPrice(String grnID) {
+          int index = find(grnID);
+          if (index != -1) {
+               int userChoose;
+               grnList[index].showInfo();
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
+               BigDecimal price;
+               do {
+                    System.out.print("set price (VND) : ");
+                    String value = input.nextLine();
+                    price = Validate.isBigDecimal(value);
+               } while (price == null);
+               grnList[index].setTotalPrice(price);
           }
      }
 
@@ -179,7 +327,8 @@ public class GRNsBUS implements IRuleSets {
      // execute file resources
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/GRNs", false)))) {
+          try (DataOutputStream file = new DataOutputStream(
+                    new BufferedOutputStream(new FileOutputStream("src/main/resources/GRNs", false)))) {
                file.writeInt(count);
                for (GRNs grn : grnList) {
                     file.writeUTF(grn.getGrnID());
@@ -195,7 +344,8 @@ public class GRNsBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/GRNs")))) {
+          try (DataInputStream file = new DataInputStream(
+                    new BufferedInputStream(new FileInputStream("src/main/resources/GRNs")))) {
                int count = file.readInt();
                GRNs[] list = new GRNs[count];
                for (int i = 0; i < count; i++) {

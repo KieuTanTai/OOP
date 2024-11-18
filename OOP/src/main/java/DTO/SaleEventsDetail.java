@@ -1,6 +1,8 @@
 package DTO;
 
 import java.math.BigDecimal;
+import java.sql.SQLOutput;
+import java.util.Scanner;
 
 public class SaleEventsDetail {
     private String saleEvId;
@@ -8,6 +10,7 @@ public class SaleEventsDetail {
     private BigDecimal minPrice;
     private BigDecimal discount;
     private BigDecimal maxPriceDiscount;
+    Scanner sc = new Scanner(System.in);
 
     // constructor
     public SaleEventsDetail() {
@@ -20,6 +23,28 @@ public class SaleEventsDetail {
         this.discount = discount;
         this.maxPriceDiscount = maxPriceDiscount;
     }
+
+    public void nhap(){
+        System.out.println("Nhập promo code:");
+        this.promoCode = sc.nextLine();
+
+        System.out.println("Nhập min price:");
+        this.minPrice = sc.nextBigDecimal();
+
+        System.out.println("Nhập discount:");
+        this.discount = sc.nextBigDecimal();
+
+        System.out.println("Nhập max price discount:");
+        this.maxPriceDiscount = sc.nextBigDecimal();
+    }
+
+    public void xuat(){
+        System.out.println("promo code là:" + this.promoCode);
+        System.out.println("min price là:" + this.minPrice);
+        System.out.println("discount là:" + this.discount);
+        System.out.println("max price discount là:" + this.maxPriceDiscount);
+    }
+
 
     // getter
     public String getSaleEvId() {
@@ -62,4 +87,8 @@ public class SaleEventsDetail {
     public void setMaxPriceDiscount(BigDecimal maxPriceDiscount) {
         this.maxPriceDiscount = maxPriceDiscount;
     }
+
+
+
+
 }

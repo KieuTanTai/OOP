@@ -1,6 +1,7 @@
 package DTO;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class SaleEvents {
     private String saleEvId;
@@ -9,6 +10,7 @@ public class SaleEvents {
     private LocalDate startDate;
     private LocalDate endDate;
     private SaleEventsDetail detail;
+    Scanner sc = new Scanner(System.in);
 
     // constructor
     public SaleEvents() {
@@ -29,6 +31,43 @@ public class SaleEvents {
         this.description = description;
         this.startDate = startDate;
         this.endDate = enđate;
+    }
+
+    public void nhap() {
+        System.out.println("Nhập sale events id:");
+        this.saleEvId = sc.nextLine();
+
+        System.out.println("Nhập sale events name:");
+        this.saleEvName = sc.nextLine();
+
+        System.out.println("Nhập description:");
+        this.description = sc.nextLine();
+
+        System.out.println("Nhập start date:");
+        this.startDate = LocalDate.parse(sc.next());
+
+        System.out.println("Nhập end date:");
+        this.endDate = LocalDate.parse(sc.next());
+
+        this.detail.setSaleEvId(this.saleEvId);
+        this.detail.nhap();
+    }
+
+    public void xuat(){
+        System.out.println("sale events id là:" + this.saleEvId);
+        System.out.println("sale events name là:" + this.saleEvName);
+        System.out.println("description là:" + this.description);
+        System.out.println("star date là:" + this.startDate);
+        System.out.println("end date là:" + this.endDate);
+    }
+
+    public void xuatGomDetail(){
+        System.out.println("sale events id là:" + this.saleEvId);
+        System.out.println("sale events name là:" + this.saleEvName);
+        System.out.println("description là:" + this.description);
+        System.out.println("star date là:" + this.startDate);
+        System.out.println("end date là:" + this.endDate);
+        this.detail.xuat();
     }
 
     // getter
@@ -79,5 +118,11 @@ public class SaleEvents {
 
     public void setDetail(SaleEventsDetail detail) {
         this.detail = detail;
+    }
+
+    public static void main(String[] args) {
+        SaleEvents saleEvents = new SaleEvents();
+        saleEvents.nhap();
+        saleEvents.xuat();
     }
 }

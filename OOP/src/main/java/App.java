@@ -1,37 +1,67 @@
-import Manager.Menu;
-import DTO.*;
+import java.io.IOException;
+import java.util.Scanner;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import BUS.BookFormatsBUS;
+import BUS.BooksBUS;
+import BUS.GenresBUS;
+import BUS.MidForBooksBUS;
+import BUS.PublishersBUS;
+import BUS.StaTypesBUS;
+import BUS.StationeriesBUS;
+import BUS.TypesBUS;
 
-import BUS.*;
 public class App {
-    public static void main(String[] args) {
-        BookTypes type = new BookTypes("T001", "hello");
-        BooksBUS temp = new BooksBUS();
-        TypesBUS temp1 = new TypesBUS();
-        temp1.add(type);
-        temp1.showList();
-        Products book1 = new Books(
-            "B001",                        // productId
-            "Introduction to Java",         // productName
-            LocalDate.of(2023, 10, 1),      // releaseDate
-            new BigDecimal("29.99"),        // productPrice
-            100,                            // quantity
-            "PUB123",                       // publisherId
-            "John Doe",                     // author
-            type,                         // typeId
-            "Hardcover",                    // format
-            "15x20 cm"                      // packagingSize
-        );
+        Scanner input = new Scanner(System.in);
+        public static void main(String[] args) throws IOException {
+                // !INIT OBJ
+                MidForBooksBUS testArray = new MidForBooksBUS();
+                GenresBUS initList = new GenresBUS();
+                TypesBUS testList = new TypesBUS();
+                StaTypesBUS newTest = new StaTypesBUS();
+                PublishersBUS testPublishers = new PublishersBUS();
+                BookFormatsBUS listFormat = new BookFormatsBUS();
+                StationeriesBUS listSta = new StationeriesBUS();
+                BooksBUS listBooks = new BooksBUS();
+                newTest.readFile();
+                initList.readFile();
+                testList.readFile();
+                testArray.readFile();
+                listFormat.readFile();
+                testPublishers.readFile();
+                listBooks.readFile();
+                listSta.readFile();
 
-        temp.add(book1);
-        System.out.println("Product ID: " + book1.getProductId());
-        System.out.println("Product Name: " + book1.getProductName());
-        System.out.println("Release Date: " + book1.getReleaseDate());
-        System.out.printf("Quantity: %d\n", book1.getQuantity());
-        book1.showInfo();
-        System.out.println("Product Price: " + book1.getProductPrice());
+                // !INIT ARRAY
 
-    }
+
+                // !INIT VALUE
+
+
+                // !SHOW BEFORE
+                // listSta.showList();
+                // StaTypesBUS.showList();
+                // !TEST METHODS
+                System.out.println("*".repeat(80));
+                listBooks.getBooksList()[0].showInfo();
+                
+                // !SHOW DURING
+                // listSta.showList();
+
+                // !SHOW RESULT
+                // System.out.println("------------------------AFTER(GENRES)-----------------------");
+                // GenresBUS.showList();
+                // System.out.println("------------------------AFTER(GENRES)-----------------------");
+                // System.out.println("------------------------AFTER(BOOK_TYPE)-----------------------");
+                // TypesBUS.showList();
+                // System.out.println("------------------------AFTER(BOOK_TYPE)-----------------------");
+                // System.out.println("------------------------AFTER(MID)-----------------------");
+                // MidForBooksBUS.showList();
+                // System.out.println("------------------------AFTER(MID)-----------------------");
+                // System.out.println("------------------------AFTER(STA_TYPES)-----------------------");
+                // StaTypesBUS.showList();
+                // System.out.println("------------------------AFTER(STA_TYPES)-----------------------");
+                // System.out.println("------------------------AFTER(PUBLISHERS)-----------------------");
+                // PublishersBUS.showList();
+                // System.out.println("------------------------AFTER(PUBLISHERS)-----------------------");
+        }
 }

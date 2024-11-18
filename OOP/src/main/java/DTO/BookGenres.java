@@ -1,28 +1,30 @@
 package DTO;
 
 public class BookGenres {
-     private String genreId;
-     private String genreName; 
+     private String genreID;
+     private String genreName;
 
-     public BookGenres() {};
-     public BookGenres(String genreId, String genreName) {
-          this.genreId = genreId;
+     public BookGenres() {
+     }
+
+     public BookGenres(String genreID, String genreName) {
+          this.genreID = genreID;
           this.genreName = genreName;
      }
 
-     public String getGenreId () {
-          return this.genreId;
-     }
-     
-     public String getGenreName () {
-          return this.genreName;
-     }
-     
-     public void setGenreId (String genreId) {
-          this.genreId = genreId;
+     public String getGenreID() {
+          return this.genreID;
      }
 
-     public void setGenreName (String genreName) {
+     public String getGenreName() {
+          return this.genreName;
+     }
+
+     public void setGenreID(String genreID) {
+          this.genreID = genreID;
+     }
+
+     public void setGenreName(String genreName) {
           this.genreName = genreName;
      }
 }

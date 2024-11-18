@@ -102,7 +102,7 @@ public class Books extends Products {
     public String setAuthor() {
         String authorName;
         do {
-            System.out.print("set author name: ");
+            System.out.print("set author name : ");
             authorName = input.nextLine().trim();
             if (!Validate.checkHumanName(authorName)) {
                 System.out.println("error name!");
@@ -119,10 +119,9 @@ public class Books extends Products {
         BookFormatsBUS.showList();
         if (BookFormatsBUS.getCount() == 0) // if not have any format
             return null;
-
         System.out.println("----------------------------");
         do {
-            System.out.print("choose format (like 1, 2,etc...): ");
+            System.out.print("choose format (like 1, 2,etc...) : ");
             String option = input.nextLine().trim();
             userChoose = Validate.parseChooseHandler(option, BookFormatsBUS.getCount());
         } while (userChoose == -1);
@@ -136,7 +135,7 @@ public class Books extends Products {
         String packagingSize;
         do {
             System.out.println("packaging size have format: \"number 'x' number 'cm'\" ");
-            System.out.print("set packaging size: ");
+            System.out.print("set packaging size : ");
             packagingSize = input.nextLine();
             if (!Validate.checkPackagingSize(packagingSize)) {
                 System.out.println("error packaging size!");
@@ -155,7 +154,7 @@ public class Books extends Products {
             return null;
         System.out.println("----------------------------");
         do {
-            System.out.print("choose type you want (like \"1, 2, 3,etc....\"): ");
+            System.out.print("choose type you want (like \"1, 2, 3,etc....\") : ");
             String option = input.nextLine().trim();
             userChoose = Validate.parseChooseHandler(option, TypesBUS.getCount());
         } while (userChoose == -1);
@@ -173,7 +172,7 @@ public class Books extends Products {
             return null;
         System.out.println("----------------------------");
         do {
-            System.out.print("choose publisher (like 1, 2,etc...): ");
+            System.out.print("choose publisher (like 1, 2,etc...) : ");
             String option = input.nextLine().trim();
             userChoose = Validate.parseChooseHandler(option, PublishersBUS.getCount());
         } while (userChoose == -1);
@@ -193,7 +192,7 @@ public class Books extends Products {
             return null;
         System.out.println("----------------------------");
         do {
-            System.out.print("choose genres (like 1, 2,etc...): ");
+            System.out.print("choose genres (like 1, 2,etc...) : ");
             String options = input.nextLine().trim();
             String[] splitOptions = options.split(" ");
 
@@ -251,38 +250,39 @@ public class Books extends Products {
     // *set info (TEST DONE)
     @Override
     public void setInfo() {
-        System.out.println("-----------------------------------------------");
+        System.out.println("*".repeat(60));
         String id = setID();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         String name = setName();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         BigDecimal price = setPrice();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         LocalDate releaseDate = setRelDate();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         String author = setAuthor();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         Publishers publisher = setPublisher();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         BookTypes type = setType();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         BookGenres[] genres = setBookGenres();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         int quantity = setQuantity();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         BookFormats format = setFormat();
-        System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
         String packagingSize = setPackagingSize();
-        System.out.println("-----------------------------------------------");
+        System.out.println("*".repeat(60));
 
         int userChoose;
-        System.out.println("I.Cancel ------------------- II.Submit");
+        System.out.printf("*".repeat(60) + "\n");
+        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
-            System.out.print("choose option (like 1, 2,etc...): ");
+            System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
             userChoose = Validate.parseChooseHandler(option, 2);
         } while (userChoose == -1);
-        System.out.println("***********************************************");
+        System.out.printf("*".repeat(60) + "\n");
 
         if (userChoose == 1) {
             System.out.println("ok!");
@@ -336,13 +336,12 @@ public class Books extends Products {
         System.out.printf("| %-22s : %s \n", "Release Date",
                 date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
         System.out.printf("| %-22s : %s \n", "Publisher Name",
-                publisher != null ? publisher.getPublisherName() : "N/A");
-        System.out.printf("| %-22s : %s \n", "Author", author != null ? author : "N/A");
-        System.out.printf("| %-22s : %s \n", "Format", format != null ? format.getFormatName() : "N/A");
-        System.out.printf("| %-22s : %s \n", "Packaging Size",
-                packagingSize != null ? packagingSize : "N/A");
+                this.publisher != null ? this.publisher.getPublisherName() : "N/A");
+        System.out.printf("| %-22s : %s \n", "Author", this.author != null ? this.author : "N/A");
+        System.out.printf("| %-22s : %s \n", "Format", this.format != null ? this.format.getFormatName() : "N/A");
+        System.out.printf("| %-22s : %s \n", "Packaging Size", this.packagingSize != null ? this.packagingSize : "N/A");
         System.out.printf("| %-22s : %s \n", "Book Type",
-                bookType != null ? bookType.getTypeName() : "N/A");
+                this.bookType != null ? this.bookType.getTypeName() : "N/A");
 
         System.out.printf("| %-22s : ", "Genres");
         try {

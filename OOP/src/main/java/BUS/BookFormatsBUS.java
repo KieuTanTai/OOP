@@ -4,6 +4,8 @@ import Manager.Menu;
 import util.Validate;
 import DTO.BookFormats;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -145,12 +147,11 @@ public class BookFormatsBUS implements IRuleSets {
                System.out.println("your format is not correct!");
      }
 
-     public void add(BookFormats[] newFormats, int size) {
-          formatsList = Arrays.copyOf(formatsList, formatsList.length + newFormats.length);
-
-          int tempIndex = 0;
+     public void add(BookFormats[] newFormats) {
+          int tempIndex = 0, newListLength = newFormats.length;
           int initCount = getCount();
-          int total = initCount + size;
+          int total = initCount + newListLength;
+          formatsList = Arrays.copyOf(formatsList, formatsList.length + newListLength);
 
           for (int i = initCount; i < total; i++, tempIndex++)
                formatsList[i] = newFormats[tempIndex];
@@ -223,8 +224,7 @@ public class BookFormatsBUS implements IRuleSets {
 
      // File handling methods
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("src/main/resources/BookFormats", false))) {
+          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/BookFormats", false)))) {
                file.writeInt(count);
                for (BookFormats format : formatsList) {
                     file.writeUTF(format.getFormatID());
@@ -236,7 +236,7 @@ public class BookFormatsBUS implements IRuleSets {
      }
 
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/BookFormats"))) {
+          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/BookFormats")))) {
                count = file.readInt();
                BookFormats[] list = new BookFormats[count];
                for (int i = 0; i < count; i++) {

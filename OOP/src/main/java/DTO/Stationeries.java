@@ -88,9 +88,11 @@ public class Stationeries extends Products {
      public StaTypes setType() {
           int userChoose;
           StaTypesBUS.showList();
+          if (StaTypesBUS.getCount() == 0) // if not have any types
+               return null;
           System.out.println("----------------------------");
           do {
-               System.out.print("choose type (like 1, 2,etc...): ");
+               System.out.print("choose type (like 1, 2,etc...) : ");
                String option = input.nextLine().trim();
                userChoose = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
           } while (userChoose == -1);
@@ -102,7 +104,7 @@ public class Stationeries extends Products {
      public String setBrand() {
           String brand;
           do {
-               System.out.print("set brand name: ");
+               System.out.print("set brand name : ");
                brand = input.nextLine().trim();
                if (!Validate.checkName(brand)) {
                     System.out.println("error name!");
@@ -115,7 +117,7 @@ public class Stationeries extends Products {
      public String setMaterial() {
           String material;
           do {
-               System.out.print("set material name: ");
+               System.out.print("set material name : ");
                material = input.nextLine().trim();
                if (!Validate.checkName(material)) {
                     System.out.println("error name!");
@@ -128,7 +130,7 @@ public class Stationeries extends Products {
      public String setSource() {
           String source;
           do {
-               System.out.print("set source name (country): ");
+               System.out.print("set source name (country) : ");
                source = input.nextLine().trim();
                if (!Validate.checkHumanName(source)) {
                     System.out.println("error name!");
@@ -141,32 +143,32 @@ public class Stationeries extends Products {
      // *other methods (TEST DONE)
      @Override
      public void setInfo() {
-          System.out.println("-----------------------------------------------");
+        System.out.println("*".repeat(60));
           String id = setID();
-          System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
           String staID = setStationeriesID();
-          System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
           String name = setName();
-          System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
           BigDecimal price = setPrice();
-          System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
           LocalDate releaseDate = setRelDate();
-          System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
           StaTypes type = setType();
-          System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
           String brand = setBrand();
-          System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
           String material = setMaterial();
-          System.out.println("-----------------------------------------------");
+        System.out.println("-".repeat(60));
           int quantity = setQuantity();
-          System.out.println("-----------------------------------------------");
+        System.out.println("*".repeat(60));
           String source = setSource();
 
           int userChoose;
-          System.out.println("***********************************************");
-          System.out.println("I.Cancel ------------------- II.Submit");
+          System.out.printf("*".repeat(60) + "\n");
+          System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
-               System.out.print("choose option (like 1, 2,etc...): ");
+               System.out.print("choose option (1 or 2) : ");
                String option = input.nextLine().trim();
                userChoose = Validate.parseChooseHandler(option, 2);
           } while (userChoose == -1);
@@ -201,10 +203,10 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Stationeries ID", stationaryID != null ? stationaryID : "N/A");
           System.out.printf("| %-22s : %s \n", "Name", productName != null ? productName : "N/A");
           System.out.printf("| %-22s : %s \n", "Release Date", date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
-          System.out.printf("| %-22s : %s \n", "Type", staTypes != null ? staTypes.getTypeName() : "N/A");
-          System.out.printf("| %-22s : %s \n", "Material", material != null ? material : "N/A");
-          System.out.printf("| %-22s : %s \n", "Source", source != null ? source : "N/A");
-          System.out.printf("| %-22s : %s \n", "Brand", brand != null ? brand : "N/A");
+          System.out.printf("| %-22s : %s \n", "Type", this.staTypes != null ? this.staTypes.getTypeName() : "N/A");
+          System.out.printf("| %-22s : %s \n", "Material", this.material != null ? this.material : "N/A");
+          System.out.printf("| %-22s : %s \n", "Source", this.source != null ? this.source : "N/A");
+          System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");
           System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
           System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
           System.out.println("=".repeat(160));

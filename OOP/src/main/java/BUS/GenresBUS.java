@@ -4,6 +4,8 @@ import DTO.BookGenres;
 import Manager.Menu;
 import util.Validate;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -28,7 +30,7 @@ public class GenresBUS implements IRuleSets {
           GenresBUS.count = count;
      }
 
-     // getter/setter
+     // getters / setters
      public static BookGenres[] getGenresList() {
           return Arrays.copyOf(GenresBUS.genresList, GenresBUS.count);
      }
@@ -237,8 +239,7 @@ public class GenresBUS implements IRuleSets {
 
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("src/main/resources/BookGenres", false))) {
+          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/BookGenres", false)))) {
                file.writeInt(count);
                for (BookGenres genre : genresList) {
                     file.writeUTF(genre.getGenreID());
@@ -251,7 +252,7 @@ public class GenresBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/BookGenres"))) {
+          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/BookGenres")))) {
                int count = file.readInt();
                BookGenres[] list = new BookGenres[count];
                for (int i = 0; i < count; i++) {

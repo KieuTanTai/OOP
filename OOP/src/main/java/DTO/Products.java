@@ -19,7 +19,6 @@ public abstract class Products {
     }
 
     public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
-        // String inputID = productID + UUID.randomUUID();
         this.productID = productIDModifier(productID);
         this.productName = productName;
         this.releaseDate = releaseDate;
@@ -99,7 +98,7 @@ public abstract class Products {
     public LocalDate setRelDate() {
         LocalDate date;
         do {
-            System.out.print("set release date : ");
+            System.out.print("set release date (dd-mm-yyyy) : ");
             String dateInput = input.nextLine().trim();
             date = Validate.isCorrectDate(dateInput);
         } while (date == null);
@@ -119,7 +118,7 @@ public abstract class Products {
     public int setQuantity() {
         int quantity;
         do {
-            System.out.print("set quantity: ");
+            System.out.print("set quantity : ");
             String quantityInput = input.nextLine().trim();
             quantity = Validate.isNumber(quantityInput);
         } while (quantity == -1);
@@ -127,10 +126,6 @@ public abstract class Products {
     }
 
     // other methods
-    // public String getFormattedReleaseDate() {
-    //     DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    //     return this.releaseDate.format(convertedFormat);
-    // }
 
     public abstract void setInfo();
 

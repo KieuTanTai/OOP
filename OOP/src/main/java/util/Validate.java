@@ -124,9 +124,17 @@ public class Validate {
      }
 
      // (CONTINUE)
-     public static boolean validateTypeOfBook(String inputType) {
+     public static boolean validatePhone(String phoneString) {
+          String regex = "^(?=[0-9]{10}$)[^%+\\\\/#'::\":]+$";
+          Pattern pattern = Pattern.compile(regex);
+          return pattern.matcher(phoneString).matches();
+     }
 
-          return true;
+     // (CONTINUE)
+     public static boolean validateEmail(String email) {
+          String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+          Pattern pattern = Pattern.compile(regex);
+          return pattern.matcher(email).matches();
      }
 
      // (DONE)

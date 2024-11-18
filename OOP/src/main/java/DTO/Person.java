@@ -1,68 +1,146 @@
 package DTO;
 
-import java.time.LocalDate;
-public abstract class Person {
+import util.Validate;
 
-    private String id;
+import java.time.LocalDate;
+import java.util.Scanner;
+
+public abstract class Person {
+    private String personID;
     private String firstName;
     private String lastName;
-    private LocalDate birthday;
-    private String phone;
+    private LocalDate dateOfBirth;
+    private String phoneNumber;
+    protected static final Scanner input = new Scanner(System.in);
 
+    // constructors 
+    public Person() {
+    }
 
-    public Person(String id, String firstName, String lastName, LocalDate birthday, String phone) {
-        this.id = id;
+    public Person(String personID, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber) {
+        this.personID = personIDModifier(personID);
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthday = birthday;
-        this.phone = phone;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
     }
 
-    // Getter và Setter cho id
-    public String getId() {
-        return id;
+    // getters / setters
+    public String getPersonID() {
+        return this.personID;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    // Getter và Setter cho firstName
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return this.dateOfBirth;
+    }
+
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
+
+    // Setters have params
+    public void setPersonID(String personID) {
+        this.personID = personIDModifier(personID);
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    // Getter và Setter cho lastName
-    public String getLastName() {
-        return lastName;
-    }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    // Getter và Setter cho birthday
-    public LocalDate getBirthday() {
-        return birthday;
+    public void setFullName(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
-    // Getter và Setter cho phone
-    public String getPhone() {
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    // Setters no params 
+    public String setID() {
+        String id;
+        do {
+            System.out.print("set ID : ");
+            id = input.nextLine().trim();
+            if (!Validate.validateID(id)) {
+                System.out.println("invalid id!");
+                id = "";
+            }
+        } while (id.isEmpty());
+        return personIDModifier(id);
+    }
+
+    public String setFirstName() {
+        String name;
+        do {
+            System.out.print("set first name : ");
+            name = input.nextLine().trim();
+            if (!Validate.checkHumanName(name)) {
+                System.out.println("invalid name!");
+                name = "";
+            }
+        } while (name.isEmpty());
+        return name;
+    }
+
+    public String setLastName() {
+        String name;
+        do {
+            System.out.print("set last name : ");
+            name = input.nextLine().trim();
+            if (!Validate.checkHumanName(name)) {
+                System.out.println("invalid name!");
+                name = "";
+            }
+        } while (name.isEmpty());
+        return name;
+    }
+
+    public LocalDate setDateOfBirth() {
+        LocalDate date;
+        do {
+            System.out.print("set date of birth (dd-mm-yyyy) : ");
+            String dateInput = input.nextLine().trim();
+            date = Validate.isCorrectDate(dateInput);
+        } while (date == null);
+        return date;
+    }
+
+    public String setPhoneNumber() {
+        String phone;
+        do {
+            System.out.print("set phone number: ");
+            phone = input.nextLine().trim();
+            if (!Validate.validatePhone(phone)) {
+                System.out.println("invalid phone number!");
+                phone = "";
+            }
+        } while (phone.isEmpty());
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    // Phương thức trừu tượng (abstract method), có thể triển khai ở các lớp con
-    public abstract void displayInfo();
+    // Abstract methods
+    public abstract void setInfo();
+    public abstract void showInfo();
+    protected abstract String personIDModifier(String personID);
 }

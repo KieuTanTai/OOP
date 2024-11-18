@@ -1,5 +1,7 @@
 package BUS;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -232,8 +234,7 @@ public class MidForBooksBUS {
      // execute file resources
      // *write file (TEST DONE)
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("src/main/resources/MidForBooks", false))) {
+          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/MidForBooks", false)))) {
                file.writeInt(count);
                for (MidForBooks mid : midList) {
                     file.writeUTF(mid.getBookID());
@@ -246,7 +247,7 @@ public class MidForBooksBUS {
 
      // *read file (TEST DONE)
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/MidForBooks"))) {
+          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/MidForBooks")))) {
                count = file.readInt();
                MidForBooks[] list = new MidForBooks[count];
                for (int i = 0; i < count; i++) {

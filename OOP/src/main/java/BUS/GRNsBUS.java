@@ -1,5 +1,7 @@
 package BUS;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -164,21 +166,25 @@ public class GRNsBUS implements IRuleSets {
      }
 
      @Override
-     public void remove(String id) {
-          // TODO Auto-generated method stub
-          throw new UnsupportedOperationException("Unimplemented method 'remove'");
+     public void remove(String nameOrID) {
+          int index = find(nameOrID);
+          if (index != -1) {
+               for (int i = index; i < grnList.length - 1; i++)
+                    grnList[i] = grnList[i + 1];
+               grnList = Arrays.copyOf(grnList, grnList.length - 1);
+               count--;
+          }
      }
 
-     // other methods
-     // execute file
+     // execute file resources
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new FileOutputStream("src/main/resources/GRNs", false))) {
+          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/GRNs", false)))) {
                file.writeInt(count);
                for (GRNs grn : grnList) {
                     file.writeUTF(grn.getGrnID());
                     file.writeUTF(grn.getDate().toString());
-                    file.writeUTF(grn.getEmployee().getId());
+                    file.writeUTF(grn.getEmployee().getPersonID());
                     file.writeUTF(grn.getSupplier().getSupplierID());
                     file.writeUTF(grn.getTotalPrice().setScale(0).toString());
                }
@@ -189,7 +195,7 @@ public class GRNsBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/GRNs"))) {
+          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/GRNs")))) {
                int count = file.readInt();
                GRNs[] list = new GRNs[count];
                for (int i = 0; i < count; i++) {
@@ -197,12 +203,14 @@ public class GRNsBUS implements IRuleSets {
                     LocalDate date = LocalDate.parse(file.readUTF());
                     String employeeID = file.readUTF();
                     String supplierID = file.readUTF();
-                    BigDecimal price = new BigDecimal(file.readUTF());
+                    BigDecimal totalPrice = new BigDecimal(file.readUTF());
 
                     // execute ID
-                    Employees employee = null;
-                    Suppliers supplier = null;
-                    list[i] = new GRNs(grnID, date, employee, supplier, price);
+                    EmployeesBUS employeesList = new EmployeesBUS();
+                    employeesList.readFile();
+                    Employees employee = employeesList.getEmployee(employeeID);
+                    Suppliers supplier = SuppliersBUS.getSupplier(supplierID);
+                    list[i] = new GRNs(grnID, date, employee, supplier, totalPrice);
                }
 
           } catch (Exception err) {

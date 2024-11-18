@@ -4,6 +4,8 @@ import Manager.Menu;
 import util.Validate;
 import DTO.BookTypes;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -244,8 +246,7 @@ public class TypesBUS implements IRuleSets {
 
      // *(TEST DONE)
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("src/main/resources/BookTypes", false))) {
+          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/BookTypes", false)))) {
                file.writeInt(count);
                for (BookTypes type : typesList) {
                     file.writeUTF(type.getTypeID());
@@ -258,7 +259,7 @@ public class TypesBUS implements IRuleSets {
 
      // *(TEST DONE)
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/BookTypes"))) {
+          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/BookTypes")))) {
                count = file.readInt();
                BookTypes[] list = new BookTypes[count];
                for (int i = 0; i < count; i++) {

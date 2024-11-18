@@ -4,6 +4,8 @@ import DTO.StaTypes;
 import Manager.Menu;
 import util.Validate;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -14,7 +16,7 @@ import java.util.Scanner;
 
 public class StaTypesBUS implements IRuleSets {
     private static StaTypes[] typesList;
-    private static int count;
+    static int count;
     private final Scanner input = new Scanner(System.in);
 
     // *Constructors (TEST DONE)
@@ -150,12 +152,11 @@ public class StaTypesBUS implements IRuleSets {
         }
     }
 
-    public void add(StaTypes[] newTypes, int size) {
-        typesList = Arrays.copyOf(typesList, typesList.length + newTypes.length);
-
+    public void add(StaTypes[] newTypes) {
         int tempIndex = 0;
         int initCount = getCount();
-        int total = initCount + size;
+        int total = initCount + newTypes.length;
+        typesList = Arrays.copyOf(typesList, typesList.length + newTypes.length);
 
         for (int i = initCount; i < total; i++, tempIndex++)
             typesList[i] = newTypes[tempIndex];
@@ -230,8 +231,7 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(
-                new FileOutputStream("src/main/resources/StaTypes", false))) {
+        try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/StaTypes", false)))) {
             file.writeInt(count);
             for (StaTypes type : typesList) {
                 file.writeUTF(type.getTypeID());
@@ -244,7 +244,7 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/StaTypes"))) {
+        try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/StaTypes")))) {
             int count = file.readInt();
             StaTypes[] list = new StaTypes[count];
             for (int i = 0; i < count; i++) {

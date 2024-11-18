@@ -1,5 +1,7 @@
 package BUS;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -380,11 +382,11 @@ public class BooksBUS implements IRuleSets {
                System.out.println("your new book have something not like book!");
      }
 
-     public void add(Books[] newBooks, int size) {
-          int tempIndex = 0;
+     public void add(Books[] newBooks) {
+          int tempIndex = 0, newListLength = newBooks.length;
           int initCount = this.getCount();
-          int total = initCount + size;
-          booksList = Arrays.copyOf(booksList, booksList.length + newBooks.length);
+          int total = initCount + newListLength;
+          booksList = Arrays.copyOf(booksList, booksList.length + newListLength);
 
           for (int i = initCount; i < total; i++, tempIndex++)
                booksList[i] = newBooks[tempIndex];
@@ -408,7 +410,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -437,7 +439,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -463,7 +465,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -488,7 +490,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -514,7 +516,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -547,7 +549,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -580,7 +582,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -615,7 +617,7 @@ public class BooksBUS implements IRuleSets {
                     MidForBooksBUS.showAsTable(nowGenres);
                     System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                     do {
-                         System.out.print("choose option (like 1, 2,etc...): ");
+                         System.out.print("choose option (1 or 2) : ");
                          String option = input.nextLine().trim();
                          userChoose = Validate.parseChooseHandler(option, 2);
                     } while (userChoose == -1);
@@ -683,7 +685,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -713,7 +715,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
-                    System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -748,7 +750,7 @@ public class BooksBUS implements IRuleSets {
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
                do {
-                   System.out.print("choose option (like 1, 2,etc...): ");
+                    System.out.print("choose option (1 or 2) : ");
                    String option = input.nextLine().trim();
                    userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
@@ -765,8 +767,7 @@ public class BooksBUS implements IRuleSets {
      // execute files
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("src/main/resources/Books", false))) {
+          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/Books", false)))) {
                file.writeInt(count);
                for (Books book : booksList) {
                     file.writeUTF(book.getProductID());
@@ -787,7 +788,7 @@ public class BooksBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Books"))) {
+          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/Books")))) {
                count = file.readInt();
                Books[] list = new Books[count];
                for (int i = 0; i < count; i++) {

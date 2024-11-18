@@ -1,68 +1,204 @@
 package DTO;
+
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import util.Validate;
 
 public class Employees extends Person {
-    // Thuộc tính (Fields) riêng của Employee
     private String status;
     private String username;
     private String password;
     private String role;
 
-    // Constructor
+    // constructors
+    public Employees() {
+    }
+
     public Employees(String id, String firstName, String lastName, LocalDate birthday, String phone,
-                    String status, String username, String password, String role) {
-        super(id, firstName, lastName, birthday, phone); // Gọi constructor của lớp cha (Person)
+            String status, String username, String password, String role) {
+        super(id, firstName, lastName, birthday, phone);
         this.status = status;
         this.username = username;
-        this.password = password;
+        this.password = hashPassword(password);
         this.role = role;
     }
 
-    // Getter và Setter cho status
+    // getters / setters
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    // Getter và Setter cho username
     public String getUsername() {
         return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    // setter have params
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    // Getter và Setter cho password
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
-        this.password = password;
-    }
-
-    // Getter và Setter cho role
-    public String getRole() {
-        return role;
+        this.password = hashPassword(password);
     }
 
     public void setRole(String role) {
         this.role = role;
     }
 
-    // Triển khai phương thức trừu tượng từ lớp cha
+    // setter no params
+    public String setStatus() {
+        String status;
+        do {
+            System.out.print("set status: ");
+            status = input.nextLine().trim();
+            if (!Validate.checkHumanName(status)) {
+                System.out.println("invalid status!");
+                status = "";
+            }
+        } while (status.isEmpty());
+        return status;
+    }
+
+    public String setUsername() {
+        String userName;
+        do {
+            System.out.print("set username: ");
+            userName = input.nextLine().trim();
+            if (!Validate.checkName(userName)) {
+                System.out.println("invalid username!");
+                userName = "";
+            }
+        } while (userName.isEmpty());
+        return userName;
+    }
+
+    public String setPassword() {
+        String password;
+        do {
+            System.out.print("set password: ");
+            password = input.nextLine().trim();
+            if (!Validate.checkName(password)) {
+                System.out.println("invalid password!");
+                password = "";
+            }
+        } while (password.isEmpty());
+        return password;
+    }
+
+    public String setRole() {
+        int userChoose;
+        String[] roles = {"manager", "employee", "warehouse keeper"};
+        // show list for user choose
+        System.out.printf("| I.%-22s : \tII.%-22s : \tIII.%-22s |\n", roles[0], roles[1], roles[2]);
+        System.out.printf("*".repeat(60) +"\n");
+        do {
+            System.out.print("choose role (like 1, 2,etc...): ");
+            String option = input.nextLine().trim();
+            userChoose = Validate.parseChooseHandler(option, 3);
+        } while (userChoose == -1);
+
+        return roles[userChoose - 1];
+    }
+
+    // other methods
     @Override
-    public void displayInfo() {
-        System.out.println("Employee ID: " + getId());
-        System.out.println("Name: " + getFirstName() + " " + getLastName());
-        System.out.println("Birthday: " + getBirthday());
-        System.out.println("Phone: " + getPhone());
-        System.out.println("Status: " + status);
-        System.out.println("Username: " + username);
-        System.out.println("Role: " + role);
+    public void setInfo() {
+        System.out.println("*".repeat(60));
+        String id = setID();
+        System.out.println("-".repeat(60));
+        String fistName = setFirstName();
+        System.out.println("-".repeat(60));
+        String lastName = setLastName();
+        System.out.println("-".repeat(60));
+        LocalDate dateOfBirth = setDateOfBirth();
+        System.out.println("-".repeat(60));
+        String phone = setPhoneNumber();
+        System.out.println("-".repeat(60));
+        String address = setStatus();
+        System.out.println("-".repeat(60));
+        String userName = setUsername();
+        System.out.println("-".repeat(60));
+        String password = setPassword();
+        System.out.println("-".repeat(60));
+        String role = setRole();
+        System.out.println("*".repeat(60));
+
+        int userChoose;
+        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+        do {
+            System.out.print("choose option (1 or 2) : ");
+            String option = input.nextLine().trim();
+            userChoose = Validate.parseChooseHandler(option, 2);
+        } while (userChoose == -1);
+        System.out.printf("*".repeat(60) + "\n");
+        if (userChoose == 1) {
+            System.out.println("ok!");
+            return;
+        } else {
+            setPersonID(id);
+            setFullName(fistName, lastName);
+            setDateOfBirth(dateOfBirth);
+            setPhoneNumber(phone);
+            setStatus(address);
+            setUsername(userName);
+            setPassword(password);
+            setRole(role);
+        }
+    }
+
+    @Override
+    public void showInfo() {
+        LocalDate dateOfBirth = getDateOfBirth();
+        String employeeID = getPersonID(), employeeName = getFullName(), phone = getPhoneNumber();
+
+        System.out.println("=".repeat(160));
+        System.out.printf("| %-22s : %s \n", "ID", employeeID != null ? employeeID : "N/A");
+        System.out.printf("| %-22s : %s \n", "Username", this.username != null ? this.username : "N/A");
+        System.out.printf("| %-22s : %s \n", "Full Name", employeeName != null ? employeeName : "N/A");
+        System.out.printf("| %-22s : %s \n", "Birthday", dateOfBirth != null ? dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Phone", phone != null ? phone : "N/A");
+        System.out.printf("| %-22s : %s \n", "Status", this.status != null ? this.status : "N/A");
+        System.out.printf("| %-22s : %s \n", "Role", this.role != null ? this.role : "N/A");
+        System.out.println("=".repeat(160));
+    }
+
+    @Override
+    protected String personIDModifier(String employeeID) {
+        if (employeeID.startsWith("EMP") && employeeID.endsWith("PS") && employeeID.length() == 12)
+            return employeeID;
+        if (!Validate.validateID(employeeID)) {
+            System.out.println("error id!");
+            return "N/A";
+        }
+        return "EMP" + employeeID + "PS";
+    }
+
+
+    // hash password / check password
+    private String hashPassword(String password) {
+        // check if password has been hashed or not
+        if (!password.startsWith("EMP") && !password.startsWith("PS") && password.length() != 13)
+            return password;
+        return BCrypt.hashpw(password, BCrypt.gensalt(20));
+    }
+
+    @SuppressWarnings("unused")
+    private boolean checkPassword(String password) {
+        return BCrypt.checkpw(password, this.password);
     }
 }

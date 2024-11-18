@@ -5,6 +5,8 @@ import DTO.Stationeries;
 import Manager.Menu;
 import util.Validate;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -34,7 +36,7 @@ public class StationeriesBUS implements IRuleSets {
         return this.staList;
     }
 
-    public Stationeries geStationeries(String stationaryID) {
+    public Stationeries getStationary(String stationaryID) {
         for (Stationeries stationary : staList)
             if (stationary.getProductID().equals(stationaryID))
                 return stationary;
@@ -378,7 +380,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -407,7 +409,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -433,7 +435,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -458,7 +460,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -488,7 +490,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -517,7 +519,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -546,7 +548,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -575,7 +577,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -609,7 +611,7 @@ public class StationeriesBUS implements IRuleSets {
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
-                System.out.print("choose option (like 1, 2,etc...): ");
+                System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
                 userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
@@ -627,8 +629,7 @@ public class StationeriesBUS implements IRuleSets {
     // *execute files (TEST DONE)
     // write file
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(
-                new FileOutputStream("src/main/resources/Stationeries", false))) {
+        try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/Stationeries", false)))) {
             file.writeInt(count);
             for (Stationeries stationary : staList) {
                 file.writeUTF(stationary.getProductID());
@@ -649,7 +650,7 @@ public class StationeriesBUS implements IRuleSets {
 
     // read file
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Stationeries"))) {
+        try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/Stationeries")))) {
             count = file.readInt();
             Stationeries[] list = new Stationeries[count];
             for (int i = 0; i < count; i++) {

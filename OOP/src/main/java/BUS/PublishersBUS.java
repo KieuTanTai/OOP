@@ -4,6 +4,8 @@ import DTO.Publishers;
 import Manager.Menu;
 import util.Validate;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -138,11 +140,10 @@ public class PublishersBUS implements IRuleSets {
     }
 
     public void add(Publishers[] newPublishers, int size) {
-        publishersList = Arrays.copyOf(publishersList, publishersList.length + newPublishers.length);
-
         int tempIndex = 0;
         int initCount = getCount();
         int total = initCount + size;
+        publishersList = Arrays.copyOf(publishersList, publishersList.length + newPublishers.length);
 
         for (int i = initCount; i < total; i++, tempIndex++)
             publishersList[i] = newPublishers[tempIndex];
@@ -217,8 +218,7 @@ public class PublishersBUS implements IRuleSets {
 
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(
-                new FileOutputStream("src/main/resources/Publishers", false))) {
+        try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/Publishers", false)))) {
             file.writeInt(count);
             for (Publishers publisher : publishersList) {
                 file.writeUTF(publisher.getPublisherID());
@@ -231,7 +231,7 @@ public class PublishersBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Publishers"))) {
+        try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/Publishers")))) {
             int count = file.readInt();
             Publishers[] list = new Publishers[count];
             for (int i = 0; i < count; i++) {

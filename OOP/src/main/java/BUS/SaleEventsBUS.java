@@ -5,6 +5,7 @@ import DTO.SaleEventsDetail;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class SaleEventsBUS {
@@ -41,4 +42,6 @@ public class SaleEventsBUS {
         ListSaleEvent = Arrays.copyOf(ListSaleEvent, count);
         return true;
     }
+
+    public void find(){}
 }

@@ -120,9 +120,4 @@ public class SaleEvents {
         this.detail = detail;
     }
 
-    public static void main(String[] args) {
-        SaleEvents saleEvents = new SaleEvents();
-        saleEvents.nhap();
-        saleEvents.xuat();
-    }
 }

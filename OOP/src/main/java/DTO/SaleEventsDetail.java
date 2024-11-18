@@ -12,7 +12,7 @@ public class SaleEventsDetail {
     private BigDecimal maxPriceDiscount;
     Scanner sc = new Scanner(System.in);
 
-    // constructor
+    // constructor rong
     public SaleEventsDetail() {
     }
 

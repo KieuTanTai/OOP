@@ -145,22 +145,31 @@ public class Stationeries extends Products {
      public void setInfo() {
         System.out.println("*".repeat(60));
           String id = setID();
+
         System.out.println("-".repeat(60));
           String staID = setStationeriesID();
+
         System.out.println("-".repeat(60));
           String name = setName();
+
         System.out.println("-".repeat(60));
           BigDecimal price = setPrice();
+
         System.out.println("-".repeat(60));
           LocalDate releaseDate = setRelDate();
+
         System.out.println("-".repeat(60));
           StaTypes type = setType();
+
         System.out.println("-".repeat(60));
           String brand = setBrand();
+
         System.out.println("-".repeat(60));
           String material = setMaterial();
+
         System.out.println("-".repeat(60));
           int quantity = setQuantity();
+          
         System.out.println("*".repeat(60));
           String source = setSource();
 
@@ -207,7 +216,7 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Material", this.material != null ? this.material : "N/A");
           System.out.printf("| %-22s : %s \n", "Source", this.source != null ? this.source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");
-          System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
+          System.out.printf("| %-22d : %d \n", "Quantity", this.getQuantity());
           System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
           System.out.println("=".repeat(160));
      }

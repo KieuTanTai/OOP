@@ -120,25 +120,33 @@ public class Employees extends Person {
     public void setInfo() {
         System.out.println("*".repeat(60));
         String id = setID();
+
         System.out.println("-".repeat(60));
         String fistName = setFirstName();
+
         System.out.println("-".repeat(60));
         String lastName = setLastName();
+
         System.out.println("-".repeat(60));
         LocalDate dateOfBirth = setDateOfBirth();
+
         System.out.println("-".repeat(60));
         String phone = setPhoneNumber();
+
         System.out.println("-".repeat(60));
-        String address = setStatus();
+        String status = setStatus();
+
         System.out.println("-".repeat(60));
         String userName = setUsername();
+
         System.out.println("-".repeat(60));
         String password = setPassword();
+        
         System.out.println("-".repeat(60));
         String role = setRole();
-        System.out.println("*".repeat(60));
-
+        
         int userChoose;
+        System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");
@@ -154,7 +162,7 @@ public class Employees extends Person {
             setFullName(fistName, lastName);
             setDateOfBirth(dateOfBirth);
             setPhoneNumber(phone);
-            setStatus(address);
+            setStatus(status);
             setUsername(userName);
             setPassword(password);
             setRole(role);

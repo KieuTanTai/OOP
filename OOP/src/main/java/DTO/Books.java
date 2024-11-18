@@ -25,7 +25,8 @@ public class Books extends Products {
     }
 
     public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
-            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format, String packagingSize) {
+            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format,
+            String packagingSize) {
         super(productId, productName, releaseDate, productPrice, quantity);
         this.publisher = publisher;
         this.author = author;
@@ -35,7 +36,8 @@ public class Books extends Products {
     }
 
     public Books(String productId, String productName, LocalDate releaseDate, BigDecimal productPrice,
-            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format, String packagingSize, BookGenres[] genres) {
+            int quantity, Publishers publisher, String author, BookTypes type, BookFormats format, String packagingSize,
+            BookGenres[] genres) {
         super(productId, productName, releaseDate, productPrice, quantity);
         this.publisher = publisher;
         this.author = author;
@@ -239,7 +241,9 @@ public class Books extends Products {
         try {
             MidForBooksBUS midList = new MidForBooksBUS();
             midList.readFile();
-            midList.add(hashArray);
+            for (MidForBooks mid : hashArray)
+                if (midList.find(mid.getBookID(), mid.getGenre().getGenreID()) == -1)
+                    midList.add(mid);
             midList.writeFile();
         } catch (Exception e) {
             System.out.println("error writing or reading file!\n" + e.getMessage());
@@ -252,27 +256,36 @@ public class Books extends Products {
     public void setInfo() {
         System.out.println("*".repeat(60));
         String id = setID();
+
         System.out.println("-".repeat(60));
         String name = setName();
+
         System.out.println("-".repeat(60));
         BigDecimal price = setPrice();
+
         System.out.println("-".repeat(60));
         LocalDate releaseDate = setRelDate();
+
         System.out.println("-".repeat(60));
         String author = setAuthor();
+
         System.out.println("-".repeat(60));
         Publishers publisher = setPublisher();
+
         System.out.println("-".repeat(60));
         BookTypes type = setType();
+
         System.out.println("-".repeat(60));
         BookGenres[] genres = setBookGenres();
+
         System.out.println("-".repeat(60));
         int quantity = setQuantity();
+
         System.out.println("-".repeat(60));
         BookFormats format = setFormat();
+        
         System.out.println("-".repeat(60));
         String packagingSize = setPackagingSize();
-        System.out.println("*".repeat(60));
 
         int userChoose;
         System.out.printf("*".repeat(60) + "\n");
@@ -301,25 +314,7 @@ public class Books extends Products {
             setPackagingSize(packagingSize);
             execGenres(id, genres);
             System.out.println("create and set fields success");
-            // execute list of genres for product
-            int count = 0;
-            MidForBooks[] hashArray = new MidForBooks[0];
-            for (BookGenres genre : genres) {
-                MidForBooks mid = new MidForBooks(id, genre);
-                hashArray = Arrays.copyOf(hashArray, count + 1);
-                hashArray[count] = mid;
-                count++;
-            }
 
-            try {
-                MidForBooksBUS midList = new MidForBooksBUS();
-                midList.readFile();
-                midList.add(hashArray);
-                midList.writeFile();
-                System.out.println("create and set fields success");
-            } catch (Exception e) {
-                System.out.println("error writing or reading file!\n" + e.getMessage());
-            }
         }
     }
 
@@ -329,7 +324,7 @@ public class Books extends Products {
         LocalDate date = this.getReleaseDate();
         BigDecimal price = this.getProductPrice();
         String productID = this.getProductID(), productName = this.getProductName();
-        
+
         System.out.println("=".repeat(160));
         System.out.printf("| %-22s : %s \n", "ID", productID != null ? productID : "N/A");
         System.out.printf("| %-22s : %s \n", "Book's Name", productName != null ? productName : "N/A");
@@ -366,7 +361,7 @@ public class Books extends Products {
         }
 
         System.out.println();
-        System.out.printf("| %-22s : %s \n", "Quantity", this.getQuantity());
+        System.out.printf("| %-22d : %s \n", "Quantity", this.getQuantity());
         System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
         System.out.println("=".repeat(160));
     }

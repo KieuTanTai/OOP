@@ -50,7 +50,7 @@ public class BillBus{
         n = sc.nextInt();
         ds = new Bill[n];
         for(int i = 0; i < n; ++i){
-            them();
+            add();
         }
     }
 
@@ -61,19 +61,19 @@ public class BillBus{
         }
     }
 
-    public void them(Bill bill){
+    public void add(Bill bill){
         ds = Arrays.copyOf(ds, ds.length +1);
         ds[n] = bill;
         ++n;
     }
 
-    public void them(){
+    public void add(){
         Bill ds = new Bill();
         ds.nhap();
-        them(ds);
+        add(ds);
     }
 
-    public void suaTheoCustomerId(String bd, String newCId){
+    public void fixCustomerId(String bd, String newCId){
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
                 ds[i].setCustomerId(newCId);
@@ -81,7 +81,7 @@ public class BillBus{
         }
     }
 
-    public void suaTheoEmployeeId(String bd, String newEId){
+    public void fixEmployeeId(String bd, String newEId){
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
                 ds[i].setEmployeeId(newEId);
@@ -89,7 +89,7 @@ public class BillBus{
         }
     }
 
-    public void suaTheoDate(String bd,LocalDate newDate){
+    public void fixDate(String bd,LocalDate newDate){
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
                 ds[i].setDate(newDate);
@@ -97,7 +97,7 @@ public class BillBus{
         }
     }
 
-    public void suaTheoDiscount(String bd, BigDecimal newDiscount){
+    public void fixDiscount(String bd, BigDecimal newDiscount){
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
                 ds[i].setDiscount(newDiscount);
@@ -105,7 +105,7 @@ public class BillBus{
         }
     }
 
-    public void suaTheoPromoCode(String bd, String newPromo){
+    public void fixPromoCode(String bd, String newPromo){
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
                 ds[i].setPromoCode(newPromo);
@@ -113,7 +113,7 @@ public class BillBus{
         }
     }
 
-    public void suaTheoTotalPrice(String bd, BigDecimal newTotalPrice){
+    public void fixTotalPrice(String bd, BigDecimal newTotalPrice){
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
                 ds[i].setTotalPrice(newTotalPrice);
@@ -135,7 +135,7 @@ public class BillBus{
                 System.out.println("5. promo code");
                 System.out.println("6. total price");
                 System.out.println("0. thoat");
-                System.out.println("Chon thong tin can sua: ");
+                System.out.println("insert index: ");
                 int x = sc.nextInt();
                 sc.nextLine();
                 switch (x) {
@@ -194,7 +194,7 @@ public class BillBus{
                         ds[i].setPromoCode(code);
                         break;
                     case 6:
-                        System.out.println("nhap total price muon sua");
+                        System.out.println("set total price");
                         BigDecimal newTotalPrice = sc.nextBigDecimal();
                         sc.nextLine();
                         ds[i].setTotalPrice(newTotalPrice);
@@ -205,11 +205,11 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("bill id khong ton tai");
+            System.out.println("bill id doesn't exist");
         }
     }
 
-    public void xoa(String bd){
+    public void delete(String bd){
         int index = -1;
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
@@ -224,17 +224,17 @@ public class BillBus{
             ds = Arrays.copyOf(ds, ds.length-1);
             n--;
         }else{
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
-    public void xoa(){
-        System.out.println("nhap bill id muon xoa");
+    public void delete(){
+        System.out.println("insert bill id you wanna remove");
         String bd = sc.nextLine();
-        xoa(bd);
+        delete(bd);
     }
 
-    public void timKiemTheoBillId(String newbd){
+    public void findBillId(String newbd){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(newbd)){
@@ -243,11 +243,11 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
-    public void timKiemTheoEmployeeId(String neweid){
+    public void findEmployeeId(String neweid){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getEmployeeId().equals(neweid)){
@@ -256,11 +256,11 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
-    public void timKiemTheoCustomerId(String newcid){
+    public void findCustomerId(String newcid){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getCustomerId().equals(newcid)){
@@ -274,7 +274,7 @@ public class BillBus{
     }
 
     @SuppressWarnings("unlikely-arg-type")
-    public void timKiemTheoDate(LocalDate date){
+    public void findDate(LocalDate date){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getDate().equals(date)){
@@ -287,7 +287,7 @@ public class BillBus{
         }
     }
 
-    public void timKiemTheoDiscount(BigDecimal newDiscount){
+    public void findDiscount(BigDecimal newDiscount){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getDiscount().equals(newDiscount)){
@@ -300,7 +300,7 @@ public class BillBus{
         }
     }
 
-    public void timKiemTheoPromoCode(String newpromo){
+    public void findPromoCode(String newpromo){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getPromoCode().equals(newpromo)){
@@ -313,7 +313,7 @@ public class BillBus{
         }
     }
 
-    public void timKiemTheoTotalPrice(BigDecimal newtotal){
+    public void findTotalPrice(BigDecimal newtotal){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getTotalPrice().equals(newtotal)){
@@ -326,7 +326,7 @@ public class BillBus{
         }
     }
 
-    public void timKiem(){
+    public void find(){
         System.out.println("1. search bill id");
         System.out.println("2. search employee id");
         System.out.println("3. search customer id");
@@ -334,7 +334,7 @@ public class BillBus{
         System.out.println("5. search discount");
         System.out.println("6. search promo code");
         System.out.println("7. search total price");
-        System.out.println("Nhap lua chon");
+        System.out.println("insert:");
         int m = sc.nextInt();
         sc.nextInt();
 
@@ -349,7 +349,7 @@ public class BillBus{
                       bid = "";
                  }
             } while (bid.isEmpty());
-                timKiemTheoBillId(bid);
+                findBillId(bid);
                 break;
             case 2:
                 String eid;
@@ -361,7 +361,7 @@ public class BillBus{
                       eid = "";
                  }
             } while (eid.isEmpty());
-                timKiemTheoEmployeeId(eid);
+                findEmployeeId(eid);
                 break;
             case 3:
                 String cid;
@@ -373,7 +373,7 @@ public class BillBus{
                       cid = "";
                  }
             } while (cid.isEmpty());
-                timKiemTheoCustomerId(cid);       
+                findCustomerId(cid);       
                 break;
             case 4:
             LocalDate date;
@@ -382,7 +382,7 @@ public class BillBus{
                  String dateInput = sc.nextLine().trim();
                  date = Validate.isCorrectDate(dateInput);
             } while (date == null);
-                timKiemTheoDate(date);   
+                findDate(date);   
                 break;
             case 5:
                 BigDecimal discount;
@@ -391,7 +391,7 @@ public class BillBus{
                  String value = sc.nextLine();
                  discount = Validate.isBigDecimal(value);
             } while (discount == null);
-                timKiemTheoDiscount(discount);        
+                findDiscount(discount);        
                 break;
             case 6:
                 String code;
@@ -403,13 +403,13 @@ public class BillBus{
                       code = "";
                  }
             } while (code.isEmpty());
-                timKiemTheoPromoCode(code);        
+                findPromoCode(code);        
                 break;
             case 7:
                 System.out.println("insert total price you want to search");
                 BigDecimal newTotalPrice = sc.nextBigDecimal();
                 sc.nextLine();
-                timKiemTheoTotalPrice(newTotalPrice);        
+                findTotalPrice(newTotalPrice);        
                 break;
             default:
                 break;

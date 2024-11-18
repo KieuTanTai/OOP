@@ -26,12 +26,12 @@ public class QuanLyBill {
 
             switch (choice) {
                 case 1:
-                    ds.them();
+                    ds.add();
                     System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();
                     break;
                 case 2:
-                    ds.xoa();
+                    ds.delete();
                     System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();
                     break;
@@ -41,7 +41,7 @@ public class QuanLyBill {
                     ds.xuat();        
                     break;
                 case 4:
-                    ds.timKiem();
+                    ds.find();
                     System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();        
                     break;

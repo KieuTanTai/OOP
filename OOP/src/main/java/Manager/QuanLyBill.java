@@ -23,13 +23,13 @@ public class QuanLyBill {
 
             switch (choice) {
                 case 1:
-                    ds.them();
-                    System.out.println("------------Thong tin Bill------------");
+                    ds.add();
+                    System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();
                     break;
                 case 2:
-                    ds.xoa();
-                    System.out.println("------------Thong tin Bill------------");
+                    ds.delete();
+                    System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();
                     break;
                 case 3:
@@ -38,8 +38,13 @@ public class QuanLyBill {
                     ds.xuat();        
                     break;
                 case 4:
+<<<<<<< HEAD
                     ds.timKiem();
                     System.out.println("------------Thong tin Bill------------");
+=======
+                    ds.find();
+                    System.out.println("------------BILL'S INFORMATION------------");
+>>>>>>> 0666576 (translated billBus into English)
                     ds.xuat();        
                     break;
                 case 5:

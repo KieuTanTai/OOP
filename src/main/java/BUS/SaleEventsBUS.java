@@ -5,7 +5,7 @@ import DTO.SaleEvents;
 
 // import java.time.LocalDate;
 import java.util.Arrays;
-// import java.util.List;
+import java.util.List;
 import java.util.Scanner;
 
 public class SaleEventsBUS {
@@ -42,30 +42,5 @@ public class SaleEventsBUS {
         return true;
     }
 
-    public SaleEvents findById(String  id){
-        SaleEvents result = new SaleEvents();
-
-        for (int i = 0 ; i < count ; i++){
-            if (ListSaleEvent[i].getSaleEvId() == id){
-                result = ListSaleEvent[i];
-            }
-        }
-        return  result;
-    }
-
-    public SaleEvents findByName(String name){
-        SaleEvents result = new SaleEvents();
-
-        for (int i=0; i < count; i++){
-            if (ListSaleEvent[i].getSaleEvName() == name)
-                result = ListSaleEvent[i];
-
-        }
-        return result;
-    }
-
-    public void readFile(){}
-
-    public void writeFile(){}
-
+    public void find(){}
 }

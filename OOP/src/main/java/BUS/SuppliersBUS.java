@@ -169,6 +169,18 @@ public class SuppliersBUS implements IRuleSets {
     public void edit(String id) {
         int index = find(id);
         if (index != -1) {
+            int userChoose;
+            // show list for user choose
+            showAsTable(supplierList[index]);
+            System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+            do {
+                 System.out.print("choose option (1 or 2) : ");
+                 String option = input.nextLine().trim();
+                 userChoose = Validate.parseChooseHandler(option, 2);
+            } while (userChoose == -1);
+            if (userChoose == 1)
+                 return;
+
             String newName;
             String newPhone;
             do {
@@ -201,6 +213,18 @@ public class SuppliersBUS implements IRuleSets {
     public void remove(String id) {
         int index = find(id);
         if (index != -1) {
+            int userChoose;
+            // show list for user choose
+            showAsTable(supplierList[index]);
+            System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
+            do {
+                 System.out.print("choose option (1 or 2) : ");
+                 String option = input.nextLine().trim();
+                 userChoose = Validate.parseChooseHandler(option, 2);
+            } while (userChoose == -1);
+            if (userChoose == 1)
+                 return;
+
             for (int i = index; i < supplierList.length - 1; i++)
                 supplierList[i] = supplierList[i + 1];
             supplierList = Arrays.copyOf(supplierList, supplierList.length - 1);

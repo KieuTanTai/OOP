@@ -371,8 +371,8 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     @Override
-    public void edit(String stationaryID) {
-        int index = find(stationaryID);
+    public void edit(String stationaryNameOrID) {
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             String name;
             int userChoose;
@@ -400,8 +400,8 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // edit release date
-    public void editReleaseDate(String stationaryID) {
-        int index = find(stationaryID);
+    public void editReleaseDate(String stationaryNameOrID) {
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             LocalDate date;
             int userChoose;
@@ -426,8 +426,8 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // edit price
-    public void editPrice(String stationaryID) {
-        int index = find(stationaryID);
+    public void editPrice(String stationaryNameOrID) {
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             BigDecimal price;
             int userChoose;
@@ -452,8 +452,8 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // edit quantity
-    public void editQuantity(String stationaryID) {
-        int index = find(stationaryID);
+    public void editQuantity(String stationaryNameOrID) {
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             int quantity, userChoose;
             // show list for user choose
@@ -477,13 +477,13 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // edit type
-    public void editType(String stationaryID) {
+    public void editType(String stationaryNameOrID) {
         if (StaTypesBUS.getCount() == 0) {
             System.out.println("not have any type for edit!");
             return;
         }
 
-        int index = find(stationaryID);
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             int userChoose;
             // show list for user choose
@@ -510,8 +510,8 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // edit brand
-    public void editBrand(String stationaryID) {
-        int index = find(stationaryID);
+    public void editBrand(String stationaryNameOrID) {
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             String brand;
             int userChoose;
@@ -539,8 +539,8 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // edit source
-    public void editSource(String stationaryID) {
-        int index = find(stationaryID);
+    public void editSource(String stationaryNameOrID) {
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             String source;
             int userChoose;
@@ -568,8 +568,8 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // edit material
-    public void editMaterial(String stationaryID) {
-        int index = find(stationaryID);
+    public void editMaterial(String stationaryNameOrID) {
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             String material;
             int userChoose;
@@ -603,8 +603,8 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     @Override
-    public void remove(String stationaryID) {
-        int index = find(stationaryID);
+    public void remove(String stationaryNameOrID) {
+        int index = find(stationaryNameOrID);
         if (index != -1) {
             int userChoose;
             // show list for user choose

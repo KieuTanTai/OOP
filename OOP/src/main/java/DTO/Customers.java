@@ -139,7 +139,7 @@ public class Customers extends Person {
 
     @Override
     protected String personIDModifier(String customerID) {
-        if (customerID.startsWith("CUS") && customerID.endsWith("PS") && customerID.length() == 12)
+        if (customerID.startsWith("CUS") && customerID.endsWith("PS") && customerID.length() == 13)
             return customerID;
         if (!Validate.validateID(customerID)) {
             System.out.println("error id!");

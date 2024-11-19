@@ -17,9 +17,9 @@ public class Employees extends Person {
     public Employees() {
     }
 
-    public Employees(String id, String firstName, String lastName, LocalDate birthday, String phone,
+    public Employees(String personID, String firstName, String lastName, LocalDate birthday, String phone,
             String status, String username, String password, String role) {
-        super(id, firstName, lastName, birthday, phone);
+        super(personID, firstName, lastName, birthday, phone);
         this.status = status;
         this.username = username;
         this.password = hashPassword(password);
@@ -62,16 +62,15 @@ public class Employees extends Person {
 
     // setter no params
     public String setStatus() {
-        String status;
+        String[] status = {"Active", "Inactive"};
+        int userChoose;
+        System.out.printf("| %s %s %s |\n", "I.Active", "-".repeat(20), "II.Inactive");
         do {
-            System.out.print("set status: ");
-            status = input.nextLine().trim();
-            if (!Validate.checkHumanName(status)) {
-                System.out.println("invalid status!");
-                status = "";
-            }
-        } while (status.isEmpty());
-        return status;
+            System.out.print("choose option (1 or 2) : ");
+            String option = input.nextLine().trim();
+            userChoose = Validate.parseChooseHandler(option, 2);
+        } while (userChoose == -1); 
+        return status[userChoose - 1];
     }
 
     public String setUsername() {
@@ -102,14 +101,14 @@ public class Employees extends Person {
 
     public String setRole() {
         int userChoose;
-        String[] roles = {"manager", "employee", "warehouse keeper"};
+        String[] roles = {"Manager", "Employee", "Warehouse Keeper"};
         // show list for user choose
-        System.out.printf("| I.%-22s : \tII.%-22s : \tIII.%-22s |\n", roles[0], roles[1], roles[2]);
-        System.out.printf("*".repeat(60) +"\n");
+        System.out.printf("=".repeat(160) + "\n");
+        System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20), roles[2]);
         do {
             System.out.print("choose role (like 1, 2,etc...): ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, 3);
+            userChoose = Validate.parseChooseHandler(option, role.length());
         } while (userChoose == -1);
 
         return roles[userChoose - 1];
@@ -187,7 +186,7 @@ public class Employees extends Person {
 
     @Override
     protected String personIDModifier(String employeeID) {
-        if (employeeID.startsWith("EMP") && employeeID.endsWith("PS") && employeeID.length() == 12)
+        if (employeeID.startsWith("EMP") && employeeID.endsWith("PS") && employeeID.length() == 13)
             return employeeID;
         if (!Validate.validateID(employeeID)) {
             System.out.println("error id!");
@@ -200,9 +199,9 @@ public class Employees extends Person {
     // hash password / check password
     private String hashPassword(String password) {
         // check if password has been hashed or not
-        if (!password.startsWith("EMP") && !password.startsWith("PS") && password.length() != 13)
+        if (!password.startsWith("EMP") && !password.startsWith("PS") && password.length() != 8)
             return password;
-        return BCrypt.hashpw(password, BCrypt.gensalt(20));
+        return BCrypt.hashpw(password, BCrypt.gensalt(8));
     }
 
     @SuppressWarnings("unused")

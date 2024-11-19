@@ -142,12 +142,24 @@ public class MidForBooksBUS {
      public void edit(String bookID) {
           MidForBooks[] list = relativeFind(bookID);
           if (list != null) {
+               int userChoose;
+               // show list for user choose
+               showAsTable(list);
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                int count = list.length;
                for (int i = 0; i < count; i++)
                     System.out.printf("%-3d: %-6s %-6s %s\n", i + 1, list[i].getBookID(),
                               list[i].getGenre().getGenreID(), list[i].getGenre().getGenreName());
                System.out.println("-".repeat(60));
-               int userChoose, genreChoose;
+               int genreChoose;
                do {
                     System.out.print("choose book you wanna edit (like 1, 2,etc...): ");
                     String option = input.nextLine().trim();
@@ -193,6 +205,18 @@ public class MidForBooksBUS {
                System.out.println("404 not found!");
                return;
           }
+          int userChoose;
+          // show list for user choose
+          showAsTable(midList[index]);
+          System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
+          do {
+               System.out.print("choose option (1 or 2) : ");
+               String option = input.nextLine().trim();
+               userChoose = Validate.parseChooseHandler(option, 2);
+          } while (userChoose == -1);
+          if (userChoose == 1)
+               return;
+
           int size = midList.length;
           for (int i = index; i < size - 1; i++)
                midList[i] = midList[i + 1];

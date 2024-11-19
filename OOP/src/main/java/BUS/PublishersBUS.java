@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class PublishersBUS implements IRuleSets {
     private static Publishers[] publishersList;
     private static int count;
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
     // *Constructors (TEST DONE)
     public PublishersBUS() {
@@ -118,7 +118,7 @@ public class PublishersBUS implements IRuleSets {
 
     public void relativeSearch(String name) {
         Publishers[] list = relativeFind(name);
-        if (list != null) 
+        if (list != null)
             showAsTable(list);
     }
 
@@ -160,10 +160,22 @@ public class PublishersBUS implements IRuleSets {
     public void edit(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1) {
+            int userChoose;
+            // show list for user choose
+            showAsTable(publishersList[index]);
+            System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+            do {
+                System.out.print("choose option (1 or 2) : ");
+                String option = input.nextLine().trim();
+                userChoose = Validate.parseChooseHandler(option, 2);
+            } while (userChoose == -1);
+            if (userChoose == 1)
+                return;
+
             String newName;
             do {
                 System.out.print("enter new name: ");
-                newName = scanner.nextLine().trim();
+                newName = input.nextLine().trim();
                 if (!Validate.checkName(newName)) {
                     System.out.println("invalid name format!");
                     newName = "";
@@ -183,6 +195,18 @@ public class PublishersBUS implements IRuleSets {
     public void remove(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1) {
+            int userChoose;
+            // show list for user choose
+            showAsTable(publishersList[index]);
+            System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
+            do {
+                System.out.print("choose option (1 or 2) : ");
+                String option = input.nextLine().trim();
+                userChoose = Validate.parseChooseHandler(option, 2);
+            } while (userChoose == -1);
+            if (userChoose == 1)
+                return;
+
             for (int i = index; i < publishersList.length - 1; i++)
                 publishersList[i] = publishersList[i + 1];
             publishersList = Arrays.copyOf(publishersList, publishersList.length - 1);
@@ -218,7 +242,8 @@ public class PublishersBUS implements IRuleSets {
 
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/Publishers", false)))) {
+        try (DataOutputStream file = new DataOutputStream(
+                new BufferedOutputStream(new FileOutputStream("src/main/resources/Publishers", false)))) {
             file.writeInt(count);
             for (Publishers publisher : publishersList) {
                 file.writeUTF(publisher.getPublisherID());
@@ -231,7 +256,8 @@ public class PublishersBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/Publishers")))) {
+        try (DataInputStream file = new DataInputStream(
+                new BufferedInputStream(new FileInputStream("src/main/resources/Publishers")))) {
             int count = file.readInt();
             Publishers[] list = new Publishers[count];
             for (int i = 0; i < count; i++) {

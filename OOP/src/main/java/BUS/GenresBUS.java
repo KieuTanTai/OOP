@@ -172,6 +172,18 @@ public class GenresBUS implements IRuleSets {
      public void edit(String id) {
           int index = find(id);
           if (index != -1) {
+               int userChoose;
+               // show list for user choose
+               showAsTable(genresList[index]);
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                String newName;
                do {
                     System.out.print("Enter new name: ");
@@ -195,6 +207,18 @@ public class GenresBUS implements IRuleSets {
      public void remove(String id) {
           int index = find(id);
           if (index != -1) {
+               int userChoose;
+               // show list for user choose
+               showAsTable(genresList[index]);
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                for (int i = index; i < genresList.length - 1; i++)
                     genresList[i] = genresList[i + 1];
                genresList = Arrays.copyOf(genresList, genresList.length - 1);

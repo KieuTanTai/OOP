@@ -178,6 +178,18 @@ public class TypesBUS implements IRuleSets {
      public void edit(String nameOrID) {
           int index = find(nameOrID);
           if (index != -1) {
+               int userChoose;
+               // show list for user choose
+               showAsTable(typesList[index]);
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                String newName;
                do {
                     System.out.print("Enter new name: ");
@@ -202,6 +214,18 @@ public class TypesBUS implements IRuleSets {
      public void remove(String nameOrID) {
           int index = find(nameOrID);
           if (index != -1) {
+               int userChoose;
+               // show list for user choose
+               showAsTable(typesList[index]);
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                for (int i = index; i < typesList.length - 1; i++)
                     typesList[i] = typesList[i + 1];
                typesList = Arrays.copyOf(typesList, typesList.length - 1);

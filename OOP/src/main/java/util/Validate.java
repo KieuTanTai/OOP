@@ -118,14 +118,14 @@ public class Validate {
 
      // (DONE)
      public static boolean validateID(String inputId) {
-          String regex = "^(?=[a-zA-Z0-9_-]{8}$)[^%+\\\\/#'::\":]+$";
+          String regex = "^(?=[a-zA-Z0-9_-]{8}$)[^%+\\/#'::\":]+$";
           Pattern pattern = Pattern.compile(regex);
           return pattern.matcher(inputId).matches();
      }
 
      // (CONTINUE)
      public static boolean validatePhone(String phoneString) {
-          String regex = "^(?=[0-9]{10}$)[^%+\\\\/#'::\":]+$";
+          String regex = "^[0-9]{10}$";
           Pattern pattern = Pattern.compile(regex);
           return pattern.matcher(phoneString).matches();
      }
@@ -138,10 +138,17 @@ public class Validate {
      }
 
      // (DONE)
+     public static boolean checkAddress(String address) {
+          String regex = "^[\\p{L}\\p{N}\\s,./]*$";
+          Pattern pattern = Pattern.compile(regex);
+          return pattern.matcher(address).matches();
+     }
+
+     // (DONE)
      public static boolean checkName(String inputName) {
           String regex = "^[\\p{L}\\p{M}0-9][\\p{L}\\p{M}0-9 '\\-&^()$_!@#%*`\\[\\]]{0,48}$";
           Pattern pattern = Pattern.compile(regex);
-          if (inputName.length() < 3)
+          if (inputName.length() < 2)
                return false;
           return pattern.matcher(inputName).matches();
      }

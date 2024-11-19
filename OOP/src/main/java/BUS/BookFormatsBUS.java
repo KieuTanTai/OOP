@@ -158,6 +158,7 @@ public class BookFormatsBUS implements IRuleSets {
           BookFormatsBUS.count = total;
      }
 
+     // *edit methods (TEST DONE)
      @Override
      public void edit() {
           Menu.editHandler();
@@ -167,6 +168,18 @@ public class BookFormatsBUS implements IRuleSets {
      public void edit(String nameOrID) {
           int index = find(nameOrID);
           if (index != -1) {
+               int userChoose;
+               // show list for user choose
+               showAsTable(formatsList[index]);
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+               
                String newName;
                do {
                     System.out.print("Enter new name: ");
@@ -189,6 +202,18 @@ public class BookFormatsBUS implements IRuleSets {
      public void remove(String nameOrID) {
           int index = find(nameOrID);
           if (index != -1) {
+               int userChoose;
+               // show list for user choose
+               showAsTable(formatsList[index]);
+               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
+               do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
+               } while (userChoose == -1);
+               if (userChoose == 1)
+                    return;
+
                for (int i = index; i < formatsList.length - 1; i++)
                     formatsList[i] = formatsList[i + 1];
                formatsList = Arrays.copyOf(formatsList, formatsList.length - 1);

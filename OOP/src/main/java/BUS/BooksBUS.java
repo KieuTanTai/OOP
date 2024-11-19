@@ -411,8 +411,8 @@ public class BooksBUS implements IRuleSets {
 
      // edit name
      @Override
-     public void edit(String bookID) {
-          int index = find(bookID);
+     public void edit(String bookNameOrID) {
+          int index = find(bookNameOrID);
           if (index != -1) {
                String name;
                int userChoose;
@@ -440,12 +440,12 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit release date
-     public void editReleaseDate(String bookID) {
-          int index = find(bookID);
+     public void editReleaseDate(String bookNameOrID) {
+          int index = find(bookNameOrID);
           if (index != -1) {
                LocalDate date;
                int userChoose;
-               // show list for user choose
+               // show option for user choose
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -466,8 +466,8 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit price
-     public void editPrice(String bookID) {
-          int index = find(bookID);
+     public void editPrice(String bookNameOrID) {
+          int index = find(bookNameOrID);
           if (index != -1) {
                BigDecimal price;
                int userChoose;
@@ -492,8 +492,8 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit quantity
-     public void editQuantity(String bookID) {
-          int index = find(bookID);
+     public void editQuantity(String bookNameOrID) {
+          int index = find(bookNameOrID);
           if (index != -1) {
                int quantity, userChoose;
                // show list for user choose
@@ -517,8 +517,8 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit author
-     public void editAuthor(String bookID) {
-          int index = find(bookID);
+     public void editAuthor(String bookNameOrID) {
+          int index = find(bookNameOrID);
           if (index != -1) {
                String authorName;
                int userChoose;
@@ -546,13 +546,13 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit publisher
-     public void editPublisher(String bookID) {
+     public void editPublisher(String bookNameOrID) {
           if (PublishersBUS.getCount() == 0) {
                System.out.println("not have any publisher for edit!");
                return;
           }
 
-          int index = find(bookID);
+          int index = find(bookNameOrID);
           if (index != -1) {
                int userChoose;
                // show list for user choose
@@ -579,13 +579,13 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit type
-     public void editType(String bookID) {
+     public void editType(String bookNameOrID) {
           if (TypesBUS.getCount() == 0) {
                System.out.println("not have any type for edit!");
                return;
           }
 
-          int index = find(bookID);
+          int index = find(bookNameOrID);
           if (index != -1) {
                int userChoose;
                // show list for user choose
@@ -612,13 +612,13 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit genre
-     public void editGenre(String bookID) {
+     public void editGenre(String bookNameOrID) {
           try {
-               int index = find(bookID);
+               int index = find(bookNameOrID);
                if (index != -1) {
                     MidForBooksBUS genres = new MidForBooksBUS();
                     genres.readFile();
-                    MidForBooks[] nowGenres = genres.relativeFind(bookID);
+                    MidForBooks[] nowGenres = genres.relativeFind(bookNameOrID);
                     int[] list = new int[0];
                     int userChoose, count = 0;
                     BookGenres[] listGenres = new BookGenres[0];
@@ -670,9 +670,9 @@ public class BooksBUS implements IRuleSets {
                     }
 
                     // execute all user choose (remove old genres and add new genres)
-                    genres.remove(bookID);
+                    genres.remove(bookNameOrID);
                     for (int i = 0; i < listGenres.length; i++)
-                         genres.add(new MidForBooks(bookID, listGenres[i]));
+                         genres.add(new MidForBooks(bookNameOrID, listGenres[i]));
                     genres.writeFile();
                }
           } catch (Exception err) {
@@ -682,13 +682,13 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit format
-     public void editFormat(String bookID) {
+     public void editFormat(String bookNameOrID) {
           if (BookFormatsBUS.getCount() == 0) {
                System.out.println("not have any format for edit!");
                return;
           }
 
-          int index = find(bookID);
+          int index = find(bookNameOrID);
           if (index != -1) {
                int userChoose;
                // show list for user choose
@@ -715,8 +715,8 @@ public class BooksBUS implements IRuleSets {
      }
 
      // edit packaging size
-     public void editPackagingSize(String bookID) {
-          int index = find(bookID);
+     public void editPackagingSize(String bookNameOrID) {
+          int index = find(bookNameOrID);
           if (index != -1) {
                String packagingSize;
                int userChoose;
@@ -751,8 +751,8 @@ public class BooksBUS implements IRuleSets {
      }
 
      @Override
-     public void remove(String bookID) {
-          int index = find(bookID);
+     public void remove(String bookNameOrID) {
+          int index = find(bookNameOrID);
           if (index != -1) {
                int userChoose;
                // show list for user choose

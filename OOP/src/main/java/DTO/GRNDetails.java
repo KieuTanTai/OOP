@@ -7,7 +7,7 @@ import util.Validate;
 
 public class GRNDetails {
      private String grnID;
-     private Products productList;
+     private Products product;
      private int quantity;
      private BigDecimal price;
      private BigDecimal subTotal;
@@ -17,9 +17,9 @@ public class GRNDetails {
      public GRNDetails() {
      }
 
-     public GRNDetails(String grnID, Products productList, int quantity, BigDecimal price) {
+     public GRNDetails(String grnID, Products product, int quantity, BigDecimal price) {
           this.grnID = grnID;
-          this.productList = productList;
+          this.product = product;
           this.quantity = quantity;
           this.price = price;
           this.subTotal = price.multiply(new BigDecimal(quantity));
@@ -30,8 +30,8 @@ public class GRNDetails {
           return this.grnID;
      }
 
-     public Products getProductList() {
-          return this.productList;
+     public Products getProduct() {
+          return this.product;
      }
 
      public int getQuantity() {
@@ -50,8 +50,8 @@ public class GRNDetails {
           this.grnID = grnID;
      }
 
-     public void setProductList(Products productList) {
-          this.productList = productList;
+     public void setProduct(Products product) {
+          this.product = product;
      }
 
      public void setQuantity(int quantity) {

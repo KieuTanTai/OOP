@@ -75,7 +75,7 @@ public class BooksBUS implements IRuleSets {
           for (Books book : booksList)
                book.showInfo();
      }
-     
+
      // *find methods (TEST DONE)
      @Override
      public void find() {
@@ -109,27 +109,28 @@ public class BooksBUS implements IRuleSets {
                     String author = book.getAuthor();
                     String bookName = book.getProductName();
                     String key = (String) originalKey;
-                    
+
                     // assign and check null
                     author = Validate.requiredNotNull(author) ? author.toLowerCase() : "";
                     bookName = Validate.requiredNotNull(bookName) ? bookName.toLowerCase() : "";
-                    
+
                     String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
-                           typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
-                    
+                              typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
+
                     String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
-                           formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase() : "";
-                    
+                              formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase() : "";
+
                     String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
-                           publisherName = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherName().toLowerCase() : "";
-                    
+                              publisherName = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherName().toLowerCase() : "";
+
                     if (request.equals("name") && bookName.contains(key.toLowerCase()))
                          flag = true;
 
                     else if (request.equals("author") && author.contains(key.toLowerCase()))
                          flag = true;
 
-                    else if (request.equals("format") && (formatID.equals(key) || formatName.contains(key.toLowerCase())))
+                    else if (request.equals("format")
+                              && (formatID.equals(key) || formatName.contains(key.toLowerCase())))
                          flag = true;
 
                     else if (request.equals("type") && (typeID.equals(key) || typeName.contains(key.toLowerCase())))
@@ -212,16 +213,18 @@ public class BooksBUS implements IRuleSets {
 
                // assign and check null
                author = Validate.requiredNotNull(author) ? author.toLowerCase() : "";
-               
+
                String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
                          typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
-               
+
                String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
                          formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase() : "";
-               
+
                String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
-                         publisherName = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherName().toLowerCase() : "";
-                    
+                         publisherName = (Validate.requiredNotNull(publishers))
+                                   ? publishers.getPublisherName().toLowerCase()
+                                   : "";
+
                // execute request
                if ((request.contains("month")) || (request.contains("year"))) {
                     inputTime = Validate.isNumber((String) originalTimeOrKey);
@@ -239,7 +242,8 @@ public class BooksBUS implements IRuleSets {
                     if ((request.contains("auth")) && (author.contains(keyI.toLowerCase()) && keyII))
                          flag = true;
 
-                    else if ((request.contains("format")) && ((formatID.equals(keyI) && keyII) || (formatName.contains(keyI.toLowerCase()) && keyII)))
+                    else if ((request.contains("format")) && ((formatID.equals(keyI) && keyII)
+                              || (formatName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
                     else if ((request.contains("type"))
@@ -258,7 +262,8 @@ public class BooksBUS implements IRuleSets {
                     if ((request.contains("auth")) && (author.contains(keyI.toLowerCase()) && keyII))
                          flag = true;
 
-                    else if ((request.contains("format")) && ((formatID.equals(keyI) && keyII) || (formatName.contains(keyI.toLowerCase()) && keyII)))
+                    else if ((request.contains("format")) && ((formatID.equals(keyI) && keyII)
+                              || (formatName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
                     else if ((request.contains("type"))
@@ -269,8 +274,7 @@ public class BooksBUS implements IRuleSets {
                               || (publisherName.contains(keyI.toLowerCase()) && keyII)))
                          flag = true;
 
-               }
-               else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
+               } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
                     String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
                     boolean hasPub = request.contains("pub");
                     boolean hasType = request.contains("type");
@@ -280,7 +284,8 @@ public class BooksBUS implements IRuleSets {
                     boolean isPubAndType = (hasPub && hasType) && ((publisherID.equals(keyI) && typeID.equals(keyII))
                               || (typeID.equals(keyI) && publisherID.equals(keyII))
                               || (publisherName.contains(keyI.toLowerCase()) && typeName.contains(keyII.toLowerCase()))
-                              || (typeName.contains(keyI.toLowerCase()) && publisherName.contains(keyII.toLowerCase())));
+                              || (typeName.contains(keyI.toLowerCase())
+                                        && publisherName.contains(keyII.toLowerCase())));
 
                     boolean isPubAndAuth = (hasPub && hasAuth) && ((publisherID.equals(keyI)
                               && author.contains(keyII.toLowerCase()))
@@ -297,23 +302,28 @@ public class BooksBUS implements IRuleSets {
                     boolean isPubAndFormat = (hasPub && hasFormat) && ((publisherID.equals(keyI)
                               && formatID.equals(keyII))
                               || (formatID.equals(keyI) && publisherID.equals(keyII))
-                              || (publisherName.contains(keyI.toLowerCase()) && formatName.contains(keyII.toLowerCase()))
-                              || (formatName.contains(keyI.toLowerCase()) && publisherName.contains(keyII.toLowerCase())));
-                      
+                              || (publisherName.contains(keyI.toLowerCase())
+                                        && formatName.contains(keyII.toLowerCase()))
+                              || (formatName.contains(keyI.toLowerCase())
+                                        && publisherName.contains(keyII.toLowerCase())));
+
                     boolean isTypeAndFormat = (hasType && hasFormat) && ((typeID.equals(keyI)
                               && formatID.equals(keyII))
                               || (formatID.equals(keyI) && typeID.equals(keyII))
                               || (typeName.contains(keyI.toLowerCase()) && formatName.contains(keyII.toLowerCase()))
                               || (formatName.contains(keyI.toLowerCase()) && typeName.contains(keyII.toLowerCase())));
-                      
+
                     boolean isAuthAndFormat = (hasAuth && hasFormat) && ((author.contains(keyI.toLowerCase())
                               && formatName.contains(keyII.toLowerCase()))
                               || (formatName.contains(keyI.toLowerCase()) && author.contains(keyII.toLowerCase()))
-                              || (publisherName.contains(keyI.toLowerCase()) && formatName.contains(keyII.toLowerCase()))
-                              || (formatName.contains(keyI.toLowerCase()) && publisherName.contains(keyII.toLowerCase())));
-                      
+                              || (publisherName.contains(keyI.toLowerCase())
+                                        && formatName.contains(keyII.toLowerCase()))
+                              || (formatName.contains(keyI.toLowerCase())
+                                        && publisherName.contains(keyII.toLowerCase())));
+
                     // assign flag
-                    if (isPubAndType || isPubAndAuth || isTypeAndAuth || isPubAndFormat || isTypeAndFormat || isAuthAndFormat)
+                    if (isPubAndType || isPubAndAuth || isTypeAndAuth || isPubAndFormat || isTypeAndFormat
+                              || isAuthAndFormat)
                          flag = true;
                }
 
@@ -416,11 +426,7 @@ public class BooksBUS implements IRuleSets {
                } while (userChoose == -1);
                if (userChoose == 1)
                     return;
-<<<<<<< HEAD
 
-=======
-               
->>>>>>> ad50c00ab2c8984e3a47118bda31378dd8df81cc
                do {
                     System.out.print("new name : ");
                     name = input.nextLine().trim();
@@ -542,7 +548,7 @@ public class BooksBUS implements IRuleSets {
      // edit publisher
      public void editPublisher(String bookID) {
           if (PublishersBUS.getCount() == 0) {
-               System.out.println("not have any publisher for edit!");     
+               System.out.println("not have any publisher for edit!");
                return;
           }
 
@@ -575,7 +581,7 @@ public class BooksBUS implements IRuleSets {
      // edit type
      public void editType(String bookID) {
           if (TypesBUS.getCount() == 0) {
-               System.out.println("not have any type for edit!");     
+               System.out.println("not have any type for edit!");
                return;
           }
 
@@ -593,7 +599,7 @@ public class BooksBUS implements IRuleSets {
                if (userChoose == 1)
                     return;
 
-                    TypesBUS.showList();
+               TypesBUS.showList();
                do {
                     System.out.print("choose type you want (like \\\"1, 2, 3,etc....\\\"): ");
                     String option = input.nextLine().trim();
@@ -678,7 +684,7 @@ public class BooksBUS implements IRuleSets {
      // edit format
      public void editFormat(String bookID) {
           if (BookFormatsBUS.getCount() == 0) {
-               System.out.println("not have any format for edit!");     
+               System.out.println("not have any format for edit!");
                return;
           }
 
@@ -754,11 +760,11 @@ public class BooksBUS implements IRuleSets {
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
                do {
                     System.out.print("choose option (1 or 2) : ");
-                   String option = input.nextLine().trim();
-                   userChoose = Validate.parseChooseHandler(option, 2);
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, 2);
                } while (userChoose == -1);
                if (userChoose == 1)
-                   return;
+                    return;
 
                for (int i = index; i < booksList.length - 1; i++)
                     booksList[i] = booksList[i + 1];
@@ -770,7 +776,8 @@ public class BooksBUS implements IRuleSets {
      // execute files
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/Books", false)))) {
+          try (DataOutputStream file = new DataOutputStream(
+                    new BufferedOutputStream(new FileOutputStream("src/main/resources/Books", false)))) {
                file.writeInt(count);
                for (Books book : booksList) {
                     file.writeUTF(book.getProductID());
@@ -791,7 +798,8 @@ public class BooksBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/Books")))) {
+          try (DataInputStream file = new DataInputStream(
+                    new BufferedInputStream(new FileInputStream("src/main/resources/Books")))) {
                count = file.readInt();
                Books[] list = new Books[count];
                for (int i = 0; i < count; i++) {

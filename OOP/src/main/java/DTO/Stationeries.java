@@ -145,22 +145,31 @@ public class Stationeries extends Products {
      public void setInfo() {
         System.out.println("*".repeat(60));
           String id = setID();
+
         System.out.println("-".repeat(60));
           String staID = setStationeriesID();
+
         System.out.println("-".repeat(60));
           String name = setName();
+
         System.out.println("-".repeat(60));
           BigDecimal price = setPrice();
+
         System.out.println("-".repeat(60));
           LocalDate releaseDate = setRelDate();
+
         System.out.println("-".repeat(60));
           StaTypes type = setType();
+
         System.out.println("-".repeat(60));
           String brand = setBrand();
+
         System.out.println("-".repeat(60));
           String material = setMaterial();
+
         System.out.println("-".repeat(60));
           int quantity = setQuantity();
+          
         System.out.println("*".repeat(60));
           String source = setSource();
 

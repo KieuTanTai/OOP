@@ -10,7 +10,7 @@ public class Customers extends Person {
     private String address;
     private BigDecimal point;
 
-    // Constructors
+    // Constructors 
     public Customers() {
     }
 
@@ -120,7 +120,7 @@ public class Customers extends Person {
         }
         
         System.out.println("=".repeat(160));
-        System.out.printf("| %-22s : %s \n", "ID", customerID != null ? customerID : "N/A");
+        System.out.printf("| %-22s : %s \n", "Customer", customerID != null ? customerID : "N/A");
         System.out.printf("| %-22s : %s \n", "Full Name", customerName!= null ? customerName: "N/A");
         System.out.printf("| %-22s : %s \n", "Date of Birth",
                 dateOfBirth != null ? dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");

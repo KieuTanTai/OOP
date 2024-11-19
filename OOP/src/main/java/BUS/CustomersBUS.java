@@ -4,6 +4,8 @@ import Manager.Menu;
 import util.Validate;
 import DTO.Customers;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -19,7 +21,7 @@ public class CustomersBUS implements IRuleSets {
      private int count;
      private final Scanner input = new Scanner(System.in);
 
-     // constructors
+     // *constructors (TEST DONE)
      public CustomersBUS() {
           this.count = 0;
           customersList = new Customers[0];
@@ -190,8 +192,7 @@ public class CustomersBUS implements IRuleSets {
 
      // File operations for reading and writing
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(
-                    new FileOutputStream("src/main/resources/Customers", false))) {
+          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/Customers", false)))) {
                file.writeInt(count);
                for (Customers customer : customersList) {
                     file.writeUTF(customer.getPersonID());
@@ -208,7 +209,7 @@ public class CustomersBUS implements IRuleSets {
      }
 
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Customers"))) {
+          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/Customers")))) {
                count = file.readInt();
                Customers[] list = new Customers[count];
                for (int i = 0; i < count; i++) {

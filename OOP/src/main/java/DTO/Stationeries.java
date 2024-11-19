@@ -216,7 +216,7 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Material", this.material != null ? this.material : "N/A");
           System.out.printf("| %-22s : %s \n", "Source", this.source != null ? this.source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");
-          System.out.printf("| %-22d : %d \n", "Quantity", this.getQuantity());
+          System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
           System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
           System.out.println("=".repeat(160));
      }

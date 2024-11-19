@@ -361,7 +361,7 @@ public class Books extends Products {
         }
 
         System.out.println();
-        System.out.printf("| %-22d : %s \n", "Quantity", this.getQuantity());
+        System.out.printf("| %-22s : %s \n", "Quantity", this.getQuantity());
         System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
         System.out.println("=".repeat(160));
     }

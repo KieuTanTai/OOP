@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import BUS.EmployeesBUS;
-import BUS.GRNDetailsBUS;
+import BUS.PublishersBUS;
 import BUS.SuppliersBUS;
 import util.Validate;
 
@@ -119,7 +118,7 @@ public class GRNs {
                list.readFile();
                System.out.println("----------------------------");
                do {
-                    System.out.print("name employee : ");
+                    System.out.print("name employee: ");
                     String name = input.nextLine().trim();
                     index = list.find(name);
                } while (index == -1);
@@ -150,86 +149,6 @@ public class GRNs {
           return supplier;
      }
 
-     // set grn detail
-     public GRNDetails[] setGRNDetails() {
-          BigDecimal newPrice;
-          GRNDetails newGrnDetails = null;
-          GRNDetails[] listGRN = new GRNDetails[0];
-          int productChoose, totalProduct, newQuantity, count = 0;
-
-          System.out.println("*".repeat(60));
-          System.out.println("product on grn!");
-          // let total product
-          do {
-               System.out.print("choose total block product (like 1, 2, 3,etc.....) : ");
-               String option = input.nextLine().trim();
-               totalProduct = Validate.isNumber(option);
-          } while (totalProduct == -1);
-
-          for (int i = 0; i < totalProduct; i++) {
-               // choose type product -> set price of this -> set quantity of this
-               System.out.println("-".repeat(60));
-               productChoose = chooseTypeProduct();
-
-               System.out.println("-".repeat(60));
-               newPrice = setPrice();
-
-               System.out.println("-".repeat(60));
-               newQuantity = setQuantity();
-
-               System.out.println("-".repeat(60));
-               if (productChoose == 1) {
-                    Books book = new Books();
-                    book.setInfo();
-                    newGrnDetails = new GRNDetails(grnID, book, newQuantity, newPrice);
-               } else {
-                    Stationeries stationary = new Stationeries();
-                    stationary.setInfo();
-                    newGrnDetails = new GRNDetails(grnID, stationary, newQuantity, newPrice);
-               }
-               System.out.println("*".repeat(60));
-               listGRN = Arrays.copyOf(listGRN, listGRN.length);
-               listGRN[count] = newGrnDetails;
-               count++;
-          }
-          return listGRN;
-     }
-
-     // private set methods for grn detail
-     private int setQuantity() {
-          int quantity;
-          // let new quantity
-          do {
-               System.out.print("set quantity : ");
-               String quantityInput = input.nextLine().trim();
-               quantity = Validate.isNumber(quantityInput);
-          } while (quantity == -1);
-          return quantity;
-     }
-
-     private BigDecimal setPrice() {
-          BigDecimal price;
-          // let new price
-          do {
-               System.out.print("set price (VND) : ");
-               String value = input.nextLine();
-               price = Validate.isBigDecimal(value);
-          } while (price == null);
-          return price;
-     }
-
-     private int chooseTypeProduct() {
-          int userChoose;
-          // let user decision they wanna change now product to books or stationeries
-          System.out.printf("| %s %s %s |\n", "I.Books", "-".repeat(20), "II.Stationeries");
-          do {
-               System.out.print("choose product (1 or 2): ");
-               String option = input.nextLine().trim();
-               userChoose = Validate.parseChooseHandler(option, 2);
-          } while (userChoose == -1);
-          return userChoose;
-     }
-
      // set info
      public void setInfo() {
           System.out.println("*".repeat(60));
@@ -237,18 +156,15 @@ public class GRNs {
 
           System.out.println("-".repeat(60));
           LocalDate date = setDate();
-
+          
           System.out.println("-".repeat(60));
           BigDecimal totalPrice = setTotalPrice();
 
           System.out.println("-".repeat(60));
           Employees employee = setEmployee();
-
+          
           System.out.println("-".repeat(60));
           Suppliers supplier = setSupplier();
-
-          System.out.println("-".repeat(60));
-          GRNDetails[] detailsArray = setGRNDetails();
 
           int userChoose;
           System.out.printf("*".repeat(60) + "\n");
@@ -269,52 +185,28 @@ public class GRNs {
                setEmployee(employee);
                setSupplier(supplier);
                setTotalPrice(totalPrice);
-               // execute grn detail
-               try {
-                    GRNDetailsBUS detailList = new GRNDetailsBUS();
-                    detailList.readFile();
-                    for (GRNDetails detail : detailsArray)
-                         if (detailList.find(detail.getGrnID()) == -1)
-                              detailList.add(detail);
-                    detailList.writeFile();
-               } catch (Exception e) {
-                    System.out.println("error writing or reading file!\n" + e.getMessage());
-               }
                System.out.println("create and set fields success");
           }
      }
 
      // show info
      public void showInfo() {
-          LocalDate date = this.getDate();
-          BigDecimal totalPrice = this.getTotalPrice();
-          String grnID = this.getGrnID(), employeeName = this.getEmployee().getFullName(),
-                    supplier = this.getSupplier().getSupplierName();
+          LocalDate date = this.getReleaseDate();
+          BigDecimal price = this.getProductPrice();
+          String productID = this.getProductID(), productName = this.getProductName();
 
           System.out.println("=".repeat(160));
-          System.out.printf("| %-22s : %s \n", "GRN ID", grnID != null ? grnID : "N/A");
+          System.out.printf("| %-22s : %s \n", "ID", productID != null ? productID : "N/A");
+          System.out.printf("| %-22s : %s \n", "Stationeries ID", stationaryID != null ? stationaryID : "N/A");
+          System.out.printf("| %-22s : %s \n", "Name", productName != null ? productName : "N/A");
           System.out.printf("| %-22s : %s \n", "Release Date",
                     date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
-          System.out.printf("| %-22s : %s \n", "Employee", employeeName != null ? employeeName : "N/A");
-          System.out.printf("| %-22s : %s \n", "Supplier", supplier != null ? supplier : "N/A");
-          try {
-               GRNDetailsBUS detailList = new GRNDetailsBUS();
-               detailList.readFile();
-               GRNDetails[] list = detailList.relativeFind(this.getGrnID());
-               for (GRNDetails grn : list) {
-                    String product = grn.getProduct().getProductName();
-                    BigDecimal price = grn.getPrice();
-                    BigDecimal subTotal = grn.getSubTotal();
-                    System.out.printf("| %-22s : %s \n", "Product", product != null ? product : "N/A");
-                    System.out.printf("| %-22s : %s \n", "Quantity", grn.getQuantity());
-                    System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
-                    System.out.printf("| %-22s : %s \n", "Sub Total", subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
-               }
-          } catch (Exception e) {
-               System.out.print("| Error loading genres!");
-          }
-
-          System.out.printf("| %-22s : %s \n", "Total Price", totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
+          System.out.printf("| %-22s : %s \n", "Type", this.staTypes != null ? this.staTypes.getTypeName() : "N/A");
+          System.out.printf("| %-22s : %s \n", "Material", this.material != null ? this.material : "N/A");
+          System.out.printf("| %-22s : %s \n", "Source", this.source != null ? this.source : "N/A");
+          System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");
+          System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
+          System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
           System.out.println("=".repeat(160));
      }
 }

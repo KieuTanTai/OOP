@@ -149,11 +149,12 @@ public class SuppliersBUS implements IRuleSets {
             System.out.println("Your new supplier is not correct!");
     }
 
-    public void add(Suppliers[] newSuppliers) {
-        int tempIndex = 0, newListLength = newSuppliers.length;
+    public void add(Suppliers[] newSuppliers, int size) {
+        supplierList = Arrays.copyOf(supplierList, supplierList.length + newSuppliers.length);
+
+        int tempIndex = 0;
         int initCount = getCount();
-        int total = initCount + newListLength;
-        supplierList = Arrays.copyOf(supplierList, supplierList.length + newListLength);
+        int total = initCount + size;
 
         for (int i = initCount; i < total; i++, tempIndex++)
             supplierList[i] = newSuppliers[tempIndex];

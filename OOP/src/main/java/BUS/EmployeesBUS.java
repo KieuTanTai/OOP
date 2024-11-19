@@ -130,11 +130,11 @@ public class EmployeesBUS implements IRuleSets {
             System.out.println("Your employee is not correct!");
     }
 
-    public void add(Employees[] newEmployees) {
-        int tempIndex = 0, newListLength = newEmployees.length;
+    public void add(Employees[] newEmployees, int size) {
+        employeesList = Arrays.copyOf(employeesList, employeesList.length + newEmployees.length);
+        int tempIndex = 0;
         int initCount = getCount();
-        int total = initCount + newListLength;
-        employeesList = Arrays.copyOf(employeesList, employeesList.length + newListLength);
+        int total = initCount + size;
 
         for (int i = initCount; i < total; i++, tempIndex++)
             employeesList[i] = newEmployees[tempIndex];

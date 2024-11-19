@@ -152,10 +152,11 @@ public class GenresBUS implements IRuleSets {
      }
 
      public void add(BookGenres[] newGenres, int size) {
-          int tempIndex = 0, newListLength = newGenres.length;
+          genresList = Arrays.copyOf(genresList, genresList.length + newGenres.length);
+
+          int tempIndex = 0;
           int initCount = getCount();
-          int total = initCount + newListLength;
-          genresList = Arrays.copyOf(genresList, genresList.length + newListLength);
+          int total = initCount + size;
 
           for (int i = initCount; i < total; i++, tempIndex++)
                genresList[i] = newGenres[tempIndex];

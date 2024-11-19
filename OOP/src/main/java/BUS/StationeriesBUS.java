@@ -353,11 +353,11 @@ public class StationeriesBUS implements IRuleSets {
 
     }
 
-    public void add(Stationeries[] newStationeries) {
-        int tempIndex = 0, newListLength = newStationeries.length;
+    public void add(Stationeries[] newStationeries, int size) {
+        int tempIndex = 0;
         int initCount = this.getCount();
-        int total = initCount + newListLength;
-        staList = Arrays.copyOf(staList, staList.length + newListLength);
+        int total = initCount + size;
+        staList = Arrays.copyOf(staList, staList.length + newStationeries.length);
 
         for (int i = initCount; i < total; i++, tempIndex++)
             staList[i] = newStationeries[tempIndex];

@@ -41,15 +41,15 @@ public class Customers extends Person {
 
     // Setters without parameters (user input)
     public String setAddress() {
-        String address;
+        String addr;
         do {
             System.out.print("Enter address: ");
-            address = input.nextLine().trim();
-            if (address.isEmpty()) {
+            addr = input.nextLine().trim();
+            if (addr.isEmpty()) {
                 System.out.println("Address cannot be empty!");
             }
-        } while (address.isEmpty());
-        return address;
+        } while (addr.isEmpty());
+        return addr;
     }
 
     public BigDecimal setPoint() {
@@ -67,27 +67,21 @@ public class Customers extends Person {
     public void setInfo() {
         System.out.println("*".repeat(60));
         String id = setID();
-
         System.out.println("-".repeat(60));
         String firstName = setFirstName();
-
         System.out.println("-".repeat(60));
         String lastName = setLastName();
-
         System.out.println("-".repeat(60));
         LocalDate dateOfBirth = setDateOfBirth();
-
         System.out.println("-".repeat(60));
         String phone = setPhoneNumber();
-
         System.out.println("-".repeat(60));
         String address = setAddress();
-        
         System.out.println("-".repeat(60));
         BigDecimal point = setPoint();
-        
-        int userChoose;               
         System.out.println("*".repeat(60));
+
+        int userChoose;               
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
 
         do {

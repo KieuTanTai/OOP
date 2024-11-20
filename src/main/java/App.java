@@ -49,7 +49,8 @@ public class App {
 
 
                 // !SHOW BEFORE
-                empList.showList();
+                // empList.showList();
+                empList.relativeSearch("Warehouse Staff", "role");
 
                 // !TEST METHODS
                 // empList.relativeSearch(LocalDate.of(1995, 5, 12), "date");

@@ -97,7 +97,7 @@ public class GRNs {
                int userChoose;
                EmployeesBUS list = new EmployeesBUS();
                list.readFile();
-               if (SuppliersBUS.getCount() == 0) // if not have any supplier
+               if (list.getCount() == 0) // if not have any supplier
                     return null;
                Employees[] tempList = list.relativeFind("Warehouse Staff", "role");
                for (Employees employee : tempList)
@@ -319,7 +319,7 @@ public class GRNs {
           String id = setID();
 
           System.out.println("-".repeat(60));
-          LocalDate date = LocalDate.parse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+          LocalDate date = LocalDate.now();
 
           System.out.println("-".repeat(60));
           Employees employee = setEmployee();

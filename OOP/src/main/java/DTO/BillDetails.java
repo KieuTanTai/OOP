@@ -7,7 +7,7 @@ import util.Validate;
 
 public class BillDetails{
     private String billId;
-    private int quanity;
+    private int quantity;
     private BigDecimal price;
     private BigDecimal subTotal;
 
@@ -16,9 +16,9 @@ public class BillDetails{
     public BillDetails() {
     }
 
-    public BillDetails(String billId, int quanity, BigDecimal price, BigDecimal subTotal) {
+    public BillDetails(String billId, int quantity, BigDecimal price, BigDecimal subTotal) {
         this.billId = billId;
-        this.quanity = quanity;
+        this.quantity = quantity;
         this.price = price;
         this.subTotal = subTotal;
     }
@@ -31,12 +31,12 @@ public class BillDetails{
         return this.billId;
     }
 
-    public int getQuanity() {
-        return this.quanity;
+    public int getQuantity() {
+        return this.quantity;
     }
 
-    public void setQuanity(int quanity) {
-        this.quanity = quanity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public BigDecimal getPrice() {
@@ -68,7 +68,7 @@ public class BillDetails{
           return id;
      }
 
-    public int setQuanity() {
+    public int setQuantity() {
         int quantity;
         do {
              System.out.print("set quantity: ");
@@ -89,21 +89,21 @@ public class BillDetails{
     }
 
     public void nhap(){
-        quanity = setQuanity();
+        quantity = setQuantity();
         price = setPrice();
         billId = setBillId();
     }
 
     public BigDecimal calcSubTotal(){
-        BigDecimal quanityDe = BigDecimal.valueOf(quanity);
-        this.subTotal = price.multiply(quanityDe);
+        BigDecimal QuantityDe = BigDecimal.valueOf(quantity);
+        this.subTotal = price.multiply(QuantityDe);
         return this.subTotal;
     }
 
     @Override
     public String toString() {
         return "{" + "billId='" + getBillId() + 
-            " quanity='" + getQuanity() + "'" +
+            " quantity='" + getQuantity() + "'" +
             ", price='" + getPrice() + "'" +
             ", subTotal='" + getSubTotal() + "'" + "}";
     }

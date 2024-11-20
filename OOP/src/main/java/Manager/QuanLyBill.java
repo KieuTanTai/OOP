@@ -36,7 +36,7 @@ public class QuanLyBill {
                     ds.xuat();
                     break;
                 case 3:
-                    ds.sua();
+                    ds.edit();
                     System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();        
                     break;

@@ -57,7 +57,6 @@ public class BillBus{
     public void xuat(){
         for(int i = 0; i < n; ++i){
             System.out.println(ds[i].toString());
-            
         }
     }
 
@@ -121,7 +120,7 @@ public class BillBus{
         }
     }
 
-    public void sua(){
+    public void edit(){
         System.out.println("insert bill's id you want to edit: ");
         String fixBill = sc.nextLine();
         boolean flag = false;
@@ -269,7 +268,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
@@ -283,7 +282,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
@@ -296,7 +295,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
@@ -309,7 +308,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
@@ -322,7 +321,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 

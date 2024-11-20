@@ -78,14 +78,15 @@ public class GRNs {
      // set id
      public String setID() {
           String id;
-          do {
-               System.out.print("set id : ");
-               id = input.nextLine().trim();
-               if (!Validate.validateID(id)) {
-                    System.out.println("error id!");
-                    id = "";
-               }
-          } while (id.isEmpty());
+          GRNDetails[] list = GRNDetailsBUS.getGrnDetailsList();
+
+          if (list.length == 0) {
+               return "00000001";
+          } else {
+               int prevID = Integer.parseInt((list[list.length - 1]).getGrnID().substring(3, list.length - 2));
+               id = String.format("%d", prevID + 1);
+          }
+
           return id;
      }
 
@@ -100,32 +101,24 @@ public class GRNs {
           return date;
      }
 
-     // set total price
-     public BigDecimal setTotalPrice() {
-          BigDecimal price;
-          do {
-               System.out.print("set price (VND) : ");
-               String value = input.nextLine();
-               price = Validate.isBigDecimal(value);
-          } while (price == null);
-          return price;
-     }
-
      // set employee
      public Employees setEmployee() {
           try {
-               int index;
+               int userChoose;
                EmployeesBUS list = new EmployeesBUS();
                list.readFile();
-               System.out.println("----------------------------");
+               if (SuppliersBUS.getCount() == 0) // if not have any supplier
+                    return null;
+               Employees[] tempList = list.relativeFind("Warehouse Staff", "role");
+               for (Employees employee : tempList)
+                    employee.showInfo();
                do {
-                    System.out.print("name employee : ");
-                    String name = input.nextLine().trim();
-                    index = list.find(name);
-               } while (index == -1);
-
-               Employees employees = list.getEmployeesList()[index];
-               return employees;
+                    System.out.print("choose employee (like 1, 2,etc...) : ");
+                    String option = input.nextLine().trim();
+                    userChoose = Validate.parseChooseHandler(option, tempList.length);
+               } while (userChoose == -1);
+               ;
+               return tempList[userChoose - 1];
           } catch (IOException e) {
                System.out.println("error reading file!\n" + e.getMessage());
                return null;
@@ -239,7 +232,7 @@ public class GRNs {
           LocalDate date = setDate();
 
           System.out.println("-".repeat(60));
-          BigDecimal totalPrice = setTotalPrice();
+          BigDecimal totalPrice;
 
           System.out.println("-".repeat(60));
           Employees employee = setEmployee();
@@ -251,7 +244,7 @@ public class GRNs {
           GRNDetails[] detailsArray = setGRNDetails();
 
           int userChoose;
-          System.out.printf("*".repeat(60) + "\n");
+          System.out.println("*".repeat(60));
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
                System.out.print("choose option (like 1, 2,etc...): ");
@@ -308,13 +301,15 @@ public class GRNs {
                     System.out.printf("| %-22s : %s \n", "Product", product != null ? product : "N/A");
                     System.out.printf("| %-22s : %s \n", "Quantity", grn.getQuantity());
                     System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
-                    System.out.printf("| %-22s : %s \n", "Sub Total", subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
+                    System.out.printf("| %-22s : %s \n", "Sub Total",
+                              subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
                }
           } catch (Exception e) {
                System.out.print("| Error loading genres!");
           }
 
-          System.out.printf("| %-22s : %s \n", "Total Price", totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
+          System.out.printf("| %-22s : %s \n", "Total Price",
+                    totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
           System.out.println("=".repeat(160));
      }
 }

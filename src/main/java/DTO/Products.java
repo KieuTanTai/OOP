@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import BUS.BooksBUS;
+import BUS.StationeriesBUS;
+
 public abstract class Products {
     private String productID;
     private String productName;
@@ -18,7 +21,8 @@ public abstract class Products {
     public Products() {
     }
 
-    public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
+    public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice,
+            int quantity) {
         this.productID = productIDModifier(productID);
         this.productName = productName;
         this.releaseDate = releaseDate;
@@ -69,29 +73,51 @@ public abstract class Products {
     }
 
     // set not param
-    public String setID() {
-        String id;
-        do {
-            System.out.print("set id : ");
-            id = input.nextLine().trim();
-            if (!Validate.validateID(id)) {
-                System.out.println("error id!");
-                id = "";
+    public String setID(Object key) {
+        String id = "";
+        try {
+            if (key instanceof Books) {
+                BooksBUS booksList = new BooksBUS();;
+                booksList.readFile();
+                Books[] list = booksList.getBooksList();
+    
+                if (list.length == 0) {
+                    return "00000001";
+                } else {
+                    int prevID = Integer.parseInt((list[list.length - 1]).getProductID().substring(2, list.length - 2));
+                    id = String.format("%d", prevID + 1);
+                }
             }
-        } while (id.isEmpty());
+            else if (key instanceof Stationeries) {
+                StationeriesBUS stationeriesList = new StationeriesBUS();
+                stationeriesList.readFile();
+                Stationeries[] list = stationeriesList.getStaList();
+                
+                if (list.length == 0) {
+                    return "00000001";
+                } else {
+                    int prevID = Integer.parseInt((list[list.length - 1]).getProductID().substring(2, list.length - 2));
+                    id = String.format("%d", prevID + 1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("error when execute with file!" + e.getMessage());
+            id = "";
+        }
         return productIDModifier(id);
     }
+
 
     public String setName() {
         String name;
         do {
             System.out.print("set name : ");
             name = input.nextLine().trim();
-            if(!Validate.checkName(name)) {
+            if (!Validate.checkName(name)) {
                 System.out.println("name is wrong format!");
                 name = "";
             }
-        } while(name.isEmpty());
+        } while (name.isEmpty());
         return name;
     }
 

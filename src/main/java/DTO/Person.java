@@ -5,6 +5,9 @@ import util.Validate;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import BUS.CustomersBUS;
+import BUS.EmployeesBUS;
+
 public abstract class Person {
     private String personID;
     private String firstName;
@@ -77,18 +80,40 @@ public abstract class Person {
     }
 
     // Setters no params 
-    public String setID() {
-        String id;
-        do {
-            System.out.print("set ID : ");
-            id = input.nextLine().trim();
-            if (!Validate.validateID(id)) {
-                System.out.println("invalid id!");
-                id = "";
+    public String setID(Object key) {
+        String id = "";
+        try {
+            if (key instanceof Customers) {
+                CustomersBUS booksList = new CustomersBUS();;
+                booksList.readFile();
+                Customers[] list = booksList.getCustomersList();
+    
+                if (list.length == 0) {
+                    return "00000001";
+                } else {
+                    int prevID = Integer.parseInt((list[list.length - 1]).getPersonID().substring(3, list.length - 2));
+                    id = String.format("%d", prevID + 1);
+                }
             }
-        } while (id.isEmpty());
+            else if (key instanceof Employees) {
+                EmployeesBUS stationeriesList = new EmployeesBUS();
+                stationeriesList.readFile();
+                Employees[] list = stationeriesList.getEmployeesList();
+                
+                if (list.length == 0) {
+                    return "00000001";
+                } else {
+                    int prevID = Integer.parseInt((list[list.length - 1]).getPersonID().substring(3, list.length - 2));
+                    id = String.format("%d", prevID + 1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("error when execute with file!" + e.getMessage());
+            id = "";
+        }
         return personIDModifier(id);
     }
+
 
     public String setFirstName() {
         String name;

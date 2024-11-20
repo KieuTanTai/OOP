@@ -255,7 +255,7 @@ public class Books extends Products {
     @Override
     public void setInfo() {
         System.out.println("*".repeat(60));
-        String id = setID();
+        String id = setID(this);
 
         System.out.println("-".repeat(60));
         String name = setName();

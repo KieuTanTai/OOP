@@ -9,6 +9,7 @@ import java.util.Scanner;
 import BUS.BooksBUS;
 import BUS.EmployeesBUS;
 import BUS.GRNDetailsBUS;
+import BUS.GRNsBUS;
 import BUS.StationeriesBUS;
 import BUS.SuppliersBUS;
 import util.Validate;
@@ -26,7 +27,7 @@ public class GRNs {
      }
 
      public GRNs(String grnID, LocalDate date, Employees employee, Suppliers supplier, BigDecimal totalPrice) {
-          this.grnID = grnID;
+          this.grnID = grnIDModifier(grnID);
           this.date = date;
           this.employee = employee;
           this.supplier = supplier;
@@ -56,7 +57,7 @@ public class GRNs {
 
      // setters have params
      public void setGrnID(String grnID) {
-          this.grnID = grnID;
+          this.grnID = grnIDModifier(grnID);
      }
 
      public void setDate(LocalDate date) {
@@ -78,17 +79,18 @@ public class GRNs {
      // setters no params
      // set id
      public String setID() {
-          String id;
-          GRNDetails[] list = new GRNDetailsBUS().getGrnDetailsList();
+          String grnID;
+          GRNs[] list = new GRNsBUS().getListGRN();
 
           if (list.length == 0) {
                return "00000001";
           } else {
-               int prevID = Integer.parseInt((list[list.length - 1]).getGrnID().substring(3, list.length - 2));
-               id = String.format("%d", prevID + 1);
+               String getID = list[list.length - 1].getGrnID();
+               int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
+               grnID = String.format("%d", prevID + 1);
           }
 
-          return id;
+          return grnIDModifier(grnID);
      }
 
      // set employee
@@ -133,7 +135,7 @@ public class GRNs {
      }
 
      // set grn detail (NEED TO FIX)
-     public GRNDetails[] setGRNDetails() {
+     public GRNDetails[] setGRNDetails(String grnID) {
           GRNDetailsBUS listGRN = new GRNDetailsBUS();
           int userChoose = 0;
 
@@ -150,7 +152,7 @@ public class GRNs {
                // execute userChoose
                try {
                     switch (userChoose) {
-                         case 1: //add
+                         case 1: // add
                               int index = 0;
                               String productID = "";
 
@@ -202,7 +204,7 @@ public class GRNs {
                                         booksList.add(product);
                                         booksList.writeFile();
                                    }
-                                   listGRN.add(new GRNDetails(productID, product, quantity, price));
+                                   listGRN.add(new GRNDetails(grnID, product, quantity, price));
 
                               } else {
                                    StationeriesBUS staList = new StationeriesBUS();
@@ -252,11 +254,11 @@ public class GRNs {
                                         staList.add(product);
                                         staList.writeFile();
                                    }
-                                   listGRN.add(new GRNDetails(productID, product, quantity, price));
+                                   listGRN.add(new GRNDetails(grnID, product, quantity, price));
                               }
                               break;
 
-                         case 2: //remove
+                         case 2: // remove
                               if (listGRN.getCount() == 0 || listGRN == null) // if not have any grn detail
                                    break;
                               System.out.println("-".repeat(60));
@@ -269,7 +271,7 @@ public class GRNs {
                               listGRN.remove(listGRN.getGrnDetailsList()[userChoose - 1].getGrnID());
                               break;
 
-                         case 3: //edit
+                         case 3: // edit
                               if (listGRN.getCount() == 0 || listGRN == null) // if not have any grn detail
                                    break;
                               System.out.println("-".repeat(60));
@@ -328,7 +330,7 @@ public class GRNs {
           Suppliers supplier = setSupplier();
 
           System.out.println("-".repeat(60));
-          GRNDetails[] detailsArray = setGRNDetails();
+          GRNDetails[] detailsArray = setGRNDetails(id);
 
           int userChoose;
           BigDecimal totalPrice = new BigDecimal(0);
@@ -402,5 +404,16 @@ public class GRNs {
           System.out.printf("| %-22s : %s \n", "Total Price",
                     totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
           System.out.println("=".repeat(160));
+     }
+
+     // modify id
+     private String grnIDModifier(String grnID) {
+          if (grnID.startsWith("GRN") && grnID.endsWith("LL") && grnID.length() == 12)
+               return grnID;
+          if (!Validate.validateID(grnID)) {
+               System.out.println("error id!");
+               return "N/A";
+          }
+          return "GRN" + grnID + "LL";
      }
 }

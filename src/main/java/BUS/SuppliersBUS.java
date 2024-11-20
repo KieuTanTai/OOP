@@ -20,7 +20,7 @@ public class SuppliersBUS implements IRuleSets {
     private static int count;
     private final Scanner input = new Scanner(System.in);
 
-    // Constructors
+    // *constructors (TEST DONE)
     public SuppliersBUS() {
         SuppliersBUS.count = 0;
         suppliersList = new Suppliers[0];
@@ -31,7 +31,7 @@ public class SuppliersBUS implements IRuleSets {
         SuppliersBUS.count = count;
     }
 
-    // Getters / Setters
+    // *Getters / Setters (TEST DONE)
     public static Suppliers[] getSupplierList() {
         return Arrays.copyOf(SuppliersBUS.suppliersList, SuppliersBUS.count);
     }
@@ -76,13 +76,14 @@ public class SuppliersBUS implements IRuleSets {
         SuppliersBUS.count = count;
     }
 
-    // Methods
+    // *show method (TEST DONE)
     public static void showList() {
         if (suppliersList == null)
             return;
         showAsTable(suppliersList);
     }
 
+    // *find methods (TEST DONE)
     @Override
     public void find() {
         Menu.findHandler();
@@ -116,6 +117,7 @@ public class SuppliersBUS implements IRuleSets {
         return suppliersArray;
     }
 
+    // *search methods (TEST DONE)
     @Override
     public void search() {
         Menu.searchHandler();
@@ -134,6 +136,7 @@ public class SuppliersBUS implements IRuleSets {
             showAsTable(list);
     }
 
+    // *add methods (TEST DONE)
     @Override
     public void add() {
         Menu.addHandler();
@@ -160,6 +163,7 @@ public class SuppliersBUS implements IRuleSets {
         SuppliersBUS.count = total;
     }
 
+    // *edit methods (TEST DONE)
     @Override
     public void edit() {
         Menu.editHandler();
@@ -182,7 +186,6 @@ public class SuppliersBUS implements IRuleSets {
                  return;
 
             String newName;
-            String newPhone;
             do {
                 System.out.print("Enter new name: ");
                 newName = input.nextLine().trim();
@@ -191,16 +194,8 @@ public class SuppliersBUS implements IRuleSets {
                     newName = "";
                 }
             } while (newName.isEmpty());
-            do {
-                System.out.print("Enter new phone: ");
-                newPhone = input.nextLine().trim();
-                if (!Validate.validatePhone(newPhone)) {
-                    System.out.println("Phone is wrong format!");
-                    newPhone = "";
-                }
-            } while (newPhone.isEmpty());
+          
             suppliersList[index].setSupplierName(newName);
-            suppliersList[index].setPhone(newPhone);
         }
     }
 
@@ -233,6 +228,7 @@ public class SuppliersBUS implements IRuleSets {
         }
     }
 
+    // *remove methods (TEST DONE)
     @Override
     public void remove() {
         Menu.removeHandler();
@@ -261,17 +257,17 @@ public class SuppliersBUS implements IRuleSets {
         }
     }
 
-    // show as table methods
+    // *show as table methods (TEST DONE)
     public static void showAsTable(Suppliers[] list) {
         if (list == null)
             return;
         System.out.println("=".repeat(110));
-        System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Genres ID", "Genres Name");
+        System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", "No.", "Suppliers ID", "Phone",  "Suppliers Name");
         System.out.println("=".repeat(110));
         for (int i = 0; i < list.length; i++) {
             if (i > 0)
                 System.out.println("|" + "-".repeat(108) + "|");
-            System.out.printf("| \t%-21s %-19s %-58s |\n", i + 1, list[i].getSupplierID(), list[i].getSupplierName());
+            System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", i + 1, list[i].getSupplierID(), list[i].getPhone(), list[i].getSupplierName());
         }
         System.out.println("=".repeat(110));
     }
@@ -280,18 +276,19 @@ public class SuppliersBUS implements IRuleSets {
         if (item == null)
             return;
         System.out.println("=".repeat(110));
-        System.out.printf("| \t%-20s %-20s %-58s |\n", "No.", "Genres ID", "Genres Name");
+        System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", "No.", "Genres ID", "Phone", "Genres Name");
         System.out.println("=".repeat(110));
         System.out.println("|" + "-".repeat(108) + "|");
-        System.out.printf("| \t%-21s %-19s %-58s |\n", 1, item.getSupplierID(), item.getSupplierName());
+        System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", 1, item.getSupplierID(), item.getPhone(), item.getSupplierName());
         System.out.println("=".repeat(110));
     }
 
     // other methods
+    // *execute files (TEST DONE)
     // write file
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(
-                new BufferedOutputStream(new FileOutputStream("../../resources/Suppliers", false)))) {
+                new BufferedOutputStream(new FileOutputStream("src/main/resources/Suppliers", false)))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
                 file.writeUTF(suppliersList[i].getSupplierID());
@@ -307,7 +304,7 @@ public class SuppliersBUS implements IRuleSets {
     // read file
     public void readFile() throws IOException {
         try (DataInputStream file = new DataInputStream(
-                new BufferedInputStream(new FileInputStream("../../resources/Suppliers")))) {
+                new BufferedInputStream(new FileInputStream("src/main/resources/Suppliers")))) {
             count = file.readInt();
             Suppliers[] list = new Suppliers[count];
             for (int i = 0; i < count; i++) {

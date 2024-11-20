@@ -2,7 +2,7 @@ package DTO;
 
 import java.util.Scanner;
 
-import BUS.TypesBUS;
+import BUS.SuppliersBUS;
 import util.Validate;
 
 public class Suppliers {
@@ -16,7 +16,7 @@ public class Suppliers {
     }
 
     public Suppliers(String supplierID, String supplierName, String phone) {
-        this.supplierID = supplierID;
+        this.supplierID = supplierIDModifier(supplierID);
         this.supplierName = supplierName;
         this.phone = phone;
     }
@@ -36,7 +36,7 @@ public class Suppliers {
 
     // setter
     public void setSupplierID(String supplierID) {
-        this.supplierID = supplierID;
+        this.supplierID = supplierIDModifier(supplierID);
     }
 
     public void setSupplierName(String supplierName) {
@@ -50,13 +50,14 @@ public class Suppliers {
     // set not param
     public String setID() {
         String id = "";
-        BookTypes[] list = TypesBUS.getTypesList();
+        Suppliers[] list = SuppliersBUS.getSupplierList();
 
         if (list.length == 0 || list == null) {
-            return "00000001";
+            id = "00000001";
         } else {
+            String getID = list[list.length - 1].getSupplierID();
             int prevID = Integer
-                    .parseInt((list[list.length - 1]).getTypeID().substring(3, list.length - 3));
+                    .parseInt(getID.substring(3, getID.length() - 3));
             id = String.format("%d", prevID + 1);
         }
         return supplierIDModifier(id);
@@ -75,11 +76,26 @@ public class Suppliers {
         return name;
     }
 
+    public String setPhone() {
+        String phone;
+        do {
+            System.out.print("set phone number: ");
+            phone = input.nextLine().trim();
+            if (!Validate.validatePhone(phone)) {
+                System.out.println("invalid phone number!");
+                phone = "";
+            }
+        } while (phone.isEmpty());
+        return phone;
+    }
+
     public void setInfo() {
         System.out.println("*".repeat(60));
         this.supplierID = setID();
         System.out.println("-".repeat(60));
         this.supplierName = setName();
+        System.out.println("-".repeat(60));
+        this.phone = setPhone();
         System.out.println("*".repeat(60));
     }
 

@@ -14,7 +14,7 @@ public class BookTypes {
      }
 
      public BookTypes(String typeID, String typeName) {
-          this.typeID = typeID;
+          this.typeID = typeIDModifier(typeID);
           this.typeName = typeName;
      }
 
@@ -27,7 +27,7 @@ public class BookTypes {
      }
 
      public void setTypeID(String typeID) {
-          this.typeID = typeID;
+          this.typeID = typeIDModifier(typeID);
      }
 
      public void setTypeName(String typeName) {

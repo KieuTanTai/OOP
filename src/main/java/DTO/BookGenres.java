@@ -2,7 +2,7 @@ package DTO;
 
 import java.util.Scanner;
 
-import BUS.TypesBUS;
+import BUS.GenresBUS;
 import util.Validate;
 
 public class BookGenres {
@@ -14,7 +14,7 @@ public class BookGenres {
      }
 
      public BookGenres(String genreID, String genreName) {
-          this.genreID = genreID;
+          this.genreID = genreIDModifier(genreID);
           this.genreName = genreName;
      }
 
@@ -27,7 +27,7 @@ public class BookGenres {
      }
 
      public void setGenreID(String genreID) {
-          this.genreID = genreID;
+          this.genreID = genreIDModifier(genreID);
      }
 
      public void setGenreName(String genreName) {
@@ -37,13 +37,14 @@ public class BookGenres {
      // set not param
      public String setID() {
           String id = "";
-          BookTypes[] list = TypesBUS.getTypesList();
+          BookGenres[] list = GenresBUS.getGenresList();
 
           if (list.length == 0 || list == null) {
                return "00000001";
           } else {
+               String getID = list[list.length - 1].getGenreID();
                int prevID = Integer
-                         .parseInt((list[list.length - 1]).getTypeID().substring(2, list.length - 2));
+                         .parseInt(getID.substring(2, getID.length() - 2));
                id = String.format("%d", prevID + 1);
           }
           return genreIDModifier(id);

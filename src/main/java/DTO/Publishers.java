@@ -2,7 +2,7 @@ package DTO;
 
 import java.util.Scanner;
 
-import BUS.TypesBUS;
+import BUS.PublishersBUS;
 import util.Validate;
 
 public class Publishers {
@@ -15,7 +15,7 @@ public class Publishers {
     }
 
     public Publishers(String publisherID, String publisherName) {
-        this.publisherID = publisherID;
+        this.publisherID = publisherIDModifier(publisherID);
         this.publisherName = publisherName;
     }
 
@@ -30,7 +30,7 @@ public class Publishers {
 
     // setter
     public void setPublisherID(String publisherID) {
-        this.publisherID = publisherID;
+        this.publisherID = publisherIDModifier(publisherID);
     }
 
     public void setPublisherName(String publisherName) {
@@ -40,13 +40,13 @@ public class Publishers {
     // set not param
     public String setID() {
         String id = "";
-        BookTypes[] list = TypesBUS.getTypesList();
+        Publishers[] list = PublishersBUS.getPublishersList();
 
         if (list.length == 0 || list == null) {
             return "00000001";
         } else {
-            int prevID = Integer
-                    .parseInt((list[list.length - 1]).getTypeID().substring(3, list.length - 3));
+            String getID = list[list.length - 1].getPublisherID();
+            int prevID = Integer.parseInt(getID.substring(3, getID.length() - 3));
             id = String.format("%d", prevID + 1);
         }
         return publisherIDModifier(id);

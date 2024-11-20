@@ -12,9 +12,11 @@ import BUS.MidForBooksBUS;
 import BUS.PublishersBUS;
 import BUS.StaTypesBUS;
 import BUS.StationeriesBUS;
+import BUS.SuppliersBUS;
 import BUS.TypesBUS;
 import DTO.Customers;
 import DTO.Employees;
+import DTO.Suppliers;
 
 public class App {
         Scanner input = new Scanner(System.in);
@@ -31,6 +33,7 @@ public class App {
                 BooksBUS listBooks = new BooksBUS();
                 CustomersBUS cusList = new CustomersBUS();
                 EmployeesBUS empList = new EmployeesBUS();
+                SuppliersBUS supList = new SuppliersBUS();
                 newTest.readFile();
                 initList.readFile();
                 testList.readFile();
@@ -41,22 +44,24 @@ public class App {
                 listSta.readFile();
                 cusList.readFile();
                 empList.readFile();
-
-                // !INIT ARRAY
+                supList.readFile();
                 
+                // !INIT ARRAY
+
 
                 // !INIT VALUE
 
-
+                Suppliers sup = new Suppliers();
+                sup.setInfo();
+                supList.add(sup);
+                
                 // !SHOW BEFORE
-                // empList.showList();
-                empList.relativeSearch("Warehouse Staff", "role");
+                SuppliersBUS.showList();
 
                 // !TEST METHODS
-                // empList.relativeSearch(LocalDate.of(1995, 5, 12), "date");
 
                 // !SHOW DURING
-                // empList.showList();
+                // SuppliersBUS.showList();
 
                 // !SHOW RESULT
                 // System.out.println("------------------------AFTER(BOOK_TYPE)-----------------------");

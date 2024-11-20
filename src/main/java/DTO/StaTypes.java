@@ -2,7 +2,7 @@ package DTO;
 
 import java.util.Scanner;
 
-import BUS.TypesBUS;
+import BUS.StaTypesBUS;
 import util.Validate;
 
 public class StaTypes {
@@ -15,7 +15,7 @@ public class StaTypes {
     }
 
     public StaTypes(String typeID, String typeName) {
-        this.typeID = typeID;
+        this.typeID = typeIDModifier(typeID);
         this.typeName = typeName;
     }
 
@@ -34,19 +34,19 @@ public class StaTypes {
     }
 
     public void setTypeID(String typeID) {
-        this.typeID = typeID;
+        this.typeID = typeIDModifier(typeID);
     }
 
     // set not param
     public String setID() {
         String id = "";
-        BookTypes[] list = TypesBUS.getTypesList();
+        StaTypes[] list = StaTypesBUS.getTypesList();
 
         if (list.length == 0 || list == null) {
             return "00000001";
         } else {
-            int prevID = Integer
-                    .parseInt((list[list.length - 1]).getTypeID().substring(2, list.length - 2));
+            String getID = list[list.length - 1].getTypeID();
+            int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
             id = String.format("%d", prevID + 1);
         }
         return typeIDModifier(id);

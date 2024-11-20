@@ -2,7 +2,7 @@ package DTO;
 
 import java.util.Scanner;
 
-import BUS.TypesBUS;
+import BUS.BookFormatsBUS;
 import util.Validate;
 
 public class BookFormats {
@@ -14,7 +14,7 @@ public class BookFormats {
      }
 
      public BookFormats(String formatID, String formatName) {
-          this.formatID = formatID;
+          this.formatID = formatIDModifier(formatID);
           this.formatName = formatName;
      }
 
@@ -27,7 +27,7 @@ public class BookFormats {
      }
 
      public void setFormatID(String formatID) {
-          this.formatID = formatID;
+          this.formatID = formatIDModifier(formatID);
      }
 
      public void setFormatName(String formatName) {
@@ -37,13 +37,14 @@ public class BookFormats {
      // set not param
      public String setID() {
           String id = "";
-          BookTypes[] list = TypesBUS.getTypesList();
+          BookFormats[] list = BookFormatsBUS.getFormatsList();
 
           if (list.length == 0 || list == null) {
                return "00000001";
           } else {
+               String getID = list[list.length - 1].getFormatID();
                int prevID = Integer
-                         .parseInt((list[list.length - 1]).getTypeID().substring(3, list.length - 2));
+                         .parseInt(getID.substring(3, getID.length() - 2));
                id = String.format("%d", prevID + 1);
           }
           return formatIDModifier(id);

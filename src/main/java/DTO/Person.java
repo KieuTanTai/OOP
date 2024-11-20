@@ -91,7 +91,8 @@ public abstract class Person {
                 if (list.length == 0) {
                     return "00000001";
                 } else {
-                    int prevID = Integer.parseInt((list[list.length - 1]).getPersonID().substring(3, list.length - 2));
+                    String getID = list[list.length - 1].getPersonID();
+                    int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
                     id = String.format("%d", prevID + 1);
                 }
             }

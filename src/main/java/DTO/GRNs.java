@@ -261,7 +261,7 @@ public class GRNs {
                setDate(date);
                setEmployee(employee);
                setSupplier(supplier);
-               setTotalPrice(totalPrice);
+               // setTotalPrice(totalPrice);
                // execute grn detail
                try {
                     GRNDetailsBUS detailList = new GRNDetailsBUS();

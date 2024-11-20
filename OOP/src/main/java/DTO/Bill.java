@@ -11,7 +11,7 @@ public class Bill {
     private String billId;
     private String employeeId;
     private String customerId;
-    private String promoCode;
+    private SaleEvents saleCode;
     private BigDecimal discount;
     private BigDecimal totalPrice;
     private LocalDate date;
@@ -21,11 +21,11 @@ public class Bill {
     public Bill() {
     }
  
-    public Bill(String billId, String employeeId, String customerId, String promoCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
+    public Bill(String billId, String employeeId, String customerId, SaleEvents saleCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
         this.billId = billId;
         this.employeeId = employeeId;
         this.customerId = customerId;
-        this.promoCode = promoCode;
+        this.saleCode = saleCode;
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;
@@ -70,19 +70,6 @@ public class Bill {
           return id;
     }
 
-    public String setPromoCode() {
-        String code;
-          do {
-               System.out.print("set promo code : ");
-               code = sc.nextLine().trim();
-               if (Validate.validateID(code)) {
-                    System.out.println("error code !");
-                    code = "";
-               }
-          } while (code.isEmpty());
-          return code;
-    }
-
     public BigDecimal setDiscount() {
         BigDecimal discount;
         do {
@@ -107,7 +94,7 @@ public class Bill {
         billId = setBillId();
         employeeId = setEmployeeId();
         customerId = setCustomerId();
-        promoCode = setPromoCode();
+
         discount = setDiscount();
         date = setDate();
 
@@ -135,14 +122,6 @@ public class Bill {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
-    }
-
-    public String getPromoCode() {
-        return this.promoCode;
-    }
-
-    public void setPromoCode(String promoCode) {
-        this.promoCode = promoCode;
     }
 
     public BigDecimal getDiscount() {
@@ -180,8 +159,7 @@ public class Bill {
         return "{" +
             " billId='" + getBillId() + "'" +
             ", employeeId='" + getEmployeeId() + "'" +
-            ", customerId='" + getCustomerId() + "'" +
-            ", promoCode='" + getPromoCode() + "'" +
+            ", customerId='" + getCustomerId() +  "'" +
             ", discount='" + getDiscount() + "'" +
             ", totalPrice='" + getTotalPrice() + "'" +
             ", date='" + getDate() + "'" + "}";

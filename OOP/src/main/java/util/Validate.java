@@ -72,7 +72,6 @@ public class Validate {
           }
      }
 
-
      public static Integer isNumber (String inputNumber) {
           try {
               return Integer.parseInt(inputNumber);

@@ -16,28 +16,28 @@ import Manager.Menu;
 import util.Validate;
 
 public class SuppliersBUS implements IRuleSets {
-    private static Suppliers[] supplierList;
+    private static Suppliers[] suppliersList;
     private static int count;
     private final Scanner input = new Scanner(System.in);
 
     // Constructors
     public SuppliersBUS() {
         SuppliersBUS.count = 0;
-        supplierList = new Suppliers[0];
+        suppliersList = new Suppliers[0];
     }
 
-    public SuppliersBUS(Suppliers[] supplierList, int count) {
-        SuppliersBUS.supplierList = supplierList;
+    public SuppliersBUS(Suppliers[] suppliersList, int count) {
+        SuppliersBUS.suppliersList = suppliersList;
         SuppliersBUS.count = count;
     }
 
     // Getters / Setters
     public static Suppliers[] getSupplierList() {
-        return Arrays.copyOf(SuppliersBUS.supplierList, SuppliersBUS.count);
+        return Arrays.copyOf(SuppliersBUS.suppliersList, SuppliersBUS.count);
     }
 
     public static Suppliers getSupplier(String id) {
-        for (Suppliers supplier : supplierList)
+        for (Suppliers supplier : suppliersList)
             if (supplier.getSupplierID().equals(id))
                 return new Suppliers(supplier.getSupplierID(), supplier.getSupplierName(), supplier.getPhone());
         return null;
@@ -50,7 +50,7 @@ public class SuppliersBUS implements IRuleSets {
             return null;
         for (int i = start; i < end; i++) {
             list = Arrays.copyOf(list, list.length + 1);
-            list[size] = supplierList[i];
+            list[size] = suppliersList[i];
             size++;
         }
         return Arrays.copyOf(list, list.length);
@@ -60,14 +60,14 @@ public class SuppliersBUS implements IRuleSets {
         return count;
     }
 
-    public void setSupplierList(Suppliers[] supplierList) {
-        SuppliersBUS.supplierList = supplierList;
+    public void setSupplierList(Suppliers[] suppliersList) {
+        SuppliersBUS.suppliersList = suppliersList;
     }
 
     public void setSupplier(String supplierID, Suppliers newSupplier) {
         for (int i = 0; i < count; i++)
-            if (supplierList[i].getSupplierID().equals(supplierID)) {
-                supplierList[i] = newSupplier;
+            if (suppliersList[i].getSupplierID().equals(supplierID)) {
+                suppliersList[i] = newSupplier;
                 return;
             }
     }
@@ -78,9 +78,9 @@ public class SuppliersBUS implements IRuleSets {
 
     // Methods
     public static void showList() {
-        if (supplierList == null)
+        if (suppliersList == null)
             return;
-        showAsTable(supplierList);
+        showAsTable(suppliersList);
     }
 
     @Override
@@ -90,9 +90,9 @@ public class SuppliersBUS implements IRuleSets {
 
     @Override
     public int find(String nameOrID) {
-        for (int i = 0; i < supplierList.length; i++) {
-            if (supplierList[i].getSupplierID().equals(nameOrID)
-                    || supplierList[i].getSupplierName().toLowerCase().equals(nameOrID.toLowerCase().trim())) {
+        for (int i = 0; i < suppliersList.length; i++) {
+            if (suppliersList[i].getSupplierID().equals(nameOrID)
+                    || suppliersList[i].getSupplierName().toLowerCase().equals(nameOrID.toLowerCase().trim())) {
                 return i;
             }
         }
@@ -103,7 +103,7 @@ public class SuppliersBUS implements IRuleSets {
     public Suppliers[] relativeFind(String name) {
         int count = 0;
         Suppliers[] suppliersArray = new Suppliers[0];
-        for (Suppliers supplier : supplierList)
+        for (Suppliers supplier : suppliersList)
             if (supplier.getSupplierName().toLowerCase().contains(name.toLowerCase())) {
                 suppliersArray = Arrays.copyOf(suppliersArray, suppliersArray.length + 1);
                 suppliersArray[count] = supplier;
@@ -125,7 +125,7 @@ public class SuppliersBUS implements IRuleSets {
     public void search(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1)
-            showAsTable(supplierList[index]);
+            showAsTable(suppliersList[index]);
     }
 
     public void relativeSearch(String name) {
@@ -142,8 +142,8 @@ public class SuppliersBUS implements IRuleSets {
     @Override
     public void add(Object supplier) {
         if (supplier instanceof Suppliers) {
-            supplierList = Arrays.copyOf(supplierList, supplierList.length + 1);
-            supplierList[count] = (Suppliers) supplier;
+            suppliersList = Arrays.copyOf(suppliersList, suppliersList.length + 1);
+            suppliersList[count] = (Suppliers) supplier;
             count++;
         } else
             System.out.println("Your new supplier is not correct!");
@@ -153,10 +153,10 @@ public class SuppliersBUS implements IRuleSets {
         int tempIndex = 0, newListLength = newSuppliers.length;
         int initCount = getCount();
         int total = initCount + newListLength;
-        supplierList = Arrays.copyOf(supplierList, supplierList.length + newListLength);
+        suppliersList = Arrays.copyOf(suppliersList, suppliersList.length + newListLength);
 
         for (int i = initCount; i < total; i++, tempIndex++)
-            supplierList[i] = newSuppliers[tempIndex];
+            suppliersList[i] = newSuppliers[tempIndex];
         SuppliersBUS.count = total;
     }
 
@@ -171,7 +171,7 @@ public class SuppliersBUS implements IRuleSets {
         if (index != -1) {
             int userChoose;
             // show list for user choose
-            showAsTable(supplierList[index]);
+            showAsTable(suppliersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                  System.out.print("choose option (1 or 2) : ");
@@ -199,8 +199,37 @@ public class SuppliersBUS implements IRuleSets {
                     newPhone = "";
                 }
             } while (newPhone.isEmpty());
-            supplierList[index].setSupplierName(newName);
-            supplierList[index].setPhone(newPhone);
+            suppliersList[index].setSupplierName(newName);
+            suppliersList[index].setPhone(newPhone);
+        }
+    }
+
+    public void editPhone(String supplierID) {
+        int index = find(supplierID);
+        if (index != -1) {
+            String phone;
+            int userChoose;
+
+            showAsTable(suppliersList[index]);
+            System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
+            do {
+                System.out.print("Choose option (1 or 2): ");
+                String option = input.nextLine().trim();
+                userChoose = Validate.parseChooseHandler(option, 2);
+            } while (userChoose == -1);
+            if (userChoose == 1)
+                return;
+
+            do {
+                System.out.print("Edit phone: ");
+                phone = input.nextLine().trim();
+                if (!Validate.validatePhone(phone)) {
+                    System.out.println("Error: Invalid phone number!");
+                    phone = "";
+                }
+            } while (phone.isEmpty());
+
+            suppliersList[index].setPhone(phone);
         }
     }
 
@@ -215,7 +244,7 @@ public class SuppliersBUS implements IRuleSets {
         if (index != -1) {
             int userChoose;
             // show list for user choose
-            showAsTable(supplierList[index]);
+            showAsTable(suppliersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
                  System.out.print("choose option (1 or 2) : ");
@@ -225,9 +254,9 @@ public class SuppliersBUS implements IRuleSets {
             if (userChoose == 1)
                  return;
 
-            for (int i = index; i < supplierList.length - 1; i++)
-                supplierList[i] = supplierList[i + 1];
-            supplierList = Arrays.copyOf(supplierList, supplierList.length - 1);
+            for (int i = index; i < suppliersList.length - 1; i++)
+                suppliersList[i] = suppliersList[i + 1];
+            suppliersList = Arrays.copyOf(suppliersList, suppliersList.length - 1);
             count--;
         }
     }
@@ -265,9 +294,9 @@ public class SuppliersBUS implements IRuleSets {
                 new BufferedOutputStream(new FileOutputStream("../../resources/Suppliers", false)))) {
             file.writeInt(count);
             for (int i = 0; i < count; i++) {
-                file.writeUTF(supplierList[i].getSupplierID());
-                file.writeUTF(supplierList[i].getSupplierName());
-                file.writeUTF(supplierList[i].getPhone());
+                file.writeUTF(suppliersList[i].getSupplierID());
+                file.writeUTF(suppliersList[i].getSupplierName());
+                file.writeUTF(suppliersList[i].getPhone());
             }
             System.out.println("Write done!");
         } catch (Exception e) {
@@ -287,7 +316,7 @@ public class SuppliersBUS implements IRuleSets {
                 String phone = file.readUTF();
                 list[i] = new Suppliers(supplierID, supplierName, phone);
             }
-            SuppliersBUS.supplierList = list;
+            SuppliersBUS.suppliersList = list;
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
         }

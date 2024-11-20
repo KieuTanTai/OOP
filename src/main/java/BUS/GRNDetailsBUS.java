@@ -18,8 +18,8 @@ import DTO.Stationeries;
 import util.Validate;
 
 public class GRNDetailsBUS {
-     private static GRNDetails[] grnDetailsList;
-     private static int count;
+     private GRNDetails[] grnDetailsList;
+     private int count;
      private Scanner input = new Scanner(System.in);
 
      // constructors
@@ -29,20 +29,20 @@ public class GRNDetailsBUS {
      }
 
      public GRNDetailsBUS(GRNDetails[] grnDetailsList, int count) {
-          GRNDetailsBUS.count = count;
-          GRNDetailsBUS.grnDetailsList = grnDetailsList;
+          this.count = count;
+          this.grnDetailsList = grnDetailsList;
      }
 
      // getters / setters
-     public static int getCount() {
+     public int getCount() {
           return count;
      }
 
-     public static GRNDetails[] getGrnDetailsList() {
-          return Arrays.copyOf(grnDetailsList, grnDetailsList.length);
+     public GRNDetails[] getGrnDetailsList() {
+          return this.grnDetailsList;
      }
 
-     public static GRNDetails getGRNDetail(String grnID) {
+     public GRNDetails getGRNDetail(String grnID) {
           for (GRNDetails grnDetail : grnDetailsList)
                if (grnDetail.getGrnID().equals(grnID))
                     return grnDetail;
@@ -50,7 +50,7 @@ public class GRNDetailsBUS {
      }
 
      public void setCount(int count) {
-          GRNDetailsBUS.count = count;
+          this.count = count;
      }
 
      public void setGrnDetail(GRNDetails now, GRNDetails newDetail) {
@@ -60,12 +60,12 @@ public class GRNDetailsBUS {
      }
 
      public void setGrnDetailsList(GRNDetails[] grnDetailsList) {
-          GRNDetailsBUS.grnDetailsList = grnDetailsList;
+          this.grnDetailsList = grnDetailsList;
      }
 
      // all others methods like: add remove edit find....
      // show list
-     public static void showList() {
+     public void showList() {
           if (grnDetailsList == null)
                return;
           showAsTable(grnDetailsList);
@@ -73,7 +73,7 @@ public class GRNDetailsBUS {
 
      // find methods
      // strict find
-     public int find(String grnID) {
+     public int find(String grnID, String productID) {
           for (int i = 0; i < grnDetailsList.length; i++) {
                if (grnDetailsList[i].getGrnID().equals(grnID))
                     return i;
@@ -100,8 +100,8 @@ public class GRNDetailsBUS {
 
      // search methods
      // strict search
-     public void search(String grnID) {
-          int index = find(grnID);
+     public void search(String grnID, String productID) {
+          int index = find(grnID, productID);
           if (index == -1) {
                System.out.println("404 not found!");
                return;
@@ -126,13 +126,14 @@ public class GRNDetailsBUS {
      }
 
      public void add(GRNDetails[] details) {
-          for (GRNDetails detail : details) {
-               if (getGRNDetail(detail.getGrnID()) == null) {
-                    grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length + 1);
-                    grnDetailsList[count] = detail;
-                    count++;
-               }
-          }
+          int tempIndex = 0, newListLength = details.length;
+          int initCount = getCount();
+          int total = initCount + newListLength;
+          grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length + newListLength);
+
+          for (int i = initCount; i < total; i++, tempIndex++)
+               grnDetailsList[i] = details[tempIndex];
+          this.count = total;
      }
 
      // edit method
@@ -204,8 +205,7 @@ public class GRNDetailsBUS {
                               return;
                          bookList.add(book);
                          bookList.writeFile();
-                    }
-                    else {
+                    } else {
                          int tempChoose;
                          StationeriesBUS staList = new StationeriesBUS();
                          staList.readFile();
@@ -234,20 +234,27 @@ public class GRNDetailsBUS {
 
      // remove methods
      public void remove(String grnID) {
-          int index = find(grnID);
-          if (index == -1) {
-               System.out.println("404 not found!");
+          int size = 0;
+          GRNDetails[] reduceArray = new GRNDetails[0];
+          for (int i = 0; i < grnDetailsList.length; i++) {
+               if (grnDetailsList[i].getGrnID().equals(grnID))
+                    continue;
+               reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+               reduceArray[size] = grnDetailsList[i];
+               size++;
+          }
+
+          if (size == grnDetailsList.length) {
+               System.out.println("not found any mid!");
                return;
           }
-          for (int i = index; i < count - 1; i++) {
-               grnDetailsList[i] = grnDetailsList[i + 1];
-          }
-          grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length - 1);
-          count--;
+
+          setCount(size);
+          setGrnDetailsList(reduceArray);
      }
 
      // show as table methods
-     public static void showAsTable(GRNDetails[] list) {
+     public void showAsTable(GRNDetails[] list) {
           if (list == null)
                return;
           System.out.println("=".repeat(180));
@@ -264,7 +271,7 @@ public class GRNDetailsBUS {
           System.out.println("=".repeat(180));
      }
 
-     public static void showAsTable(GRNDetails item) {
+     public void showAsTable(GRNDetails item) {
           if (item == null)
                return;
           System.out.println("=".repeat(180));

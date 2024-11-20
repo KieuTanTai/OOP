@@ -144,7 +144,7 @@ public class Stationeries extends Products {
      @Override
      public void setInfo() {
         System.out.println("*".repeat(60));
-          String id = setID();
+          String id = setID(this);
 
         System.out.println("-".repeat(60));
           String staID = setStationeriesID();
@@ -207,7 +207,7 @@ public class Stationeries extends Products {
           BigDecimal price = this.getProductPrice();
           String productID = this.getProductID(), productName = this.getProductName();
 
-          System.out.println("=".repeat(160));
+          System.out.println("=".repeat(140));
           System.out.printf("| %-22s : %s \n", "ID", productID != null ? productID : "N/A");
           System.out.printf("| %-22s : %s \n", "Stationeries ID", stationaryID != null ? stationaryID : "N/A");
           System.out.printf("| %-22s : %s \n", "Name", productName != null ? productName : "N/A");
@@ -218,7 +218,7 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");
           System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
           System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
-          System.out.println("=".repeat(160));
+          System.out.println("=".repeat(140));
      }
 
      private String stationaryIDModifier(String stationaryID) {

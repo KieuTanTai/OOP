@@ -62,14 +62,14 @@ public class Employees extends Person {
 
     // setter no params
     public String setStatus() {
-        String[] status = {"Active", "Inactive"};
+        String[] status = { "Active", "Inactive" };
         int userChoose;
         System.out.printf("| %s %s %s |\n", "I.Active", "-".repeat(20), "II.Inactive");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
             userChoose = Validate.parseChooseHandler(option, 2);
-        } while (userChoose == -1); 
+        } while (userChoose == -1);
         return status[userChoose - 1];
     }
 
@@ -101,10 +101,11 @@ public class Employees extends Person {
 
     public String setRole() {
         int userChoose;
-        String[] roles = {"Manager", "Employee", "Warehouse Keeper"};
+        String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
         // show list for user choose
         System.out.printf("=".repeat(160) + "\n");
-        System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20), roles[2]);
+        System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20),
+                roles[2]);
         do {
             System.out.print("choose role (like 1, 2,etc...): ");
             String option = input.nextLine().trim();
@@ -118,7 +119,7 @@ public class Employees extends Person {
     @Override
     public void setInfo() {
         System.out.println("*".repeat(60));
-        String id = setID();
+        String id = setID(this);
 
         System.out.println("-".repeat(60));
         String fistName = setFirstName();
@@ -140,10 +141,10 @@ public class Employees extends Person {
 
         System.out.println("-".repeat(60));
         String password = setPassword();
-        
+
         System.out.println("-".repeat(60));
         String role = setRole();
-        
+
         int userChoose;
         System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
@@ -173,15 +174,16 @@ public class Employees extends Person {
         LocalDate dateOfBirth = getDateOfBirth();
         String employeeID = getPersonID(), employeeName = getFullName(), phone = getPhoneNumber();
 
-        System.out.println("=".repeat(160));
+        System.out.println("=".repeat(140));
         System.out.printf("| %-22s : %s \n", "ID", employeeID != null ? employeeID : "N/A");
         System.out.printf("| %-22s : %s \n", "Username", this.username != null ? this.username : "N/A");
         System.out.printf("| %-22s : %s \n", "Full Name", employeeName != null ? employeeName : "N/A");
-        System.out.printf("| %-22s : %s \n", "Birthday", dateOfBirth != null ? dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Birthday",
+                dateOfBirth != null ? dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
         System.out.printf("| %-22s : %s \n", "Phone", phone != null ? phone : "N/A");
         System.out.printf("| %-22s : %s \n", "Status", this.status != null ? this.status : "N/A");
         System.out.printf("| %-22s : %s \n", "Role", this.role != null ? this.role : "N/A");
-        System.out.println("=".repeat(160));
+        System.out.println("=".repeat(140));
     }
 
     @Override
@@ -195,11 +197,10 @@ public class Employees extends Person {
         return "EMP" + employeeID + "PS";
     }
 
-
     // hash password / check password
     private String hashPassword(String password) {
         // check if password has been hashed or not
-        if (!password.startsWith("EMP") && !password.startsWith("PS") && password.length() != 8)
+        if (!password.startsWith("EMP") && !password.startsWith("PS") && password.length() != 13)
             return password;
         return BCrypt.hashpw(password, BCrypt.gensalt(8));
     }

@@ -271,7 +271,7 @@ public class GRNsBUS implements IRuleSets {
                SuppliersBUS.showList();
                if (SuppliersBUS.getCount() == 0) // if not have any supplier
                     return;
-               System.out.println("----------------------------");
+               System.out.println("-".repeat(60));
                do {
                     System.out.print("choose supplier (like 1, 2,etc...) : ");
                     String option = input.nextLine().trim();

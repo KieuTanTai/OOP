@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Scanner;
 
+import BUS.BooksBUS;
 import BUS.EmployeesBUS;
 import BUS.GRNDetailsBUS;
+import BUS.StationeriesBUS;
 import BUS.SuppliersBUS;
 import util.Validate;
 
@@ -78,7 +79,7 @@ public class GRNs {
      // set id
      public String setID() {
           String id;
-          GRNDetails[] list = GRNDetailsBUS.getGrnDetailsList();
+          GRNDetails[] list = new GRNDetailsBUS().getGrnDetailsList();
 
           if (list.length == 0) {
                return "00000001";
@@ -106,7 +107,6 @@ public class GRNs {
                     String option = input.nextLine().trim();
                     userChoose = Validate.parseChooseHandler(option, tempList.length);
                } while (userChoose == -1);
-               ;
                return tempList[userChoose - 1];
           } catch (IOException e) {
                System.out.println("error reading file!\n" + e.getMessage());
@@ -132,49 +132,161 @@ public class GRNs {
           return supplier;
      }
 
-     // set grn detail
+     // set grn detail (NEED TO FIX)
      public GRNDetails[] setGRNDetails() {
-          BigDecimal newPrice;
-          GRNDetails newGrnDetails = null;
-          GRNDetails[] listGRN = new GRNDetails[0];
-          int productChoose, totalProduct, newQuantity, count = 0;
+          GRNDetailsBUS listGRN = new GRNDetailsBUS();
+          int userChoose = 0;
 
-          System.out.println("*".repeat(60));
-          System.out.println("product on grn!");
-          // let total product
           do {
-               System.out.print("choose total block product (like 1, 2, 3,etc.....) : ");
+               System.out.println("I. Add detail");
+               System.out.println("II. Remove detail");
+               System.out.println("III. Edit detail");
+               System.out.println("0: Exit!");
+               System.out.println("-".repeat(60));
+               System.out.print("choose option (like 0, 1, 2,etc...) : ");
                String option = input.nextLine().trim();
-               totalProduct = Validate.isNumber(option);
-          } while (totalProduct == -1);
+               userChoose = Validate.parseChooseHandler(option, SuppliersBUS.getCount());
 
-          for (int i = 0; i < totalProduct; i++) {
-               // choose type product -> set price of this -> set quantity of this
-               System.out.println("-".repeat(60));
-               productChoose = chooseTypeProduct();
+               // execute userChoose
+               try {
+                    switch (userChoose) {
+                         case 1: //add
+                              int index = 0;
+                              String productID = "";
 
-               System.out.println("-".repeat(60));
-               newPrice = setPrice();
+                              if (chooseTypeProduct() == 1) {
+                                   BooksBUS booksList = new BooksBUS();
+                                   booksList.readFile();
+                                   booksList.showList();
 
-               System.out.println("-".repeat(60));
-               newQuantity = setQuantity();
+                                   do {
+                                        System.out.println(
+                                                  "NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
+                                        System.out.print("product id: ");
+                                        productID = input.nextLine().trim();
 
-               System.out.println("-".repeat(60));
-               if (productChoose == 1) {
-                    Books book = new Books();
-                    book.setInfo();
-                    newGrnDetails = new GRNDetails(grnID, book, newQuantity, newPrice);
-               } else {
-                    Stationeries stationary = new Stationeries();
-                    stationary.setInfo();
-                    newGrnDetails = new GRNDetails(grnID, stationary, newQuantity, newPrice);
+                                        // execute when wanna receive new book
+                                        if (productID.toLowerCase().equals("new"))
+                                             break;
+
+                                        index = booksList.find(productID);
+                                        if (index == -1)
+                                             productID = "";
+                                   } while (productID == "");
+
+                                   // create new book
+                                   Books product;
+                                   if (productID.equals("new")) {
+                                        product = new Books();
+                                        product.setInfo();
+                                   } else
+                                        product = booksList.getBooksList()[index];
+                                   int quantity = setQuantity();
+                                   BigDecimal price = product.getProductPrice();
+
+                                   // for user submit
+                                   System.out.println("*".repeat(60));
+                                   System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+                                   do {
+                                        System.out.print("choose option (like 1, 2,etc...): ");
+                                        option = input.nextLine().trim();
+                                        userChoose = Validate.parseChooseHandler(option, 2);
+                                   } while (userChoose == -1);
+                                   if (userChoose == 1) {
+                                        System.out.println("ok!");
+                                        break;
+                                   }
+
+                                   // add new book
+                                   if (productID.equals("new")) {
+                                        booksList.add(product);
+                                        booksList.writeFile();
+                                   }
+                                   listGRN.add(new GRNDetails(productID, product, quantity, price));
+
+                              } else {
+                                   StationeriesBUS staList = new StationeriesBUS();
+                                   staList.readFile();
+                                   staList.showList();
+
+                                   do {
+                                        System.out.println(
+                                                  "NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
+                                        System.out.print("product id: ");
+                                        productID = input.nextLine().trim();
+
+                                        // execute when wanna receive new book
+                                        if (productID.equals("new"))
+                                             break;
+
+                                        index = staList.find(productID);
+                                        if (index == -1)
+                                             productID = "";
+                                   } while (productID == "");
+
+                                   // create new stationary
+                                   Stationeries product;
+                                   if (productID.equals("new")) {
+                                        product = new Stationeries();
+                                        product.setInfo();
+                                   } else
+                                        product = staList.getStaList()[index];
+                                   int quantity = setQuantity();
+                                   BigDecimal price = product.getProductPrice();
+
+                                   // for user submit
+                                   System.out.println("*".repeat(60));
+                                   System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+                                   do {
+                                        System.out.print("choose option (like 1, 2,etc...): ");
+                                        option = input.nextLine().trim();
+                                        userChoose = Validate.parseChooseHandler(option, 2);
+                                   } while (userChoose == -1);
+                                   if (userChoose == 1) {
+                                        System.out.println("ok!");
+                                        break;
+                                   }
+
+                                   // add new stationary
+                                   if (productID.equals("new")) {
+                                        staList.add(product);
+                                        staList.writeFile();
+                                   }
+                                   listGRN.add(new GRNDetails(productID, product, quantity, price));
+                              }
+                              break;
+
+                         case 2: //remove
+                              if (listGRN.getCount() == 0 || listGRN == null) // if not have any grn detail
+                                   break;
+                              System.out.println("-".repeat(60));
+                              do {
+                                   System.out.print("choose grn (like 1, 2,etc...) : ");
+                                   option = input.nextLine().trim();
+                                   userChoose = Validate.parseChooseHandler(option, listGRN.getCount());
+                              } while (userChoose == -1);
+
+                              listGRN.remove(listGRN.getGrnDetailsList()[userChoose - 1].getGrnID());
+                              break;
+
+                         case 3: //edit
+                              if (listGRN.getCount() == 0 || listGRN == null) // if not have any grn detail
+                                   break;
+                              System.out.println("-".repeat(60));
+                              do {
+                                   System.out.print("choose grn (like 1, 2,etc...) : ");
+                                   option = input.nextLine().trim();
+                                   userChoose = Validate.parseChooseHandler(option, listGRN.getCount());
+                              } while (userChoose == -1);
+
+                              listGRN.edit(listGRN.getGrnDetailsList()[userChoose - 1].getGrnID());
+                              break;
+                    }
+               } catch (Exception e) {
+                    System.out.printf("error when execute file!\nt%s\n", e.getMessage());
                }
-               System.out.println("*".repeat(60));
-               listGRN = Arrays.copyOf(listGRN, listGRN.length);
-               listGRN[count] = newGrnDetails;
-               count++;
-          }
-          return listGRN;
+          } while (userChoose == -1 && userChoose != 0);
+          return listGRN.getGrnDetailsList();
      }
 
      // private set methods for grn detail
@@ -187,17 +299,6 @@ public class GRNs {
                quantity = Validate.isNumber(quantityInput);
           } while (quantity == -1);
           return quantity;
-     }
-
-     private BigDecimal setPrice() {
-          BigDecimal price;
-          // let new price
-          do {
-               System.out.print("set price (VND) : ");
-               String value = input.nextLine();
-               price = Validate.isBigDecimal(value);
-          } while (price == null);
-          return price;
      }
 
      private int chooseTypeProduct() {

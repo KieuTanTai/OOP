@@ -18,8 +18,8 @@ import DTO.Stationeries;
 import util.Validate;
 
 public class GRNDetailsBUS {
-     private static GRNDetails[] grnDetailsList;
-     private static int count;
+     private GRNDetails[] grnDetailsList;
+     private int count;
      private Scanner input = new Scanner(System.in);
 
      // constructors
@@ -29,20 +29,20 @@ public class GRNDetailsBUS {
      }
 
      public GRNDetailsBUS(GRNDetails[] grnDetailsList, int count) {
-          GRNDetailsBUS.count = count;
-          GRNDetailsBUS.grnDetailsList = grnDetailsList;
+          this.count = count;
+          this.grnDetailsList = grnDetailsList;
      }
 
      // getters / setters
-     public static int getCount() {
+     public int getCount() {
           return count;
      }
 
-     public static GRNDetails[] getGrnDetailsList() {
-          return Arrays.copyOf(grnDetailsList, grnDetailsList.length);
+     public GRNDetails[] getGrnDetailsList() {
+          return this.grnDetailsList;
      }
 
-     public static GRNDetails getGRNDetail(String grnID) {
+     public GRNDetails getGRNDetail(String grnID) {
           for (GRNDetails grnDetail : grnDetailsList)
                if (grnDetail.getGrnID().equals(grnID))
                     return grnDetail;
@@ -50,7 +50,7 @@ public class GRNDetailsBUS {
      }
 
      public void setCount(int count) {
-          GRNDetailsBUS.count = count;
+          this.count = count;
      }
 
      public void setGrnDetail(GRNDetails now, GRNDetails newDetail) {
@@ -60,12 +60,12 @@ public class GRNDetailsBUS {
      }
 
      public void setGrnDetailsList(GRNDetails[] grnDetailsList) {
-          GRNDetailsBUS.grnDetailsList = grnDetailsList;
+          this.grnDetailsList = grnDetailsList;
      }
 
      // all others methods like: add remove edit find....
      // show list
-     public static void showList() {
+     public void showList() {
           if (grnDetailsList == null)
                return;
           showAsTable(grnDetailsList);
@@ -126,13 +126,14 @@ public class GRNDetailsBUS {
      }
 
      public void add(GRNDetails[] details) {
-          for (GRNDetails detail : details) {
-               if (getGRNDetail(detail.getGrnID()) == null) {
-                    grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length + 1);
-                    grnDetailsList[count] = detail;
-                    count++;
-               }
-          }
+          int tempIndex = 0, newListLength = details.length;
+          int initCount = getCount();
+          int total = initCount + newListLength;
+          grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length + newListLength);
+
+          for (int i = initCount; i < total; i++, tempIndex++)
+               grnDetailsList[i] = details[tempIndex];
+          this.count = total;
      }
 
      // edit method
@@ -253,7 +254,7 @@ public class GRNDetailsBUS {
      }
 
      // show as table methods
-     public static void showAsTable(GRNDetails[] list) {
+     public void showAsTable(GRNDetails[] list) {
           if (list == null)
                return;
           System.out.println("=".repeat(180));
@@ -270,7 +271,7 @@ public class GRNDetailsBUS {
           System.out.println("=".repeat(180));
      }
 
-     public static void showAsTable(GRNDetails item) {
+     public void showAsTable(GRNDetails item) {
           if (item == null)
                return;
           System.out.println("=".repeat(180));

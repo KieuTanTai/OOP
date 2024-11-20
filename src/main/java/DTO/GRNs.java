@@ -90,17 +90,6 @@ public class GRNs {
           return id;
      }
 
-     // set date
-     public LocalDate setDate() {
-          LocalDate date;
-          do {
-               System.out.print("set release date : ");
-               String dateInput = input.nextLine().trim();
-               date = Validate.isCorrectDate(dateInput);
-          } while (date == null);
-          return date;
-     }
-
      // set employee
      public Employees setEmployee() {
           try {
@@ -229,10 +218,7 @@ public class GRNs {
           String id = setID();
 
           System.out.println("-".repeat(60));
-          LocalDate date = setDate();
-
-          System.out.println("-".repeat(60));
-          BigDecimal totalPrice;
+          LocalDate date = LocalDate.parse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
           System.out.println("-".repeat(60));
           Employees employee = setEmployee();
@@ -244,6 +230,7 @@ public class GRNs {
           GRNDetails[] detailsArray = setGRNDetails();
 
           int userChoose;
+          BigDecimal totalPrice = new BigDecimal(0);
           System.out.println("*".repeat(60));
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
@@ -261,18 +248,21 @@ public class GRNs {
                setDate(date);
                setEmployee(employee);
                setSupplier(supplier);
-               // setTotalPrice(totalPrice);
                // execute grn detail
                try {
                     GRNDetailsBUS detailList = new GRNDetailsBUS();
                     detailList.readFile();
                     for (GRNDetails detail : detailsArray)
-                         if (detailList.find(detail.getGrnID()) == -1)
+                         if (detailList.find(detail.getGrnID(), detail.getProduct().getProductID()) == -1) {
+                              totalPrice.add(detail.getSubTotal());
                               detailList.add(detail);
+                         }
                     detailList.writeFile();
                } catch (Exception e) {
                     System.out.println("error writing or reading file!\n" + e.getMessage());
                }
+               setTotalPrice(totalPrice);
+
                System.out.println("create and set fields success");
           }
      }

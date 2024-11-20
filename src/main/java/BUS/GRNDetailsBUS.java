@@ -73,7 +73,7 @@ public class GRNDetailsBUS {
 
      // find methods
      // strict find
-     public int find(String grnID) {
+     public int find(String grnID, String productID) {
           for (int i = 0; i < grnDetailsList.length; i++) {
                if (grnDetailsList[i].getGrnID().equals(grnID))
                     return i;
@@ -100,8 +100,8 @@ public class GRNDetailsBUS {
 
      // search methods
      // strict search
-     public void search(String grnID) {
-          int index = find(grnID);
+     public void search(String grnID, String productID) {
+          int index = find(grnID, productID);
           if (index == -1) {
                System.out.println("404 not found!");
                return;
@@ -204,8 +204,7 @@ public class GRNDetailsBUS {
                               return;
                          bookList.add(book);
                          bookList.writeFile();
-                    }
-                    else {
+                    } else {
                          int tempChoose;
                          StationeriesBUS staList = new StationeriesBUS();
                          staList.readFile();
@@ -234,16 +233,23 @@ public class GRNDetailsBUS {
 
      // remove methods
      public void remove(String grnID) {
-          int index = find(grnID);
-          if (index == -1) {
-               System.out.println("404 not found!");
+          int size = 0;
+          GRNDetails[] reduceArray = new GRNDetails[0];
+          for (int i = 0; i < grnDetailsList.length; i++) {
+               if (grnDetailsList[i].getGrnID().equals(grnID))
+                    continue;
+               reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+               reduceArray[size] = grnDetailsList[i];
+               size++;
+          }
+
+          if (size == grnDetailsList.length) {
+               System.out.println("not found any mid!");
                return;
           }
-          for (int i = index; i < count - 1; i++) {
-               grnDetailsList[i] = grnDetailsList[i + 1];
-          }
-          grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length - 1);
-          count--;
+
+          setCount(size);
+          setGrnDetailsList(reduceArray);
      }
 
      // show as table methods

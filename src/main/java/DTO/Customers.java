@@ -125,7 +125,7 @@ public class Customers extends Person {
                 level = "normal";
         }
         
-        System.out.println("=".repeat(160));
+        System.out.println("=".repeat(140));
         System.out.printf("| %-22s : %s \n", "Customer", customerID != null ? customerID : "N/A");
         System.out.printf("| %-22s : %s \n", "Full Name", customerName!= null ? customerName: "N/A");
         System.out.printf("| %-22s : %s \n", "Date of Birth",
@@ -134,7 +134,7 @@ public class Customers extends Person {
         System.out.printf("| %-22s : %s \n", "Phone Number", phone != null ? phone : "N/A");
         System.out.printf("| %-22s : %s \n", "Address", address != null ? address : "N/A");
         System.out.printf("| %-22s : %s (%s)\n", "point", point != null ? point  : "N/A", level);
-        System.out.println("=".repeat(160));
+        System.out.println("=".repeat(140));
     }
 
     @Override

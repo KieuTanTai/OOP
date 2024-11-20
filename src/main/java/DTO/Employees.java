@@ -173,7 +173,7 @@ public class Employees extends Person {
         LocalDate dateOfBirth = getDateOfBirth();
         String employeeID = getPersonID(), employeeName = getFullName(), phone = getPhoneNumber();
 
-        System.out.println("=".repeat(160));
+        System.out.println("=".repeat(140));
         System.out.printf("| %-22s : %s \n", "ID", employeeID != null ? employeeID : "N/A");
         System.out.printf("| %-22s : %s \n", "Username", this.username != null ? this.username : "N/A");
         System.out.printf("| %-22s : %s \n", "Full Name", employeeName != null ? employeeName : "N/A");
@@ -181,7 +181,7 @@ public class Employees extends Person {
         System.out.printf("| %-22s : %s \n", "Phone", phone != null ? phone : "N/A");
         System.out.printf("| %-22s : %s \n", "Status", this.status != null ? this.status : "N/A");
         System.out.printf("| %-22s : %s \n", "Role", this.role != null ? this.role : "N/A");
-        System.out.println("=".repeat(160));
+        System.out.println("=".repeat(140));
     }
 
     @Override

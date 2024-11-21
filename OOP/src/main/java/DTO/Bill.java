@@ -2,6 +2,9 @@ package DTO;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
+
+import BUS.BillDetailsBus;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import util.Validate;
@@ -15,10 +18,12 @@ public class Bill {
     private BigDecimal discount;
     private BigDecimal totalPrice;
     private LocalDate date;
+    private BillDetailsBus detailsBus;
     
     Scanner sc = new Scanner(System.in);
 
     public Bill() {
+        detailsBus = new BillDetailsBus();
     }
  
     public Bill(String billId, String employeeId, String customerId, SaleEvents saleCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
@@ -152,6 +157,14 @@ public class Bill {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public BillDetailsBus getDetailsBus() {
+        return detailsBus;
+    }
+
+    public void setDetailsBus(BillDetailsBus detailsBus) {
+        this.detailsBus = detailsBus;
     }
 
     @Override

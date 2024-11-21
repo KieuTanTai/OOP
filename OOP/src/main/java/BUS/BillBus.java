@@ -50,7 +50,7 @@ public class BillBus{
     public void createBillDetailsList() {
         System.out.println("insert the number of bill details: ");
         int numberOfDetails = sc.nextInt();
-        sc.nextLine(); // Đọc dòng thừa sau khi nhập số
+        sc.nextLine(); 
 
         for (int i = 0; i < numberOfDetails; i++) {
             System.out.println("Input details for Bill Detail #" + (i + 1));

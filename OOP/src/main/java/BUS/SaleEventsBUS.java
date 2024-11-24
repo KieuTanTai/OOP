@@ -30,7 +30,6 @@ public class SaleEventsBUS {
                 ListSaleEvent[i].nhap();
     }
 
-
     public boolean delete(int vt) {
         if (vt >= count)
             return false;
@@ -43,5 +42,30 @@ public class SaleEventsBUS {
         return true;
     }
 
-    public void find(){}
+    public SaleEvents findById(String  id){
+        SaleEvents result = new SaleEvents();
+
+        for (int i = 0 ; i < count ; i++){
+            if (ListSaleEvent[i].getSaleEvId() == id){
+                result = ListSaleEvent[i];
+            }
+        }
+        return  result;
+    }
+
+    public SaleEvents findByName(String name){
+        SaleEvents result = new SaleEvents();
+
+        for (int i=0; i < count; i++){
+            if (ListSaleEvent[i].getSaleEvName() == name)
+                result = ListSaleEvent[i];
+
+        }
+        return result;
+    }
+
+    public void readFile(){}
+
+    public void writeFile(){}
+
 }

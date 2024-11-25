@@ -57,9 +57,11 @@ public class BillBus{
             BillDetails detail = new BillDetails();
             detail.nhap();
             detailsBus.add(detail); 
+        }
 
         System.out.println("The Bill Details for this bill are: ");
         detailsBus.xuat(); 
+    }
 
     public void nhap(){
         System.out.println("Vui long nhap so luong bill");
@@ -85,6 +87,11 @@ public class BillBus{
     public void add(){
         Bill ds = new Bill();
         ds.nhap();
+        System.out.println("Do you want to add details for this bill? (Y/N)");
+        String choice = sc.nextLine().trim().toUpperCase();
+        if (choice.equals("Y")) {
+            ds.getDetailsBus().createBillDetailsList(); // Gọi hàm tạo danh sách BillDetails
+        }
         add(ds);
     }
 

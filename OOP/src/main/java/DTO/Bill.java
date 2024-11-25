@@ -138,12 +138,11 @@ public class Bill {
     }
 
     public BigDecimal getTotalPrice() {
-        // for(int i = 0; i < dsDetails.size(); ++i){
-        //     BillDetails detail = dsDetails.get(i);
-        //     this.totalPrice = totalPrice.add(detail.calcSubTotal());
-        // }
-        //broken
-        return this.totalPrice;
+        BigDecimal total = BigDecimal.ZERO;
+        for (BillDetails detail : detailsBus.getds()) {
+            total = total.add(detail.calcSubTotal());
+        }
+        return total;
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {

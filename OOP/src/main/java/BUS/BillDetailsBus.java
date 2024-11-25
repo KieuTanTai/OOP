@@ -7,18 +7,18 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class BillDetailsBus {
-    private static BillDetails[] ds;
-    private static int n;
+    private BillDetails[] ds;
+    private int n;
     Scanner sc = new Scanner(System.in);
 
     public BillDetailsBus(){
-        BillDetailsBus.n = 0;
+        this.n = 0;
         ds = new BillDetails[0];
     }
 
     public BillDetailsBus(BillDetails[] ds, int n){
-        BillDetailsBus.n = n;
-        BillDetailsBus.ds = ds;
+        this.n = n;
+        this.ds = ds;
     }
 
     public BillDetailsBus(BillDetailsBus list){
@@ -31,15 +31,15 @@ public class BillDetailsBus {
     }
 
     public void setds(BillDetails[] ds){
-        BillDetailsBus.ds = ds;
+        this.ds = ds;
     }
 
     public int getn(){
-        return BillDetailsBus.n;
+        return this.n;
     }
 
     public void setn(int n){
-        BillDetailsBus.n = n;
+        this.n = n;
     }
 
     public void nhap(){
@@ -57,7 +57,26 @@ public class BillDetailsBus {
         }
     }
 
-    public static void add(BillDetails bdObject){
+    public void createBillDetailsList() {
+        System.out.println("Insert the number of bill details: ");
+        int numberOfDetails = sc.nextInt();
+        sc.nextLine(); 
+    
+        ds = Arrays.copyOf(ds, n + numberOfDetails); 
+    
+        for (int i = 0; i < numberOfDetails; i++) {
+            System.out.println("Input details for Bill Detail #" + (i + 1));
+            BillDetails detail = new BillDetails();
+            detail.nhap();  
+            ds[n] = detail;
+            n++;
+        }
+    
+        System.out.println("The Bill Details for this bill are: ");
+        xuat();  
+    }
+
+    public void add(BillDetails bdObject){
         ds = Arrays.copyOf(ds, ds.length + 1);
         ds[n] = (BillDetails) bdObject;
         ++n;
@@ -133,7 +152,7 @@ public class BillDetailsBus {
     public void findSubTotal(BigDecimal sub){
         boolean flag = false;
         for(int i = 0; i < ds.length; ++i){
-            if(ds[i].getPrice().equals(sub)){
+            if(ds[i].getSubTotal().equals(sub)){
                 flag = true;
             }
         }
@@ -149,7 +168,7 @@ public class BillDetailsBus {
         System.out.println("4. search subtotal");
         System.out.println("insert:");
         int m = sc.nextInt();
-        sc.nextInt();
+        sc.nextLine();
 
         switch (m) {
             case 1:
@@ -220,6 +239,7 @@ public class BillDetailsBus {
                         quantity = Validate.isNumber(quantityInput);
                     } while (quantityInput.isEmpty());
                         ds[i].setQuantity(quantity);
+                        ds[i].calcSubTotal();
                         break;
                     case 2:
                     BigDecimal price;
@@ -229,6 +249,7 @@ public class BillDetailsBus {
                          price = Validate.isBigDecimal(value);
                     } while (price == null);
                         ds[i].setPrice(price);
+                        ds[i].calcSubTotal();
                         break;
                     case 3:
                     BigDecimal subTotal;

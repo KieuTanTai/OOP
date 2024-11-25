@@ -89,7 +89,6 @@ public class Customers extends Person {
         int userChoose;               
         System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
-
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();

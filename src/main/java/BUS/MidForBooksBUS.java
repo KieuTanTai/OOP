@@ -86,12 +86,14 @@ public class MidForBooksBUS {
      public MidForBooks[] relativeFind(String id) {
           int count = 0;
           MidForBooks[] list = new MidForBooks[0];
-          for (MidForBooks mid : midList)
+          for (MidForBooks mid : midList) {
+               // System.out.println(mid.getBookID());                
                if (mid.getBookID().equals(id)) {
                     list = Arrays.copyOf(list, list.length + 1);
                     list[count] = mid;
                     count++;
                }
+          }
           if (count == 0) {
                System.out.println("not found any mid!");
                return null;
@@ -99,7 +101,7 @@ public class MidForBooksBUS {
           return list;
      }
 
-     // search methods
+     // search methodssyst
      // *strict search (TEST DONE)
      public void search(String bookID, String genreID) {
           int index = find(bookID, genreID);

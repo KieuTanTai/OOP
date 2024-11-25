@@ -151,7 +151,7 @@ public class GenresBUS implements IRuleSets {
                System.out.println("your new genre is not correct!");
      }
 
-     public void add(BookGenres[] newGenres, int size) {
+     public void add(BookGenres[] newGenres) {
           int tempIndex = 0, newListLength = newGenres.length;
           int initCount = getCount();
           int total = initCount + newListLength;

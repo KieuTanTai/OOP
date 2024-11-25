@@ -97,6 +97,27 @@ public class Suppliers {
         System.out.println("-".repeat(60));
         this.phone = setPhone();
         System.out.println("*".repeat(60));
+
+        int userChoose;
+        System.out.printf("*".repeat(60) + "\n");
+        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+        do {
+            System.out.print("choose option (1 or 2) : ");
+            String option = input.nextLine().trim();
+            userChoose = Validate.parseChooseHandler(option, 2);
+        } while (userChoose == -1);
+        System.out.printf("*".repeat(60) + "\n");
+
+        if (userChoose == 1) {
+            System.out.println("ok!");
+            return;
+
+        } else {
+            setSupplierID(supplierID);
+            setSupplierName(supplierName);
+            setPhone(phone);
+            System.out.println("create and set fields success");
+        }
     }
 
     private String supplierIDModifier(String supplierID) {

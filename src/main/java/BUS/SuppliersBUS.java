@@ -262,12 +262,12 @@ public class SuppliersBUS implements IRuleSets {
         if (list == null)
             return;
         System.out.println("=".repeat(110));
-        System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", "No.", "Suppliers ID", "Phone",  "Suppliers Name");
+        System.out.printf("| \t%-20s %-20s %-20s %-37s |\n", "No.", "Suppliers ID", "Phone",  "Suppliers Name");
         System.out.println("=".repeat(110));
         for (int i = 0; i < list.length; i++) {
             if (i > 0)
                 System.out.println("|" + "-".repeat(108) + "|");
-            System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", i + 1, list[i].getSupplierID(), list[i].getPhone(), list[i].getSupplierName());
+            System.out.printf("| \t%-20s %-20s %-20s %-37s |\n", i + 1, list[i].getSupplierID(), list[i].getPhone(), list[i].getSupplierName());
         }
         System.out.println("=".repeat(110));
     }

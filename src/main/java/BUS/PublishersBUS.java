@@ -139,11 +139,11 @@ public class PublishersBUS implements IRuleSets {
         }
     }
 
-    public void add(Publishers[] newPublishers, int size) {
-        int tempIndex = 0;
+    public void add(Publishers[] newPublishers) {
+        int tempIndex = 0, newListLength =  newPublishers.length;
         int initCount = getCount();
-        int total = initCount + size;
-        publishersList = Arrays.copyOf(publishersList, publishersList.length + newPublishers.length);
+        int total = initCount + newListLength;
+        publishersList = Arrays.copyOf(publishersList, publishersList.length + newListLength);
 
         for (int i = initCount; i < total; i++, tempIndex++)
             publishersList[i] = newPublishers[tempIndex];

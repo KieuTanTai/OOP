@@ -341,7 +341,6 @@ public class GRNs {
                String option = input.nextLine().trim();
                userChoose = Validate.parseChooseHandler(option, 2);
           } while (userChoose == -1);
-
           if (userChoose == 1) {
                System.out.println("ok!");
                return;

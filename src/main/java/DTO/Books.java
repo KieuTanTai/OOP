@@ -225,9 +225,10 @@ public class Books extends Products {
         return listGenres;
     }
 
+    // execute list of genres for product
     public void execGenres(String bookID, BookGenres[] genres) {
-        // execute list of genres for product
         int count = 0;
+        bookID = productIDModifier(bookID);
         MidForBooks[] hashArray = new MidForBooks[0];
         if (genres == null)
             return;

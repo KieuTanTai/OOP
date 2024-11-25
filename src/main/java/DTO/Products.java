@@ -77,7 +77,7 @@ public abstract class Products {
         String id = "";
         try {
             if (key instanceof Books) {
-                BooksBUS booksList = new BooksBUS();;
+                BooksBUS booksList = new BooksBUS();
                 booksList.readFile();
                 Books[] list = booksList.getBooksList();
     

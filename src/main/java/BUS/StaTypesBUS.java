@@ -153,10 +153,10 @@ public class StaTypesBUS implements IRuleSets {
     }
 
     public void add(StaTypes[] newTypes) {
-        int tempIndex = 0;
+        int tempIndex = 0, newListLength = newTypes.length;
         int initCount = getCount();
-        int total = initCount + newTypes.length;
-        typesList = Arrays.copyOf(typesList, typesList.length + newTypes.length);
+        int total = initCount + newListLength;
+        typesList = Arrays.copyOf(typesList, typesList.length + newListLength);
 
         for (int i = initCount; i < total; i++, tempIndex++)
             typesList[i] = newTypes[tempIndex];

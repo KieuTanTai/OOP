@@ -155,7 +155,11 @@ public class Bill {
     }
 
     public BigDecimal getTotalPrice() {
-        return this.totalPrice;
+        BigDecimal total = BigDecimal.ZERO;
+        for (BillDetails detail : detailsBus.getds()) {
+            total = total.add(detail.calcSubTotal());
+        }
+        return total;
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {

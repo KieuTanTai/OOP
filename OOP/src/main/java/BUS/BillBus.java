@@ -45,6 +45,22 @@ public class BillBus{
         this.n = n;
     }
 
+    public void createBillDetailsList() {
+        System.out.println("insert the number of bill details: ");
+        int numberOfDetails = sc.nextInt();
+        sc.nextLine(); 
+
+        for (int i = 0; i < numberOfDetails; i++) {
+            System.out.println("Input details for Bill Detail #" + (i + 1));
+            BillDetails detail = new BillDetails();
+            detail.nhap();
+            detailsBus.add(detail); 
+        }
+
+        System.out.println("The Bill Details for this bill are: ");
+        detailsBus.xuat(); 
+    }
+
     public void nhap(){
         System.out.println("Vui long nhap so luong bill");
         n = sc.nextInt();
@@ -70,6 +86,11 @@ public class BillBus{
     public void add(){
         Bill ds = new Bill();
         ds.nhap();
+        System.out.println("Do you want to add details for this bill? (Y/N)");
+        String choice = sc.nextLine().trim().toUpperCase();
+        if (choice.equals("Y")) {
+            ds.getDetailsBus().createBillDetailsList(); // Gọi hàm tạo danh sách BillDetails
+        }
         add(ds);
     }
 

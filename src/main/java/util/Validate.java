@@ -118,7 +118,7 @@ public class Validate {
 
      // (DONE)
      public static boolean validateID(String inputId) {
-          String regex = "^(?=[a-zA-Z0-9_-]{8}$)[^%+\\/#'::\":]+$";
+          String regex = "^(?=[0-9_-]{8}$)[^%+\\/#'::\":]+$";
           Pattern pattern = Pattern.compile(regex);
           return pattern.matcher(inputId).matches();
      }

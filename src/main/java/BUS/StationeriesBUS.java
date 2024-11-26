@@ -9,6 +9,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,6 +25,8 @@ public class StationeriesBUS implements IRuleSets {
 
     // *constructors (TEST DONE)
     public StationeriesBUS() {
+        this.count = 0;
+        this.staList = new Stationeries[0];
     }
 
     public StationeriesBUS(Stationeries[] staList, int count) {
@@ -656,6 +659,10 @@ public class StationeriesBUS implements IRuleSets {
 
     // read file
     public void readFile() throws IOException {
+          File testFile = new File("src/main/resources/Stationeries");
+          if (testFile.length() == 0)
+               return;
+
         try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/Stationeries")))) {
             count = file.readInt();
             Stationeries[] list = new Stationeries[count];

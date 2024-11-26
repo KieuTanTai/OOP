@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -802,6 +803,10 @@ public class BooksBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
+          File testFile = new File("src/main/resources/Books");
+          if (testFile.length() == 0)
+               return;
+
           try (DataInputStream file = new DataInputStream(
                     new BufferedInputStream(new FileInputStream("src/main/resources/Books")))) {
                count = file.readInt();

@@ -3,7 +3,6 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.regex.Pattern;
 
 import BUS.StaTypesBUS;
 import util.Validate;
@@ -82,7 +81,7 @@ public class Stationeries extends Products {
                     id = "";
                }
           } while (id.isEmpty());
-          return id;
+          return stationaryIDModifier(id);
      }
 
      public StaTypes setType() {
@@ -222,11 +221,10 @@ public class Stationeries extends Products {
      }
 
      private String stationaryIDModifier(String stationaryID) {
-          if (stationaryID.startsWith("STA") && stationaryID.length() == 8)
+          if (stationaryID.startsWith("STA") && stationaryID.length() == 11)
                return stationaryID;
-          String regex = "^(?=[a-zA-Z0-9_-]{5}$)[^%+\\/#'::\":]+$";
-          Pattern pattern = Pattern.compile(regex);
-          if (!pattern.matcher(stationaryID).matches()) {
+          if (!Validate.validateID(stationaryID)) {
+               System.out.println("hello");
                System.out.println("error id!");
                return "N/A";
           }

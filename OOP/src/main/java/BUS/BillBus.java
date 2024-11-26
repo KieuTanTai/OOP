@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.time.LocalDate;
-
+import java.io.*;
 import DTO.*;
 import util.Validate;
 
@@ -388,6 +388,80 @@ public class BillBus{
                 break;
             default:
                 break;
+        }
+    }
+
+public void writeFile() throws IOException   {
+    try (DataOutputStream file = new DataOutputStream(new FileOutputStream("src/main/resources/Bill ", false))) {
+        file.writeInt(n); 
+        for (int i = 0; i < n; ++i) {
+            // write bill
+            file.writeUTF(ds[i].getBillId());
+            file.writeUTF(ds[i].getCustomerId());
+            file.writeUTF(ds[i].getEmployeeId());
+            file.writeUTF(ds[i].getDate().toString());
+            file.writeUTF(ds[i].getDiscount().toString());
+            file.writeUTF(ds[i].getTotalPrice().toString());
+
+            // write bill details
+            BillDetailsBus detailsBus = ds[i].getDetailsBus();
+            if (detailsBus != null && detailsBus.getds() != null) {
+                BillDetails[] details = detailsBus.getds();
+                file.writeInt(details.length); 
+                for (BillDetails detail : details) {
+                    file.writeUTF(detail.getBillId());
+                    file.writeInt(detail.getQuantity());
+                    file.writeUTF(detail.getPrice().toString());
+                }
+            } else {
+                file.writeInt(0); // no bill details
+            }
+        }
+        System.out.println("Write to file successfully!");
+    } catch (IOException e) {
+        System.out.println("Error writing file: " + e.getMessage());
+        }
+    }
+
+    public void readFile() throws IOException{
+        try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Bill"))) {
+            int billCount = file.readInt();
+            Bill[] tmpBill = new Bill[billCount];
+    
+            for (int i = 0; i < billCount; i++) {
+                // read bill
+                String billId = file.readUTF();
+                String customerId = file.readUTF();
+                String employeeId = file.readUTF();
+                LocalDate date = LocalDate.parse(file.readUTF());
+                BigDecimal discount = new BigDecimal(file.readUTF());
+                BigDecimal totalPrice = new BigDecimal(file.readUTF());
+
+                Bill fileBill = new Bill(billId,customerId,employeeId,discount,totalPrice,date);
+                
+                // read bill details
+                int detailsCount = file.readInt();
+                BillDetailsBus tmpDetail = new BillDetailsBus();
+                for (int j = 0; j < detailsCount; j++) {
+                    String billDetailsId = file.readUTF();
+                    int quantity = file.readInt();
+                    BigDecimal price = new BigDecimal(file.readUTF());
+                    BigDecimal subTotal = new BigDecimal(file.readUTF());
+    
+                    BillDetails dt = new BillDetails(billDetailsId, quantity, price, subTotal);
+                    tmpDetail.add(dt);
+                }
+    
+                fileBill.setDetailsBus(detailsBus);
+                tmpBill[i] = fileBill;
+            }
+
+            setds(tmpBill);
+            setn(billCount);
+
+        System.out.println("Read from file successfully!");
+    } catch (IOException e) {
+        System.out.println("Error reading file: " + e.getMessage());
         }
     }
 }

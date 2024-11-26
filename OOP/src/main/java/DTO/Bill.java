@@ -26,11 +26,10 @@ public class Bill {
         detailsBus = new BillDetailsBus();
     }
  
-    public Bill(String billId, String employeeId, String customerId, SaleEvents saleCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
+    public Bill(String billId, String employeeId, String customerId, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
         this.billId = billId;
         this.employeeId = employeeId;
         this.customerId = customerId;
-        this.saleCode = saleCode;
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;

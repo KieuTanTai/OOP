@@ -418,14 +418,6 @@ public class BooksBUS implements IRuleSets {
      }
 
      // relative search
-     public void relativeSearch(BookGenres genre) {
-          Books[] list = relativeFind(genre);
-          if (list != null)
-               for (Books book : list)
-                    book.showInfo();
-
-     }
-
      public void relativeSearch(Object key, String request) {
           Books[] list = relativeFind(key, request);
           if (list != null)

@@ -101,8 +101,11 @@ public class BooksBUS implements IRuleSets {
                     case 2:
                          System.out.println("*".repeat(60));
                          System.out.println("I. Find by Type");
-                         System.out.println("II. Relative find");
-                         System.out.println("III. Advanced find");
+                         System.out.println("II. Find by Genre");
+                         System.out.println("III. Find by Format");
+                         System.out.println("IV. Find by Publisher");
+                         System.out.println("III. Find by Book's name");
+                         System.out.println("III. Find by Author");
                          System.out.println("0. Exit");
                          System.out.println("*".repeat(60));
                          System.out.print("Enter your choice: ");
@@ -115,6 +118,10 @@ public class BooksBUS implements IRuleSets {
                          System.out.println("Invalid choice. Please try again.");
                }
           } while (choice != 0);
+     }
+
+     private Books[] caseRelativeFind(String userChoice) {
+
      }
 
      // strict find
@@ -481,16 +488,16 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                String name;
-               int userChoose;
+               int userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -510,16 +517,16 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                LocalDate date;
-               int userChoose;
+               int userChoice;
                // show option for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -536,16 +543,16 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                BigDecimal price;
-               int userChoose;
+               int userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -561,16 +568,16 @@ public class BooksBUS implements IRuleSets {
      public void editQuantity(String bookNameOrID) {
           int index = find(bookNameOrID);
           if (index != -1) {
-               int quantity, userChoose;
+               int quantity, userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -587,16 +594,16 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                String authorName;
-               int userChoose;
+               int userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -620,26 +627,26 @@ public class BooksBUS implements IRuleSets {
 
           int index = find(bookNameOrID);
           if (index != -1) {
-               int userChoose;
+               int userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                PublishersBUS.showList();
                do {
                     System.out.print("choose publisher (like 1, 2,etc...): ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, PublishersBUS.getCount());
-               } while (userChoose == -1);
+                    userChoice = Validate.parseChooseHandler(option, PublishersBUS.getCount());
+               } while (userChoice == -1);
 
-               Publishers publisher = PublishersBUS.getPublishersList()[userChoose - 1];
+               Publishers publisher = PublishersBUS.getPublishersList()[userChoice - 1];
                booksList[index].setPublisher(publisher);
           }
      }
@@ -653,26 +660,26 @@ public class BooksBUS implements IRuleSets {
 
           int index = find(bookNameOrID);
           if (index != -1) {
-               int userChoose;
+               int userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                TypesBUS.showList();
                do {
                     System.out.print("choose type you want (like \\\"1, 2, 3,etc....\\\"): ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, TypesBUS.getCount());
-               } while (userChoose == -1);
+                    userChoice = Validate.parseChooseHandler(option, TypesBUS.getCount());
+               } while (userChoice == -1);
 
-               BookTypes type = TypesBUS.getTypesList()[userChoose - 1];
+               BookTypes type = TypesBUS.getTypesList()[userChoice - 1];
                booksList[index].setType(type);
           }
      }
@@ -686,7 +693,7 @@ public class BooksBUS implements IRuleSets {
                     genres.readFile();
                     MidForBooks[] nowGenres = genres.relativeFind(bookNameOrID);
                     int[] list = new int[0];
-                    int userChoose, count = 0;
+                    int userChoice, count = 0;
                     BookGenres[] listGenres = new BookGenres[0];
 
                     // show list of now genres for user know
@@ -695,9 +702,9 @@ public class BooksBUS implements IRuleSets {
                     do {
                          System.out.print("choose option (1 or 2) : ");
                          String option = input.nextLine().trim();
-                         userChoose = Validate.parseChooseHandler(option, 2);
-                    } while (userChoose == -1);
-                    if (userChoose == 1)
+                         userChoice = Validate.parseChooseHandler(option, 2);
+                    } while (userChoice == -1);
+                    if (userChoice == 1)
                          return;
 
                     // show list for user choice
@@ -717,13 +724,13 @@ public class BooksBUS implements IRuleSets {
                          }
 
                          for (String item : splitOptions) {
-                              userChoose = Validate.parseChooseHandler(item, GenresBUS.getCount());
-                              if (userChoose == -1) {
+                              userChoice = Validate.parseChooseHandler(item, GenresBUS.getCount());
+                              if (userChoice == -1) {
                                    count = 0;
                                    break;
                               }
                               list = Arrays.copyOf(list, list.length + 1);
-                              list[count] = userChoose;
+                              list[count] = userChoice;
                               count++;
                          }
                     } while (count == 0);
@@ -756,26 +763,26 @@ public class BooksBUS implements IRuleSets {
 
           int index = find(bookNameOrID);
           if (index != -1) {
-               int userChoose;
+               int userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                BookFormatsBUS.showList();
                do {
                     System.out.print("choose format (like 1, 2,etc...): ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, BookFormatsBUS.getCount());
-               } while (userChoose == -1);
+                    userChoice = Validate.parseChooseHandler(option, BookFormatsBUS.getCount());
+               } while (userChoice == -1);
 
-               BookFormats format = BookFormatsBUS.getFormatsList()[userChoose - 1];
+               BookFormats format = BookFormatsBUS.getFormatsList()[userChoice - 1];
                booksList[index].setFormat(format);
           }
      }
@@ -785,16 +792,16 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                String packagingSize;
-               int userChoose;
+               int userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -820,16 +827,16 @@ public class BooksBUS implements IRuleSets {
      public void remove(String bookNameOrID) {
           int index = find(bookNameOrID);
           if (index != -1) {
-               int userChoose;
+               int userChoice;
                // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                for (int i = index; i < booksList.length - 1; i++)

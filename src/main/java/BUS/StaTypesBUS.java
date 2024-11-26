@@ -144,8 +144,10 @@ public class StaTypesBUS implements IRuleSets {
     @Override
     public void add(Object type) {
         if (type instanceof StaTypes) {
+            StaTypes newType = (StaTypes) type;
+            newType.setTypeID(newType.getTypeID());
             typesList = Arrays.copyOf(typesList, typesList.length + 1);
-            typesList[count] = (StaTypes) type;
+            typesList[count] = newType;
             count++;
         } else {
             System.out.println("your type is not correct!");
@@ -158,8 +160,10 @@ public class StaTypesBUS implements IRuleSets {
         int total = initCount + newListLength;
         typesList = Arrays.copyOf(typesList, typesList.length + newListLength);
 
-        for (int i = initCount; i < total; i++, tempIndex++)
+        for (int i = initCount; i < total; i++, tempIndex++) {
+            newTypes[tempIndex].setTypeID(newTypes[tempIndex].getTypeID());
             typesList[i] = newTypes[tempIndex];
+        }
         StaTypesBUS.count = total;
     }
 

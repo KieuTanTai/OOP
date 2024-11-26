@@ -144,8 +144,10 @@ public class GenresBUS implements IRuleSets {
      @Override
      public void add(Object genre) {
           if (genre instanceof BookGenres) {
+               BookGenres newGenre = (BookGenres) genre;
+               newGenre.setGenreID(newGenre.getGenreID());
                genresList = Arrays.copyOf(genresList, genresList.length + 1);
-               genresList[count] = (BookGenres) genre;
+               genresList[count] = newGenre;
                count++;
           } else
                System.out.println("your new genre is not correct!");
@@ -157,8 +159,10 @@ public class GenresBUS implements IRuleSets {
           int total = initCount + newListLength;
           genresList = Arrays.copyOf(genresList, genresList.length + newListLength);
 
-          for (int i = initCount; i < total; i++, tempIndex++)
+          for (int i = initCount; i < total; i++, tempIndex++) {
+               newGenres[tempIndex].setGenreID(newGenres[tempIndex].getGenreID());
                genresList[i] = newGenres[tempIndex];
+          }
           GenresBUS.count = total;
      }
 

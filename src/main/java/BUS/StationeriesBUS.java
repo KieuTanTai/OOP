@@ -345,8 +345,11 @@ public class StationeriesBUS implements IRuleSets {
     @Override
     public void add(Object stationary) {
         if (stationary instanceof Stationeries) {
+            Stationeries newStationary = (Stationeries) stationary;
+            newStationary.setProductID(newStationary.getProductID());
+            newStationary.setStationeriesID(newStationary.getStationeriesID());
             staList = Arrays.copyOf(staList, staList.length + 1);
-            staList[count] = (Stationeries) stationary;
+            staList[count] = newStationary;
             count++;
         } else
             System.out.println("your object have something not like stationary!");
@@ -359,8 +362,11 @@ public class StationeriesBUS implements IRuleSets {
         int total = initCount + newListLength;
         staList = Arrays.copyOf(staList, staList.length + newListLength);
 
-        for (int i = initCount; i < total; i++, tempIndex++)
+        for (int i = initCount; i < total; i++, tempIndex++) {
+            newStationeries[tempIndex].setProductID(newStationeries[tempIndex].getProductID());
+            newStationeries[tempIndex].setStationeriesID(newStationeries[tempIndex].getStationeriesID());
             staList[i] = newStationeries[tempIndex];
+        }
         this.count = total;
     }
 

@@ -140,8 +140,10 @@ public class BookFormatsBUS implements IRuleSets {
      @Override
      public void add(Object format) {
           if (format instanceof BookFormats) {
+               BookFormats inputFormats = (BookFormats) format;
+               inputFormats.setFormatID(inputFormats.getFormatID());
                formatsList = Arrays.copyOf(formatsList, formatsList.length + 1);
-               formatsList[count] = (BookFormats) format;
+               formatsList[count] = inputFormats;
                count++;
           } else
                System.out.println("your format is not correct!");
@@ -153,8 +155,10 @@ public class BookFormatsBUS implements IRuleSets {
           int total = initCount + newListLength;
           formatsList = Arrays.copyOf(formatsList, formatsList.length + newListLength);
 
-          for (int i = initCount; i < total; i++, tempIndex++)
+          for (int i = initCount; i < total; i++, tempIndex++) {
+               newFormats[tempIndex].setFormatID(newFormats[tempIndex].getFormatID());
                formatsList[i] = newFormats[tempIndex];
+          }
           BookFormatsBUS.count = total;
      }
 

@@ -131,8 +131,10 @@ public class PublishersBUS implements IRuleSets {
     @Override
     public void add(Object publisher) {
         if (publisher instanceof Publishers) {
+            Publishers newPublisher = (Publishers) publisher;
+            newPublisher.setPublisherID(newPublisher.getPublisherID());
             publishersList = Arrays.copyOf(publishersList, publishersList.length + 1);
-            publishersList[count] = (Publishers) publisher;
+            publishersList[count] = newPublisher;
             count++;
         } else {
             System.out.println("your new publisher is not correct!");
@@ -145,8 +147,10 @@ public class PublishersBUS implements IRuleSets {
         int total = initCount + newListLength;
         publishersList = Arrays.copyOf(publishersList, publishersList.length + newListLength);
 
-        for (int i = initCount; i < total; i++, tempIndex++)
+        for (int i = initCount; i < total; i++, tempIndex++) {
+            newPublishers[tempIndex].setPublisherID(newPublishers[tempIndex].getPublisherID());
             publishersList[i] = newPublishers[tempIndex];
+        }
         PublishersBUS.count = total;
     }
 

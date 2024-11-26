@@ -224,8 +224,10 @@ public class CustomersBUS implements IRuleSets {
      @Override
      public void add(Object customer) {
           if (customer instanceof Customers) {
+               Customers newCustomer = (Customers) customer;
+               newCustomer.setPersonID(newCustomer.getPersonID());
                customersList = Arrays.copyOf(customersList, customersList.length + 1);
-               customersList[count] = (Customers) customer;
+               customersList[count] = newCustomer;
                count++;
           } else
                System.out.println("Your customer is not correct!");
@@ -237,8 +239,10 @@ public class CustomersBUS implements IRuleSets {
           int total = initCount + newListLength;
           customersList = Arrays.copyOf(customersList, customersList.length + newListLength);
 
-          for (int i = initCount; i < total; i++, tempIndex++)
+          for (int i = initCount; i < total; i++, tempIndex++){
+               newCustomers[tempIndex].setPersonID(newCustomers[tempIndex].getPersonID());
                customersList[i] = newCustomers[tempIndex];
+          }
           this.count = total;
      }
 

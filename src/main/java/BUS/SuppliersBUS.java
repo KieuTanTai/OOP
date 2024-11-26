@@ -145,8 +145,10 @@ public class SuppliersBUS implements IRuleSets {
     @Override
     public void add(Object supplier) {
         if (supplier instanceof Suppliers) {
+            Suppliers newSupplier = (Suppliers) supplier;
+            newSupplier.setSupplierID(newSupplier.getSupplierID());
             suppliersList = Arrays.copyOf(suppliersList, suppliersList.length + 1);
-            suppliersList[count] = (Suppliers) supplier;
+            suppliersList[count] = newSupplier;
             count++;
         } else
             System.out.println("Your new supplier is not correct!");
@@ -158,8 +160,10 @@ public class SuppliersBUS implements IRuleSets {
         int total = initCount + newListLength;
         suppliersList = Arrays.copyOf(suppliersList, suppliersList.length + newListLength);
 
-        for (int i = initCount; i < total; i++, tempIndex++)
+        for (int i = initCount; i < total; i++, tempIndex++) {
+            newSuppliers[tempIndex].setSupplierID(newSuppliers[tempIndex].getSupplierID());
             suppliersList[i] = newSuppliers[tempIndex];
+        }
         SuppliersBUS.count = total;
     }
 

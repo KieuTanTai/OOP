@@ -184,8 +184,10 @@ public class EmployeesBUS implements IRuleSets {
     @Override
     public void add(Object employee) {
         if (employee instanceof Employees) {
+            Employees newEmployee = (Employees) employee;
+            newEmployee.setPersonID(newEmployee.getPersonID()); 
             employeesList = Arrays.copyOf(employeesList, employeesList.length + 1);
-            employeesList[count] = (Employees) employee;
+            employeesList[count] = newEmployee;
             count++;
         } else
             System.out.println("Your employee is not correct!");
@@ -197,8 +199,10 @@ public class EmployeesBUS implements IRuleSets {
         int total = initCount + newListLength;
         employeesList = Arrays.copyOf(employeesList, employeesList.length + newListLength);
 
-        for (int i = initCount; i < total; i++, tempIndex++)
+        for (int i = initCount; i < total; i++, tempIndex++) {
+            newEmployees[tempIndex].setPersonID(newEmployees[tempIndex].getPersonID());
             employeesList[i] = newEmployees[tempIndex];
+        }
         this.count = total;
     }
 

@@ -385,8 +385,10 @@ public class BooksBUS implements IRuleSets {
      @Override
      public void add(Object newBook) {
           if (newBook instanceof Books) {
+               Books book = (Books) newBook;
+               book.setProductID(book.getProductID());
                booksList = Arrays.copyOf(booksList, booksList.length + 1);
-               booksList[count] = (Books) newBook;
+               booksList[count] = book;
                count++;
           } else
                System.out.println("your new book have something not like book!");
@@ -398,8 +400,10 @@ public class BooksBUS implements IRuleSets {
           int total = initCount + newListLength;
           booksList = Arrays.copyOf(booksList, booksList.length + newListLength);
 
-          for (int i = initCount; i < total; i++, tempIndex++)
+          for (int i = initCount; i < total; i++, tempIndex++) {
+               newBooks[tempIndex].setProductID(newBooks[tempIndex].getProductID());
                booksList[i] = newBooks[tempIndex];
+          }
           this.count = total;
      }
 

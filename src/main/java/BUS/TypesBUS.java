@@ -149,6 +149,8 @@ public class TypesBUS implements IRuleSets {
      @Override
      public void add(Object type) {
           if (type instanceof BookTypes) {
+               BookTypes newType = (BookTypes) type;
+               newType.setTypeID(newType.getTypeID());
                typesList = Arrays.copyOf(typesList, typesList.length + 1);
                typesList[count] = (BookTypes) type;
                count++;
@@ -162,8 +164,10 @@ public class TypesBUS implements IRuleSets {
           int total = initCount + newListLength;
           typesList = Arrays.copyOf(typesList, typesList.length + newListLength);
 
-          for (int i = initCount; i < total; i++, tempIndex++)
+          for (int i = initCount; i < total; i++, tempIndex++) {
+               newTypes[tempIndex].setTypeID(newTypes[tempIndex].getTypeID());
                typesList[i] = newTypes[tempIndex];
+          }
           TypesBUS.count = total;
      }
 

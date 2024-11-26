@@ -170,8 +170,10 @@ public class GRNsBUS implements IRuleSets {
      @Override
      public void add(Object newGRN) {
           if (newGRN instanceof GRNs) {
+               GRNs grn = (GRNs) newGRN;
+               grn.setGrnID(grn.getGrnID());
                grnList = Arrays.copyOf(grnList, grnList.length + 1);
-               grnList[count] = (GRNs) newGRN;
+               grnList[count] = grn;
                count++;
           } else
                System.out.println("your new book have something not like book!");
@@ -183,8 +185,10 @@ public class GRNsBUS implements IRuleSets {
           int total = initCount + newListLength;
           grnList = Arrays.copyOf(grnList, grnList.length + newListLength);
 
-          for (int i = initCount; i < total; i++, tempIndex++)
+          for (int i = initCount; i < total; i++, tempIndex++) {
+               newGRN[tempIndex].setGrnID(newGRN[tempIndex].getGrnID());
                grnList[i] = newGRN[tempIndex];
+          }
           this.count = total;
      }
 

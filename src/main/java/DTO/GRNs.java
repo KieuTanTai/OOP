@@ -206,7 +206,8 @@ public class GRNs {
                                    }
                                    listGRN.add(new GRNDetails(grnID, product, quantity, price));
 
-                              } else {
+                              }
+                              else {
                                    StationeriesBUS staList = new StationeriesBUS();
                                    staList.readFile();
                                    staList.showList();

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import BUS.BillDetailsBus;
 import util.Validate;
 // import DTO.BillDetails;
 
@@ -147,7 +148,7 @@ public class Bill {
 
     public BigDecimal getTotalPrice() {
         BigDecimal total = BigDecimal.ZERO;
-        for (BillDetails detail : detailsBus.getds()) {
+        for (BillDetails detail : BillDetailsBus.getds()) {
             total = total.add(detail.calcSubTotal());
         }
         return total;

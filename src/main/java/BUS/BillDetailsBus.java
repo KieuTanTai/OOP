@@ -1,6 +1,9 @@
 package BUS;
 
 import DTO.BillDetails;
+import util.Validate;
+
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Scanner;
 

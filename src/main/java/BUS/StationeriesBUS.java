@@ -384,16 +384,16 @@ public class StationeriesBUS implements IRuleSets {
         int index = find(stationaryNameOrID);
         if (index != -1) {
             String name;
-            int userChoose;
+            int userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             do {
@@ -413,16 +413,16 @@ public class StationeriesBUS implements IRuleSets {
         int index = find(stationaryNameOrID);
         if (index != -1) {
             LocalDate date;
-            int userChoose;
+            int userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             do {
@@ -439,16 +439,16 @@ public class StationeriesBUS implements IRuleSets {
         int index = find(stationaryNameOrID);
         if (index != -1) {
             BigDecimal price;
-            int userChoose;
+            int userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             do {
@@ -464,16 +464,16 @@ public class StationeriesBUS implements IRuleSets {
     public void editQuantity(String stationaryNameOrID) {
         int index = find(stationaryNameOrID);
         if (index != -1) {
-            int quantity, userChoose;
+            int quantity, userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             do {
@@ -494,26 +494,26 @@ public class StationeriesBUS implements IRuleSets {
 
         int index = find(stationaryNameOrID);
         if (index != -1) {
-            int userChoose;
+            int userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             StaTypesBUS.showList();
             do {
                 System.out.print("choose type you want (like \"1, 2, 3,etc....\"): ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
-            } while (userChoose == -1);
+                userChoice = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
+            } while (userChoice == -1);
 
-            StaTypes type = StaTypesBUS.getTypesList()[userChoose - 1];
+            StaTypes type = StaTypesBUS.getTypesList()[userChoice - 1];
             staList[index].setType(type);
         }
     }
@@ -523,16 +523,16 @@ public class StationeriesBUS implements IRuleSets {
         int index = find(stationaryNameOrID);
         if (index != -1) {
             String brand;
-            int userChoose;
+            int userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             do {
@@ -552,16 +552,16 @@ public class StationeriesBUS implements IRuleSets {
         int index = find(stationaryNameOrID);
         if (index != -1) {
             String source;
-            int userChoose;
+            int userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             do {
@@ -581,16 +581,16 @@ public class StationeriesBUS implements IRuleSets {
         int index = find(stationaryNameOrID);
         if (index != -1) {
             String material;
-            int userChoose;
+            int userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             do {
@@ -615,16 +615,16 @@ public class StationeriesBUS implements IRuleSets {
     public void remove(String stationaryNameOrID) {
         int index = find(stationaryNameOrID);
         if (index != -1) {
-            int userChoose;
+            int userChoice;
             // show list for user choose
             staList[index].showInfo();
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             for (int i = index; i < staList.length - 1; i++)

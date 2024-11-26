@@ -80,47 +80,6 @@ public class BooksBUS implements IRuleSets {
      // *find methods (TEST DONE)
      @Override
      public void find() {
-          int choice;
-          do {
-               System.out.println("*".repeat(60));
-               System.out.println("I. Strict find");
-               System.out.println("II. Relative find");
-               System.out.println("III. Advanced find");
-               System.out.println("0. Exit");
-               System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
-               choice = Validate.parseChooseHandler(input.nextLine(), 4);
-               switch (choice) {
-                    case 1:
-                         System.out.println("Enter name or id of book: ");
-                         String userInput = input.nextLine();
-                         int index = find(userInput);
-                         if (index != -1)
-                              booksList[index].showInfo();
-                         break;
-                    case 2:
-                         System.out.println("*".repeat(60));
-                         System.out.println("I. Find by Type");
-                         System.out.println("II. Find by Genre");
-                         System.out.println("III. Find by Format");
-                         System.out.println("IV. Find by Publisher");
-                         System.out.println("III. Find by Book's name");
-                         System.out.println("III. Find by Author");
-                         System.out.println("0. Exit");
-                         System.out.println("*".repeat(60));
-                         System.out.print("Enter your choice: ");
-
-                         break;
-                    case 0:
-                         System.out.println("Exit program.");
-                         break;
-                    default:
-                         System.out.println("Invalid choice. Please try again.");
-               }
-          } while (choice != 0);
-     }
-
-     private Books[] caseRelativeFind(String userChoice) {
 
      }
 
@@ -164,54 +123,60 @@ public class BooksBUS implements IRuleSets {
           Books[] booksArray = new Books[0];
           request = request.toLowerCase().trim();
 
+          // relative find genres
+          if (originalKey instanceof BookGenres && request.equals("genre"))
+               return relativeFind((BookGenres) originalKey);
+
           for (Books book : booksList) {
                if (originalKey instanceof String) {
-                    BookTypes types = book.getType();
-                    BookFormats formats = book.getFormat();
-                    Publishers publishers = book.getPublisher();
+                    String key = (String) originalKey;
                     String author = book.getAuthor();
                     String bookName = book.getProductName();
-                    String key = (String) originalKey;
 
                     // assign and check null
                     author = Validate.requiredNotNull(author) ? author.toLowerCase() : "";
                     bookName = Validate.requiredNotNull(bookName) ? bookName.toLowerCase() : "";
-
-                    String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
-                              typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
-
-                    String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
-                              formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase()
-                                        : "";
-
-                    String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
-                              publisherName = (Validate.requiredNotNull(publishers))
-                                        ? publishers.getPublisherName().toLowerCase()
-                                        : "";
 
                     if (request.equals("name") && bookName.contains(key.toLowerCase()))
                          flag = true;
 
                     else if (request.equals("author") && author.contains(key.toLowerCase()))
                          flag = true;
-
-                    else if (request.equals("format")
-                              && (formatID.equals(key) || formatName.contains(key.toLowerCase())))
-                         flag = true;
-
-                    else if (request.equals("type") && (typeID.equals(key) || typeName.contains(key.toLowerCase())))
-                         flag = true;
-
-                    else if (request.equals("publisher")
-                              && (publisherID.equals(key) || publisherName.contains(key.toLowerCase())))
-                         flag = true;
-
-               } 
-               else if (originalKey instanceof LocalDate && request.equals("released") )
+               } else if (originalKey instanceof LocalDate && request.equals("released"))
                     if (book.getReleaseDate().isEqual((LocalDate) originalKey))
                          flag = true;
-               else if (originalKey instanceof BookGenres && request.equals("genre"))
-                    return relativeFind((BookGenres) originalKey);
+
+                    else if (originalKey instanceof BookTypes && request.equals("type")) {
+                         BookTypes key = (BookTypes) originalKey;
+                         BookTypes types = book.getType();
+                         String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
+                                   typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase()
+                                             : "";
+                         if (typeID.equals(key.getTypeID()) && typeName.equals(key.getTypeName()))
+                              flag = true;
+                    }
+
+                    else if (originalKey instanceof BookFormats && request.equals("format")) {
+                         BookFormats key = (BookFormats) originalKey;
+                         BookFormats formats = book.getFormat();
+                         String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
+                                   formatName = (Validate.requiredNotNull(formats))
+                                             ? formats.getFormatName().toLowerCase()
+                                             : "";
+                         if (formatID.equals(key.getFormatID()) && formatName.equals(key.getFormatName()))
+                              flag = true;
+                    }
+
+                    else if (originalKey instanceof Publishers && request.equals("publisher")) {
+                         Publishers key = (Publishers) originalKey;
+                         Publishers publishers = book.getPublisher();
+                         String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
+                                   publisherName = (Validate.requiredNotNull(publishers))
+                                             ? publishers.getPublisherName().toLowerCase()
+                                             : "";
+                         if (publisherID.equals(key.getPublisherID()) && publisherName.equals(key.getPublisherName()))
+                              flag = true;
+                    }
 
                if (flag) {
                     booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
@@ -220,6 +185,7 @@ public class BooksBUS implements IRuleSets {
                     count++;
                }
           }
+
           if (count == 0) {
                System.out.println("not found any books!");
                return null;
@@ -230,9 +196,9 @@ public class BooksBUS implements IRuleSets {
      // advanced finds
      public Books[] advancedFind(BigDecimal minPrice, BigDecimal maxPrice, String request) {
           request = request.toLowerCase().trim();
-          if (request.equals("range")
-                    && ((minPrice.compareTo(maxPrice) >= 0) || (minPrice.compareTo(BigDecimal.ZERO) < 0) ||
-                              (maxPrice.compareTo(BigDecimal.ZERO) < 0))) {
+          if (minPrice.compareTo(BigDecimal.ZERO) < 0 || maxPrice.compareTo(BigDecimal.ZERO) < 0)
+               return null;
+          if (request.equals("range") && ((minPrice.compareTo(maxPrice) >= 0))) {
                System.out.println("error range!");
                return null;
           }
@@ -413,7 +379,282 @@ public class BooksBUS implements IRuleSets {
      // *search methods (TEST DONE)
      @Override
      public void search() {
-          Menu.searchHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Strict search");
+               System.out.println("II. Relative search");
+               System.out.println("III. Advanced search");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice: ");
+               choice = Validate.parseChooseHandler(input.nextLine().trim(), 3);
+               switch (choice) {
+                    case 1:
+                         System.out.println("Enter name or id of book: ");
+                         String userInput = input.nextLine().trim();
+                         search(userInput);
+                         break;
+                    case 2:
+                         caseRelativeSearch();
+                         break;
+                    case 3:
+                         caseAdvancedSearch();
+                         break;
+                    case 0:
+                         System.out.println("Exit program.");
+                         break;
+                    default:
+                         System.out.println("Invalid choice. Please try again.");
+               }
+          } while (choice != 0);
+     }
+
+     // case handler for relative search
+     private void caseRelativeSearch() {
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Search by Type");
+               System.out.println("II. Search by Genre");
+               System.out.println("III. Search by Format");
+               System.out.println("IV. Search by Publisher");
+               System.out.println("V. Search by Book's name");
+               System.out.println("VI. Search by Author");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice: ");
+               choice = Validate.parseChooseHandler(input.nextLine().trim(), 6);
+               switch (choice) {
+                    case 1:
+                         System.out.println("*".repeat(60));
+                         TypesBUS.showList();
+                         System.out.println("*".repeat(60));
+                         do {
+                              choice = Validate.parseChooseHandler(input.nextLine().trim(), TypesBUS.getCount());
+                         } while (choice != -1);
+                         relativeSearch(TypesBUS.getTypesList()[choice - 1], "type");
+                         break;
+                    case 2:
+                         System.out.println("*".repeat(60));
+                         GenresBUS.showList();
+                         System.out.println("*".repeat(60));
+                         do {
+                              choice = Validate.parseChooseHandler(input.nextLine().trim(), GenresBUS.getCount());
+                         } while (choice != -1);
+                         relativeSearch(GenresBUS.getGenresList()[choice - 1], "genre");
+                         break;
+                    case 3:
+                         System.out.println("*".repeat(60));
+                         BookFormatsBUS.showList();
+                         System.out.println("*".repeat(60));
+                         do {
+                              choice = Validate.parseChooseHandler(input.nextLine().trim(), BookFormatsBUS.getCount());
+                         } while (choice != -1);
+                         relativeSearch(BookFormatsBUS.getFormatsList()[choice - 1], "format");
+                         break;
+                    case 4:
+                         System.out.println("*".repeat(60));
+                         PublishersBUS.showList();
+                         System.out.println("*".repeat(60));
+                         do {
+                              choice = Validate.parseChooseHandler(input.nextLine().trim(), PublishersBUS.getCount());
+                         } while (choice != -1);
+                         relativeSearch(PublishersBUS.getPublishersList()[choice - 1], "publisher");
+                         break;
+                    case 5:
+                         System.out.println("Enter book's name: ");
+                         String name = input.nextLine().trim();
+                         relativeSearch(name, "name");
+                         break;
+                    case 6:
+                         System.out.println("Enter book's author: ");
+                         String author = input.nextLine().trim();
+                         relativeSearch(author, "author");
+                         break;
+
+                    case 0:
+                         System.out.println("Exit program.");
+                         break;
+                    default:
+                         System.out.println("Invalid choice. Please try again.");
+               }
+          } while (choice != 0);
+     }
+
+     // case handler for advanced search
+     private void caseAdvancedSearch() {
+          int choice, monthOrYear = 0;
+          BigDecimal price = null;
+          String author = "", inputDate = "";
+          BookFormats format = null;
+          Publishers publisher = null;
+          BookTypes type = null;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Search with min price");
+               System.out.println("II. Search with max price");
+               System.out.println("III. Search with range min to max price");
+               System.out.println("IV. Search by Author & Month (Year) of release date");
+               System.out.println("V. Search by Format & Month (Year) of release date");
+               System.out.println("VI. Search by Type & Month (Year) of release date");
+               System.out.println("VII. Search by Publisher & Month (Year) of release date");
+               System.out.println("VIII. Search by Author & Publisher");
+               System.out.println("IX. Search by Author & Type");
+               System.out.println("X. Search by Author &  Format");
+               System.out.println("XI. Search by Type & Publisher");
+               System.out.println("XII. Search by Type & Format");
+               System.out.println("XIII. Search by Format & Publisher");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice: ");
+               choice = Validate.parseChooseHandler(input.nextLine().trim(), 13);
+               switch (choice) {
+                    case 1:
+                    case 2:
+                         do {
+                              if (choice == 1)
+                                   System.out.print("Enter min price (VND) : ");
+                              else if (choice == 2)
+                                   System.out.print("Enter max price (VND : ");
+                              String value = input.nextLine().trim();
+                              price = Validate.isBigDecimal(value);
+                         } while (price == null);
+                         if (choice == 1)
+                              advancedSearch(price, price, "min");
+                         else if (choice == 2)
+                              advancedSearch(price, price, "max");
+                         break;
+
+                    case 3:
+                         BigDecimal secondPrice;
+                         do {
+                              System.out.print("Enter min price (VND : ");
+                              String value = input.nextLine().trim();
+                              price = Validate.isBigDecimal(value);
+
+                              System.out.print("Enter max price (VND : ");
+                              value = input.nextLine().trim();
+                              secondPrice = Validate.isBigDecimal(value);
+                         } while (price == null || secondPrice == null);
+                         advancedSearch(price, secondPrice, "range");
+                         break;
+
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                         // get input month or year
+                         int isNumber;
+                         boolean valueFlag;
+                         do {
+                              System.out.println("I. Month || II.Year");
+                              System.out.print("Enter your choice: ");
+                              monthOrYear = Validate.parseChooseHandler(input.nextLine().trim(), 2);
+                         } while (monthOrYear == -1);
+                         if (monthOrYear == 1)
+                              do {
+                                   System.out.println("Enter Month value : ");
+                                   inputDate = input.nextLine().trim();
+                                   valueFlag = true;
+                                   // validate input
+                                   isNumber = Validate.isNumber(inputDate);
+                                   if (isNumber == -1 || isNumber > 12 || isNumber < 1) {
+                                        System.out.println("Error value!");
+                                        valueFlag = false;
+                                   }
+                              } while (!valueFlag);
+                         else if (monthOrYear == 2)
+                              do {
+                                   System.out.println("Enter Year value : ");
+                                   inputDate = input.nextLine().trim();
+                                   // validate input
+                                   valueFlag = true;
+                                   isNumber = Validate.isNumber(inputDate);
+                                   if (isNumber == -1 || isNumber > LocalDate.now().getYear() || isNumber < 1900) {
+                                        System.out.println("Error value!");
+                                        valueFlag = false;
+                                   }
+                              } while (!valueFlag);
+
+                    case 8:
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 12:
+                    case 13:
+                         // get other fields
+                         if (choice == 4 || choice == 8 || choice == 9 || choice == 10) {
+                              System.out.println("Enter book's author: ");
+                              author = input.nextLine().trim();
+                         } 
+
+                         if (choice == 5 || choice == 10 || choice == 12 || choice == 13) {
+                              System.out.println("*".repeat(60));
+                              BookFormatsBUS.showList();
+                              System.out.println("*".repeat(60));
+                              do {
+                                   choice = Validate.parseChooseHandler(input.nextLine(), BookFormatsBUS.getCount());
+                              } while (choice != -1);
+                              format = BookFormatsBUS.getFormatsList()[monthOrYear - 1];
+                         } 
+
+                         if (choice == 6 || choice == 9 || choice == 11 || choice == 12) {
+                              System.out.println("*".repeat(60));
+                              TypesBUS.showList();
+                              System.out.println("*".repeat(60));
+                              do {
+                                   choice = Validate.parseChooseHandler(input.nextLine(), TypesBUS.getCount());
+                              } while (choice != -1);
+                              type = TypesBUS.getTypesList()[monthOrYear - 1];
+                         } 
+
+                         if (choice == 7 || choice == 8 || choice == 11 || choice == 13) {
+                              System.out.println("*".repeat(60));
+                              PublishersBUS.showList();
+                              System.out.println("*".repeat(60));
+                              do {
+                                   choice = Validate.parseChooseHandler(input.nextLine(), PublishersBUS.getCount());
+                              } while (choice != -1);
+                              publisher = PublishersBUS.getPublishersList()[monthOrYear - 1];
+                         }
+
+                         // if case is 4 -> 7
+                         if (!inputDate.isEmpty() && monthOrYear != 0) {
+                              if (!author.isEmpty())
+                                   advancedSearch(author, inputDate, monthOrYear == 1 ? "month" : "year");
+                              else if (format != null)
+                                   advancedSearch(format.getFormatName(), inputDate,
+                                             monthOrYear == 1 ? "month" : "year");
+                              else if (type != null)
+                                   advancedSearch(type.getTypeName(), inputDate, monthOrYear == 1 ? "month" : "year");
+                              else if (publisher != null)
+                                   advancedSearch(publisher.getPublisherName(), inputDate,
+                                             monthOrYear == 1 ? "month" : "year");
+                              break;
+                         }
+
+                         // if case 8 -> 13
+                         if (choice == 8)
+                              advancedSearch(author, publisher, "auth-pub");
+                         else if (choice == 9)
+                              advancedSearch(author, type, "auth-type");
+                         else if (choice == 10)
+                              advancedSearch(author, format, "auth-format");
+                         else if (choice == 11)
+                              advancedSearch(type, publisher, "type-pub");
+                         else if (choice == 12)
+                              advancedSearch(type, format, "type-format");
+                         else if (choice == 13)
+                              advancedSearch(format, publisher, "format-pub");
+                         break;
+                    case 0:
+                         System.out.println("Exit program.");
+                         break;
+                    default:
+                         System.out.println("Invalid choice. Please try again.");
+               }
+          } while (choice != 0);
      }
 
      // strict search
@@ -448,7 +689,72 @@ public class BooksBUS implements IRuleSets {
      // *add methods (TEST DONE)
      @Override
      public void add() {
-          Menu.addHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Add book");
+               System.out.println("II. Add list of books");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice: ");
+               choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
+               // try catch for execute file after add  
+               try {
+                    switch (choice) {
+                         case 1:
+                              Books newBook = new Books();
+                              newBook.setInfo();
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.parseChooseHandler(option, 2);
+                              } while (choice == -1);
+                              if (choice == 1)
+                                   break;
+                              add(newBook);
+                              writeFile();
+                              break;
+                         case 2:
+                              int count = 0;
+                              Books[] list = new Books[0];
+                              do {
+                                   System.out.print("Enter total books you wanna add : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.isNumber(option);
+                              } while (choice == -1);
+                              // for loop with input time
+                              for (int i = 0; i < choice; i++) {
+                                   Books book = new Books();
+                                   book.setInfo();
+                                   list = Arrays.copyOf(list, list.length + 1);
+                                   list[count] = book;
+                                   count++;
+                              }
+
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.parseChooseHandler(option, 2);
+                              } while (choice == -1);
+                              if (choice == 1)
+                                   break;
+                              add(list);
+                              writeFile();
+                              break;
+                         case 0:
+                              System.out.println("Exit program.");
+                              break;
+                         default:
+                              System.out.println("Invalid choice. Please try again.");
+                    } 
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+               }
+          } while (choice != 0);
      }
 
      @Override

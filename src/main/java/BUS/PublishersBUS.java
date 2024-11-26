@@ -165,16 +165,16 @@ public class PublishersBUS implements IRuleSets {
     public void edit(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1) {
-            int userChoose;
+            int userChoice;
             // show list for user choice
             showAsTable(publishersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             String newName;
@@ -200,16 +200,16 @@ public class PublishersBUS implements IRuleSets {
     public void remove(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1) {
-            int userChoose;
+            int userChoice;
             // show list for user choice
             showAsTable(publishersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             for (int i = index; i < publishersList.length - 1; i++)

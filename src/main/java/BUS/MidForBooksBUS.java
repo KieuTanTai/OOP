@@ -146,16 +146,16 @@ public class MidForBooksBUS {
      public void edit(String bookID) {
           MidForBooks[] list = relativeFind(bookID);
           if (list != null) {
-               int userChoose;
+               int userChoice;
                // show list for user choice
                showAsTable(list);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                int count = list.length;
@@ -167,8 +167,8 @@ public class MidForBooksBUS {
                do {
                     System.out.print("choose book you wanna edit (like 1, 2,etc...): ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, list.length);
-               } while (userChoose == -1);
+                    userChoice = Validate.parseChooseHandler(option, list.length);
+               } while (userChoice == -1);
                // set new genre for specified book
                GenresBUS.showList();
                System.out.println("-".repeat(60));
@@ -178,7 +178,7 @@ public class MidForBooksBUS {
                     genreChoose = Validate.parseChooseHandler(option, GenresBUS.getCount());
                } while (genreChoose == -1);
                MidForBooks newMid = new MidForBooks(bookID, GenresBUS.getGenresList()[genreChoose - 1]);
-               setMid(list[userChoose - 1], newMid);
+               setMid(list[userChoice - 1], newMid);
           }
      }
 
@@ -209,16 +209,16 @@ public class MidForBooksBUS {
                System.out.println("404 not found!");
                return;
           }
-          int userChoose;
+          int userChoice;
           // show list for user choice
           showAsTable(midList[index]);
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
           do {
                System.out.print("choose option (1 or 2) : ");
                String option = input.nextLine().trim();
-               userChoose = Validate.parseChooseHandler(option, 2);
-          } while (userChoose == -1);
-          if (userChoose == 1)
+               userChoice = Validate.parseChooseHandler(option, 2);
+          } while (userChoice == -1);
+          if (userChoice == 1)
                return;
 
           int size = midList.length;

@@ -88,7 +88,7 @@ public class BillDetailsBus {
         add(ds);
     }
 
-    public void delete (String id){
+    public void remove (String id){
         int index = -1;
         for(int i = 0; i < ds.length; ++i){
             if(ds[i].getBillId().equals(id)){
@@ -107,10 +107,10 @@ public class BillDetailsBus {
         }
     }
 
-    public void delete(){
+    public void remove(){
         System.out.println("insert bill id you want to remove: ");
         String bd = sc.nextLine();
-        delete(bd);
+        remove(bd);
     }
 
     public void findBillId (String id){

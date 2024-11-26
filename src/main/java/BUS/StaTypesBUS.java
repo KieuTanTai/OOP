@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -131,7 +132,7 @@ public class StaTypesBUS implements IRuleSets {
 
     public void relativeSearch(String name) {
         StaTypes[] list = relativeFind(name);
-        if (list != null) 
+        if (list != null)
             showAsTable(list);
     }
 
@@ -182,12 +183,12 @@ public class StaTypesBUS implements IRuleSets {
             showAsTable(typesList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                 System.out.print("choose option (1 or 2) : ");
-                 String option = input.nextLine().trim();
-                 userChoose = Validate.parseChooseHandler(option, 2);
+                System.out.print("choose option (1 or 2) : ");
+                String option = input.nextLine().trim();
+                userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
             if (userChoose == 1)
-                 return;
+                return;
 
             String newName;
             do {
@@ -217,12 +218,12 @@ public class StaTypesBUS implements IRuleSets {
             showAsTable(typesList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
-                 System.out.print("choose option (1 or 2) : ");
-                 String option = input.nextLine().trim();
-                 userChoose = Validate.parseChooseHandler(option, 2);
+                System.out.print("choose option (1 or 2) : ");
+                String option = input.nextLine().trim();
+                userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
             if (userChoose == 1)
-                 return;
+                return;
 
             for (int i = index; i < typesList.length - 1; i++)
                 typesList[i] = typesList[i + 1];
@@ -259,7 +260,8 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/StaTypes", false)))) {
+        try (DataOutputStream file = new DataOutputStream(
+                new BufferedOutputStream(new FileOutputStream("src/main/resources/StaTypes", false)))) {
             file.writeInt(count);
             for (StaTypes type : typesList) {
                 file.writeUTF(type.getTypeID());
@@ -272,7 +274,12 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/StaTypes")))) {
+        File testFile = new File("src/main/resources/StaTypes");
+        if (testFile.length() == 0)
+            return;
+
+        try (DataInputStream file = new DataInputStream(
+                new BufferedInputStream(new FileInputStream("src/main/resources/StaTypes")))) {
             int count = file.readInt();
             StaTypes[] list = new StaTypes[count];
             for (int i = 0; i < count; i++) {

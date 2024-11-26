@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -142,7 +143,7 @@ public class PublishersBUS implements IRuleSets {
     }
 
     public void add(Publishers[] newPublishers) {
-        int tempIndex = 0, newListLength =  newPublishers.length;
+        int tempIndex = 0, newListLength = newPublishers.length;
         int initCount = getCount();
         int total = initCount + newListLength;
         publishersList = Arrays.copyOf(publishersList, publishersList.length + newListLength);
@@ -260,6 +261,10 @@ public class PublishersBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
+        File testFile = new File("src/main/resources/Publishers");
+        if (testFile.length() == 0)
+            return;
+
         try (DataInputStream file = new DataInputStream(
                 new BufferedInputStream(new FileInputStream("src/main/resources/Publishers")))) {
             int count = file.readInt();

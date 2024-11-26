@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -265,6 +266,10 @@ public class BookFormatsBUS implements IRuleSets {
      }
 
      public void readFile() throws IOException {
+          File testFile = new File("src/main/resources/BookFormats");
+          if (testFile.length() == 0)
+               return;
+
           try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/BookFormats")))) {
                count = file.readInt();
                BookFormats[] list = new BookFormats[count];

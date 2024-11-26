@@ -200,10 +200,15 @@ public class Employees extends Person {
     // hash password / check password
     private String hashPassword(String password) {
         // check if password has been hashed or not
-        if (!password.startsWith("EMP") && !password.startsWith("PS") && password.length() != 13)
+        if (isHashed(password))
             return password;
         return BCrypt.hashpw(password, BCrypt.gensalt(8));
     }
+
+    private boolean isHashed(String password) {
+        return password != null && password.length() == 60 && (password.startsWith("$2a$") || password.startsWith("$2b$") || password.startsWith("$2y$"));
+    }
+    
 
     @SuppressWarnings("unused")
     private boolean checkPassword(String password) {

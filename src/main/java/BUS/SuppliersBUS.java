@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -182,12 +183,12 @@ public class SuppliersBUS implements IRuleSets {
             showAsTable(suppliersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                 System.out.print("choose option (1 or 2) : ");
-                 String option = input.nextLine().trim();
-                 userChoose = Validate.parseChooseHandler(option, 2);
+                System.out.print("choose option (1 or 2) : ");
+                String option = input.nextLine().trim();
+                userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
             if (userChoose == 1)
-                 return;
+                return;
 
             String newName;
             do {
@@ -198,7 +199,7 @@ public class SuppliersBUS implements IRuleSets {
                     newName = "";
                 }
             } while (newName.isEmpty());
-          
+
             suppliersList[index].setSupplierName(newName);
         }
     }
@@ -247,12 +248,12 @@ public class SuppliersBUS implements IRuleSets {
             showAsTable(suppliersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
-                 System.out.print("choose option (1 or 2) : ");
-                 String option = input.nextLine().trim();
-                 userChoose = Validate.parseChooseHandler(option, 2);
+                System.out.print("choose option (1 or 2) : ");
+                String option = input.nextLine().trim();
+                userChoose = Validate.parseChooseHandler(option, 2);
             } while (userChoose == -1);
             if (userChoose == 1)
-                 return;
+                return;
 
             for (int i = index; i < suppliersList.length - 1; i++)
                 suppliersList[i] = suppliersList[i + 1];
@@ -266,12 +267,13 @@ public class SuppliersBUS implements IRuleSets {
         if (list == null)
             return;
         System.out.println("=".repeat(110));
-        System.out.printf("| \t%-20s %-20s %-20s %-37s |\n", "No.", "Suppliers ID", "Phone",  "Suppliers Name");
+        System.out.printf("| \t%-20s %-20s %-20s %-37s |\n", "No.", "Suppliers ID", "Phone", "Suppliers Name");
         System.out.println("=".repeat(110));
         for (int i = 0; i < list.length; i++) {
             if (i > 0)
                 System.out.println("|" + "-".repeat(108) + "|");
-            System.out.printf("| \t%-20s %-20s %-20s %-37s |\n", i + 1, list[i].getSupplierID(), list[i].getPhone(), list[i].getSupplierName());
+            System.out.printf("| \t%-20s %-20s %-20s %-37s |\n", i + 1, list[i].getSupplierID(), list[i].getPhone(),
+                    list[i].getSupplierName());
         }
         System.out.println("=".repeat(110));
     }
@@ -283,7 +285,8 @@ public class SuppliersBUS implements IRuleSets {
         System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", "No.", "Genres ID", "Phone", "Genres Name");
         System.out.println("=".repeat(110));
         System.out.println("|" + "-".repeat(108) + "|");
-        System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", 1, item.getSupplierID(), item.getPhone(), item.getSupplierName());
+        System.out.printf("| \t%-20s %-20s %-20s %-58s |\n", 1, item.getSupplierID(), item.getPhone(),
+                item.getSupplierName());
         System.out.println("=".repeat(110));
     }
 
@@ -307,6 +310,10 @@ public class SuppliersBUS implements IRuleSets {
 
     // read file
     public void readFile() throws IOException {
+        File testFile = new File("src/main/resources/Suppliers");
+        if (testFile.length() == 0)
+            return;
+
         try (DataInputStream file = new DataInputStream(
                 new BufferedInputStream(new FileInputStream("src/main/resources/Suppliers")))) {
             count = file.readInt();

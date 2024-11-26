@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -185,7 +186,7 @@ public class EmployeesBUS implements IRuleSets {
     public void add(Object employee) {
         if (employee instanceof Employees) {
             Employees newEmployee = (Employees) employee;
-            newEmployee.setPersonID(newEmployee.getPersonID()); 
+            newEmployee.setPersonID(newEmployee.getPersonID());
             employeesList = Arrays.copyOf(employeesList, employeesList.length + 1);
             employeesList[count] = newEmployee;
             count++;
@@ -308,7 +309,7 @@ public class EmployeesBUS implements IRuleSets {
     public void editStatus(String employeeID) {
         int index = find(employeeID);
         if (index != -1) {
-            String[] status = {"Active", "Inactive"};
+            String[] status = { "Active", "Inactive" };
             int userChoose;
 
             employeesList[index].showInfo();
@@ -351,7 +352,8 @@ public class EmployeesBUS implements IRuleSets {
             String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
             // show list for user choose
             System.out.printf("=".repeat(160) + "\n");
-            System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20), roles[2]);
+            System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20),
+                    roles[2]);
             do {
                 System.out.print("choose role (like 1, 2,etc...): ");
                 String option = input.nextLine().trim();
@@ -415,6 +417,10 @@ public class EmployeesBUS implements IRuleSets {
 
     // read file
     public void readFile() throws IOException {
+        File testFile = new File("src/main/resources/Employees");
+        if (testFile.length() == 0)
+            return;
+
         try (DataInputStream file = new DataInputStream(
                 new BufferedInputStream(new FileInputStream("src/main/resources/Employees")))) {
             count = file.readInt();

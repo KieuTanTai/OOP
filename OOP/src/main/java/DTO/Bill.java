@@ -104,15 +104,6 @@ public class Bill {
           return date;
    }
    
-    public void nhap(){
-        billId = setBillId();
-        employeeId = setEmployeeId();
-        customerId = setCustomerId();
-        promoCode = setPromoCode();
-        discount = setDiscount();
-        date = setDate();
-
-    }
 
     public String getBillId() {
         return this.billId;

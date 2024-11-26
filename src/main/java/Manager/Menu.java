@@ -60,7 +60,6 @@ public class Menu {
             }
         }while (choice != 0);
     }
-    /*----- methods for only Books -----*/
 
     public static void addHandler() {
         int choice;

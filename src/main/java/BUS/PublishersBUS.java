@@ -166,7 +166,7 @@ public class PublishersBUS implements IRuleSets {
         int index = find(nameOrID);
         if (index != -1) {
             int userChoose;
-            // show list for user choose
+            // show list for user choice
             showAsTable(publishersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
@@ -201,7 +201,7 @@ public class PublishersBUS implements IRuleSets {
         int index = find(nameOrID);
         if (index != -1) {
             int userChoose;
-            // show list for user choose
+            // show list for user choice
             showAsTable(publishersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {

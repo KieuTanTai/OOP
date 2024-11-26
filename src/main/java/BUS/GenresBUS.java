@@ -178,7 +178,7 @@ public class GenresBUS implements IRuleSets {
           int index = find(id);
           if (index != -1) {
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                showAsTable(genresList[index]);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -213,7 +213,7 @@ public class GenresBUS implements IRuleSets {
           int index = find(id);
           if (index != -1) {
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                showAsTable(genresList[index]);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
                do {

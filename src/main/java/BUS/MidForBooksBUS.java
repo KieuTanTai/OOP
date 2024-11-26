@@ -147,7 +147,7 @@ public class MidForBooksBUS {
           MidForBooks[] list = relativeFind(bookID);
           if (list != null) {
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                showAsTable(list);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -210,7 +210,7 @@ public class MidForBooksBUS {
                return;
           }
           int userChoose;
-          // show list for user choose
+          // show list for user choice
           showAsTable(midList[index]);
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
           do {

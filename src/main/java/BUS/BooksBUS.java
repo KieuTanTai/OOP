@@ -80,7 +80,41 @@ public class BooksBUS implements IRuleSets {
      // *find methods (TEST DONE)
      @Override
      public void find() {
-          Menu.findHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Strict find");
+               System.out.println("II. Relative find");
+               System.out.println("III. Advanced find");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice: ");
+               choice = Validate.parseChooseHandler(input.nextLine(), 4);
+               switch (choice) {
+                    case 1:
+                         System.out.println("Enter name or id of book: ");
+                         String userInput = input.nextLine();
+                         int index = find(userInput);
+                         if (index != -1)
+                              booksList[index].showInfo();
+                         break;
+                    case 2:
+                         System.out.println("*".repeat(60));
+                         System.out.println("I. Find by Type");
+                         System.out.println("II. Relative find");
+                         System.out.println("III. Advanced find");
+                         System.out.println("0. Exit");
+                         System.out.println("*".repeat(60));
+                         System.out.print("Enter your choice: ");
+
+                         break;
+                    case 0:
+                         System.out.println("Exit program.");
+                         break;
+                    default:
+                         System.out.println("Invalid choice. Please try again.");
+               }
+          } while (choice != 0);
      }
 
      // strict find
@@ -95,6 +129,27 @@ public class BooksBUS implements IRuleSets {
      }
 
      // relative finds
+     public Books[] relativeFind(BookGenres genre) {
+          int count = 0;
+          Books[] bookArray = new Books[0];
+          MidForBooks[] midList = MidForBooksBUS.getMidList();
+          int length = MidForBooksBUS.getMidList().length;
+          for (int i = 0; i < length; i++) {
+               String genreID = midList[i].getGenre().getGenreID();
+               String genreName = midList[i].getGenre().getGenreName();
+               if (genreID == genre.getGenreID() && genreName == genre.getGenreName()) {
+                    int index = find(midList[i].getBookID());
+                    bookArray = Arrays.copyOf(bookArray, bookArray.length + 1);
+                    bookArray[count] = booksList[index];
+               }
+          }
+          if (count == 0) {
+               System.out.println("not found any books!");
+               return null;
+          }
+          return bookArray;
+     }
+
      // return list index of products that have contains specific string
      public Books[] relativeFind(Object originalKey, String request) {
           int count = 0;
@@ -119,10 +174,13 @@ public class BooksBUS implements IRuleSets {
                               typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
 
                     String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
-                              formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase() : "";
+                              formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase()
+                                        : "";
 
                     String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
-                              publisherName = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherName().toLowerCase() : "";
+                              publisherName = (Validate.requiredNotNull(publishers))
+                                        ? publishers.getPublisherName().toLowerCase()
+                                        : "";
 
                     if (request.equals("name") && bookName.contains(key.toLowerCase()))
                          flag = true;
@@ -141,9 +199,12 @@ public class BooksBUS implements IRuleSets {
                               && (publisherID.equals(key) || publisherName.contains(key.toLowerCase())))
                          flag = true;
 
-               } else if (originalKey instanceof LocalDate)
-                    if (request.equals("released") && (book.getReleaseDate().isEqual((LocalDate) originalKey)))
+               } 
+               else if (originalKey instanceof LocalDate && request.equals("released") )
+                    if (book.getReleaseDate().isEqual((LocalDate) originalKey))
                          flag = true;
+               else if (originalKey instanceof BookGenres && request.equals("genre"))
+                    return relativeFind((BookGenres) originalKey);
 
                if (flag) {
                     booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
@@ -357,6 +418,14 @@ public class BooksBUS implements IRuleSets {
      }
 
      // relative search
+     public void relativeSearch(BookGenres genre) {
+          Books[] list = relativeFind(genre);
+          if (list != null)
+               for (Books book : list)
+                    book.showInfo();
+
+     }
+
      public void relativeSearch(Object key, String request) {
           Books[] list = relativeFind(key, request);
           if (list != null)
@@ -421,7 +490,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                String name;
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -450,7 +519,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                LocalDate date;
                int userChoose;
-               // show option for user choose
+               // show option for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -476,7 +545,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                BigDecimal price;
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -501,7 +570,7 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                int quantity, userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -527,7 +596,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                String authorName;
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -560,7 +629,7 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -593,7 +662,7 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -639,7 +708,7 @@ public class BooksBUS implements IRuleSets {
                     if (userChoose == 1)
                          return;
 
-                    // show list for user choose
+                    // show list for user choice
                     GenresBUS.showList();
                     if (GenresBUS.getCount() == 0) // if not have any genres
                          return;
@@ -674,7 +743,7 @@ public class BooksBUS implements IRuleSets {
                          listGenres[i] = genre;
                     }
 
-                    // execute all user choose (remove old genres and add new genres)
+                    // execute all user choice (remove old genres and add new genres)
                     genres.remove(bookNameOrID);
                     for (int i = 0; i < listGenres.length; i++)
                          genres.add(new MidForBooks(bookNameOrID, listGenres[i]));
@@ -696,7 +765,7 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -725,7 +794,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                String packagingSize;
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
@@ -760,7 +829,7 @@ public class BooksBUS implements IRuleSets {
           int index = find(bookNameOrID);
           if (index != -1) {
                int userChoose;
-               // show list for user choose
+               // show list for user choice
                booksList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
                do {

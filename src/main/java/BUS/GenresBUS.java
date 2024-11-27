@@ -128,11 +128,15 @@ public class GenresBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
-               if (choice == 0) {
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
                     System.out.println("Exit program.");
                     break;
                }
+               choice = Validate.parseChooseHandler(inputChoice, 2);
+               if (choice == -1)
+                    break;
 
                System.out.println("Enter name or id of genre : ");
                String userInput = input.nextLine().trim();
@@ -169,7 +173,13 @@ public class GenresBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 2);
 
                try {
                     switch (choice) {
@@ -217,9 +227,6 @@ public class GenresBUS implements IRuleSets {
                               add(list);
                               writeFile();
                               break;
-                         case 0:
-                              System.out.println("Exit program.");
-                              break;
                     }
                } catch (Exception e) {
                     System.out.printf("error writing file!\nt%s\n", e.getMessage());
@@ -263,11 +270,14 @@ public class GenresBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
-               if (choice == 0) {
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
                     System.out.println("Exit program.");
                     break;
-               } else if (choice == 1) {
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 1);
+               if (choice == 1) {
                     try {
                          System.out.println("Enter name or id of genre : ");
                          String userInput = input.nextLine().trim();
@@ -319,11 +329,14 @@ public class GenresBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
-               if (choice == 0) {
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
                     System.out.println("Exit program.");
                     break;
-               } else if (choice == 1) {
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 1);
+               if (choice == 1) {
                     try {
                          System.out.println("Enter name or id of genre : ");
                          String userInput = input.nextLine().trim();

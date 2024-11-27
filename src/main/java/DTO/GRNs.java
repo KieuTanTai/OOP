@@ -92,7 +92,6 @@ public class GRNs {
                while (grnID.length() != 8)
                     grnID = "0" + grnID;
           }
-
           return grnIDModifier(grnID);
      }
 
@@ -111,10 +110,6 @@ public class GRNs {
                     System.out.print("choose employee (like 1, 2,etc...) : ");
                     String option = input.nextLine().trim();
                     userChoice = Validate.parseChooseHandler(option, tempList.length);
-                    if (userChoice == 0) {
-                         System.out.println("Error value!");
-                         userChoice = -1;
-                    }
                } while (userChoice == -1);
                return tempList[userChoice - 1];
           } catch (IOException e) {
@@ -135,10 +130,6 @@ public class GRNs {
                System.out.print("choose supplier (like 1, 2,etc...) : ");
                String option = input.nextLine().trim();
                userChoice = Validate.parseChooseHandler(option, SuppliersBUS.getCount());
-               if (userChoice == 0) {
-                    System.out.println("Error value!");
-                    userChoice = -1;
-               }
           } while (userChoice == -1);
 
           Suppliers supplier = SuppliersBUS.getSupplierList()[userChoice - 1];
@@ -277,10 +268,6 @@ public class GRNs {
                                    System.out.print("choose grn (like 1, 2,etc...) : ");
                                    option = input.nextLine().trim();
                                    userChoice = Validate.parseChooseHandler(option, listGRN.getCount());
-                                   if (userChoice == 0) {
-                                        System.out.println("Error value!");
-                                        userChoice = -1;
-                                   }
                               } while (userChoice == -1);
 
                               listGRN.remove(listGRN.getGrnDetailsList()[userChoice - 1].getGrnID());
@@ -294,10 +281,6 @@ public class GRNs {
                                    System.out.print("choose grn (like 1, 2,etc...) : ");
                                    option = input.nextLine().trim();
                                    userChoice = Validate.parseChooseHandler(option, listGRN.getCount());
-                                   if (userChoice == 0) {
-                                        System.out.println("Error value!");
-                                        userChoice = -1;
-                                   }
                               } while (userChoice == -1);
 
                               listGRN.edit(listGRN.getGrnDetailsList()[userChoice - 1].getGrnID());

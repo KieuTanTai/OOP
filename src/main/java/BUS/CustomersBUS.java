@@ -198,7 +198,13 @@ public class CustomersBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 3);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 3);
                switch (choice) {
                     case 1:
                          System.out.println("Enter name or id of customer : ");
@@ -210,9 +216,6 @@ public class CustomersBUS implements IRuleSets {
                          break;
                     case 3:
                          caseAdvancedSearch();
-                         break;
-                    case 0:
-                         System.out.println("Exit program.");
                          break;
                }
           } while (choice != 0);
@@ -234,7 +237,13 @@ public class CustomersBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 7);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 7);
                switch (choice) {
                     case 1:
                          relativeSearch(getInputFirstName(), "firstName");
@@ -312,9 +321,6 @@ public class CustomersBUS implements IRuleSets {
                          } while (date == null);
                          relativeSearch(date, "date");
                          break;
-                    case 0:
-                         System.out.println("Exit program.");
-                         break;
                }
           } while (choice != 0);
      }
@@ -331,7 +337,13 @@ public class CustomersBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 3);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 3);
                switch (choice) {
                     case 1:
                     case 2:
@@ -360,8 +372,6 @@ public class CustomersBUS implements IRuleSets {
                               maxPoint = Validate.isBigDecimal(value);
                          } while (point == null || maxPoint == null);
                          search(point, maxPoint, "range");
-                         break;
-                    default:
                          break;
                }
           } while (choice != 0);
@@ -426,7 +436,13 @@ public class CustomersBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 2);
                // try catch for execute file after add
                try {
                     switch (choice) {
@@ -474,9 +490,6 @@ public class CustomersBUS implements IRuleSets {
                               add(list);
                               writeFile();
                               break;
-                         case 0:
-                              System.out.println("Exit program.");
-                              break;
                     }
                } catch (Exception e) {
                     System.out.printf("error writing file!\nt%s\n", e.getMessage());
@@ -523,12 +536,13 @@ public class CustomersBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 5);
-               // exits
-               if (choice == 0) {
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
                     System.out.println("Exit program.");
                     break;
                }
+               choice = Validate.parseChooseHandler(inputChoice, 5);
                System.out.println("Enter name or id of customer : ");
                String userInput = input.nextLine().trim();
 
@@ -544,6 +558,8 @@ public class CustomersBUS implements IRuleSets {
                          editPoint(userInput);
                     else if (choice == 5)
                          editAddress(userInput);
+                    else 
+                         break;
                     // update file
                     writeFile();
                } catch (Exception e) {
@@ -706,11 +722,14 @@ public class CustomersBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
-               if (choice == 0) {
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
                     System.out.println("Exit program.");
                     break;
-               } else if (choice == 1) {
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 1);
+               if (choice == 1) {
                     try {
                          System.out.println("Enter name or id of customer : ");
                          String userInput = input.nextLine().trim();

@@ -81,7 +81,7 @@ public class Validate {
      public static int parseChooseHandler(String userChoose, int totalOptions) {
           try {
                int parseChoose = Integer.parseInt(userChoose);
-               if ((parseChoose >= 0) && (parseChoose <= totalOptions))
+               if ((parseChoose > 0) && (parseChoose <= totalOptions))
                     return parseChoose;
                else {
                     // System.out.print("\033\143");

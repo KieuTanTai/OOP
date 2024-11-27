@@ -126,10 +126,7 @@ public class Books extends Products {
             System.out.print("choose format (like 1, 2,etc...) : ");
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, BookFormatsBUS.getCount());
-            if (userChoice == 0) {
-                System.out.println("Error value!");
-                userChoice = -1;
-            }
+
         } while (userChoice == -1);
 
         BookFormats format = BookFormatsBUS.getFormatsList()[userChoice - 1];
@@ -163,10 +160,6 @@ public class Books extends Products {
             System.out.print("choose type you want (like \"1, 2, 3,etc....\") : ");
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, TypesBUS.getCount());
-            if (userChoice == 0) {
-                System.out.println("Error value!");
-                userChoice = -1;
-            }
         } while (userChoice == -1);
 
         BookTypes type = TypesBUS.getTypesList()[userChoice - 1];
@@ -185,10 +178,6 @@ public class Books extends Products {
             System.out.print("choose publisher (like 1, 2,etc...) : ");
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, PublishersBUS.getCount());
-            if (userChoice == 0) {
-                System.out.println("Error value!");
-                userChoice = -1;
-            }
         } while (userChoice == -1);
 
         Publishers publisher = PublishersBUS.getPublishersList()[userChoice - 1];

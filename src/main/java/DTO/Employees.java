@@ -69,10 +69,6 @@ public class Employees extends Person {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, 2);
-            if (userChoice == 0) {
-                System.out.println("Error value!");
-                userChoice = -1;
-            }
         } while (userChoice == -1);
         return status[userChoice - 1];
     }
@@ -114,10 +110,6 @@ public class Employees extends Person {
             System.out.print("choose role (like 1, 2,etc...): ");
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, roles.length);
-            if (userChoice == 0) {
-                System.out.println("Error value!");
-                userChoice = -1;
-            }
         } while (userChoice == -1);
 
         return roles[userChoice - 1];

@@ -381,7 +381,13 @@ public class BooksBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 3);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 3);
                switch (choice) {
                     case 1:
                          System.out.println("Enter name or id of book : ");
@@ -393,9 +399,6 @@ public class BooksBUS implements IRuleSets {
                          break;
                     case 3:
                          caseAdvancedSearch();
-                         break;
-                    case 0:
-                         System.out.println("Exit program.");
                          break;
                }
           } while (choice != 0);
@@ -416,7 +419,13 @@ public class BooksBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 7);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 7);
                switch (choice) {
                     case 1:
                          System.out.println("*".repeat(60));
@@ -473,9 +482,6 @@ public class BooksBUS implements IRuleSets {
                          } while (date == null);
                          relativeSearch(date, "released");
                          break;
-                    case 0:
-                         System.out.println("Exit program.");
-                         break;
                }
           } while (choice != 0);
      }
@@ -506,7 +512,13 @@ public class BooksBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 13);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 13);
                switch (choice) {
                     case 1:
                     case 2:
@@ -643,9 +655,6 @@ public class BooksBUS implements IRuleSets {
                          else if (choice == 13)
                               advancedSearch(format, publisher, "format-pub");
                          break;
-                    case 0:
-                         System.out.println("Exit program.");
-                         break;
                }
           } while (choice != 0);
      }
@@ -690,7 +699,13 @@ public class BooksBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 2);
                // try catch for execute file after add
                try {
                     switch (choice) {
@@ -737,9 +752,6 @@ public class BooksBUS implements IRuleSets {
                                    break;
                               add(list);
                               writeFile();
-                              break;
-                         case 0:
-                              System.out.println("Exit program.");
                               break;
                     }
                } catch (Exception e) {
@@ -792,12 +804,13 @@ public class BooksBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 10);
-               // exits
-               if (choice == 0) {
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
                     System.out.println("Exit program.");
                     break;
                }
+               choice = Validate.parseChooseHandler(inputChoice, 10);
                System.out.println("Enter name or id of book : ");
                String userInput = input.nextLine().trim();
 
@@ -823,6 +836,8 @@ public class BooksBUS implements IRuleSets {
                          editFormat(userInput);
                     else if (choice == 10)
                          editPackagingSize(userInput);
+                    else 
+                         break;
                     // update file
                     writeFile();
                } catch (Exception e) {
@@ -1176,19 +1191,20 @@ public class BooksBUS implements IRuleSets {
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
-               if (choice == 0) {
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
                     System.out.println("Exit program.");
                     break;
-               } else if (choice == 1) {
-                    try {
-                         System.out.println("Enter name or id of book : ");
-                         String userInput = input.nextLine().trim();
-                         remove(userInput);
-                         writeFile();
-                    } catch (Exception e) {
-                         System.out.printf("error writing file!\nt%s\n", e.getMessage());
-                    }
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 1);
+               try {
+                    System.out.println("Enter name or id of book : ");
+                    String userInput = input.nextLine().trim();
+                    remove(userInput);
+                    writeFile();
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
                }
           } while (choice != 0);
      }

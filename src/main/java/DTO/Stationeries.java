@@ -106,10 +106,6 @@ public class Stationeries extends Products {
                System.out.print("choose type (like 1, 2,etc...) : ");
                String option = input.nextLine().trim();
                userChoice = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
-               if (userChoice == 0) {
-                    System.out.println("Error value!");
-                    userChoice = -1;
-               }
           } while (userChoice == -1);
 
           StaTypes type = StaTypesBUS.getTypesList()[userChoice - 1];

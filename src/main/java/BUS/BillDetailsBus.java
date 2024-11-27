@@ -2,7 +2,6 @@ package BUS;
 
 import DTO.BillDetails;
 import util.Validate;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -20,6 +19,11 @@ public class BillDetailsBus {
     public BillDetailsBus(BillDetails[] ds, int n){
         this.n = n;
         this.ds = ds;
+    }
+
+    public BillDetailsBus(BillDetailsBus list){
+        ds = list.ds;
+        n = list.n;
     }
 
     public BillDetails[] getds(){
@@ -47,14 +51,10 @@ public class BillDetailsBus {
         }
     }
 
-    public int find (String id){
-        for(int i = 0;i < ds.length; ++i){
-            if((ds[i].getBillId().equals(id))){
-                return i;
-            }
+    public void xuat(){
+        for(int i = 0; i < n; ++i){
+            System.out.println(ds[i].toString());
         }
-        System.out.println("not found");
-        return -1;
     }
 
     public void createBillDetailsList() {
@@ -89,13 +89,39 @@ public class BillDetailsBus {
     }
 
     public void remove (String id){
-        int index = find(id);
-        if(index != -1){
-            for(int i = index; i < ds.length; ++i){
-                ds[i] = ds[i + 1];
-                ds = Arrays.copyOf(ds, ds.length - 1);
-                --n;
+        int index = -1;
+        for(int i = 0; i < ds.length; ++i){
+            if(ds[i].getBillId().equals(id)){
+                index = i;
+                break;
             }
+        }
+        if(index != -1){
+            for(int i = index; i < ds.length - 1; ++i){
+                ds[i] = ds[i + 1];
+            }
+            ds = Arrays.copyOf(ds, ds.length-1);
+            n--;
+        }else{
+            System.out.println("not found!!!");
+        }
+    }
+
+    public void remove(){
+        System.out.println("insert bill id you want to remove: ");
+        String bd = sc.nextLine();
+        remove(bd);
+    }
+
+    public void findBillId (String id){
+        boolean flag = false;
+        for(int i = 0; i < ds.length; ++i){
+            if((ds[i].getBillId().equals(id))){
+                flag = true;
+            }
+        }
+        if(flag == false){
+            System.out.println("not found");
         }
     }
 

@@ -1,10 +1,12 @@
 package DTO;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import BUS.BillDetailsBus;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import util.Validate;
 // import DTO.BillDetails;
 
@@ -12,21 +14,23 @@ public class Bill {
     private String billId;
     private String employeeId;
     private String customerId;
-    private String promoCode;
+    private SaleEvents saleCode;
     private BigDecimal discount;
     private BigDecimal totalPrice;
     private LocalDate date;
-    private Scanner sc = new Scanner(System.in);
+    private BillDetailsBus detailsBus;
     
+    Scanner sc = new Scanner(System.in);
 
     public Bill() {
+        detailsBus = new BillDetailsBus();
     }
-
  
-    public Bill(String billId, String employeeId, String customerId, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
+    public Bill(String billId, String employeeId, String customerId, SaleEvents saleCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
         this.billId = billId;
         this.employeeId = employeeId;
         this.customerId = customerId;
+        this.saleCode = saleCode;
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;
@@ -71,19 +75,6 @@ public class Bill {
           return id;
     }
 
-    public String setPromoCode() {
-        String code;
-          do {
-               System.out.print("set promo code : ");
-               code = sc.nextLine().trim();
-               if (Validate.validateID(code)) {
-                    System.out.println("error code !");
-                    code = "";
-               }
-          } while (code.isEmpty());
-          return code;
-    }
-
     public BigDecimal setDiscount() {
         BigDecimal discount;
         do {
@@ -104,6 +95,15 @@ public class Bill {
           return date;
    }
    
+    public void nhap(){
+        billId = setBillId();
+        employeeId = setEmployeeId();
+        customerId = setCustomerId();
+        saleCode = saleCode.nhap();
+        discount = setDiscount();
+        date = setDate();
+
+    }
 
     public String getBillId() {
         return this.billId;
@@ -125,16 +125,16 @@ public class Bill {
         return this.customerId;
     }
 
+    public void setSaleCode(SaleEvents saleCode){
+        this.saleCode = saleCode;
+    }
+
+    public SaleEvents getSaleCode(){
+        return this.saleCode;
+    }
+
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
-    }
-
-    public String getPromoCode() {
-        return this.promoCode;
-    }
-
-    public void setPromoCode(String promoCode) {
-        this.promoCode = promoCode;
     }
 
     public BigDecimal getDiscount() {
@@ -147,7 +147,7 @@ public class Bill {
 
     public BigDecimal getTotalPrice() {
         BigDecimal total = BigDecimal.ZERO;
-        for (BillDetails detail : BillDetailsBus.getds()) {
+        for (BillDetails detail : detailsBus.getds()) {
             total = total.add(detail.calcSubTotal());
         }
         return total;
@@ -162,29 +162,16 @@ public class Bill {
         return this.date.format(formatter);
     }
 
-    public void setDate(String date1) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        this.date = LocalDate.parse(date1, dateFormat);
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public void nhap(){
-        System.out.println("Vui long nhap ID cua bill: ");
-        setBillId(sc.nextLine());
-        System.out.println("Vui long nhap ID cua employee: ");
-        setEmployeeId(sc.nextLine());
-        System.out.println("Vui long nhap ID cua customer: ");
-        setCustomerId(sc.nextLine());
-        System.out.println("Vui long nhap ngay theo dinh dang DD-MM-YYYY: ");
-        String date1 = sc.nextLine();
-        setDate(date1);
-        System.out.println("Vui long nhap discount: ");
-        setDiscount(sc.nextBigDecimal());
-        sc.nextLine();
-        System.out.println("Vui long nhap promo code: ");
-        setPromoCode(sc.nextLine());
-        System.out.println("Vui long nhap total price: ");
-        setTotalPrice(sc.nextBigDecimal());
-        sc.nextLine();
+    public BillDetailsBus getDetailsBus() {
+        return detailsBus;
+    }
+
+    public void setDetailsBus(BillDetailsBus detailsBus) {
+        this.detailsBus = detailsBus;
     }
 
     @Override
@@ -192,10 +179,10 @@ public class Bill {
         return "{" +
             " billId='" + getBillId() + "'" +
             ", employeeId='" + getEmployeeId() + "'" +
-            ", customerId='" + getCustomerId() + "'" +
-            ", promoCode='" + getPromoCode() + "'" +
+            ", customerId='" + getCustomerId() +  "'" +
             ", discount='" + getDiscount() + "'" +
             ", totalPrice='" + getTotalPrice() + "'" +
-            ", date='" + getDate() + "'";
+            ", date='" + getDate() + "'" + "}";
     }
+    
 }

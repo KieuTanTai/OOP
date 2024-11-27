@@ -13,10 +13,12 @@ public class BillBus{
     Scanner sc = new Scanner(System.in);
     private Bill[] ds;
     private int n;
+    private BillDetailsBus detailsBus;
 
     public BillBus(){
         n = 0;
         ds = new Bill[0];
+        detailsBus = new BillDetailsBus();
     }
 
     public BillBus(Bill[] ds, int n){
@@ -73,7 +75,6 @@ public class BillBus{
     public void xuat(){
         for(int i = 0; i < n; ++i){
             System.out.println(ds[i].toString());
-            
         }
     }
 
@@ -126,14 +127,6 @@ public class BillBus{
         }
     }
 
-    public void fixPromoCode(String bd, String newPromo){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setPromoCode(newPromo);
-            }
-        }
-    }
-
     public void fixTotalPrice(String bd, BigDecimal newTotalPrice){
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
@@ -142,7 +135,7 @@ public class BillBus{
         }
     }
 
-    public void sua(){
+    public void edit(){
         System.out.println("insert bill's id you want to edit: ");
         String fixBill = sc.nextLine();
         boolean flag = false;
@@ -153,8 +146,7 @@ public class BillBus{
                 System.out.println("2. customer id");
                 System.out.println("3. date");
                 System.out.println("4. discount");
-                System.out.println("5. promo code");
-                System.out.println("6. total price");
+                System.out.println("5. total price");
                 System.out.println("0. thoat");
                 System.out.println("insert index: ");
                 int x = sc.nextInt();
@@ -203,18 +195,6 @@ public class BillBus{
                         ds[i].setDiscount(discount);
                         break;
                     case 5:
-                        String code;
-                    do {
-                         System.out.print("set promo code : ");
-                         code = sc.nextLine().trim();
-                         if (Validate.validateID(code)) {
-                              System.out.println("error code !");
-                              code = "";
-                         }
-                    } while (code.isEmpty());
-                        ds[i].setPromoCode(code);
-                        break;
-                    case 6:
                         System.out.println("set total price");
                         BigDecimal newTotalPrice = sc.nextBigDecimal();
                         sc.nextLine();
@@ -230,7 +210,7 @@ public class BillBus{
         }
     }
 
-    public void delete(String bd){
+    public void remove(String bd){
         int index = -1;
         for(int i = 0; i < n; ++i){
             if(ds[i].getBillId().equals(bd)){
@@ -249,10 +229,10 @@ public class BillBus{
         }
     }
 
-    public void delete(){
+    public void remove(){
         System.out.println("insert bill id you wanna remove");
         String bd = sc.nextLine();
-        delete(bd);
+        remove(bd);
     }
 
     public void findBillId(String newbd){
@@ -290,7 +270,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
@@ -304,7 +284,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
@@ -317,20 +297,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
-        }
-    }
-
-    public void findPromoCode(String newpromo){
-        boolean flag = false;
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getPromoCode().equals(newpromo)){
-                ds[i].toString();
-                flag = true;
-            }
-        }
-        if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
@@ -343,7 +310,7 @@ public class BillBus{
             }
         }
         if(flag == false){
-            System.out.println("khong tim thay");
+            System.out.println("not found!!!");
         }
     }
 
@@ -353,8 +320,7 @@ public class BillBus{
         System.out.println("3. search customer id");
         System.out.println("4. search date");
         System.out.println("5. search discount");
-        System.out.println("6. search promo code");
-        System.out.println("7. search total price");
+        System.out.println("6. search total price");
         System.out.println("insert:");
         int m = sc.nextInt();
         sc.nextInt();
@@ -415,18 +381,6 @@ public class BillBus{
                 findDiscount(discount);        
                 break;
             case 6:
-                String code;
-            do {
-                 System.out.print("set promo code : ");
-                 code = sc.nextLine().trim();
-                 if (Validate.validateID(code)) {
-                      System.out.println("error code !");
-                      code = "";
-                 }
-            } while (code.isEmpty());
-                findPromoCode(code);        
-                break;
-            case 7:
                 System.out.println("insert total price you want to search");
                 BigDecimal newTotalPrice = sc.nextBigDecimal();
                 sc.nextLine();

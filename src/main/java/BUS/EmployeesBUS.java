@@ -1,6 +1,5 @@
 package BUS;
 
-import Manager.Menu;
 import util.Validate;
 import DTO.Employees;
 
@@ -68,7 +67,6 @@ public class EmployeesBUS implements IRuleSets {
     // *find methods(TEST DONE)
     @Override
     public void find() {
-        Menu.addHandler();
     }
 
     @Override

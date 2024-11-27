@@ -1,6 +1,5 @@
 package BUS;
 
-import Manager.Menu;
 import util.Validate;
 import DTO.Customers;
 
@@ -69,7 +68,6 @@ public class CustomersBUS implements IRuleSets {
      // *find methods (TEST DONE)
      @Override
      public void find() {
-          Menu.addHandler();
      }
 
      @Override

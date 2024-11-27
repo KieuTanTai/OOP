@@ -799,28 +799,34 @@ public class BooksBUS implements IRuleSets {
                }
                System.out.println("Enter name or id of book: ");
                String userInput = input.nextLine().trim();
-                
+
                // if case
-               if (choice == 1)
-                    edit(userInput);
-               if (choice == 2)
-                    editReleaseDate(userInput);
-               if (choice == 3)
-                    editPrice(userInput);
-               if (choice == 4)
-                    editQuantity(userInput);
-               if (choice == 5)
-                    editAuthor(userInput);
-               if (choice == 6)
-                    editPublisher(userInput);
-               if (choice == 7)
-                    editType(userInput);
-               if (choice == 8)
-                    editGenre(userInput);
-               if (choice == 9)
-                    editFormat(userInput);
-               if (choice == 10)
-                    editPackagingSize(userInput);
+               try {
+                    if (choice == 1)
+                         edit(userInput);
+                    else if (choice == 2)
+                         editReleaseDate(userInput);
+                    else if (choice == 3)
+                         editPrice(userInput);
+                    else if (choice == 4)
+                         editQuantity(userInput);
+                    else if (choice == 5)
+                         editAuthor(userInput);
+                    else if (choice == 6)
+                         editPublisher(userInput);
+                    else if (choice == 7)
+                         editType(userInput);
+                    else if (choice == 8)
+                         editGenre(userInput);
+                    else if (choice == 9)
+                         editFormat(userInput);
+                    else if (choice == 10)
+                         editPackagingSize(userInput);
+                    // update file
+                    writeFile();
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+               }
           } while (choice != 0);
      }
 
@@ -1173,10 +1179,16 @@ public class BooksBUS implements IRuleSets {
                if (choice == 0) {
                     System.out.println("Exit program.");
                     break;
+               } else if (choice == 1) {
+                    try {
+                         System.out.println("Enter name or id of book: ");
+                         String userInput = input.nextLine().trim();
+                         remove(userInput);
+                         writeFile();
+                    } catch (Exception e) {
+                         System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                    }
                }
-               System.out.println("Enter name or id of book: ");
-               String userInput = input.nextLine().trim();
-               remove(userInput);
           } while (choice != 0);
      }
 

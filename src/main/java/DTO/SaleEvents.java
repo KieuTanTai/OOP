@@ -1,6 +1,7 @@
 package DTO;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class SaleEvents {
     private String saleEvId;
@@ -9,6 +10,8 @@ public class SaleEvents {
     private LocalDate startDate;
     private LocalDate endDate;
     private SaleEventsDetail detail;
+
+    Scanner sc = new Scanner(System.in);    
 
     // constructor
     public SaleEvents() {

@@ -17,7 +17,7 @@ public class Bill {
     private SaleEvents saleCode;
     private BigDecimal discount;
     private BigDecimal totalPrice;
-    private LocalDate date;
+    private LocalDate date = LocalDate.now() ;
     private BillDetailsBus detailsBus;
     
     Scanner sc = new Scanner(System.in);
@@ -85,15 +85,15 @@ public class Bill {
         return discount;
     }
 
-    public LocalDate setDate() {
-        LocalDate date;
-          do {
-               System.out.print("set date : ");
-               String dateInput = sc.nextLine().trim();
-               date = Validate.isCorrectDate(dateInput);
-          } while (date == null);
-          return date;
-   }
+//     public LocalDate setDate() {
+//         LocalDate date;
+//           do {
+//                System.out.print("set date : ");
+//                String dateInput = sc.nextLine().trim();
+//                date = Validate.isCorrectDate(dateInput);
+//           } while (date == null);
+//           return date;
+//    }
    
     public void nhap(){
         billId = setBillId();
@@ -101,8 +101,6 @@ public class Bill {
         customerId = setCustomerId();
         saleCode.nhap(); ;
         discount = setDiscount();
-        date = setDate();
-
     }
 
     public String getBillId() {

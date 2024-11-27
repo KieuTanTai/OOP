@@ -95,118 +95,96 @@ public class BillBus{
         add(ds);
     }
 
-    public void fixCustomerId(String bd, String newCId){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setCustomerId(newCId);
-            }
-        }
-    }
-
-    public void fixEmployeeId(String bd, String newEId){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setEmployeeId(newEId);
-            }
-        }
-    }
-
-    public void fixDate(String bd,LocalDate newDate){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setDate(newDate);
-            }
-        }
-    }
-
-    public void fixDiscount(String bd, BigDecimal newDiscount){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setDiscount(newDiscount);
-            }
-        }
-    }
-
-    public void fixTotalPrice(String bd, BigDecimal newTotalPrice){
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(bd)){
-                ds[i].setTotalPrice(newTotalPrice);
-            }
-        }
-    }
-
     public void edit(){
-        System.out.println("insert bill's id you want to edit: ");
-        String fixBill = sc.nextLine();
-        boolean flag = false;
-        for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(fixBill)){
-                flag = true;
-                System.out.println("1. employeed id");
-                System.out.println("2. customer id");
-                System.out.println("3. date");
-                System.out.println("4. discount");
-                System.out.println("5. total price");
-                System.out.println("0. thoat");
-                System.out.println("insert index: ");
-                int x = sc.nextInt();
-                sc.nextLine();
-                switch (x) {
-                    case 1:
-                        String eid;
-                    do {
-                        System.out.print("set employee id : ");
-                        eid = sc.nextLine().trim();
-                        if (Validate.validateID(eid)) {
-                        System.out.println("error id !");
-                        eid = "";
-                            }
-                        } while (eid.isEmpty());
-                        ds[i].setEmployeeId(eid);
-                        break;
-                    case 2:
-                        String cid;
-                    do {
-                        System.out.print("set customer id : ");
-                        cid = sc.nextLine().trim();
-                        if (Validate.validateID(cid)) {
-                              System.out.println("error id !");
-                              cid = "";
-                         }
-                    } while (cid.isEmpty());  
-                        ds[i].setCustomerId(cid);                  
-                        break;
-                    case 3:
-                        LocalDate date;
-                    do {
-                         System.out.print("set date : ");
-                         String dateInput = sc.nextLine().trim();
-                         date = Validate.isCorrectDate(dateInput);
-                    } while (date == null);
-                        ds[i].setDate(date);
-                        break;
-                    case 4:
-                        BigDecimal discount;
-                    do {
-                         System.out.print("set discount : ");
-                         String value = sc.nextLine();
-                         discount = Validate.isBigDecimal(value);
-                    } while (discount == null);
-                        ds[i].setDiscount(discount);
-                        break;
-                    case 5:
-                        System.out.println("set total price");
-                        BigDecimal newTotalPrice = sc.nextBigDecimal();
-                        sc.nextLine();
-                        ds[i].setTotalPrice(newTotalPrice);
-                        break;
-                    default:
-                        break;
+        int choice;
+        System.out.println("*".repeat(60));
+        System.out.println("are you sure you want to edit:");
+        System.out.println("type 1 or 2");
+        System.out.println("I. Yes");
+        System.out.println("II. No");
+        do{
+        String editChoice = sc.nextLine();
+        choice = Validate.parseChooseHandler(editChoice, 2);
+        } while(choice == -1); 
+        switch (choice) {
+            case 1:
+            System.out.println("insert bill's id you want to edit: ");
+            String fixBill = sc.nextLine();
+            boolean flag = false;
+            for(int i = 0; i < n; ++i){
+                if(ds[i].getBillId().equals(fixBill)){
+                    flag = true;
+                    System.out.println("*".repeat(60));
+                    System.out.println("I. employeed id");
+                    System.out.println("II. customer id");
+                    System.out.println("III. date");
+                    System.out.println("IV. discount");
+                    System.out.println("V. total price");
+                    System.out.println("insert index: ");
+                    System.out.println("*".repeat(60));
+                    int x = sc.nextInt();
+                    sc.nextLine();
+                    switch (x) {
+                        case 1:
+                            String eid;
+                        do {
+                            System.out.print("set employee id : ");
+                            eid = sc.nextLine().trim();
+                            if (Validate.validateID(eid)) {
+                            System.out.println("error id !");
+                            eid = "";
+                                }
+                            } while (eid.isEmpty());
+                            ds[i].setEmployeeId(eid);
+                            break;
+                        case 2:
+                            String cid;
+                        do {
+                            System.out.print("set customer id : ");
+                            cid = sc.nextLine().trim();
+                            if (Validate.validateID(cid)) {
+                                  System.out.println("error id !");
+                                  cid = "";
+                             }
+                        } while (cid.isEmpty());  
+                            ds[i].setCustomerId(cid);                  
+                            break;
+                        case 3:
+                            LocalDate date;
+                        do {
+                             System.out.print("set date : ");
+                             String dateInput = sc.nextLine().trim();
+                             date = Validate.isCorrectDate(dateInput);
+                        } while (date == null);
+                            ds[i].setDate(date);
+                            break;
+                        case 4:
+                            BigDecimal discount;
+                        do {
+                             System.out.print("set discount : ");
+                             String value = sc.nextLine();
+                             discount = Validate.isBigDecimal(value);
+                        } while (discount == null);
+                            ds[i].setDiscount(discount);
+                            break;
+                        case 5:
+                            System.out.println("set total price");
+                            BigDecimal newTotalPrice = sc.nextBigDecimal();
+                            sc.nextLine();
+                            ds[i].setTotalPrice(newTotalPrice);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
-        }
-        if(flag == false){
-            System.out.println("bill id doesn't exist");
+            if(flag == false){
+                System.out.println("bill id doesn't exist");
+            }
+                break;
+        
+            default:
+                break;
         }
     }
 
@@ -314,13 +292,27 @@ public class BillBus{
         }
     }
 
+    public void findSaleCodeId(String newSaleId){
+        boolean flag = false;
+        for(int i = 0 ; i < n; ++i){
+            if(ds[i].getSaleCode().getSaleEvId().equals(newSaleId)){
+                ds[i].getSaleCode().xuatGomDetail();
+                flag = true;
+            }
+        }
+        if(flag == false){
+            System.out.println("not found!!!");
+        }
+    }
+
     public void find(){
-        System.out.println("1. search bill id");
-        System.out.println("2. search employee id");
-        System.out.println("3. search customer id");
-        System.out.println("4. search date");
-        System.out.println("5. search discount");
-        System.out.println("6. search total price");
+        System.out.println("I. search bill id");
+        System.out.println("II. search employee id");
+        System.out.println("III. search customer id");
+        System.out.println("IV. search date");
+        System.out.println("V. search discount");
+        System.out.println("VI. search total price");
+        System.out.println("VII. search sale code id");
         System.out.println("insert:");
         int m = sc.nextInt();
         sc.nextInt();
@@ -386,6 +378,8 @@ public class BillBus{
                 sc.nextLine();
                 findTotalPrice(newTotalPrice);        
                 break;
+            case 7:
+                
             default:
                 break;
         }
@@ -399,7 +393,8 @@ public void writeFile() throws IOException   {
             file.writeUTF(ds[i].getBillId());
             file.writeUTF(ds[i].getCustomerId());
             file.writeUTF(ds[i].getEmployeeId());
-            file.writeUTF(ds[i].getSaleCode());
+            file.writeUTF(ds[i].getSaleCode().getSaleEvId());
+            file.writeUTF(ds[i].getSaleCode().getDetail().getPromoCode());
             file.writeUTF(ds[i].getDate().toString());
             file.writeUTF(ds[i].getDiscount().toString());
             file.writeUTF(ds[i].getTotalPrice().toString());

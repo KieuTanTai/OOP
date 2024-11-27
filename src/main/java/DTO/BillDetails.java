@@ -1,10 +1,10 @@
 package DTO;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Scanner;
 import util.Validate;
 
-public class BillDetails{
+public class BillDetails {
     private String billId;
     private int quantity;
     private BigDecimal price;
@@ -21,11 +21,11 @@ public class BillDetails{
         this.subTotal = subTotal;
     }
 
-    public void setBillId(String id){
+    public void setBillId(String id) {
         this.billId = id;
     }
 
-    public String getBillId(){
+    public String getBillId() {
         return this.billId;
     }
 
@@ -52,58 +52,53 @@ public class BillDetails{
     public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
-    
+
     public String setBillId() {
         String id;
-          do {
-               System.out.print("set bill id : ");
-               id = sc.nextLine().trim();
-               if (Validate.validateID(id)) {
-                    System.out.println("error id !");
-                    id = "";
-               }
-          } while (id.isEmpty());
-          return id;
-     }
+        do {
+            System.out.print("set bill id : ");
+            id = sc.nextLine().trim();
+            if (Validate.validateID(id)) {
+                System.out.println("error id !");
+                id = "";
+            }
+        } while (id.isEmpty());
+        return id;
+    }
 
     public int setQuantity() {
         int quantity;
         do {
-             System.out.print("set quantity: ");
-             String quantityInput = sc.nextLine().trim();
-             quantity = Validate.isNumber(quantityInput);
+            System.out.print("set quantity: ");
+            String quantityInput = sc.nextLine().trim();
+            quantity = Validate.isNumber(quantityInput);
         } while (quantity == -1);
         return quantity;
     }
 
     public BigDecimal setPrice() {
         BigDecimal price;
-          do {
-               System.out.print("set bill id : ");
-               id = sc.nextLine().trim();
-               if (Validate.validateID(id)) {
-                    System.out.println("error id !");
-                    id = "";
-               }
-          } while (id.isEmpty());
-          return id;
-     }
+        do {
+            System.out.print("set price : ");
+            String inputPrice = sc.nextLine().trim();
+            price = Validate.isBigDecimal(inputPrice);
+        } while (price == null);
+        return price;
+    }
 
-    public void nhap(){
-        quantity = setquantity();
+    public void nhap() {
+        quantity = setQuantity();
         price = setPrice();
         billId = setBillId();
     }
 
-    }
-
     @Override
     public String toString() {
-        return "{" + "billId='" + getBillId() + 
-            " quantity='" + getquantity() + "'" +
-            ", price='" + getPrice() + "'" +
-            ", subTotal='" + getSubTotal() + "'" +
-            "}";
+        return "{" + "billId='" + getBillId() +
+                " quantity='" + getQuantity() + "'" +
+                ", price='" + getPrice() + "'" +
+                ", subTotal='" + getSubTotal() + "'" +
+                "}";
     }
-    
+
 }

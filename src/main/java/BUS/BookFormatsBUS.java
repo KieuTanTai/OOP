@@ -121,14 +121,14 @@ public class BookFormatsBUS implements IRuleSets {
                System.out.println("II. Relative search");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
                if (choice == 0) {
                     System.out.println("Exit program.");
                     break;
                }
 
-               System.out.println("Enter name or id of format: ");
+               System.out.println("Enter name or id of format : ");
                String userInput = input.nextLine().trim();
                // if case
                if (choice == 1)
@@ -160,7 +160,7 @@ public class BookFormatsBUS implements IRuleSets {
                System.out.println("II. Add list of formats");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
 
                try {
@@ -247,14 +247,14 @@ public class BookFormatsBUS implements IRuleSets {
                System.out.println("I. Edit");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
                if (choice == 0) {
                     System.out.println("Exit program.");
                     break;
                } else if (choice == 1) {
                     try {
-                         System.out.println("Enter name or id of format: ");
+                         System.out.println("Enter name or id of format : ");
                          String userInput = input.nextLine().trim();
                          edit(userInput);
                          writeFile();
@@ -290,14 +290,14 @@ public class BookFormatsBUS implements IRuleSets {
                System.out.println("I. Remove");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
                if (choice == 0) {
                     System.out.println("Exit program.");
                     break;
                } else if (choice == 1) {
                     try {
-                         System.out.println("Enter name or id of format: ");
+                         System.out.println("Enter name or id of format : ");
                          String userInput = input.nextLine().trim();
                          remove(userInput);
                          writeFile();

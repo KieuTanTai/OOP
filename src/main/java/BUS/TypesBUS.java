@@ -129,14 +129,14 @@ public class TypesBUS implements IRuleSets {
                System.out.println("II. Relative search");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
                if (choice == 0) {
                     System.out.println("Exit program.");
                     break;
                }
 
-               System.out.println("Enter name or id of type: ");
+               System.out.println("Enter name or id of type : ");
                String userInput = input.nextLine().trim();
                // if case
                if (choice == 1)
@@ -172,7 +172,7 @@ public class TypesBUS implements IRuleSets {
                System.out.println("II. Add list of types");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
 
                try {
@@ -267,14 +267,14 @@ public class TypesBUS implements IRuleSets {
                System.out.println("I. Edit");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
                if (choice == 0) {
                     System.out.println("Exit program.");
                     break;
                } else if (choice == 1) {
                     try {
-                         System.out.println("Enter name or id of type: ");
+                         System.out.println("Enter name or id of type : ");
                          String userInput = input.nextLine().trim();
                          edit(userInput);
                          writeFile();
@@ -318,28 +318,7 @@ public class TypesBUS implements IRuleSets {
      // remove methods (DONE)
      @Override
      public void remove() {
-          int choice;
-          do {
-               System.out.println("*".repeat(60));
-               System.out.println("I. Remove");
-               System.out.println("0. Exit");
-               System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
-               if (choice == 0) {
-                    System.out.println("Exit program.");
-                    break;
-               } else if (choice == 1) {
-                    try {
-                         System.out.println("Enter name or id of type: ");
-                         String userInput = input.nextLine().trim();
-                         remove(userInput);
-                         writeFile();
-                    } catch (Exception e) {
-                         System.out.printf("error writing file!\nt%s\n", e.getMessage());
-                    }
-               }
-          } while (choice != 0);
+
      }
 
      // *(TEST DONE)

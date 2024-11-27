@@ -148,9 +148,8 @@ public class BooksBUS implements IRuleSets {
                          BookTypes key = (BookTypes) originalKey;
                          BookTypes types = book.getType();
                          String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
-                                   typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase()
-                                             : "";
-                         if (typeID.equals(key.getTypeID()) && typeName.equals(key.getTypeName()))
+                                   typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
+                         if (typeID.equals(key.getTypeID()) && typeName.equals(key.getTypeName().toLowerCase()))
                               flag = true;
                     }
 
@@ -158,9 +157,7 @@ public class BooksBUS implements IRuleSets {
                          BookFormats key = (BookFormats) originalKey;
                          BookFormats formats = book.getFormat();
                          String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
-                                   formatName = (Validate.requiredNotNull(formats))
-                                             ? formats.getFormatName().toLowerCase()
-                                             : "";
+                                   formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase() : "";
                          if (formatID.equals(key.getFormatID()) && formatName.equals(key.getFormatName()))
                               flag = true;
                     }
@@ -169,9 +166,7 @@ public class BooksBUS implements IRuleSets {
                          Publishers key = (Publishers) originalKey;
                          Publishers publishers = book.getPublisher();
                          String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
-                                   publisherName = (Validate.requiredNotNull(publishers))
-                                             ? publishers.getPublisherName().toLowerCase()
-                                             : "";
+                                   publisherName = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherName().toLowerCase() : "";
                          if (publisherID.equals(key.getPublisherID()) && publisherName.equals(key.getPublisherName()))
                               flag = true;
                     }
@@ -385,11 +380,11 @@ public class BooksBUS implements IRuleSets {
                System.out.println("III. Advanced search");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 3);
                switch (choice) {
                     case 1:
-                         System.out.println("Enter name or id of book: ");
+                         System.out.println("Enter name or id of book : ");
                          String userInput = input.nextLine().trim();
                          search(userInput);
                          break;
@@ -417,10 +412,11 @@ public class BooksBUS implements IRuleSets {
                System.out.println("IV. Search by Publisher");
                System.out.println("V. Search by Book's name");
                System.out.println("VI. Search by Author");
+               System.out.println("VII. Search by Release date");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
-               choice = Validate.parseChooseHandler(input.nextLine().trim(), 6);
+               System.out.print("Enter your choice : ");
+               choice = Validate.parseChooseHandler(input.nextLine().trim(), 7);
                switch (choice) {
                     case 1:
                          System.out.println("*".repeat(60));
@@ -459,16 +455,24 @@ public class BooksBUS implements IRuleSets {
                          relativeSearch(PublishersBUS.getPublishersList()[choice - 1], "publisher");
                          break;
                     case 5:
-                         System.out.println("Enter book's name: ");
+                         System.out.println("Enter book's name : ");
                          String name = input.nextLine().trim();
                          relativeSearch(name, "name");
                          break;
                     case 6:
-                         System.out.println("Enter book's author: ");
+                         System.out.println("Enter book's author : ");
                          String author = input.nextLine().trim();
                          relativeSearch(author, "author");
                          break;
-
+                    case 7:
+                         LocalDate date;
+                         do {
+                              System.out.print("Enter release date (dd-mm-yyyy) : ");
+                              String dateInput = input.nextLine().trim();
+                              date = Validate.isCorrectDate(dateInput);
+                         } while (date == null);
+                         relativeSearch(date, "released");
+                         break;
                     case 0:
                          System.out.println("Exit program.");
                          break;
@@ -521,7 +525,7 @@ public class BooksBUS implements IRuleSets {
                          break;
 
                     case 3:
-                         BigDecimal secondPrice;
+                         BigDecimal maxPrice;
                          do {
                               System.out.print("Enter min price (VND : ");
                               String value = input.nextLine().trim();
@@ -529,9 +533,9 @@ public class BooksBUS implements IRuleSets {
 
                               System.out.print("Enter max price (VND : ");
                               value = input.nextLine().trim();
-                              secondPrice = Validate.isBigDecimal(value);
-                         } while (price == null || secondPrice == null);
-                         advancedSearch(price, secondPrice, "range");
+                              maxPrice = Validate.isBigDecimal(value);
+                         } while (price == null || maxPrice == null);
+                         advancedSearch(price, maxPrice, "range");
                          break;
 
                     case 4:
@@ -543,7 +547,7 @@ public class BooksBUS implements IRuleSets {
                          boolean valueFlag;
                          do {
                               System.out.println("I. Month || II.Year");
-                              System.out.print("Enter your choice: ");
+                              System.out.print("Enter your choice : ");
                               monthOrYear = Validate.parseChooseHandler(input.nextLine().trim(), 2);
                          } while (monthOrYear == -1);
                          if (monthOrYear == 1)
@@ -577,9 +581,9 @@ public class BooksBUS implements IRuleSets {
                     case 11:
                     case 12:
                     case 13:
-                         // get other fields
+                         // get other fields (use for both case 4 - > 7 and case 8 -> 9 so if case have multiple choices)
                          if (choice == 4 || choice == 8 || choice == 9 || choice == 10) {
-                              System.out.println("Enter book's author: ");
+                              System.out.println("Enter book's author : ");
                               author = input.nextLine().trim();
                          }
 
@@ -616,15 +620,13 @@ public class BooksBUS implements IRuleSets {
                          // if case is 4 -> 7
                          if (!inputDate.isEmpty() && monthOrYear != 0) {
                               if (!author.isEmpty())
-                                   advancedSearch(author, inputDate, monthOrYear == 1 ? "month" : "year");
+                                   advancedSearch(author, inputDate, monthOrYear == 1 ? "auth-month" : "auth-year");
                               else if (format != null)
-                                   advancedSearch(format.getFormatName(), inputDate,
-                                             monthOrYear == 1 ? "month" : "year");
+                                   advancedSearch(format.getFormatName(), inputDate, monthOrYear == 1 ? "format-month" : "format-year");
                               else if (type != null)
-                                   advancedSearch(type.getTypeName(), inputDate, monthOrYear == 1 ? "month" : "year");
+                                   advancedSearch(type.getTypeName(), inputDate, monthOrYear == 1 ? "type-month" : "type-year");
                               else if (publisher != null)
-                                   advancedSearch(publisher.getPublisherName(), inputDate,
-                                             monthOrYear == 1 ? "month" : "year");
+                                   advancedSearch(publisher.getPublisherName(), inputDate, monthOrYear == 1 ? "pub-month" : "pub-year");
                               break;
                          }
 
@@ -688,7 +690,7 @@ public class BooksBUS implements IRuleSets {
                System.out.println("II. Add list of books");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
                // try catch for execute file after add
                try {
@@ -790,14 +792,14 @@ public class BooksBUS implements IRuleSets {
                System.out.println("X. Edit packaging size");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 10);
                // exits
                if (choice == 0) {
                     System.out.println("Exit program.");
                     break;
                }
-               System.out.println("Enter name or id of book: ");
+               System.out.println("Enter name or id of book : ");
                String userInput = input.nextLine().trim();
 
                // if case
@@ -1174,14 +1176,14 @@ public class BooksBUS implements IRuleSets {
                System.out.println("I. Remove");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
                if (choice == 0) {
                     System.out.println("Exit program.");
                     break;
                } else if (choice == 1) {
                     try {
-                         System.out.println("Enter name or id of book: ");
+                         System.out.println("Enter name or id of book : ");
                          String userInput = input.nextLine().trim();
                          remove(userInput);
                          writeFile();

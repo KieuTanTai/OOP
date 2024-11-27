@@ -434,10 +434,11 @@ public void writeFile() throws IOException   {
                 String billId = file.readUTF();
                 String customerId = file.readUTF();
                 String employeeId = file.readUTF();
-                String saleCode;
+                String saleCode = file.readUTF();
                 LocalDate date = LocalDate.parse(file.readUTF());
                 BigDecimal discount = new BigDecimal(file.readUTF());
                 BigDecimal totalPrice = new BigDecimal(file.readUTF());
+                SaleEvents sale = new SaleEvents()
 
                 Bill fileBill = new Bill(billId,customerId,employeeId,saleCode, discount,totalPrice,date);
                 

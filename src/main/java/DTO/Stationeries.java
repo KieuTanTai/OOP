@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import BUS.StaTypesBUS;
+import BUS.StationeriesBUS;
 import util.Validate;
 
 public class Stationeries extends Products {
@@ -73,15 +74,25 @@ public class Stationeries extends Products {
 
      // setter no params
      public String setStationeriesID() {
-          String id;
-          do {
-               System.out.print("set stationary id : ");
-               id = input.nextLine().trim();
-               if (Validate.validateID(id)) {
-                    System.out.println("error id!");
-                    id = "";
+          String id = "";
+          try {
+               StationeriesBUS stationeriesList = new StationeriesBUS();
+               stationeriesList.readFile();
+               Stationeries[] list = stationeriesList.getStaList();
+
+               if (list.length == 0) {
+                    return "00000001";
+               } else {
+                    String getID = list[list.length - 1].getStationeriesID();
+                    int prevID = Integer.parseInt(getID.substring(3, getID.length()));
+                    id = String.format("%d", prevID + 1);
+                    while (id.length() != 8)
+                         id = "0" + id;
                }
-          } while (id.isEmpty());
+          } catch (Exception e) {
+               System.out.println("error when execute with file!" + e.getMessage());
+               id = "";
+          }
           return stationaryIDModifier(id);
      }
 
@@ -230,7 +241,6 @@ public class Stationeries extends Products {
           if (stationaryID.startsWith("STA") && stationaryID.length() == 11)
                return stationaryID;
           if (!Validate.validateID(stationaryID)) {
-               System.out.println("hello");
                System.out.println("error id!");
                return "N/A";
           }

@@ -108,6 +108,8 @@ public abstract class Person {
                 } else {
                     int prevID = Integer.parseInt((list[list.length - 1]).getPersonID().substring(3, list.length - 2));
                     id = String.format("%d", prevID + 1);
+                    while (id.length() != 8)
+                        id = "0" + id;
                 }
             }
         } catch (Exception e) {

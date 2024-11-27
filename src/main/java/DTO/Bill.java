@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 
 import BUS.BillDetailsBus;
+import BUS.BillBus;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -37,17 +38,37 @@ public class Bill {
     }
 
     public String setBillId() {
-        String id;
-          do {
-               System.out.print("set bill id : ");
-               id = sc.nextLine().trim();
-               if (Validate.validateID(id)) {
-                    System.out.println("error id !");
-                    id = "";
-               }
-          } while (id.isEmpty());
-          return id;
-     }
+        String id = "";
+        try {
+                BillBus billList = new BillBus();
+                billList.readFile();
+                Bill[] list = billList.getds();
+    
+                if (list.length == 0) {
+                    return "00000001";
+                } else {
+                    String getID = list[list.length - 1].getBillId();
+                    int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
+                    id = String.format("%d", prevID + 1);
+                    while (id.length() != 8)
+                        id = "0" + id;
+                }
+        } catch (Exception e) {
+            System.out.println("error when execute with file!" + e.getMessage());
+            id = "";
+        }
+        return billIdModifier(id);
+    }
+
+    protected String billIdModifier(String billId) {
+        if (billId.startsWith("Bi") && billId.endsWith("LL") && billId.length() == 12)
+            return billId;
+        if (!Validate.validateID(billId)) {
+            System.out.println("error id!");
+            return "N/A";
+        }
+        return "Bi" + billId + "LL";
+    }
 
     public String setEmployeeId() {
         String id;

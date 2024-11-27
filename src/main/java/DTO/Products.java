@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import BUS.*;
+
 public abstract class Products {
     private String productID;
     private String productName;
@@ -18,8 +20,8 @@ public abstract class Products {
     public Products() {
     }
 
-    public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice, int quantity) {
-        // String inputID = productID + UUID.randomUUID();
+    public Products(String productID, String productName, LocalDate releaseDate, BigDecimal productPrice,
+            int quantity) {
         this.productID = productIDModifier(productID);
         this.productName = productName;
         this.releaseDate = releaseDate;
@@ -70,36 +72,62 @@ public abstract class Products {
     }
 
     // set not param
-    public String setID() {
-        String id;
-        do {
-            System.out.print("set id : ");
-            id = input.nextLine().trim();
-            if (!Validate.validateID(id)) {
-                System.out.println("error id!");
-                id = "";
+    public String setID(Object key) {
+        String id = "";
+        try {
+            if (key instanceof Books) {
+                BooksBUS booksList = new BooksBUS();
+                booksList.readFile();
+                Books[] list = booksList.getBooksList();
+    
+                if (list.length == 0) {
+                    return "00000001";
+                } else {
+                    String getID = list[list.length - 1].getProductID();
+                    int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
+                    id = String.format("%d", prevID + 1);
+                    while (id.length() != 8)
+                        id = "0" + id;
+                }
             }
-        } while (id.isEmpty());
+            else if (key instanceof Stationeries) {
+                StationeriesBUS stationeriesList = new StationeriesBUS();
+                stationeriesList.readFile();
+                Stationeries[] list = stationeriesList.getStaList();
+                
+                if (list.length == 0) {
+                    return "00000001";
+                } else {
+                    String getID = list[list.length - 1].getProductID();
+                    int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
+                    id = String.format("%d", prevID + 1);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("error when execute with file!" + e.getMessage());
+            id = "";
+        }
         return productIDModifier(id);
     }
+
 
     public String setName() {
         String name;
         do {
             System.out.print("set name : ");
             name = input.nextLine().trim();
-            if(!Validate.checkName(name)) {
+            if (!Validate.checkName(name)) {
                 System.out.println("name is wrong format!");
                 name = "";
             }
-        } while(name.isEmpty());
+        } while (name.isEmpty());
         return name;
     }
 
     public LocalDate setRelDate() {
         LocalDate date;
         do {
-            System.out.print("set release date : ");
+            System.out.print("set release date (dd-mm-yyyy) : ");
             String dateInput = input.nextLine().trim();
             date = Validate.isCorrectDate(dateInput);
         } while (date == null);
@@ -119,7 +147,7 @@ public abstract class Products {
     public int setQuantity() {
         int quantity;
         do {
-            System.out.print("set quantity: ");
+            System.out.print("set quantity : ");
             String quantityInput = input.nextLine().trim();
             quantity = Validate.isNumber(quantityInput);
         } while (quantity == -1);
@@ -127,10 +155,6 @@ public abstract class Products {
     }
 
     // other methods
-    // public String getFormattedReleaseDate() {
-    //     DateTimeFormatter convertedFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    //     return this.releaseDate.format(convertedFormat);
-    // }
 
     public abstract void setInfo();
 

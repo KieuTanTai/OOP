@@ -305,7 +305,7 @@ public class BillBus{
         }
     }
 
-    public void find(){
+    public void search(){
         System.out.println("I. search bill id");
         System.out.println("II. search employee id");
         System.out.println("III. search customer id");

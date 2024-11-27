@@ -16,7 +16,7 @@ public abstract class Person {
     private String phoneNumber;
     protected static final Scanner input = new Scanner(System.in);
 
-    // constructors 
+    // constructors
     public Person() {
     }
 
@@ -79,28 +79,30 @@ public abstract class Person {
         this.phoneNumber = phoneNumber;
     }
 
-    // Setters no params 
+    // Setters no params
     public String setID(Object key) {
         String id = "";
         try {
             if (key instanceof Customers) {
-                CustomersBUS booksList = new CustomersBUS();;
+                CustomersBUS booksList = new CustomersBUS();
                 booksList.readFile();
                 Customers[] list = booksList.getCustomersList();
-    
+
                 if (list.length == 0) {
                     return "00000001";
                 } else {
                     String getID = list[list.length - 1].getPersonID();
                     int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
                     id = String.format("%d", prevID + 1);
+                    // check if id length < 8
+                    while (id.length() != 8)
+                        id = "0" + id;
                 }
-            }
-            else if (key instanceof Employees) {
+            } else if (key instanceof Employees) {
                 EmployeesBUS stationeriesList = new EmployeesBUS();
                 stationeriesList.readFile();
                 Employees[] list = stationeriesList.getEmployeesList();
-                
+
                 if (list.length == 0) {
                     return "00000001";
                 } else {
@@ -114,7 +116,6 @@ public abstract class Person {
         }
         return personIDModifier(id);
     }
-
 
     public String setFirstName() {
         String name;
@@ -167,6 +168,8 @@ public abstract class Person {
 
     // Abstract methods
     public abstract void setInfo();
+
     public abstract void showInfo();
+
     protected abstract String personIDModifier(String personID);
 }

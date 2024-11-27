@@ -1,7 +1,6 @@
 package DTO;
 
 import java.math.BigDecimal;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class SaleEventsDetail {

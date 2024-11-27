@@ -59,6 +59,9 @@ public class Suppliers {
             int prevID = Integer
                     .parseInt(getID.substring(3, getID.length() - 3));
             id = String.format("%d", prevID + 1);
+            // check if id length < 8
+            while (id.length() != 8)
+                id = "0" + id;
         }
         return supplierIDModifier(id);
     }

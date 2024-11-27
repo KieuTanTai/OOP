@@ -3,7 +3,6 @@ package Manager;
 import java.util.Scanner;
 
 import BUS.*;
-import DTO.*;
 import util.Validate;
 
 public class Menu {
@@ -19,14 +18,13 @@ public class Menu {
 
         // methods handler();
         addHandler();
-        findHandler();
         searchHandler();
         removeHandler();
         editHandler();
 
     }
 
-    public static void mainHandler(){
+    public static void mainHandler() {
         int choice;
         do {
             System.out.println("1. Add new");
@@ -35,8 +33,8 @@ public class Menu {
             System.out.println("4. Edit");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
-            choice = Validate.parseChooseHandler(input.nextLine(), 5);
-            switch (choice){
+            choice = Validate.parseChooseHandler(input.nextLine(), 4);
+            switch (choice) {
                 case 1:
                     addHandler();
                     break;
@@ -58,12 +56,13 @@ public class Menu {
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        }while (choice != 0);
+        } while (choice != 0);
     }
 
     public static void addHandler() {
         int choice;
         do {
+            System.out.println("*".repeat(60));
             System.out.println("1. Add new product ");
             System.out.println("2. Add new employee");
             System.out.println("3. Add new customer");
@@ -75,98 +74,65 @@ public class Menu {
             System.out.println("9. Add new Genre");
             System.out.println("10. Add new StaTypes");
             System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
             System.out.print("Enter your choice: ");
-            choice = Validate.parseChooseHandler(input.nextLine(), 12);
+            choice = Validate.parseChooseHandler(input.nextLine(), 10);
             break;
-        }while (choice == -1);
-        switch (choice){
-                case 1:
-                    do {
-                        System.out.println("1. Add new book");
-                        System.out.println("2. Add new stationery");
-                        System.out.println("0. Exit");
-                        System.out.print("Enter your choice: ");
-                        choice = Validate.parseChooseHandler(input.nextLine(), 3);
-                        Products product;
-                        switch (choice){
-                            case 1:
-                                BooksBUS arrBook = new BooksBUS();
-                                product = new Books();
-                                product.setInfo();
-                                arrBook.add(product);
-                                break;
-                            case 2:
-                                StationeriesBUS arrSta = new StationeriesBUS();
-                                product = new Stationeries();
-                                product.setInfo();
-                                arrSta.add(product);
-                                break;
-                            case 0:
-                                System.out.println("Exit program.");
-                                break;
-                            default:
-                                System.out.println("Invalid choice. Please try again.");
-                        }
-                    }while (true);
-                case 2:
-                    EmployeesBUS arrEmp = new EmployeesBUS();
-                    Employees employees = new Employees();
-                    employees.setInfo();
-                    arrEmp.add(employees);
-                    break;
-                case 3:
-                    CustomersBUS arrCus = new CustomersBUS();
-                    Customers customers = new Customers();
-                    customers.setInfo();
-                    arrCus.add(customers);
-                    break;
-                case 4:
-                    SuppliersBUS arrSup = new SuppliersBUS();
-                    Suppliers suppliers = new Suppliers();
-                    arrSup.add(suppliers);
-                    break;
-                case 5:
-                    GRNsBUS arrGRN = new GRNsBUS();
-                    GRNs grns = new GRNs();
-                    grns.setInfo();
-                    arrGRN.add(grns);
-                    break;
-                case 6:
-                    // BillsBUS arrBill = new BillsBUS();
-                    // Bills bills = new Bills();
-                    // bills.setInfo();
-                    // arrBill.add(bills);
-                    break;
-                case 7:
-                    PublishersBUS arrPub = new PublishersBUS();
-                    Publishers publishers = new Publishers();
-//                    publishers.setInfo();
-                    arrPub.add(publishers);
-                    break;
-                case 8:
-                    TypesBUS arrType = new TypesBUS();
-                    BookTypes bookTypes = new BookTypes();
-//                    bookTypes.setInfo();
-                    arrType.add(bookTypes);
-                    break;
-                case 9:
-                    GenresBUS arrGenre = new GenresBUS();
-                    BookGenres bookGenres = new BookGenres();
-//                    bookGenres.setInfo();
-                    arrGenre.add(bookGenres);
-                    break;
-                case 10:
-                    StaTypesBUS arrStaType = new StaTypesBUS();
-                    StaTypes staTypes = new StaTypes();
-//                    staTypes.setInfo();
-                    arrStaType.add(staTypes);
-                    break;
-                case 0:
-                    System.out.println("Exit program.");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-            }
+        } while (choice == -1);
+        switch (choice) {
+            case 1:
+                do {
+                    System.out.println("*".repeat(60));
+                    System.out.println("I. Add new book");
+                    System.out.println("II. Add new stationary");
+                    System.out.println("0. Exit");
+                    System.out.println("*".repeat(60));
+                    System.out.print("Enter your choice: ");
+                    choice = Validate.parseChooseHandler(input.nextLine(), 2);
+                    switch (choice) {
+                        case 1:
+
+                            break;
+                        case 2:
+
+                            break;
+                        case 0:
+                            System.out.println("Exit program.");
+                            break;
+                    }
+                } while (choice != 0);
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            case 6:
+
+                break;
+            case 7:
+
+                break;
+            case 8:
+
+                break;
+            case 9:
+
+                break;
+            case 10:
+
+                break;
+            case 0:
+                System.out.println("Exit program.");
+                break;
+        }
 
     }
 
@@ -176,63 +142,71 @@ public class Menu {
     public static void searchHandler() {
         int choice;
         do {
-            System.out.println("1. Search book");
-            System.out.println("2. Search stationery");
-            System.out.println("3. Search employee");
-            System.out.println("4. Search customer");
-            System.out.println("5. Search supplier");
-            System.out.println("6. Search GRN");
-            System.out.println("7. Search Bill");
-            System.out.println("8. Search publisher");
-            System.out.println("9. Search BookTypes");
-            System.out.println("10. Search Genre");
-            System.out.println("11. Search StaTypes");
+            System.out.println("I. Search Product");
+            System.out.println("II. Search employee");
+            System.out.println("III. Search customer");
+            System.out.println("IV. Search supplier");
+            System.out.println("V. Search GRN");
+            System.out.println("VI. Search Bill");
+            System.out.println("VII. Search publisher");
+            System.out.println("VIII. Search BookTypes");
+            System.out.println("IX. Search Genre");
+            System.out.println("X. Search StaTypes");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
-            choice = Validate.parseChooseHandler(input.nextLine().trim(),12);
-            switch (choice){
+            choice = Validate.parseChooseHandler(input.nextLine().trim(), 10);
+            switch (choice) {
                 case 1:
-                    BooksBUS arrBook = new BooksBUS();
-                    arrBook.search();
+                    do {
+                        System.out.println("*".repeat(60));
+                        System.out.println("I. Search book");
+                        System.out.println("II. Search stationary");
+                        System.out.println("0. Exit");
+                        System.out.println("*".repeat(60));
+                        System.out.print("Enter your choice: ");
+                        choice = Validate.parseChooseHandler(input.nextLine(), 2);
+                        switch (choice) {
+                            case 1:
+                                
+                                break;
+                            case 2:
+
+                                break;
+                            case 0:
+                                System.out.println("Exit program.");
+                                break;
+                        }
+                    } while (choice != 0);
                     break;
                 case 2:
-                    StationeriesBUS arrSta = new StationeriesBUS();
-                    arrSta.search();
+
                     break;
                 case 3:
-                    EmployeesBUS arrEmp = new EmployeesBUS();
-                    arrEmp.search();
+
                     break;
                 case 4:
-                    CustomersBUS arrCus = new CustomersBUS();
-                    arrCus.search();
+
                     break;
                 case 5:
-                    SuppliersBUS arrSup = new SuppliersBUS();
-                    arrSup.search();
+
                     break;
                 case 6:
-                    GRNsBUS arrGRN = new GRNsBUS();
-                    arrGRN.search();
+
                     break;
                 case 7:
                     // BillsBUS arrBill = new BillsBUS();
                     break;
                 case 8:
-                    PublishersBUS arrPub = new PublishersBUS();
-                    arrPub.search();
+
                     break;
                 case 9:
-                    TypesBUS arrType = new TypesBUS();
-                    arrType.search();
+
                     break;
                 case 10:
-                    GenresBUS arrGenre = new GenresBUS();
-                    arrGenre.search();
+
                     break;
                 case 11:
-                    StaTypesBUS arrStaType = new StaTypesBUS();
-                    arrStaType.search();
+
                     break;
                 case 0:
                     System.out.println("Exit program.");
@@ -240,7 +214,7 @@ public class Menu {
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        }while (choice != 0);
+        } while (choice != 0);
     }
 
     public static void removeHandler() {
@@ -562,7 +536,7 @@ public class Menu {
                             System.out.print("Enter your choice: ");
                             choice2 = Validate.parseChooseHandler(input.nextLine().trim(), 4);
                         } while (choice2 == -1);
-                        if (choice2==1){
+                        if (choice2 == 1) {
                             arrPub.edit(pubID);
                         }
                     }
@@ -580,7 +554,7 @@ public class Menu {
                             System.out.print("Enter your choice: ");
                             choice2 = Validate.parseChooseHandler(input.nextLine().trim(), 2);
                         } while (choice2 == -1);
-                        if (choice2==1){
+                        if (choice2 == 1) {
                             arrType.edit(typeID);
                         }
                     }
@@ -598,7 +572,7 @@ public class Menu {
                             System.out.print("Enter your choice: ");
                             choice2 = Validate.parseChooseHandler(input.nextLine().trim(), 2);
                         } while (choice2 == -1);
-                        if (choice2==1){
+                        if (choice2 == 1) {
                             arrGenre.edit(genreID);
                         }
                     }
@@ -615,7 +589,7 @@ public class Menu {
                             System.out.print("Enter your choice: ");
                             choice2 = Validate.parseChooseHandler(input.nextLine().trim(), 2);
                         } while (choice2 == -1);
-                        if (choice2==1){
+                        if (choice2 == 1) {
                             arrStaType.edit(staTypeID);
                         }
                     }
@@ -626,7 +600,7 @@ public class Menu {
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        }while (choice != 0);
+        } while (choice != 0);
     }
 
 }

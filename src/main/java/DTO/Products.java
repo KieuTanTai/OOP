@@ -87,6 +87,8 @@ public abstract class Products {
                     String getID = list[list.length - 1].getProductID();
                     int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
                     id = String.format("%d", prevID + 1);
+                    while (id.length() != 8)
+                        id = "0" + id;
                 }
             }
             else if (key instanceof Stationeries) {

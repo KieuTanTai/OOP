@@ -42,9 +42,11 @@ public class BookTypes {
           if (list.length == 0 || list == null) {
                return "00000001";
           } else {
-               int prevID = Integer
-                         .parseInt((list[list.length - 1]).getTypeID().substring(2, list.length - 2));
+               int prevID = Integer.parseInt((list[list.length - 1]).getTypeID().substring(2, list.length - 2));
                id = String.format("%d", prevID + 1);
+               // check if id length < 8
+               while (id.length() != 8)
+                    id = "0" + id;
           }
           return typeIDModifier(id);
      }
@@ -73,18 +75,17 @@ public class BookTypes {
           System.out.printf("*".repeat(60) + "\n");
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
-              System.out.print("choose option (1 or 2) : ");
-              String option = input.nextLine().trim();
-              userChoose = Validate.parseChooseHandler(option, 2);
+               System.out.print("choose option (1 or 2) : ");
+               String option = input.nextLine().trim();
+               userChoose = Validate.parseChooseHandler(option, 2);
           } while (userChoose == -1);
           System.out.printf("*".repeat(60) + "\n");
-  
+
           if (userChoose == 1) {
-              System.out.println("ok!");
-              return;
-          
-          }
-          else {
+               System.out.println("ok!");
+               return;
+
+          } else {
                setTypeID(typeID);
                setTypeName(typeName);
                System.out.println("create and set fields success");

@@ -80,7 +80,6 @@ public class MidForBooksBUS {
           for (int i = 0; i < size; i++)
                if ((midList[i].getBookID().equals(bookID)) && midList[i].getGenre().getGenreID().equals(genreID))
                     return i;
-          System.out.println("404 not found!");
           return -1;
      }
 

@@ -88,6 +88,9 @@ public class GRNs {
                String getID = list[list.length - 1].getGrnID();
                int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
                grnID = String.format("%d", prevID + 1);
+               // check if id length < 8
+               while (grnID.length() != 8)
+                    grnID = "0" + grnID;
           }
 
           return grnIDModifier(grnID);

@@ -48,6 +48,9 @@ public class Publishers {
             String getID = list[list.length - 1].getPublisherID();
             int prevID = Integer.parseInt(getID.substring(3, getID.length() - 3));
             id = String.format("%d", prevID + 1);
+            // check if id length < 8
+            while (id.length() != 8)
+                id = "0" + id;
         }
         return publisherIDModifier(id);
     }
@@ -85,12 +88,11 @@ public class Publishers {
         if (userChoose == 1) {
             System.out.println("ok!");
             return;
-        
-        }
-        else {
-             setPublisherID(publisherID);
+
+        } else {
+            setPublisherID(publisherID);
             setPublisherName(publisherName);
-             System.out.println("create and set fields success");
+            System.out.println("create and set fields success");
         }
     }
 

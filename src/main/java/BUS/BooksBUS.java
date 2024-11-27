@@ -19,7 +19,6 @@ import DTO.BookTypes;
 import DTO.Books;
 import DTO.MidForBooks;
 import DTO.Publishers;
-import Manager.Menu;
 import util.Validate;
 
 public class BooksBUS implements IRuleSets {
@@ -80,7 +79,6 @@ public class BooksBUS implements IRuleSets {
      // *find methods (TEST DONE)
      @Override
      public void find() {
-
      }
 
      // strict find
@@ -404,8 +402,6 @@ public class BooksBUS implements IRuleSets {
                     case 0:
                          System.out.println("Exit program.");
                          break;
-                    default:
-                         System.out.println("Invalid choice. Please try again.");
                }
           } while (choice != 0);
      }
@@ -476,8 +472,6 @@ public class BooksBUS implements IRuleSets {
                     case 0:
                          System.out.println("Exit program.");
                          break;
-                    default:
-                         System.out.println("Invalid choice. Please try again.");
                }
           } while (choice != 0);
      }
@@ -587,7 +581,7 @@ public class BooksBUS implements IRuleSets {
                          if (choice == 4 || choice == 8 || choice == 9 || choice == 10) {
                               System.out.println("Enter book's author: ");
                               author = input.nextLine().trim();
-                         } 
+                         }
 
                          if (choice == 5 || choice == 10 || choice == 12 || choice == 13) {
                               System.out.println("*".repeat(60));
@@ -597,7 +591,7 @@ public class BooksBUS implements IRuleSets {
                                    choice = Validate.parseChooseHandler(input.nextLine(), BookFormatsBUS.getCount());
                               } while (choice != -1);
                               format = BookFormatsBUS.getFormatsList()[monthOrYear - 1];
-                         } 
+                         }
 
                          if (choice == 6 || choice == 9 || choice == 11 || choice == 12) {
                               System.out.println("*".repeat(60));
@@ -607,7 +601,7 @@ public class BooksBUS implements IRuleSets {
                                    choice = Validate.parseChooseHandler(input.nextLine(), TypesBUS.getCount());
                               } while (choice != -1);
                               type = TypesBUS.getTypesList()[monthOrYear - 1];
-                         } 
+                         }
 
                          if (choice == 7 || choice == 8 || choice == 11 || choice == 13) {
                               System.out.println("*".repeat(60));
@@ -651,8 +645,6 @@ public class BooksBUS implements IRuleSets {
                     case 0:
                          System.out.println("Exit program.");
                          break;
-                    default:
-                         System.out.println("Invalid choice. Please try again.");
                }
           } while (choice != 0);
      }
@@ -698,7 +690,7 @@ public class BooksBUS implements IRuleSets {
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice: ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 2);
-               // try catch for execute file after add  
+               // try catch for execute file after add
                try {
                     switch (choice) {
                          case 1:
@@ -748,9 +740,7 @@ public class BooksBUS implements IRuleSets {
                          case 0:
                               System.out.println("Exit program.");
                               break;
-                         default:
-                              System.out.println("Invalid choice. Please try again.");
-                    } 
+                    }
                } catch (Exception e) {
                     System.out.printf("error writing file!\nt%s\n", e.getMessage());
                }
@@ -785,7 +775,53 @@ public class BooksBUS implements IRuleSets {
      // *edit methods (TEST DONE)
      @Override
      public void edit() {
-          Menu.editHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Edit name");
+               System.out.println("II. Edit release date");
+               System.out.println("III. Edit price");
+               System.out.println("IV. Edit quantity");
+               System.out.println("V. Edit author");
+               System.out.println("VI. Edit publisher");
+               System.out.println("VII. Edit type");
+               System.out.println("VIII. Edit genres");
+               System.out.println("IX. Edit format");
+               System.out.println("X. Edit packaging size");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice: ");
+               choice = Validate.parseChooseHandler(input.nextLine().trim(), 10);
+               // exits
+               if (choice == 0) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               System.out.println("Enter name or id of book: ");
+               String userInput = input.nextLine().trim();
+                
+               // if case
+               if (choice == 1)
+                    edit(userInput);
+               if (choice == 2)
+                    editReleaseDate(userInput);
+               if (choice == 3)
+                    editPrice(userInput);
+               if (choice == 4)
+                    editQuantity(userInput);
+               if (choice == 5)
+                    editAuthor(userInput);
+               if (choice == 6)
+                    editPublisher(userInput);
+               if (choice == 7)
+                    editType(userInput);
+               if (choice == 8)
+                    editGenre(userInput);
+               if (choice == 9)
+                    editFormat(userInput);
+               if (choice == 10)
+                    editPackagingSize(userInput);
+          } while (choice != 0);
      }
 
      // edit name
@@ -1126,7 +1162,22 @@ public class BooksBUS implements IRuleSets {
      // remove methods ()
      @Override
      public void remove() {
-          Menu.removeHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Remove");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice: ");
+               choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
+               if (choice == 0) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               System.out.println("Enter name or id of book: ");
+               String userInput = input.nextLine().trim();
+               remove(userInput);
+          } while (choice != 0);
      }
 
      @Override

@@ -61,7 +61,8 @@ public class App {
 
 
                 // !INIT VALUE
-                listSta.showList();
+                // listBooks.add();
+                // MidForBooksBUS.showList();
 
                 // !SHOW BEFORE
                 // SuppliersBUS.showList();

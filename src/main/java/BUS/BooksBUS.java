@@ -505,7 +505,7 @@ public class BooksBUS implements IRuleSets {
                System.out.println("XIII. Search by Format & Publisher");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
-               System.out.print("Enter your choice: ");
+               System.out.print("Enter your choice : ");
                choice = Validate.parseChooseHandler(input.nextLine().trim(), 13);
                switch (choice) {
                     case 1:
@@ -523,7 +523,6 @@ public class BooksBUS implements IRuleSets {
                          else if (choice == 2)
                               advancedSearch(price, price, "max");
                          break;
-
                     case 3:
                          BigDecimal maxPrice;
                          do {

@@ -101,17 +101,17 @@ public class Suppliers {
         this.phone = setPhone();
         System.out.println("*".repeat(60));
 
-        int userChoose;
+        int userChoice;
         System.out.printf("*".repeat(60) + "\n");
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, 2);
-        } while (userChoose == -1);
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
         System.out.printf("*".repeat(60) + "\n");
 
-        if (userChoose == 1) {
+        if (userChoice == 1) {
             System.out.println("ok!");
             return;
 

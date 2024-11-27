@@ -63,14 +63,18 @@ public class Employees extends Person {
     // setter no params
     public String setStatus() {
         String[] status = { "Active", "Inactive" };
-        int userChoose;
+        int userChoice;
         System.out.printf("| %s %s %s |\n", "I.Active", "-".repeat(20), "II.Inactive");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, 2);
-        } while (userChoose == -1);
-        return status[userChoose - 1];
+            userChoice = Validate.parseChooseHandler(option, 2);
+            if (userChoice == 0) {
+                System.out.println("Error value!");
+                userChoice = -1;
+            }
+        } while (userChoice == -1);
+        return status[userChoice - 1];
     }
 
     public String setUsername() {
@@ -100,7 +104,7 @@ public class Employees extends Person {
     }
 
     public String setRole() {
-        int userChoose;
+        int userChoice;
         String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
         // show list for user choose
         System.out.printf("=".repeat(160) + "\n");
@@ -109,10 +113,14 @@ public class Employees extends Person {
         do {
             System.out.print("choose role (like 1, 2,etc...): ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, role.length());
-        } while (userChoose == -1);
+            userChoice = Validate.parseChooseHandler(option, roles.length);
+            if (userChoice == 0) {
+                System.out.println("Error value!");
+                userChoice = -1;
+            }
+        } while (userChoice == -1);
 
-        return roles[userChoose - 1];
+        return roles[userChoice - 1];
     }
 
     // other methods
@@ -145,16 +153,16 @@ public class Employees extends Person {
         System.out.println("-".repeat(60));
         String role = setRole();
 
-        int userChoose;
+        int userChoice;
         System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, 2);
-        } while (userChoose == -1);
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
         System.out.printf("*".repeat(60) + "\n");
-        if (userChoose == 1) {
+        if (userChoice == 1) {
             System.out.println("ok!");
             return;
         } else {

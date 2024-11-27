@@ -67,7 +67,7 @@ public class GRNDetails {
      public void setSubTotal(BigDecimal subTotal) {
           BigDecimal tempNowTotal = this.price.multiply(new BigDecimal(quantity));
           if ((subTotal.compareTo(tempNowTotal) > 0) || (subTotal.compareTo(tempNowTotal) < 0)) {
-               int userChoose;
+               int userChoice;
                System.out.printf("*".repeat(60) + "\n");
                System.out.println("something wrong with your total price! Are you sure you wanna set it!");
                System.out.printf("-".repeat(60) + "\n");
@@ -75,8 +75,8 @@ public class GRNDetails {
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
 
           }
           this.subTotal = subTotal;

@@ -399,6 +399,7 @@ public void writeFile() throws IOException   {
             file.writeUTF(ds[i].getBillId());
             file.writeUTF(ds[i].getCustomerId());
             file.writeUTF(ds[i].getEmployeeId());
+            file.writeUTF(ds[i].getSaleCode());
             file.writeUTF(ds[i].getDate().toString());
             file.writeUTF(ds[i].getDiscount().toString());
             file.writeUTF(ds[i].getTotalPrice().toString());
@@ -433,11 +434,12 @@ public void writeFile() throws IOException   {
                 String billId = file.readUTF();
                 String customerId = file.readUTF();
                 String employeeId = file.readUTF();
+                SaleEvents saleCode = file.readUTF();
                 LocalDate date = LocalDate.parse(file.readUTF());
                 BigDecimal discount = new BigDecimal(file.readUTF());
                 BigDecimal totalPrice = new BigDecimal(file.readUTF());
 
-                Bill fileBill = new Bill(billId,customerId,employeeId,discount,totalPrice,date);
+                Bill fileBill = new Bill(billId,customerId,employeeId,saleCode, discount,totalPrice,date);
                 
                 // read bill details
                 int detailsCount = file.readInt();

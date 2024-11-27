@@ -99,7 +99,7 @@ public class Bill {
         billId = setBillId();
         employeeId = setEmployeeId();
         customerId = setCustomerId();
-        saleCode = saleCode.nhap();
+        saleCode.nhap(); ;
         discount = setDiscount();
         date = setDate();
 

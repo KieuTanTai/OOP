@@ -8,7 +8,7 @@ import util.Validate;
 public class BookGenres {
      private String genreID;
      private String genreName;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
      public BookGenres() {
      }
@@ -36,21 +36,21 @@ public class BookGenres {
 
      // set not param
      public String setID() {
-          String id = "";
+          StringBuilder id;
           BookGenres[] list = GenresBUS.getGenresList();
 
-          if (list.length == 0 || list == null) {
+          if (list.length == 0) {
                return "00000001";
           } else {
                String getID = list[list.length - 1].getGenreID();
                int prevID = Integer
                          .parseInt(getID.substring(2, getID.length() - 2));
-               id = String.format("%d", prevID + 1);
+               id = new StringBuilder(String.format("%d", prevID + 1));
                // check if id length < 8
                while (id.length() != 8)
-                    id = "0" + id;
+                    id.insert(0, "0");
           }
-          return genreIDModifier(id);
+          return genreIDModifier(id.toString());
      }
 
      public String setName() {
@@ -74,20 +74,17 @@ public class BookGenres {
           System.out.println("*".repeat(60));
 
           int userChoose;
-          System.out.printf("*".repeat(60) + "\n");
+          System.out.println("*".repeat(60));
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
               System.out.print("choose option (1 or 2) : ");
               String option = input.nextLine().trim();
               userChoose = Validate.parseChooseHandler(option, 2);
           } while (userChoose == -1);
-          System.out.printf("*".repeat(60) + "\n");
+          System.out.println("*".repeat(60));
   
-          if (userChoose == 1) {
+          if (userChoose == 1)
               System.out.println("ok!");
-              return;
-          
-          }
           else {
                setGenreID(genreID);
                setGenreName(genreName);

@@ -44,7 +44,7 @@ public class BookFormatsBUS implements IRuleSets {
      public static BookFormats[] getFormats(int start, int end) {
           int size = 0;
           BookFormats[] list = new BookFormats[0];
-          if (start <= end)
+          if (!Validate.checkValidRange(start, end))
                return null;
           for (int i = start; i < end; i++) {
                list = Arrays.copyOf(list, list.length + 1);
@@ -80,10 +80,6 @@ public class BookFormatsBUS implements IRuleSets {
           if (formatsList == null)
                return;
           showAsTable(formatsList);
-     }
-
-     @Override
-     public void find() {
      }
 
      @Override
@@ -157,7 +153,7 @@ public class BookFormatsBUS implements IRuleSets {
 
      @Override
      public void add() {
-          int choice;
+          int choice, tempChoice;
           do {
                System.out.println("*".repeat(60));
                System.out.println("I. Add format");
@@ -173,58 +169,55 @@ public class BookFormatsBUS implements IRuleSets {
                }
                choice = Validate.parseChooseHandler(inputChoice, 2);
 
-               if (choice == 1) {
-                    try {
-                         switch (choice) {
-                              case 1:
-                                   BookFormats newFormat = new BookFormats();
-                                   newFormat.setInfo();
-                                   // confirm
-                                   System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
-                                   do {
-                                        System.out.print("choose option (1 or 2) : ");
-                                        String option = input.nextLine().trim();
-                                        choice = Validate.parseChooseHandler(option, 2);
-                                   } while (choice == -1);
-                                   if (choice == 1)
-                                        break;
-                                   add(newFormat);
-                                   writeFile();
+               try {
+                    switch (choice) {
+                         case 1:
+                              BookFormats newFormat = new BookFormats();
+                              newFormat.setInfo();
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   tempChoice = Validate.parseChooseHandler(option, 2);
+                              } while (tempChoice == -1);
+                              if (tempChoice == 1)
                                    break;
-                              case 2:
-                                   int count = 0;
-                                   BookFormats[] list = new BookFormats[0];
-                                   do {
-                                        System.out.print("Enter total format you wanna add : ");
-                                        String option = input.nextLine().trim();
-                                        choice = Validate.isNumber(option);
-                                   } while (choice == -1);
-                                   // for loop with input time
-                                   for (int i = 0; i < choice; i++) {
-                                        BookFormats format = new BookFormats();
-                                        format.setInfo();
-                                        list = Arrays.copyOf(list, list.length + 1);
-                                        list[count] = format;
-                                        count++;
-                                   }
+                              add(newFormat);
+                              writeFile();
+                              break;
+                         case 2:
+                              int count = 0;
+                              BookFormats[] list = new BookFormats[0];
+                              do {
+                                   System.out.print("Enter total format you wanna add : ");
+                                   String option = input.nextLine().trim();
+                                   tempChoice = Validate.isNumber(option);
+                              } while (tempChoice == -1);
+                              // for loop with input time
+                              for (int i = 0; i < tempChoice; i++) {
+                                   BookFormats format = new BookFormats();
+                                   format.setInfo();
+                                   list = Arrays.copyOf(list, list.length + 1);
+                                   list[count] = format;
+                                   count++;
+                              }
 
-                                   // confirm
-                                   System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
-                                   do {
-                                        System.out.print("choose option (1 or 2) : ");
-                                        String option = input.nextLine().trim();
-                                        choice = Validate.parseChooseHandler(option, 2);
-                                   } while (choice == -1);
-                                   if (choice == 1)
-                                        break;
-                                   add(list);
-                                   writeFile();
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   tempChoice = Validate.parseChooseHandler(option, 2);
+                              } while (tempChoice == -1);
+                              if (tempChoice == 1)
                                    break;
-                         }
-                    } catch (Exception e) {
-                         System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                              add(list);
+                              writeFile();
+                              break;
                     }
-
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
                }
           } while (choice != 0);
      }
@@ -266,7 +259,6 @@ public class BookFormatsBUS implements IRuleSets {
                     break;
                }
                choice = Validate.parseChooseHandler(inputChoice, 1);
-
                if (choice == 1) {
                     try {
                          System.out.println("Enter name or id of format : ");

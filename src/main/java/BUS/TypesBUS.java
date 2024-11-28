@@ -1,6 +1,5 @@
 package BUS;
 
-import Manager.Menu;
 import util.Validate;
 import DTO.BookTypes;
 
@@ -46,7 +45,7 @@ public class TypesBUS implements IRuleSets {
      public static BookTypes[] getTypes(int start, int end) {
           int size = 0;
           BookTypes[] list = new BookTypes[0];
-          if (start <= end)
+          if (!Validate.checkValidRange(start, end))
                return null;
           for (int i = start; i < end; i++) {
                list = Arrays.copyOf(list, list.length + 1);
@@ -85,11 +84,6 @@ public class TypesBUS implements IRuleSets {
      }
 
      // find methods
-     @Override
-     public void find() {
-          Menu.addHandler();
-     }
-
      // *(TEST DONE)
      @Override
      public int find(String nameOrID) {
@@ -242,11 +236,10 @@ public class TypesBUS implements IRuleSets {
      // *(TEST DONE)
      @Override
      public void add(Object type) {
-          if (type instanceof BookTypes) {
-               BookTypes newType = (BookTypes) type;
-               newType.setTypeID(newType.getTypeID());
+          if (type instanceof BookTypes newType) {
+              newType.setTypeID(newType.getTypeID());
                typesList = Arrays.copyOf(typesList, typesList.length + 1);
-               typesList[count] = (BookTypes) type;
+               typesList[count] = newType;
                count++;
           } else
                System.out.println("your type is not correct!");

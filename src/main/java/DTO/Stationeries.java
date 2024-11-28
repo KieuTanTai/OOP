@@ -74,7 +74,7 @@ public class Stationeries extends Products {
 
      // setter no params
      public String setStationeriesID() {
-          String id = "";
+          StringBuilder id;
           try {
                StationeriesBUS stationeriesList = new StationeriesBUS();
                stationeriesList.readFile();
@@ -84,16 +84,16 @@ public class Stationeries extends Products {
                     return "00000001";
                } else {
                     String getID = list[list.length - 1].getStationeriesID();
-                    int prevID = Integer.parseInt(getID.substring(3, getID.length()));
-                    id = String.format("%d", prevID + 1);
+                    int prevID = Integer.parseInt(getID.substring(3));
+                    id = new StringBuilder(String.format("%d", prevID + 1));
                     while (id.length() != 8)
-                         id = "0" + id;
+                         id.insert(0, "0");
                }
           } catch (Exception e) {
                System.out.println("error when execute with file!" + e.getMessage());
-               id = "";
+               id = new StringBuilder();
           }
-          return stationaryIDModifier(id);
+          return stationaryIDModifier(id.toString());
      }
 
      public StaTypes setType() {
@@ -108,8 +108,7 @@ public class Stationeries extends Products {
                userChoice = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
           } while (userChoice == -1);
 
-          StaTypes type = StaTypesBUS.getTypesList()[userChoice - 1];
-          return type;
+         return StaTypesBUS.getTypesList()[userChoice - 1];
      }
 
      public String setBrand() {
@@ -185,7 +184,7 @@ public class Stationeries extends Products {
           String source = setSource();
 
           int userChoice;
-          System.out.printf("*".repeat(60) + "\n");
+          System.out.println("*".repeat(60));
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
                System.out.print("choose option (1 or 2) : ");
@@ -193,10 +192,9 @@ public class Stationeries extends Products {
                userChoice = Validate.parseChooseHandler(option, 2);
           } while (userChoice == -1);
 
-          if (userChoice == 1) {
+          if (userChoice == 1)
                System.out.println("ok!");
-               return;
-          } else {
+          else {
                // set fields for product
                setProductID(id);
                setStationeriesID(staID);

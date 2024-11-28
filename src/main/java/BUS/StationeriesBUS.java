@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -69,16 +70,12 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // *find methods (TEST DONE)
-    @Override
-    public void find() {
-    }
-
     // strict find
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < staList.length; i++)
             if (staList[i].getProductID().equals(nameOrID)
-                    || staList[i].getProductName().toLowerCase().equals(nameOrID.toLowerCase())
+                    || staList[i].getProductName().equalsIgnoreCase(nameOrID)
                     || staList[i].getStationeriesID().equals(nameOrID))
                 return i;
         System.out.println("your stationary is not exist!");
@@ -93,8 +90,7 @@ public class StationeriesBUS implements IRuleSets {
         Stationeries[] staArray = new Stationeries[0];
         request = request.toLowerCase().trim();
         for (Stationeries stationary : staList) {
-            if (originalKey instanceof String) {
-                String key = (String) originalKey;
+            if (originalKey instanceof String key) {
                 String staName = stationary.getProductName();
                 String brand = stationary.getBrand();
                 String source = stationary.getSource();
@@ -121,14 +117,13 @@ public class StationeriesBUS implements IRuleSets {
             } else if (originalKey instanceof LocalDate)
                 if (request.equals("released") && stationary.getReleaseDate().isEqual((LocalDate) originalKey))
                     flag = true;
-                else if (originalKey instanceof StaTypes && request.equals("type")) {
-                    StaTypes key = (StaTypes) originalKey;
+                else if (originalKey instanceof StaTypes key && request.equals("type")) {
                     StaTypes types = stationary.getType();
                     String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
                             typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
-                    if (typeID.equals(key.getTypeID()) || typeName.contains(key.getTypeName().toLowerCase()))
-                        flag = true;
-
+                    if (key != null)
+                        if (typeID.equals(key.getTypeID()) || typeName.contains(key.getTypeName().toLowerCase()))
+                            flag = true;
                 }
 
             if (flag) {
@@ -213,9 +208,8 @@ public class StationeriesBUS implements IRuleSets {
                 }
             }
 
-            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
+            if ((originalKeyI instanceof String keyI) && (originalTimeOrKey instanceof String)
                     && (request.contains("month"))) {
-                String keyI = (String) originalKeyI;
                 boolean keyII = stationary.getReleaseDate().getMonthValue() == inputTime;
 
                 // execute request
@@ -229,9 +223,8 @@ public class StationeriesBUS implements IRuleSets {
                         && ((typeID.equals(keyI) && keyII) || (typeName.contains(keyI.toLowerCase()) && keyII)))
                     flag = true;
 
-            } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
+            } else if ((originalKeyI instanceof String keyI) && (originalTimeOrKey instanceof String)
                     && (request.contains("year"))) {
-                String keyI = (String) originalKeyI;
                 boolean keyII = stationary.getReleaseDate().getYear() == inputTime;
 
                 // execute request
@@ -248,8 +241,7 @@ public class StationeriesBUS implements IRuleSets {
                         && ((typeID.equals(keyI) && keyII) || (typeName.contains(keyI.toLowerCase()) && keyII)))
                     flag = true;
 
-            } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)) {
-                String keyI = (String) originalKeyI, keyII = (String) originalTimeOrKey;
+            } else if ((originalKeyI instanceof String keyI) && (originalTimeOrKey instanceof String keyII)) {
                 boolean hasType = request.contains("type");
                 boolean hasMaterial = request.contains("mat");
                 boolean hasSource = request.contains("source");
@@ -353,7 +345,7 @@ public class StationeriesBUS implements IRuleSets {
             System.out.println("III. Search by Brand");
             System.out.println("IV. Search by Source");
             System.out.println("V. Search by Material");
-            System.out.println("VI. Search by Stationary's name");
+            System.out.println("VI. Search by Stationary name");
             System.out.println("0. Exit");
             System.out.println("*".repeat(60));
             System.out.print("Enter your choice: ");
@@ -399,7 +391,7 @@ public class StationeriesBUS implements IRuleSets {
                     relativeSearch(material, "material");
                     break;
                 case 6:
-                    System.out.println("Enter stationary's name: ");
+                    System.out.println("Enter stationary name: ");
                     String name = input.nextLine().trim();
                     relativeSearch(name, "name");
                     break;
@@ -410,7 +402,7 @@ public class StationeriesBUS implements IRuleSets {
     // case handler for advanced search
     private void caseAdvancedSearch() {
         int choice, monthOrYear = 0;
-        BigDecimal price = null;
+        BigDecimal price;
         String material = "", brand = "", source = "", inputDate = "";
         StaTypes type = null;
         do {
@@ -487,7 +479,7 @@ public class StationeriesBUS implements IRuleSets {
                             valueFlag = true;
                             // validate input
                             isNumber = Validate.isNumber(inputDate);
-                            if (isNumber == -1 || isNumber > 12 || isNumber < 1) {
+                            if (isNumber > 12 || isNumber < 1) {
                                 System.out.println("Error value!");
                                 valueFlag = false;
                             }
@@ -527,26 +519,27 @@ public class StationeriesBUS implements IRuleSets {
                     }
 
                     if (choice == 7 || choice == 8 || choice == 9 || choice == 10) {
+                        if (StaTypesBUS.getCount() == 0)
+                            break;
                         System.out.println("*".repeat(60));
                         StaTypesBUS.showList();
                         System.out.println("*".repeat(60));
                         do {
                             choice = Validate.parseChooseHandler(input.nextLine(), StaTypesBUS.getCount());
                         } while (choice != -1);
-                        type = StaTypesBUS.getTypesList()[monthOrYear - 1];
+                        type = StaTypesBUS.getTypesList()[choice - 1];
                     }
 
                     // if case is 4 -> 7
                     if (!inputDate.isEmpty() && monthOrYear != 0) {
                         if (!material.isEmpty())
                             advancedSearch(material, inputDate, monthOrYear == 1 ? "mat-month" : "mat-year");
-                        else if (brand != null)
+                        else if (!brand.isEmpty())
                             advancedSearch(brand, inputDate, monthOrYear == 1 ? "brand-month" : "brand-year");
-                        else if (source != null)
+                        else if (!source.isEmpty())
                             advancedSearch(source, inputDate, monthOrYear == 1 ? "source-month" : "source-year");
                         else if (type != null)
-                            advancedSearch(type.getTypeName(), inputDate,
-                                    monthOrYear == 1 ? "type-month" : "type-year");
+                            advancedSearch(type.getTypeName(), inputDate, monthOrYear == 1 ? "type-month" : "type-year");
                         break;
                     }
 
@@ -669,8 +662,7 @@ public class StationeriesBUS implements IRuleSets {
 
     @Override
     public void add(Object stationary) {
-        if (stationary instanceof Stationeries) {
-            Stationeries newStationary = (Stationeries) stationary;
+        if (stationary instanceof Stationeries newStationary) {
             newStationary.setProductID(newStationary.getProductID());
             newStationary.setStationeriesID(newStationary.getStationeriesID());
             staList = Arrays.copyOf(staList, staList.length + 1);
@@ -747,7 +739,7 @@ public class StationeriesBUS implements IRuleSets {
             } catch (Exception e) {
                 System.out.printf("error writing file!\nt%s\n", e.getMessage());
             }
-        } while (choice != 0);
+        } while (true);
     }
 
     @Override
@@ -986,13 +978,12 @@ public class StationeriesBUS implements IRuleSets {
             System.out.println("0. Exit");
             System.out.println("*".repeat(60));
             System.out.print("Enter your choice: ");
-            choice = Validate.parseChooseHandler(input.nextLine().trim(), 1);
             String inputChoice = input.nextLine().trim();
-            // validate if user choose 0
             if (inputChoice.equals("0")) {
                 System.out.println("Exit program.");
                 break;
             }
+            // validate if user choose 0
             choice = Validate.parseChooseHandler(inputChoice, 1);
             if (choice == 1) {
                 try {
@@ -1058,7 +1049,7 @@ public class StationeriesBUS implements IRuleSets {
                 file.writeUTF(stationary.getProductID());
                 file.writeUTF(stationary.getStationeriesID());
                 file.writeUTF(stationary.getProductName());
-                file.writeUTF(stationary.getProductPrice().setScale(0).toString());
+                file.writeUTF(stationary.getProductPrice().setScale(0, RoundingMode.UNNECESSARY).toString());
                 file.writeUTF(stationary.getReleaseDate().toString());
                 file.writeUTF(stationary.getType().getTypeID());
                 file.writeUTF(stationary.getBrand());

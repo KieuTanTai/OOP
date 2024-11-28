@@ -60,7 +60,7 @@ public class Menu {
     }
 
     public static void addHandler() {
-        int choice;
+        int choice = 0;
         do {
             System.out.println("*".repeat(60));
             System.out.println("1. Add new product ");
@@ -76,9 +76,14 @@ public class Menu {
             System.out.println("0. Exit");
             System.out.println("*".repeat(60));
             System.out.print("Enter your choice: ");
-            choice = Validate.parseChooseHandler(input.nextLine(), 10);
-            break;
+            String inputChoice = input.nextLine();
+            if (inputChoice.equals("0")) {
+                System.out.println("Exit program.");
+                break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 10);
         } while (choice == -1);
+
         switch (choice) {
             case 1:
                 do {
@@ -496,7 +501,7 @@ public class Menu {
                     break;
                 case 5:
                     SuppliersBUS arrSup = new SuppliersBUS();
-                    arrSup.showList();
+                    SuppliersBUS.showList();
                     System.out.print("Enter supplier ID to edit: ");
                     String supID = input.nextLine().trim();
                     if (arrSup.find(supID) != -1) {
@@ -525,7 +530,7 @@ public class Menu {
                     break;
                 case 6:
                     PublishersBUS arrPub = new PublishersBUS();
-                    arrPub.showList();
+                    PublishersBUS.showList();
                     System.out.print("Enter publisher ID to edit: ");
                     String pubID = input.nextLine().trim();
                     if (arrPub.find(pubID) != -1) {
@@ -543,7 +548,7 @@ public class Menu {
                     break;
                 case 7:
                     TypesBUS arrType = new TypesBUS();
-                    arrType.showList();
+                    TypesBUS.showList();
                     System.out.print("Enter type ID to edit: ");
                     String typeID = input.nextLine().trim();
                     if (arrType.find(typeID) != -1) {
@@ -561,7 +566,7 @@ public class Menu {
                     break;
                 case 8:
                     GenresBUS arrGenre = new GenresBUS();
-                    arrGenre.showList();
+                    GenresBUS.showList();
                     System.out.print("Enter genre ID to edit: ");
                     String genreID = input.nextLine().trim();
                     if (arrGenre.find(genreID) != -1) {
@@ -579,7 +584,7 @@ public class Menu {
                     break;
                 case 9:
                     StaTypesBUS arrStaType = new StaTypesBUS();
-                    arrStaType.showList();
+                    StaTypesBUS.showList();
                     System.out.print("Enter staType ID to edit: ");
                     String staTypeID = input.nextLine().trim();
                     if (arrStaType.find(staTypeID) != -1) {

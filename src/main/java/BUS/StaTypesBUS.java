@@ -1,7 +1,6 @@
 package BUS;
 
 import DTO.StaTypes;
-import Manager.Menu;
 import util.Validate;
 
 import java.io.BufferedInputStream;
@@ -46,7 +45,7 @@ public class StaTypesBUS implements IRuleSets {
     public static StaTypes[] getTypes(int start, int end) {
         int size = 0;
         StaTypes[] list = new StaTypes[0];
-        if (start <= end)
+        if (!Validate.checkValidRange(start, end))
             return null;
         for (int i = start; i < end; i++) {
             list = Arrays.copyOf(list, list.length + 1);
@@ -85,11 +84,6 @@ public class StaTypesBUS implements IRuleSets {
     }
 
     // *Find methods (TEST DONE)
-    @Override
-    public void find() {
-        Menu.findHandler();
-    }
-
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < typesList.length; i++) {
@@ -237,8 +231,7 @@ public class StaTypesBUS implements IRuleSets {
 
     @Override
     public void add(Object type) {
-        if (type instanceof StaTypes) {
-            StaTypes newType = (StaTypes) type;
+        if (type instanceof StaTypes newType) {
             newType.setTypeID(newType.getTypeID());
             typesList = Arrays.copyOf(typesList, typesList.length + 1);
             typesList[count] = newType;

@@ -438,7 +438,7 @@ public void writeFile() throws IOException   {
                 LocalDate date = LocalDate.parse(file.readUTF());
                 BigDecimal discount = new BigDecimal(file.readUTF());
                 BigDecimal totalPrice = new BigDecimal(file.readUTF());
-                SaleEvents sale = new SaleEvents()
+                SaleEvents sale = new SaleEvents();
 
                 Bill fileBill = new Bill(billId,customerId,employeeId,saleCode, discount,totalPrice,date);
                 

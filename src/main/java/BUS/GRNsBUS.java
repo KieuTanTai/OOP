@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -22,7 +23,7 @@ import util.Validate;
 public class GRNsBUS implements IRuleSets {
      private GRNs[] grnList;
      private int count;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
      // constructors
      public GRNsBUS() {
@@ -74,11 +75,6 @@ public class GRNsBUS implements IRuleSets {
      }
 
      // find methods
-     @Override
-     public void find() {
-          Menu.findHandler();
-     }
-
      // strict find
      @Override
      public int find(String grnID) {
@@ -97,10 +93,9 @@ public class GRNsBUS implements IRuleSets {
           request = request.toLowerCase().trim();
 
           for (GRNs grn : grnList) {
-               if (originalKey instanceof String) {
-                    String key = (String) originalKey;
+               if (originalKey instanceof String key) {
 
-                    String employeeID = (grn.getEmployee() != null) ? grn.getEmployee().getPersonID() : "";
+                   String employeeID = (grn.getEmployee() != null) ? grn.getEmployee().getPersonID() : "";
                     String employeeName = (grn.getEmployee() != null) ? grn.getEmployee().getFullName().toLowerCase()
                               : "";
 
@@ -170,9 +165,8 @@ public class GRNsBUS implements IRuleSets {
 
      @Override
      public void add(Object newGRN) {
-          if (newGRN instanceof GRNs) {
-               GRNs grn = (GRNs) newGRN;
-               grn.setGrnID(grn.getGrnID());
+          if (newGRN instanceof GRNs grn) {
+              grn.setGrnID(grn.getGrnID());
                grnList = Arrays.copyOf(grnList, grnList.length + 1);
                grnList[count] = grn;
                count++;
@@ -340,7 +334,7 @@ public class GRNsBUS implements IRuleSets {
                     file.writeUTF(grn.getDate().toString());
                     file.writeUTF(grn.getEmployee().getPersonID());
                     file.writeUTF(grn.getSupplier().getSupplierID());
-                    file.writeUTF(grn.getTotalPrice().setScale(0).toString());
+                    file.writeUTF(grn.getTotalPrice().setScale(0, RoundingMode.UNNECESSARY).toString());
                }
           } catch (Exception err) {
                System.out.printf("error writing file!\nt%s\n", err.getMessage());

@@ -129,8 +129,7 @@ public class Books extends Products {
 
         } while (userChoice == -1);
 
-        BookFormats format = BookFormatsBUS.getFormatsList()[userChoice - 1];
-        return format;
+        return BookFormatsBUS.getFormatsList()[userChoice - 1];
     }
 
     // set packaging size
@@ -162,8 +161,7 @@ public class Books extends Products {
             userChoice = Validate.parseChooseHandler(option, TypesBUS.getCount());
         } while (userChoice == -1);
 
-        BookTypes type = TypesBUS.getTypesList()[userChoice - 1];
-        return type;
+        return TypesBUS.getTypesList()[userChoice - 1];
     }
 
     // set publisher
@@ -180,8 +178,7 @@ public class Books extends Products {
             userChoice = Validate.parseChooseHandler(option, PublishersBUS.getCount());
         } while (userChoice == -1);
 
-        Publishers publisher = PublishersBUS.getPublishersList()[userChoice - 1];
-        return publisher;
+        return PublishersBUS.getPublishersList()[userChoice - 1];
     }
 
     // set multiple genres and return genres array
@@ -201,7 +198,6 @@ public class Books extends Products {
 
             if (Validate.hasDuplicates(splitOptions)) {
                 System.out.println("has duplicate! please try again!");
-                count = 0;
                 continue;
             }
 
@@ -289,19 +285,18 @@ public class Books extends Products {
         String packagingSize = setPackagingSize();
 
         int userChoice;
-        System.out.printf("*".repeat(60) + "\n");
+        System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, 2);
         } while (userChoice == -1);
-        System.out.printf("*".repeat(60) + "\n");
+        System.out.println("*".repeat(60));
 
-        if (userChoice == 1) {
+        if (userChoice == 1)
             System.out.println("ok!");
-            return;
-        } else {
+        else {
             // set fields for product
             setProductID(id);
             setProductName(name);

@@ -81,7 +81,7 @@ public abstract class Person {
 
     // Setters no params
     public String setID(Object key) {
-        String id = "";
+        StringBuilder id = new StringBuilder();
         try {
             if (key instanceof Customers) {
                 CustomersBUS booksList = new CustomersBUS();
@@ -93,10 +93,10 @@ public abstract class Person {
                 } else {
                     String getID = list[list.length - 1].getPersonID();
                     int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
-                    id = String.format("%d", prevID + 1);
+                    id = new StringBuilder(String.format("%d", prevID + 1));
                     // check if id length < 8
                     while (id.length() != 8)
-                        id = "0" + id;
+                        id.insert(0, "0");
                 }
             } else if (key instanceof Employees) {
                 EmployeesBUS stationeriesList = new EmployeesBUS();
@@ -107,16 +107,16 @@ public abstract class Person {
                     return "00000001";
                 } else {
                     int prevID = Integer.parseInt((list[list.length - 1]).getPersonID().substring(3, list.length - 2));
-                    id = String.format("%d", prevID + 1);
+                    id = new StringBuilder(String.format("%d", prevID + 1));
                     while (id.length() != 8)
-                        id = "0" + id;
+                        id.insert(0, "0");
                 }
             }
         } catch (Exception e) {
             System.out.println("error when execute with file!" + e.getMessage());
-            id = "";
+            id = new StringBuilder();
         }
-        return personIDModifier(id);
+        return personIDModifier(id.toString());
     }
 
     public String setFirstName() {

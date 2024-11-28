@@ -103,7 +103,7 @@ public class Employees extends Person {
         int userChoice;
         String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
         // show list for user choose
-        System.out.printf("=".repeat(160) + "\n");
+        System.out.println("=".repeat(160));
         System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20),
                 roles[2]);
         do {
@@ -153,11 +153,10 @@ public class Employees extends Person {
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, 2);
         } while (userChoice == -1);
-        System.out.printf("*".repeat(60) + "\n");
-        if (userChoice == 1) {
+        System.out.println("*".repeat(60));
+        if (userChoice == 1)
             System.out.println("ok!");
-            return;
-        } else {
+        else {
             setPersonID(id);
             setFullName(fistName, lastName);
             setDateOfBirth(dateOfBirth);

@@ -20,7 +20,7 @@ public class GRNs {
      private Employees employee;
      private Suppliers supplier;
      private BigDecimal totalPrice;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
      // constructors
      public GRNs() {
@@ -79,7 +79,7 @@ public class GRNs {
      // setters no params
      // set id
      public String setID() {
-          String grnID;
+          StringBuilder grnID;
           GRNs[] list = new GRNsBUS().getListGRN();
 
           if (list.length == 0) {
@@ -87,12 +87,12 @@ public class GRNs {
           } else {
                String getID = list[list.length - 1].getGrnID();
                int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
-               grnID = String.format("%d", prevID + 1);
+               grnID = new StringBuilder(String.format("%d", prevID + 1));
                // check if id length < 8
                while (grnID.length() != 8)
-                    grnID = "0" + grnID;
+                    grnID.insert(0, "0");
           }
-          return grnIDModifier(grnID);
+          return grnIDModifier(grnID.toString());
      }
 
      // set employee
@@ -132,14 +132,13 @@ public class GRNs {
                userChoice = Validate.parseChooseHandler(option, SuppliersBUS.getCount());
           } while (userChoice == -1);
 
-          Suppliers supplier = SuppliersBUS.getSupplierList()[userChoice - 1];
-          return supplier;
+         return SuppliersBUS.getSupplierList()[userChoice - 1];
      }
 
      // set grn detail (NEED TO FIX)
      public GRNDetails[] setGRNDetails(String grnID) {
           GRNDetailsBUS listGRN = new GRNDetailsBUS();
-          int userChoice = 0;
+          int userChoice;
 
           do {
                System.out.println("-".repeat(60));
@@ -161,7 +160,7 @@ public class GRNs {
                     switch (userChoice) {
                          case 1: // add
                               int index = 0;
-                              String productID = "";
+                              String productID;
 
                               if (chooseTypeProduct() == 1) {
                                    BooksBUS booksList = new BooksBUS();
@@ -174,14 +173,14 @@ public class GRNs {
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
 
-                                        // execute when wanna receive new book
-                                        if (productID.toLowerCase().equals("new"))
+                                        // execute when want to receive new book
+                                        if (productID.equalsIgnoreCase("new"))
                                              break;
 
                                         index = booksList.find(productID);
                                         if (index == -1)
                                              productID = "";
-                                   } while (productID == "");
+                                   } while (productID.isEmpty());
 
                                    // create new book
                                    Books product;
@@ -224,14 +223,14 @@ public class GRNs {
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
 
-                                        // execute when wanna receive new book
+                                        // execute when want to receive new book
                                         if (productID.equals("new"))
                                              break;
 
                                         index = staList.find(productID);
                                         if (index == -1)
                                              productID = "";
-                                   } while (productID == "");
+                                   } while (productID.isEmpty());
 
                                    // create new stationary
                                    Stationeries product;
@@ -267,7 +266,7 @@ public class GRNs {
 
                          case 2: // remove
                                  // if not have any grn detail
-                              if (listGRN.getCount() == 0 || listGRN == null) {
+                              if (listGRN.getCount() == 0) {
                                    System.out.println("not have any grn detail!");
                                    break;
                               }
@@ -283,7 +282,7 @@ public class GRNs {
                               break;
 
                          case 3: // edit
-                              if (listGRN.getCount() == 0 || listGRN == null) {
+                              if (listGRN.getCount() == 0) {
                                    System.out.println("not have any grn detail!");
                                    break;
                               }
@@ -319,7 +318,7 @@ public class GRNs {
 
      private int chooseTypeProduct() {
           int userChoice;
-          // let user decision they wanna change now product to books or stationeries
+          // let user decision they want to change now product to books or stationeries
           System.out.printf("| %s %s %s |\n", "I.Books", "-".repeat(20), "II.Stationeries");
           do {
                System.out.print("choose product (1 or 2): ");
@@ -355,10 +354,9 @@ public class GRNs {
                String option = input.nextLine().trim();
                userChoice = Validate.parseChooseHandler(option, 2);
           } while (userChoice == -1);
-          if (userChoice == 1) {
+          if (userChoice == 1)
                System.out.println("ok!");
-               return;
-          } else {
+          else {
                // set fields for product
                setGrnID(id);
                setDate(date);
@@ -370,7 +368,7 @@ public class GRNs {
                     detailList.readFile();
                     for (GRNDetails detail : detailsArray)
                          if (detailList.find(detail.getGrnID(), detail.getProduct().getProductID()) == -1) {
-                              totalPrice.add(detail.getSubTotal());
+                              totalPrice = totalPrice.add(detail.getSubTotal());
                               detailList.add(detail);
                          }
                     detailList.writeFile();

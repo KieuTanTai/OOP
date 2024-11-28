@@ -18,7 +18,7 @@ import util.Validate;
 public class MidForBooksBUS {
      private static MidForBooks[] midList;
      private static int count;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
      // constructors
      public MidForBooksBUS() {
@@ -102,7 +102,7 @@ public class MidForBooksBUS {
           return list;
      }
 
-     // search methodssyst
+     // search methods
      // *strict search (TEST DONE)
      public void search(String bookID, String genreID) {
           int index = find(bookID, genreID);
@@ -185,13 +185,13 @@ public class MidForBooksBUS {
      public void remove(String bookID) {
           int size = 0;
           MidForBooks[] reduceArray = new MidForBooks[0];
-          for (int i = 0; i < midList.length; i++) {
-               if (midList[i].getBookID().equals(bookID))
-                    continue;
-               reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
-               reduceArray[size] = midList[i];
-               size++;
-          }
+         for (MidForBooks midForBooks : midList) {
+             if (midForBooks.getBookID().equals(bookID))
+                 continue;
+             reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+             reduceArray[size] = midForBooks;
+             size++;
+         }
 
           if (size == midList.length) {
                System.out.println("not found any mid!");

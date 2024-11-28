@@ -21,7 +21,7 @@ import util.Validate;
 public class GRNDetailsBUS {
      private GRNDetails[] grnDetailsList;
      private int count;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
      // constructors
      public GRNDetailsBUS() {
@@ -141,15 +141,14 @@ public class GRNDetailsBUS {
      public void edit(String grnID) {
           GRNDetails[] list = relativeFind(grnID);
           if (list != null) {
-               int count = list.length;
                // show all grn detail has been found for user
-               for (int i = 0; i < count; i++)
-                    System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", 1, list[i].getGrnID(),
-                              list[i].getProduct().getProductName(), list[i].getQuantity(), list[i].getPrice(),
-                              list[i].getSubTotal());
+              for (GRNDetails grnDetails : list)
+                  System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", 1, grnDetails.getGrnID(),
+                          grnDetails.getProduct().getProductName(), grnDetails.getQuantity(), grnDetails.getPrice(),
+                          grnDetails.getSubTotal());
                System.out.println("-".repeat(60));
 
-               // let user decision they wanna edit or not
+               // let user decision they want to edit or not
                int userChoose, productChoose, newQuantity;
                BigDecimal newPrice;
                do {
@@ -158,8 +157,8 @@ public class GRNDetailsBUS {
                     userChoose = Validate.parseChooseHandler(option, list.length);
                } while (userChoose == -1);
 
-               // let user decision they wanna change now product to books or stationeries
-               System.out.printf("| %s %s %s |\n", "I.Books", "-".repeat(20), "II.Stationeries");
+               // let user decision they want to change now product to books or stationer
+               System.out.printf("| %s %s %s |\n", "I.Book", "-".repeat(20), "II.Stationary");
                System.out.println("-".repeat(60));
                do {
                     System.out.print("choose product (1 or 2): ");
@@ -186,7 +185,7 @@ public class GRNDetailsBUS {
                // try catch for execute product that user had been chosen
                System.out.println("-".repeat(60));
                try {
-                    GRNDetails newGrnDetails = null;
+                    GRNDetails newGrnDetails;
                     if (productChoose == 1) {
                          int tempChoose;
                          BooksBUS bookList = new BooksBUS();
@@ -237,13 +236,13 @@ public class GRNDetailsBUS {
      public void remove(String grnID) {
           int size = 0;
           GRNDetails[] reduceArray = new GRNDetails[0];
-          for (int i = 0; i < grnDetailsList.length; i++) {
-               if (grnDetailsList[i].getGrnID().equals(grnID))
-                    continue;
-               reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
-               reduceArray[size] = grnDetailsList[i];
-               size++;
-          }
+         for (GRNDetails grnDetails : grnDetailsList) {
+             if (grnDetails.getGrnID().equals(grnID))
+                 continue;
+             reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+             reduceArray[size] = grnDetails;
+             size++;
+         }
 
           if (size == grnDetailsList.length) {
                System.out.println("not found any mid!");

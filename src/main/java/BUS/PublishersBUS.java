@@ -72,10 +72,6 @@ public class PublishersBUS implements IRuleSets {
 
     // *Find methods (TEST DONE)
     @Override
-    public void find() {
-    }
-
-    @Override
     public int find(String nameOrID) {
         for (int i = 0; i < publishersList.length; i++) {
             if (publishersList[i].getPublisherID().equals(nameOrID)
@@ -222,8 +218,7 @@ public class PublishersBUS implements IRuleSets {
 
     @Override
     public void add(Object publisher) {
-        if (publisher instanceof Publishers) {
-            Publishers newPublisher = (Publishers) publisher;
+        if (publisher instanceof Publishers newPublisher) {
             newPublisher.setPublisherID(newPublisher.getPublisherID());
             publishersList = Arrays.copyOf(publishersList, publishersList.length + 1);
             publishersList[count] = newPublisher;

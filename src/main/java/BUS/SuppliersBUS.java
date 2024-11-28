@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 import DTO.Suppliers;
-import Manager.Menu;
 import util.Validate;
 
 public class SuppliersBUS implements IRuleSets {
@@ -85,11 +84,6 @@ public class SuppliersBUS implements IRuleSets {
     }
 
     // *find methods (TEST DONE)
-    @Override
-    public void find() {
-        Menu.findHandler();
-    }
-
     @Override
     public int find(String nameOrID) {
         for (int i = 0; i < suppliersList.length; i++) {
@@ -238,8 +232,7 @@ public class SuppliersBUS implements IRuleSets {
 
     @Override
     public void add(Object supplier) {
-        if (supplier instanceof Suppliers) {
-            Suppliers newSupplier = (Suppliers) supplier;
+        if (supplier instanceof Suppliers newSupplier) {
             newSupplier.setSupplierID(newSupplier.getSupplierID());
             suppliersList = Arrays.copyOf(suppliersList, suppliersList.length + 1);
             suppliersList[count] = newSupplier;

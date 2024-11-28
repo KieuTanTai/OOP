@@ -94,11 +94,10 @@ public class Customers extends Person {
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, 2);
         } while (userChoice == -1);
-        System.out.printf("*".repeat(60) + "\n");
-        if (userChoice == 1) {
+        System.out.println("*".repeat(60));
+        if (userChoice == 1)
             System.out.println("ok!");
-            return;
-        } else {
+        else {
             setPersonID(id);
             setFullName(firstName, lastName);
             setDateOfBirth(dateOfBirth);

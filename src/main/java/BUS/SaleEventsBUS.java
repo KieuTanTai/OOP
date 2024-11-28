@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class SaleEventsBUS {
     private static SaleEvents[] ListSaleEvent;
     private int count;
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public SaleEventsBUS(SaleEvents[] listSaleEvent, int count) {
         ListSaleEvent = listSaleEvent;
@@ -25,7 +25,7 @@ public class SaleEventsBUS {
 
     public void update(String id){
         for (int i = 0 ; i < count ; i++)
-            if (ListSaleEvent[i].getSaleEvId() == id)
+            if (ListSaleEvent[i].getSaleEvId().equals(id))
                 ListSaleEvent[i].nhap();
     }
 

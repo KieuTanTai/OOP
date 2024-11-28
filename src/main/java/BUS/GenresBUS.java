@@ -1,7 +1,6 @@
 package BUS;
 
 import DTO.BookGenres;
-import Manager.Menu;
 import util.Validate;
 
 import java.io.BufferedInputStream;
@@ -85,11 +84,6 @@ public class GenresBUS implements IRuleSets {
      }
 
      // find methods (DONE)
-     @Override
-     public void find() {
-          Menu.findHandler();
-     }
-
      @Override
      public int find(String nameOrID) {
           for (int i = 0; i < genresList.length; i++) {
@@ -237,9 +231,8 @@ public class GenresBUS implements IRuleSets {
 
      @Override
      public void add(Object genre) {
-          if (genre instanceof BookGenres) {
-               BookGenres newGenre = (BookGenres) genre;
-               newGenre.setGenreID(newGenre.getGenreID());
+          if (genre instanceof BookGenres newGenre) {
+              newGenre.setGenreID(newGenre.getGenreID());
                genresList = Arrays.copyOf(genresList, genresList.length + 1);
                genresList[count] = newGenre;
                count++;

@@ -66,10 +66,6 @@ public class EmployeesBUS implements IRuleSets {
 
     // *find methods(TEST DONE)
     @Override
-    public void find() {
-    }
-
-    @Override
     public int find(String nameOrID) {
         for (int i = 0; i < employeesList.length; i++)
             if (employeesList[i].getPersonID().equals(nameOrID) ||
@@ -86,9 +82,8 @@ public class EmployeesBUS implements IRuleSets {
         request = request.toLowerCase().trim();
 
         for (Employees employee : employeesList) {
-            if (originalKey instanceof String) {
+            if (originalKey instanceof String key) {
                 int month, year;
-                String key = (String) originalKey;
                 String firstName = employee.getFirstName();
                 String lastName = employee.getLastName();
                 String fullName = employee.getFullName();
@@ -187,8 +182,8 @@ public class EmployeesBUS implements IRuleSets {
 
     // case handler for relative search
     private void caseRelativeSearch() {
-        int choice, monthOrYear = 0;
-        String inputDate = "";
+        int choice, monthOrYear;
+        String inputDate;
         do {
             System.out.println("*".repeat(60));
             System.out.println("I. Search by First name");
@@ -246,7 +241,7 @@ public class EmployeesBUS implements IRuleSets {
                     int userChoice;
                     String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
                     // show list for user choose
-                    System.out.printf("=".repeat(160) + "\n");
+                    System.out.println("=".repeat(160));
                     System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20), roles[2]);
                     do {
                         System.out.print("choose role (like 1, 2,etc...): ");
@@ -275,7 +270,7 @@ public class EmployeesBUS implements IRuleSets {
                             valueFlag = true;
                             // validate input
                             isNumber = Validate.isNumber(inputDate);
-                            if (isNumber == -1 || isNumber > 12 || isNumber < 1) {
+                            if (isNumber > 12 || isNumber < 1) {
                                 System.out.println("Error value!");
                                 valueFlag = false;
                             }
@@ -422,8 +417,7 @@ public class EmployeesBUS implements IRuleSets {
 
     @Override
     public void add(Object employee) {
-        if (employee instanceof Employees) {
-            Employees newEmployee = (Employees) employee;
+        if (employee instanceof Employees newEmployee) {
             newEmployee.setPersonID(newEmployee.getPersonID());
             employeesList = Arrays.copyOf(employeesList, employeesList.length + 1);
             employeesList[count] = newEmployee;
@@ -488,7 +482,7 @@ public class EmployeesBUS implements IRuleSets {
             } catch (Exception e) {
                 System.out.printf("error writing file!\nt%s\n", e.getMessage());
             }
-        } while (choice != 0);
+        } while (true);
     }
 
     @Override
@@ -629,7 +623,7 @@ public class EmployeesBUS implements IRuleSets {
 
             String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
             // show list for user choose
-            System.out.printf("=".repeat(160) + "\n");
+            System.out.println("=".repeat(160));
             System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20),
                     roles[2]);
             do {

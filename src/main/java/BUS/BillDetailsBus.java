@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class BillDetailsBus {
     private BillDetails[] ds;
     private int n;
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public BillDetailsBus(){
         this.n = 0;
@@ -78,7 +78,7 @@ public class BillDetailsBus {
 
     public void add(BillDetails bdObject){
         ds = Arrays.copyOf(ds, ds.length + 1);
-        ds[n] = (BillDetails) bdObject;
+        ds[n] = bdObject;
         ++n;
     }
 
@@ -120,7 +120,7 @@ public class BillDetailsBus {
                 flag = true;
             }
         }
-        if(flag == false){
+        if(!flag){
             System.out.println("not found");
         }
     }
@@ -132,7 +132,7 @@ public class BillDetailsBus {
                 flag = true;
             }
         }
-        if(flag == false){
+        if(!flag){
             System.out.println("not found");
         }
     }
@@ -144,19 +144,20 @@ public class BillDetailsBus {
                 flag = true;
             }
         }
-        if(flag == false){
+        if(!flag){
             System.out.println("not found");
         }
     }
 
     public void findSubTotal(BigDecimal sub){
         boolean flag = false;
-        for(int i = 0; i < ds.length; ++i){
-            if(ds[i].getSubTotal().equals(sub)){
+        for (BillDetails d : ds) {
+            if (d.getSubTotal().equals(sub)) {
                 flag = true;
+                break;
             }
         }
-        if(flag == false){
+        if(!flag){
             System.out.println("not found");
         }
     }
@@ -265,7 +266,7 @@ public class BillDetailsBus {
                 }
             }
         }
-        if(flag == false){
+        if(!flag){
             System.out.println("bill id doesn't exist");
         }
     }

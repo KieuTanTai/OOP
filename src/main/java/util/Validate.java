@@ -9,11 +9,15 @@ import java.util.regex.Pattern;
 
 public class Validate {
      // private static final Scanner input = new Scanner(System.in);
-     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
      // check quantity (DONE)
      public static boolean checkQuantity(int quantity) {
           return quantity > 0;
+     }
+
+     public static boolean checkValidRange(int min, int max) {
+          return min >= 0 && max >= 0 && min <= max;
      }
 
      // format type of string price 
@@ -31,9 +35,7 @@ public class Validate {
      // check if input null or not (DONE)
      public static boolean requiredNotNull (Object input) {
           try {
-               if (input == null)
-                    return false;
-               return true;
+              return input != null;
           } catch (Exception e) {
                System.out.println("something went wrong!" + e.getMessage());
                return false;

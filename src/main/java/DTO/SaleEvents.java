@@ -16,21 +16,21 @@ public class SaleEvents {
     public SaleEvents() {
     }
 
-    public SaleEvents(String saleEvId, String saleEvName, String description, LocalDate startDate, LocalDate enđate, SaleEventsDetail detail) {
+    public SaleEvents(String saleEvId, String saleEvName, String description, LocalDate startDate, LocalDate enDate, SaleEventsDetail detail) {
         this.saleEvId = saleEvId;
         this.saleEvName = saleEvName;
         this.description = description;
         this.startDate = startDate;
-        this.endDate = enđate;
+        this.endDate = enDate;
         this.detail = detail;
     }
 
-    public SaleEvents(String saleEvId, String saleEvName, String description, LocalDate startDate, LocalDate enđate) {
+    public SaleEvents(String saleEvId, String saleEvName, String description, LocalDate startDate, LocalDate enDate) {
         this.saleEvId = saleEvId;
         this.saleEvName = saleEvName;
         this.description = description;
         this.startDate = startDate;
-        this.endDate = enđate;
+        this.endDate = enDate;
     }
 
     public void nhap() {
@@ -112,8 +112,8 @@ public class SaleEvents {
         this.startDate = startDate;
     }
 
-    public void setEndDate(LocalDate enđate) {
-        this.endDate = enđate;
+    public void setEndDate(LocalDate enDate) {
+        this.endDate = enDate;
     }
 
     public void setDetail(SaleEventsDetail detail) {

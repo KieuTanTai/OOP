@@ -8,7 +8,7 @@ import util.Validate;
 public class Publishers {
     private String publisherID;
     private String publisherName;
-    private Scanner input = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
     // constructor
     public Publishers() {
@@ -39,20 +39,20 @@ public class Publishers {
 
     // set not param
     public String setID() {
-        String id = "";
+        StringBuilder id;
         Publishers[] list = PublishersBUS.getPublishersList();
 
-        if (list.length == 0 || list == null) {
+        if (list.length == 0) {
             return "00000001";
         } else {
             String getID = list[list.length - 1].getPublisherID();
             int prevID = Integer.parseInt(getID.substring(3, getID.length() - 3));
-            id = String.format("%d", prevID + 1);
+            id = new StringBuilder(String.format("%d", prevID + 1));
             // check if id length < 8
             while (id.length() != 8)
-                id = "0" + id;
+                id.insert(0, "0");
         }
-        return publisherIDModifier(id);
+        return publisherIDModifier(id.toString());
     }
 
     public String setName() {
@@ -76,20 +76,18 @@ public class Publishers {
         System.out.println("*".repeat(60));
 
         int userChoice;
-        System.out.printf("*".repeat(60) + "\n");
+        System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, 2);
         } while (userChoice == -1);
-        System.out.printf("*".repeat(60) + "\n");
+        System.out.println("*".repeat(60));
 
-        if (userChoice == 1) {
+        if (userChoice == 1)
             System.out.println("ok!");
-            return;
-
-        } else {
+        else {
             setPublisherID(publisherID);
             setPublisherName(publisherName);
             System.out.println("create and set fields success");

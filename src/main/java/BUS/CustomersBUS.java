@@ -67,10 +67,6 @@ public class CustomersBUS implements IRuleSets {
 
      // *find methods (TEST DONE)
      @Override
-     public void find() {
-     }
-
-     @Override
      public int find(String nameOrID) {
           for (int i = 0; i < customersList.length; i++)
                if (customersList[i].getPersonID().equals(nameOrID) ||
@@ -87,10 +83,9 @@ public class CustomersBUS implements IRuleSets {
           request = request.toLowerCase().trim();
 
           for (Customers customer : customersList) {
-               if (originalKey instanceof String) {
+               if (originalKey instanceof String key) {
                     int month, year;
-                    String key = (String) originalKey;
-                    String firstName = customer.getFirstName();
+                   String firstName = customer.getFirstName();
                     String lastName = customer.getLastName();
                     String fullName = customer.getFullName();
                     String phone = customer.getPhoneNumber();
@@ -223,8 +218,8 @@ public class CustomersBUS implements IRuleSets {
 
      // case handler for relative search
      private void caseRelativeSearch() {
-          int choice, monthOrYear = 0;
-          String inputDate = "";
+          int choice, monthOrYear;
+          String inputDate;
           do {
                System.out.println("*".repeat(60));
                System.out.println("I. Search by First name");
@@ -293,7 +288,7 @@ public class CustomersBUS implements IRuleSets {
                                    valueFlag = true;
                                    // validate input
                                    isNumber = Validate.isNumber(inputDate);
-                                   if (isNumber == -1 || isNumber > 12 || isNumber < 1) {
+                                   if (isNumber > 12 || isNumber < 1) {
                                         System.out.println("Error value!");
                                         valueFlag = false;
                                    }
@@ -499,9 +494,8 @@ public class CustomersBUS implements IRuleSets {
 
      @Override
      public void add(Object customer) {
-          if (customer instanceof Customers) {
-               Customers newCustomer = (Customers) customer;
-               newCustomer.setPersonID(newCustomer.getPersonID());
+          if (customer instanceof Customers newCustomer) {
+              newCustomer.setPersonID(newCustomer.getPersonID());
                customersList = Arrays.copyOf(customersList, customersList.length + 1);
                customersList[count] = newCustomer;
                count++;
@@ -565,7 +559,7 @@ public class CustomersBUS implements IRuleSets {
                } catch (Exception e) {
                     System.out.printf("error writing file!\nt%s\n", e.getMessage());
                }
-          } while (choice != 0);
+          } while (true);
      }
 
      @Override

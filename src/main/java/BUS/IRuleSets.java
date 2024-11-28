@@ -5,8 +5,6 @@ public interface IRuleSets {
 
      void add(Object objectId);
 
-     void find();
-
      int find(String id); // return index
 
      void search();

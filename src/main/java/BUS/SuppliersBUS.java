@@ -121,7 +121,33 @@ public class SuppliersBUS implements IRuleSets {
     // *search methods (TEST DONE)
     @Override
     public void search() {
-        Menu.searchHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Strict search");
+            System.out.println("II. Relative search");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice : ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                System.out.println("Exit program.");
+                break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 2);
+            if (choice == -1)
+                break;
+
+            System.out.println("Enter name or id of publisher : ");
+            String userInput = input.nextLine().trim();
+            // if case
+            if (choice == 1)
+                search(userInput);
+            else if (choice == 2)
+                relativeSearch(userInput);
+
+        } while (choice != 0);
     }
 
     @Override
@@ -140,7 +166,74 @@ public class SuppliersBUS implements IRuleSets {
     // *add methods (TEST DONE)
     @Override
     public void add() {
-        Menu.addHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Add supplier");
+            System.out.println("II. Add list of suppliers");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice : ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                System.out.println("Exit program.");
+                break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 2);
+
+            try {
+                switch (choice) {
+                    case 1:
+                        Suppliers newType = new Suppliers();
+                        newType.setInfo();
+                        // confirm
+                        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                        do {
+                            System.out.print("choose option (1 or 2) : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.parseChooseHandler(option, 2);
+                        } while (choice == -1);
+                        if (choice == 1)
+                            break;
+                        add(newType);
+                        writeFile();
+                        break;
+                    case 2:
+                        int count = 0;
+                        Suppliers[] list = new Suppliers[0];
+                        do {
+                            System.out.print("Enter total suppliers you wanna add : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.isNumber(option);
+                        } while (choice == -1);
+                        // for loop with input time
+                        for (int i = 0; i < choice; i++) {
+                            Suppliers supplier = new Suppliers();
+                            supplier.setInfo();
+                            list = Arrays.copyOf(list, list.length + 1);
+                            list[count] = supplier;
+                            count++;
+                        }
+
+                        // confirm
+                        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                        do {
+                            System.out.print("choose option (1 or 2) : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.parseChooseHandler(option, 2);
+                        } while (choice == -1);
+                        if (choice == 1)
+                            break;
+                        add(list);
+                        writeFile();
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.printf("error writing file!\nt%s\n", e.getMessage());
+            }
+
+        } while (choice != 0);
     }
 
     @Override
@@ -171,7 +264,31 @@ public class SuppliersBUS implements IRuleSets {
     // *edit methods (TEST DONE)
     @Override
     public void edit() {
-        Menu.editHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Edit");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice : ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                System.out.println("Exit program.");
+                break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 1);
+            if (choice == 1) {
+                try {
+                    System.out.println("Enter name or id of supplier : ");
+                    String userInput = input.nextLine().trim();
+                    edit(userInput);
+                    writeFile();
+                } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                }
+            }
+        } while (choice != 0);
     }
 
     @Override
@@ -236,7 +353,31 @@ public class SuppliersBUS implements IRuleSets {
     // *remove methods (TEST DONE)
     @Override
     public void remove() {
-        Menu.removeHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Remove");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice : ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                System.out.println("Exit program.");
+                break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 1);
+            if (choice == 1) {
+                try {
+                    System.out.println("Enter name or id of supplier : ");
+                    String userInput = input.nextLine().trim();
+                    remove(userInput);
+                    writeFile();
+                } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                }
+            }
+        } while (choice != 0);
     }
 
     @Override

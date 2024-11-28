@@ -122,9 +122,9 @@ public class GRNs {
      public Suppliers setSupplier() {
           int userChoice;
           // show list for user choose
-          SuppliersBUS.showList();
           if (SuppliersBUS.getCount() == 0) // if not have any supplier
                return null;
+          SuppliersBUS.showList();
           System.out.println("-".repeat(60));
           do {
                System.out.print("choose supplier (like 1, 2,etc...) : ");
@@ -142,6 +142,7 @@ public class GRNs {
           int userChoice = 0;
 
           do {
+               System.out.println("-".repeat(60));
                System.out.println("I. Add detail");
                System.out.println("II. Remove detail");
                System.out.println("III. Edit detail");
@@ -149,6 +150,10 @@ public class GRNs {
                System.out.println("-".repeat(60));
                System.out.print("choose option (like 0, 1, 2,etc...) : ");
                String option = input.nextLine().trim();
+               if (option.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
                userChoice = Validate.parseChooseHandler(option, SuppliersBUS.getCount());
 
                // execute userChoice
@@ -164,7 +169,8 @@ public class GRNs {
                                    booksList.showList();
 
                                    do {
-                                        System.out.println("NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
+                                        System.out.println(
+                                                  "NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
 
@@ -213,7 +219,8 @@ public class GRNs {
                                    staList.showList();
 
                                    do {
-                                        System.out.println("NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
+                                        System.out.println(
+                                                  "NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
 
@@ -294,7 +301,7 @@ public class GRNs {
                } catch (Exception e) {
                     System.out.printf("error when execute file!\nt%s\n", e.getMessage());
                }
-          } while (userChoice == -1 && userChoice != 0);
+          } while (userChoice != 0);
           return listGRN.getGrnDetailsList();
      }
 

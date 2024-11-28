@@ -125,7 +125,7 @@ public class GRNs {
           SuppliersBUS.showList();
           if (SuppliersBUS.getCount() == 0) // if not have any supplier
                return null;
-          System.out.println("----------------------------");
+          System.out.println("-".repeat(60));
           do {
                System.out.print("choose supplier (like 1, 2,etc...) : ");
                String option = input.nextLine().trim();
@@ -164,8 +164,7 @@ public class GRNs {
                                    booksList.showList();
 
                                    do {
-                                        System.out.println(
-                                                  "NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
+                                        System.out.println("NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
 
@@ -214,8 +213,7 @@ public class GRNs {
                                    staList.showList();
 
                                    do {
-                                        System.out.println(
-                                                  "NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
+                                        System.out.println("NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
 
@@ -261,8 +259,12 @@ public class GRNs {
                               break;
 
                          case 2: // remove
-                              if (listGRN.getCount() == 0 || listGRN == null) // if not have any grn detail
+                                 // if not have any grn detail
+                              if (listGRN.getCount() == 0 || listGRN == null) {
+                                   System.out.println("not have any grn detail!");
                                    break;
+                              }
+                              listGRN.showList();
                               System.out.println("-".repeat(60));
                               do {
                                    System.out.print("choose grn (like 1, 2,etc...) : ");
@@ -274,8 +276,11 @@ public class GRNs {
                               break;
 
                          case 3: // edit
-                              if (listGRN.getCount() == 0 || listGRN == null) // if not have any grn detail
+                              if (listGRN.getCount() == 0 || listGRN == null) {
+                                   System.out.println("not have any grn detail!");
                                    break;
+                              }
+                              listGRN.showList();
                               System.out.println("-".repeat(60));
                               do {
                                    System.out.print("choose grn (like 1, 2,etc...) : ");
@@ -333,9 +338,9 @@ public class GRNs {
 
           System.out.println("-".repeat(60));
           GRNDetails[] detailsArray = setGRNDetails(id);
+          BigDecimal totalPrice = new BigDecimal(0);
 
           int userChoice;
-          BigDecimal totalPrice = new BigDecimal(0);
           System.out.println("*".repeat(60));
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {

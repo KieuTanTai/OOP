@@ -242,7 +242,7 @@ public class GRNsBUS implements IRuleSets {
 
                     EmployeesBUS list = new EmployeesBUS();
                     list.readFile();
-                    System.out.println("----------------------------");
+                    System.out.println("-".repeat(60));
                     do {
                          System.out.print("name employee : ");
                          String name = input.nextLine().trim();

@@ -1,5 +1,6 @@
 package BUS;
 
+import DTO.GRNDetails;
 import DTO.StaTypes;
 import DTO.Stationeries;
 import util.Validate;
@@ -211,7 +212,8 @@ public class StationeriesBUS implements IRuleSets {
                 }
             }
 
-            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("month"))) {
+            if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
+                    && (request.contains("month"))) {
                 String keyI = (String) originalKeyI;
                 boolean keyII = stationary.getReleaseDate().getMonthValue() == inputTime;
 
@@ -222,10 +224,12 @@ public class StationeriesBUS implements IRuleSets {
                     flag = true;
                 else if ((request.contains("source")) && (source.contains(keyI.toLowerCase()) && keyII))
                     flag = true;
-                else if ((request.contains("type")) && ((typeID.equals(keyI) && keyII) || (typeName.contains(keyI.toLowerCase()) && keyII)))
+                else if ((request.contains("type"))
+                        && ((typeID.equals(keyI) && keyII) || (typeName.contains(keyI.toLowerCase()) && keyII)))
                     flag = true;
 
-            } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String) && (request.contains("year"))) {
+            } else if ((originalKeyI instanceof String) && (originalTimeOrKey instanceof String)
+                    && (request.contains("year"))) {
                 String keyI = (String) originalKeyI;
                 boolean keyII = stationary.getReleaseDate().getYear() == inputTime;
 
@@ -318,8 +322,8 @@ public class StationeriesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 3);
             switch (choice) {
@@ -355,8 +359,8 @@ public class StationeriesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 6);
             switch (choice) {
@@ -430,8 +434,8 @@ public class StationeriesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 13);
             switch (choice) {
@@ -540,7 +544,8 @@ public class StationeriesBUS implements IRuleSets {
                         else if (source != null)
                             advancedSearch(source, inputDate, monthOrYear == 1 ? "source-month" : "source-year");
                         else if (type != null)
-                            advancedSearch(type.getTypeName(), inputDate, monthOrYear == 1 ? "type-month" : "type-year");
+                            advancedSearch(type.getTypeName(), inputDate,
+                                    monthOrYear == 1 ? "type-month" : "type-year");
                         break;
                     }
 
@@ -603,8 +608,8 @@ public class StationeriesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 2);
             // try catch for execute file after add
@@ -709,8 +714,8 @@ public class StationeriesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 8);
             System.out.println("Enter name or id of stationary : ");
@@ -734,7 +739,7 @@ public class StationeriesBUS implements IRuleSets {
                     editSource(userInput);
                 else if (choice == 8)
                     editMaterial(userInput);
-                else 
+                else
                     break;
                 // update file
                 writeFile();
@@ -984,8 +989,8 @@ public class StationeriesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 1);
             if (choice == 1) {
@@ -1023,6 +1028,16 @@ public class StationeriesBUS implements IRuleSets {
             count--;
         }
 
+    }
+
+    // update quantity
+    public void updateQuantity(GRNDetails[] list) {
+        for (GRNDetails detail : list) {
+            int index = find(detail.getProduct().getProductID());
+            if (index != -1) {
+                staList[index].setQuantity(staList[index].getQuantity() + detail.getQuantity());
+            }
+        }
     }
 
     // *execute files (TEST DONE)

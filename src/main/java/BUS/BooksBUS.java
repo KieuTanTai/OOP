@@ -17,6 +17,7 @@ import DTO.BookFormats;
 import DTO.BookGenres;
 import DTO.BookTypes;
 import DTO.Books;
+import DTO.GRNDetails;
 import DTO.MidForBooks;
 import DTO.Publishers;
 import util.Validate;
@@ -1252,6 +1253,16 @@ public class BooksBUS implements IRuleSets {
                }
           } catch (Exception err) {
                System.out.printf("error writing file!\nt%s\n", err.getMessage());
+          }
+     }
+
+     // update quantity
+     public void updateQuantity (GRNDetails[] list) {
+          for (GRNDetails detail : list) {
+               int index = find(detail.getProduct().getProductID());
+               if (index != -1) {
+                    booksList[index].setQuantity(booksList[index].getQuantity() + detail.getQuantity());
+               }
           }
      }
 

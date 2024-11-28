@@ -1,5 +1,6 @@
 package BUS;
 
+import DTO.BillDetails;
 import DTO.GRNDetails;
 import DTO.StaTypes;
 import DTO.Stationeries;
@@ -1034,9 +1035,16 @@ public class StationeriesBUS implements IRuleSets {
     public void updateQuantity(GRNDetails[] list) {
         for (GRNDetails detail : list) {
             int index = find(detail.getProduct().getProductID());
-            if (index != -1) {
+            if (index != -1)
                 staList[index].setQuantity(staList[index].getQuantity() + detail.getQuantity());
-            }
+        }
+    }
+
+    public void updateQuantity(BillDetails[] list) {
+        for(BillDetails detail : list) {
+            int index = find(detail.getProducts().getProductID());
+            if (index != -1)
+                staList[index].setQuantity(staList[index].getQuantity() - detail.getQuantity());
         }
     }
 

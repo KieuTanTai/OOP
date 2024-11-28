@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import DTO.BillDetails;
 import DTO.BookFormats;
 import DTO.BookGenres;
 import DTO.BookTypes;
@@ -1265,6 +1266,14 @@ public class BooksBUS implements IRuleSets {
                }
           }
      }
+
+    public void updateQuantity(BillDetails[] list) {
+        for(BillDetails detail : list) {
+            int index = find(detail.getProducts().getProductID());
+            if (index != -1)
+                booksList[index].setQuantity(booksList[index].getQuantity() - detail.getQuantity());
+        }
+    }
 
      // read file
      public void readFile() throws IOException {

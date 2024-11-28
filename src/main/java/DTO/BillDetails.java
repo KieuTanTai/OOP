@@ -7,6 +7,7 @@ import util.Validate;
 
 public class BillDetails{
     private String billId;
+    private Products product;
     private int quantity;
     private BigDecimal price;
     private BigDecimal subTotal;
@@ -33,6 +34,10 @@ public class BillDetails{
 
     public int getQuantity() {
         return this.quantity;
+    }
+
+    public Products getProducts() {
+        return this.product;
     }
 
     public void setQuantity(int quantity) {

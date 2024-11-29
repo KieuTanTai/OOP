@@ -10,7 +10,7 @@ import util.Validate;
 
 public class Stationeries extends Products {
      private String stationaryID;
-     private StaTypes staTypes;
+     private StaTypes staType;
      private String brand;
      private String material;
      private String source;
@@ -20,11 +20,10 @@ public class Stationeries extends Products {
      }
 
      public Stationeries(String productId, String stationaryID, String productName, LocalDate releaseDate,
-               BigDecimal productPrice,
-               int quantity, StaTypes type, String brand, String material, String source) {
+               BigDecimal productPrice, int quantity, StaTypes type, String brand, String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
           this.stationaryID = stationaryIDModifier(stationaryID);
-          this.staTypes = type;
+          this.staType = type;
           this.brand = brand;
           this.material = material;
           this.source = source;
@@ -36,7 +35,7 @@ public class Stationeries extends Products {
      }
 
      public StaTypes getType() {
-          return this.staTypes;
+          return this.staType;
      }
 
      public String getBrand() {
@@ -57,7 +56,7 @@ public class Stationeries extends Products {
      }
 
      public void setType(StaTypes type) {
-          this.staTypes = type;
+          this.staType = type;
      }
 
      public void setBrand(String brand) {
@@ -222,7 +221,7 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Name", productName != null ? productName : "N/A");
           System.out.printf("| %-22s : %s \n", "Release Date",
                     date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
-          System.out.printf("| %-22s : %s \n", "Type", this.staTypes != null ? this.staTypes.getTypeName() : "N/A");
+          System.out.printf("| %-22s : %s \n", "Type", this.staType != null ? this.staType.getTypeName() : "N/A");
           System.out.printf("| %-22s : %s \n", "Material", this.material != null ? this.material : "N/A");
           System.out.printf("| %-22s : %s \n", "Source", this.source != null ? this.source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");

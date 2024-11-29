@@ -154,8 +154,6 @@ public class Stationeries extends Products {
      public void setInfo() {
           System.out.println("*".repeat(60));
           String id = setID(this);
-
-          System.out.println("-".repeat(60));
           String staID = setStationeriesID();
 
           System.out.println("-".repeat(60));

@@ -61,8 +61,9 @@ public class App {
 
 
                 // !INIT VALUE
-                // listBooks.add();
-                // MidForBooksBUS.showList();
+                Stationeries test = new Stationeries();
+                test.setInfo();
+                test.showInfo();
 
                 // !SHOW BEFORE
                 // SuppliersBUS.showList();

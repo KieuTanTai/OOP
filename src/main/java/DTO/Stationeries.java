@@ -10,7 +10,7 @@ import util.Validate;
 
 public class Stationeries extends Products {
      private String stationaryID;
-     private StaTypes staType;
+     private StaTypes type;
      private String brand;
      private String material;
      private String source;
@@ -23,7 +23,7 @@ public class Stationeries extends Products {
                BigDecimal productPrice, int quantity, StaTypes type, String brand, String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
           this.stationaryID = stationaryIDModifier(stationaryID);
-          this.staType = type;
+          this.type = type;
           this.brand = brand;
           this.material = material;
           this.source = source;
@@ -35,7 +35,7 @@ public class Stationeries extends Products {
      }
 
      public StaTypes getType() {
-          return this.staType;
+          return this.type;
      }
 
      public String getBrand() {
@@ -56,7 +56,7 @@ public class Stationeries extends Products {
      }
 
      public void setType(StaTypes type) {
-          this.staType = type;
+          this.type = type;
      }
 
      public void setBrand(String brand) {
@@ -221,7 +221,7 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Name", productName != null ? productName : "N/A");
           System.out.printf("| %-22s : %s \n", "Release Date",
                     date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
-          System.out.printf("| %-22s : %s \n", "Type", this.staType != null ? this.staType.getTypeName() : "N/A");
+          System.out.printf("| %-22s : %s \n", "Type", this.type != null ? this.type.getTypeName() : "N/A");
           System.out.printf("| %-22s : %s \n", "Material", this.material != null ? this.material : "N/A");
           System.out.printf("| %-22s : %s \n", "Source", this.source != null ? this.source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");

@@ -396,7 +396,7 @@ public class PublishersBUS implements IRuleSets {
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
         File testFile = new File("src/main/resources/Publishers");
-        if (testFile.length() == 0)
+        if (testFile.length() == 0 || !testFile.exists())
             return;
 
         try (DataInputStream file = new DataInputStream(

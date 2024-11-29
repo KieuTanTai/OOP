@@ -1065,7 +1065,7 @@ public class StationeriesBUS implements IRuleSets {
     // read file
     public void readFile() throws IOException {
         File testFile = new File("src/main/resources/Stationeries");
-        if (testFile.length() == 0)
+        if (testFile.length() == 0|| !testFile.exists())
             return;
 
         try (DataInputStream file = new DataInputStream(

@@ -19,7 +19,6 @@ public class Bill {
     private String billId;
     private String employeeId;
     private String customerId;
-    private SaleEvents[] fileEvent;
     private SaleEvents saleCode;
     private BigDecimal discount;
     private BigDecimal totalPrice;
@@ -46,7 +45,6 @@ public class Bill {
     try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/SaleEvents"))) {
         int count = file.readInt(); 
         SaleEvents[] tmp = new SaleEvents[count]; 
-        this.fileEvent = new SaleEvents[count];
 
         for (int i = 0; i < count; i++) {
             String saleEvId = file.readUTF();
@@ -63,8 +61,7 @@ public class Bill {
             tmp[i] = new SaleEvents(saleEvId, saleEvName, description, startDate, endDate, detail);
         }
 
-        this.fileEvent = Arrays.copyOf(tmp, count);
-        return this.fileEvent;
+        return tmp;
     } catch (IOException e) {
         System.err.println("error reading: " + e.getMessage());
         return new SaleEvents[0];
@@ -72,14 +69,16 @@ public class Bill {
 }
 
     public void checkSaleValid() {
-        if (this.fileEvent == null || this.fileEvent.length == 0) {
-            System.out.println("no saleEvents");
+        SaleEvents[] saleEvents = readSaleEvents();
+        if (saleEvents == null || saleEvents.length == 0) {
+            System.out.println("no sale events");
             return;
         }
-
-        for (SaleEvents saleEvent : this.fileEvent) {
-            LocalDate endDate = saleEvent.getEndDate();
-            if (endDate.isBefore(this.date)) {
+    
+        for (SaleEvents saleEvent : saleEvents) {
+            LocalDate endDate = saleEvent.getEndDate(); 
+            LocalDate startDate = saleEvent.getStartDate();
+            if (endDate.isBefore(this.date) && startDate.isAfter(this.date)) {
                 System.out.println("saleEvent id: " + saleEvent.getSaleEvId() + " expired");
             } else {
                 System.out.println("saleEvent id: " + saleEvent.getSaleEvId() + " is valid");

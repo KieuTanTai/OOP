@@ -434,7 +434,7 @@ public void writeFile() throws IOException   {
                 BigDecimal discount = new BigDecimal(file.readUTF());
                 BigDecimal totalPrice = new BigDecimal(file.readUTF());
 
-                Bill fileBill = new Bill(billId,customerId,employeeId,saleCode, discount,totalPrice,date);
+                Bill fileBill = new Bill(billId,customerId,employeeId, saleCode, discount,totalPrice,date);
                 
                 // read bill details
                 int detailsCount = file.readInt();

@@ -1,6 +1,10 @@
 package DTO;
 
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import BUS.BillDetailsBus;
@@ -15,6 +19,7 @@ public class Bill {
     private String billId;
     private String employeeId;
     private String customerId;
+    private SaleEvents[] fileEvent;
     private SaleEvents saleCode;
     private BigDecimal discount;
     private BigDecimal totalPrice;
@@ -35,6 +40,51 @@ public class Bill {
         this.discount = discount;
         this.totalPrice = totalPrice;
         this.date = date;
+    }
+
+    public SaleEvents[] readSaleEvents() {
+    try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/SaleEvents"))) {
+        int count = file.readInt(); 
+        SaleEvents[] tmp = new SaleEvents[count]; 
+        this.fileEvent = new SaleEvents[count];
+
+        for (int i = 0; i < count; i++) {
+            String saleEvId = file.readUTF();
+            String saleEvName = file.readUTF();
+            String description = file.readUTF();
+            LocalDate startDate = LocalDate.parse(file.readUTF());
+            LocalDate endDate = LocalDate.parse(file.readUTF());
+            String promoCode = file.readUTF();
+            BigDecimal minPrice = new BigDecimal(file.readUTF());
+            BigDecimal discount = new BigDecimal(file.readUTF());
+            BigDecimal maxPriceDiscount = new BigDecimal(file.readUTF());
+
+            SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount, maxPriceDiscount);
+            tmp[i] = new SaleEvents(saleEvId, saleEvName, description, startDate, endDate, detail);
+        }
+
+        this.fileEvent = Arrays.copyOf(tmp, count);
+        return this.fileEvent;
+    } catch (IOException e) {
+        System.err.println("error reading: " + e.getMessage());
+        return new SaleEvents[0];
+    }
+}
+
+    public void checkSaleValid() {
+        if (this.fileEvent == null || this.fileEvent.length == 0) {
+            System.out.println("no saleEvents");
+            return;
+        }
+
+        for (SaleEvents saleEvent : this.fileEvent) {
+            LocalDate endDate = saleEvent.getEndDate();
+            if (endDate.isBefore(this.date)) {
+                System.out.println("saleEvent id: " + saleEvent.getSaleEvId() + " expired");
+            } else {
+                System.out.println("saleEvent id: " + saleEvent.getSaleEvId() + " is valid");
+            }
+        }
     }
 
     public String setBillId() {
@@ -118,9 +168,9 @@ public class Bill {
    
     public void nhap(){
         billId = setBillId();
+        saleCode.nhap();
         employeeId = setEmployeeId();
         customerId = setCustomerId();
-        saleCode.nhap(); ;
         discount = setDiscount();
     }
 

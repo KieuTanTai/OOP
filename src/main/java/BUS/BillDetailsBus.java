@@ -190,7 +190,7 @@ public class BillDetailsBus {
                  System.out.print("set quantity : ");
                  quantityInput = sc.nextLine().trim();
                  quantity = Validate.isNumber(quantityInput);
-            } while (quantityInput.isEmpty());
+            } while (Validate.isNumber(quantityInput) == -1);
                 findQuantity(quantity);
                 break;
             case 3:

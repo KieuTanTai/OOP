@@ -31,7 +31,7 @@ public class QuanLyBill {
                     ds.xuat();
                     break;
                 case 2:
-                    ds.delete();
+                    ds.remove();
                     System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();
                     break;
@@ -41,7 +41,7 @@ public class QuanLyBill {
                     ds.xuat();        
                     break;
                 case 4:
-                    ds.find();
+                    ds.search();
                     System.out.println("------------BILL'S INFORMATION------------");
                     ds.xuat();        
                     break;

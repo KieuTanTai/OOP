@@ -26,6 +26,14 @@ public class GRNs {
      public GRNs() {
      }
 
+     public GRNs(String grnID, LocalDate date, Employees employee, Suppliers supplier) {
+          this.grnID = grnIDModifier(grnID);
+          this.date = date;
+          this.employee = employee;
+          this.supplier = supplier;
+          this.totalPrice = totalPrice(grnID);
+     }
+
      public GRNs(String grnID, LocalDate date, Employees employee, Suppliers supplier, BigDecimal totalPrice) {
           this.grnID = grnIDModifier(grnID);
           this.date = date;
@@ -168,8 +176,7 @@ public class GRNs {
                                    booksList.showList();
 
                                    do {
-                                        System.out.println(
-                                                  "NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
+                                        System.out.println("NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
 
@@ -184,7 +191,7 @@ public class GRNs {
 
                                    // create new book
                                    Books product;
-                                   if (productID.equals("new")) {
+                                   if (productID.equalsIgnoreCase("new")) {
                                         product = new Books();
                                         product.setInfo();
                                    } else
@@ -206,7 +213,7 @@ public class GRNs {
                                    }
 
                                    // add new book
-                                   if (productID.equals("new")) {
+                                   if (productID.equalsIgnoreCase("new")) {
                                         booksList.add(product);
                                         booksList.writeFile();
                                    }
@@ -218,13 +225,12 @@ public class GRNs {
                                    staList.showList();
 
                                    do {
-                                        System.out.println(
-                                                  "NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
+                                        System.out.println("NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
 
                                         // execute when want to receive new book
-                                        if (productID.equals("new"))
+                                        if (productID.equalsIgnoreCase("new"))
                                              break;
 
                                         index = staList.find(productID);
@@ -234,7 +240,7 @@ public class GRNs {
 
                                    // create new stationary
                                    Stationeries product;
-                                   if (productID.equals("new")) {
+                                   if (productID.equalsIgnoreCase("new")) {
                                         product = new Stationeries();
                                         product.setInfo();
                                    } else
@@ -256,7 +262,7 @@ public class GRNs {
                                    }
 
                                    // add new stationary
-                                   if (productID.equals("new")) {
+                                   if (productID.equalsIgnoreCase("new")) {
                                         staList.add(product);
                                         staList.writeFile();
                                    }
@@ -277,7 +283,6 @@ public class GRNs {
                                    option = input.nextLine().trim();
                                    userChoice = Validate.parseChooseHandler(option, listGRN.getCount());
                               } while (userChoice == -1);
-
                               listGRN.remove(listGRN.getGrnDetailsList()[userChoice - 1].getGrnID());
                               break;
 
@@ -415,6 +420,23 @@ public class GRNs {
           System.out.printf("| %-22s : %s \n", "Total Price",
                     totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
           System.out.println("=".repeat(160));
+     }
+
+     // calc totalPrice
+     private BigDecimal totalPrice (String grnID) {
+          BigDecimal total = new BigDecimal(0);
+          try {
+               GRNDetailsBUS detailList = new GRNDetailsBUS();
+               detailList.readFile();
+               GRNDetails[] list = detailList.getGrnDetailsList();
+               for (GRNDetails detail : list)
+                    if (detail.getGrnID().equals(grnID))
+                         total = total.add(detail.getSubTotal());
+               return total;
+          } catch (Exception e) {
+               System.out.println("error writing or reading file!\n" + e.getMessage());
+               return new BigDecimal(0);
+          }
      }
 
      // modify id

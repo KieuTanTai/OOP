@@ -1,16 +1,14 @@
 package BUS;
 
 import DTO.SaleEvents;
-// import DTO.SaleEventsDetail;
 
-// import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class SaleEventsBUS {
     private static SaleEvents[] ListSaleEvent;
     private int count;
-    private final Scanner sc = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
 
     public SaleEventsBUS(SaleEvents[] listSaleEvent, int count) {
         ListSaleEvent = listSaleEvent;
@@ -25,7 +23,7 @@ public class SaleEventsBUS {
 
     public void update(String id){
         for (int i = 0 ; i < count ; i++)
-            if (ListSaleEvent[i].getSaleEvId().equals(id))
+            if (ListSaleEvent[i].getSaleEvId() == id)
                 ListSaleEvent[i].nhap();
     }
 
@@ -41,5 +39,30 @@ public class SaleEventsBUS {
         return true;
     }
 
-    public void find(){}
+    public SaleEvents findById(String  id){
+        SaleEvents result = new SaleEvents();
+
+        for (int i = 0 ; i < count ; i++){
+            if (ListSaleEvent[i].getSaleEvId() == id){
+                result = ListSaleEvent[i];
+            }
+        }
+        return  result;
+    }
+
+    public SaleEvents findByName(String name){
+        SaleEvents result = new SaleEvents();
+
+        for (int i=0; i < count; i++){
+            if (ListSaleEvent[i].getSaleEvName() == name)
+                result = ListSaleEvent[i];
+
+        }
+        return result;
+    }
+
+    public void readFile(){}
+
+    public void writeFile(){}
+
 }

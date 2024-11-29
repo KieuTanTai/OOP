@@ -52,16 +52,6 @@ public class Customers extends Person {
         return address;
     }
 
-    public BigDecimal setPoint() {
-        BigDecimal point;
-        do {
-            System.out.print("customer point: ");
-            String level = input.nextLine().trim();
-            point = Validate.isBigDecimal(level);
-        } while (point == null);
-        return point;
-    }
-
     // Override methods
     @Override
     public void setInfo() {
@@ -84,7 +74,7 @@ public class Customers extends Person {
         String address = setAddress();
         
         System.out.println("-".repeat(60));
-        BigDecimal point = setPoint();
+        BigDecimal point = new BigDecimal(0);
         
         int userChoice;               
         System.out.println("*".repeat(60));

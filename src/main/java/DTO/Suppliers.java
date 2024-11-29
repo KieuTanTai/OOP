@@ -56,8 +56,7 @@ public class Suppliers {
             id = new StringBuilder("00000001");
         } else {
             String getID = list[list.length - 1].getSupplierID();
-            int prevID = Integer
-                    .parseInt(getID.substring(3, getID.length() - 3));
+            int prevID = Integer.parseInt(getID.substring(3, getID.length() - 3));
             id = new StringBuilder(String.format("%d", prevID + 1));
             // check if id length < 8
             while (id.length() != 8)

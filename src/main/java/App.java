@@ -57,11 +57,15 @@ public class App {
                 listSta.readFile();
 
 
+                // TODO
+                // *Books, Stationeries (DONE)
+                // *Customers, Employees ()
+
                 // !INIT ARRAY
 
 
                 // !INIT VALUE
-                Stationeries test = new Stationeries();
+                Employees test = new Employees();
                 test.setInfo();
                 test.showInfo();
 

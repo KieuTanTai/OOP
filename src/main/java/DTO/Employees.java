@@ -73,39 +73,12 @@ public class Employees extends Person {
         return status[userChoice - 1];
     }
 
-    public String setUsername() {
-        String userName;
-        do {
-            System.out.print("set username: ");
-            userName = input.nextLine().trim();
-            if (!Validate.checkName(userName)) {
-                System.out.println("invalid username!");
-                userName = "";
-            }
-        } while (userName.isEmpty());
-        return userName;
-    }
-
-    public String setPassword() {
-        String password;
-        do {
-            System.out.print("set password: ");
-            password = input.nextLine().trim();
-            if (!Validate.checkName(password)) {
-                System.out.println("invalid password!");
-                password = "";
-            }
-        } while (password.isEmpty());
-        return password;
-    }
-
     public String setRole() {
         int userChoice;
         String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
         // show list for user choose
-        System.out.println("=".repeat(160));
-        System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20),
-                roles[2]);
+        System.out.println("=".repeat(88));
+        System.out.printf("I.%s \nII.%s \nIII.%s\n", roles[0], roles[1], roles[2]);
         do {
             System.out.print("choose role (like 1, 2,etc...): ");
             String option = input.nextLine().trim();
@@ -122,7 +95,7 @@ public class Employees extends Person {
         String id = setID(this);
 
         System.out.println("-".repeat(60));
-        String fistName = setFirstName();
+        String firstName = setFirstName();
 
         System.out.println("-".repeat(60));
         String lastName = setLastName();
@@ -137,13 +110,12 @@ public class Employees extends Person {
         String status = setStatus();
 
         System.out.println("-".repeat(60));
-        String userName = setUsername();
-
-        System.out.println("-".repeat(60));
-        String password = setPassword();
-
-        System.out.println("-".repeat(60));
         String role = setRole();
+
+        // let userName is id of this employees
+        String userName = id;
+        // auto set password is fullName + dateOfBirth
+        String password = id + role.replace(" ", "") + dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).replace("-", "@");
 
         int userChoice;
         System.out.println("*".repeat(60));
@@ -158,7 +130,7 @@ public class Employees extends Person {
             System.out.println("ok!");
         else {
             setPersonID(id);
-            setFullName(fistName, lastName);
+            setFullName(firstName, lastName);
             setDateOfBirth(dateOfBirth);
             setPhoneNumber(phone);
             setStatus(status);
@@ -177,8 +149,7 @@ public class Employees extends Person {
         System.out.printf("| %-22s : %s \n", "ID", employeeID != null ? employeeID : "N/A");
         System.out.printf("| %-22s : %s \n", "Username", this.username != null ? this.username : "N/A");
         System.out.printf("| %-22s : %s \n", "Full Name", employeeName != null ? employeeName : "N/A");
-        System.out.printf("| %-22s : %s \n", "Birthday",
-                dateOfBirth != null ? dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Birthday", dateOfBirth != null ? dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
         System.out.printf("| %-22s : %s \n", "Phone", phone != null ? phone : "N/A");
         System.out.printf("| %-22s : %s \n", "Status", this.status != null ? this.status : "N/A");
         System.out.printf("| %-22s : %s \n", "Role", this.role != null ? this.role : "N/A");

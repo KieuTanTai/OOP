@@ -43,8 +43,7 @@ public class BookGenres {
                return "00000001";
           } else {
                String getID = list[list.length - 1].getGenreID();
-               int prevID = Integer
-                         .parseInt(getID.substring(2, getID.length() - 2));
+               int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
                id = new StringBuilder(String.format("%d", prevID + 1));
                // check if id length < 8
                while (id.length() != 8)
@@ -68,13 +67,12 @@ public class BookGenres {
 
      public void setInfo() {
           System.out.println("*".repeat(60));
-          this.genreID = setID();
-          System.out.println("-".repeat(60));
-          this.genreName = setName();
+          String genreID = setID();
+          // name fields
+          String genreName = setName();
           System.out.println("*".repeat(60));
 
           int userChoose;
-          System.out.println("*".repeat(60));
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
               System.out.print("choose option (1 or 2) : ");

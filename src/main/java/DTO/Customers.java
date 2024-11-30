@@ -57,8 +57,7 @@ public class Customers extends Person {
     public void setInfo() {
         System.out.println("*".repeat(60));
         String id = setID(this);
-
-        System.out.println("-".repeat(60));
+        // name fields
         String firstName = setFirstName();
 
         System.out.println("-".repeat(60));
@@ -75,9 +74,9 @@ public class Customers extends Person {
         
         System.out.println("-".repeat(60));
         BigDecimal point = new BigDecimal(0);
+        System.out.println("*".repeat(60));
         
         int userChoice;               
-        System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");

@@ -111,9 +111,12 @@ public class GRNs {
                list.readFile();
                if (list.getCount() == 0) // if not have any supplier
                     return null;
-               Employees[] tempList = list.relativeFind("Warehouse Staff", "role");
-               for (Employees employee : tempList)
-                    employee.showInfo();
+               Employees[] tempList = list.relativeFind("Warehouse Keeper", "role");
+               int length = tempList.length;
+               for (int i = 0; i < length; i++) {
+                    System.out.printf("%d : \n", i + 1);
+                    tempList[i].showInfo();
+               }
                do {
                     System.out.print("choose employee (like 1, 2,etc...) : ");
                     String option = input.nextLine().trim();
@@ -149,7 +152,6 @@ public class GRNs {
           int userChoice;
 
           do {
-               System.out.println("-".repeat(60));
                System.out.println("I. Add detail");
                System.out.println("II. Remove detail");
                System.out.println("III. Edit detail");
@@ -169,6 +171,7 @@ public class GRNs {
                          case 1: // add
                               int index = 0;
                               String productID;
+                              Products product;
 
                               if (chooseTypeProduct() == 1) {
                                    BooksBUS booksList = new BooksBUS();
@@ -190,27 +193,14 @@ public class GRNs {
                                    } while (productID.isEmpty());
 
                                    // create new book
-                                   Books product;
                                    if (productID.equalsIgnoreCase("new")) {
                                         product = new Books();
                                         product.setInfo();
+                                        product.showInfo();
                                    } else
                                         product = booksList.getBooksList()[index];
-                                   int quantity = setQuantity();
-                                   BigDecimal price = product.getProductPrice();
-
-                                   // for user submit
-                                   System.out.println("*".repeat(60));
-                                   System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
-                                   do {
-                                        System.out.print("choose option (like 1, 2,etc...): ");
-                                        option = input.nextLine().trim();
-                                        userChoice = Validate.parseChooseHandler(option, 2);
-                                   } while (userChoice == -1);
-                                   if (userChoice == 1) {
-                                        System.out.println("ok!");
-                                        break;
-                                   }
+                                        int quantity = setQuantity();
+                                        BigDecimal price = product.getProductPrice();
 
                                    // add new book
                                    if (productID.equalsIgnoreCase("new")) {
@@ -218,6 +208,7 @@ public class GRNs {
                                         booksList.writeFile();
                                    }
                                    listGRN.add(new GRNDetails(grnID, product, quantity, price));
+                                   System.out.println(listGRN.getGrnDetailsList().length);
 
                               } else {
                                    StationeriesBUS staList = new StationeriesBUS();
@@ -239,27 +230,14 @@ public class GRNs {
                                    } while (productID.isEmpty());
 
                                    // create new stationary
-                                   Stationeries product;
                                    if (productID.equalsIgnoreCase("new")) {
                                         product = new Stationeries();
                                         product.setInfo();
+                                        product.showInfo();
                                    } else
                                         product = staList.getStaList()[index];
                                    int quantity = setQuantity();
                                    BigDecimal price = product.getProductPrice();
-
-                                   // for user submit
-                                   System.out.println("*".repeat(60));
-                                   System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
-                                   do {
-                                        System.out.print("choose option (like 1, 2,etc...): ");
-                                        option = input.nextLine().trim();
-                                        userChoice = Validate.parseChooseHandler(option, 2);
-                                   } while (userChoice == -1);
-                                   if (userChoice == 1) {
-                                        System.out.println("ok!");
-                                        break;
-                                   }
 
                                    // add new stationary
                                    if (productID.equalsIgnoreCase("new")) {
@@ -267,6 +245,7 @@ public class GRNs {
                                         staList.writeFile();
                                    }
                                    listGRN.add(new GRNDetails(grnID, product, quantity, price));
+                                   System.out.println(listGRN.getGrnDetailsList().length);
                               }
                               break;
 
@@ -281,9 +260,17 @@ public class GRNs {
                               do {
                                    System.out.print("choose grn (like 1, 2,etc...) : ");
                                    option = input.nextLine().trim();
+                                   if (option.equals("0")) {
+                                        System.out.println("Exit program.");
+                                        break;
+                                   }
                                    userChoice = Validate.parseChooseHandler(option, listGRN.getCount());
                               } while (userChoice == -1);
-                              listGRN.remove(listGRN.getGrnDetailsList()[userChoice - 1].getGrnID());
+                              if (!option.equals("0")) {
+                                   GRNDetails detail = listGRN.getGrnDetailsList()[userChoice - 1]; 
+                                   listGRN.remove(detail.getGrnID(), detail.getProduct().getProductID());
+
+                              }
                               break;
 
                          case 3: // edit
@@ -291,21 +278,14 @@ public class GRNs {
                                    System.out.println("not have any grn detail!");
                                    break;
                               }
-                              listGRN.showList();
-                              System.out.println("-".repeat(60));
-                              do {
-                                   System.out.print("choose grn (like 1, 2,etc...) : ");
-                                   option = input.nextLine().trim();
-                                   userChoice = Validate.parseChooseHandler(option, listGRN.getCount());
-                              } while (userChoice == -1);
-
-                              listGRN.edit(listGRN.getGrnDetailsList()[userChoice - 1].getGrnID());
+                              if (!option.equals("0"))
+                                   listGRN.edit(listGRN.getGrnDetailsList()[userChoice - 1].getGrnID());
                               break;
                     }
                } catch (Exception e) {
                     System.out.printf("error when execute file!\nt%s\n", e.getMessage());
                }
-          } while (userChoice != 0);
+          } while (true);
           return listGRN.getGrnDetailsList();
      }
 
@@ -314,7 +294,7 @@ public class GRNs {
           int quantity;
           // let new quantity
           do {
-               System.out.print("set quantity : ");
+               System.out.print("set grn quantity : ");
                String quantityInput = input.nextLine().trim();
                quantity = Validate.isNumber(quantityInput);
           } while (quantity == -1);
@@ -338,10 +318,9 @@ public class GRNs {
           System.out.println("*".repeat(60));
           String id = setID();
 
-          System.out.println("-".repeat(60));
+          // date fields
           LocalDate date = LocalDate.now();
-
-          System.out.println("-".repeat(60));
+          // employee fields
           Employees employee = setEmployee();
 
           System.out.println("-".repeat(60));

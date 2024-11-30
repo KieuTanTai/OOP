@@ -21,6 +21,7 @@ import DTO.BookTypes;
 import DTO.Books;
 import DTO.Customers;
 import DTO.Employees;
+import DTO.GRNs;
 import DTO.Publishers;
 import DTO.StaTypes;
 import DTO.Stationeries;
@@ -58,14 +59,15 @@ public class App {
 
 
                 // TODO
-                // *Books, Stationeries (DONE)
-                // *Customers, Employees ()
+                // *Books, MidForBook, Stationeries (DONE)
+                // *Customers, Employees (DONE)
+                // *BookGenres, BookTypes, Publishers, StaTypes, Suppliers
 
                 // !INIT ARRAY
 
 
                 // !INIT VALUE
-                Employees test = new Employees();
+                GRNs test = new GRNs();
                 test.setInfo();
                 test.showInfo();
 

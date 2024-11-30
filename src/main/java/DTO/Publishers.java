@@ -70,13 +70,12 @@ public class Publishers {
 
     public void setInfo() {
         System.out.println("*".repeat(60));
-        this.publisherID = setID();
-        System.out.println("-".repeat(60));
-        this.publisherName = setName();
+        String publisherID = setID();
+        // name fields
+        String publisherName = setName();
         System.out.println("*".repeat(60));
 
         int userChoice;
-        System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");

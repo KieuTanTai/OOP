@@ -42,7 +42,8 @@ public class BookTypes {
           if (list.length == 0) {
                return "00000001";
           } else {
-               int prevID = Integer.parseInt((list[list.length - 1]).getTypeID().substring(2, list.length - 2));
+               String getID = list[list.length - 1].getTypeID();
+               int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
                id = new StringBuilder(String.format("%d", prevID + 1));
                // check if id length < 8
                while (id.length() != 8)
@@ -66,13 +67,12 @@ public class BookTypes {
 
      public void setInfo() {
           System.out.println("*".repeat(60));
-          this.typeID = setID();
-          System.out.println("-".repeat(60));
-          this.typeName = setName();
+          String typeID = setID();
+          // name fields
+          String typeName = setName();
           System.out.println("*".repeat(60));
 
           int userChoice;
-          System.out.println("*".repeat(60));
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
                System.out.print("choose option (1 or 2) : ");

@@ -67,6 +67,7 @@ public class GRNDetailsBUS {
      // all others methods like: add remove edit find....
      // show list
      public void showList() {
+          System.out.println(grnDetailsList.length);
           if (grnDetailsList == null)
                return;
           showAsTable(grnDetailsList);
@@ -76,7 +77,8 @@ public class GRNDetailsBUS {
      // strict find
      public int find(String grnID, String productID) {
           for (int i = 0; i < grnDetailsList.length; i++) {
-               if (grnDetailsList[i].getGrnID().equals(grnID))
+               if (grnDetailsList[i].getGrnID().equals(grnID)
+                         && grnDetailsList[i].getProduct().getProductID().equals(productID))
                     return i;
           }
           return -1;
@@ -119,10 +121,10 @@ public class GRNDetailsBUS {
 
      // add methods
      public void add(GRNDetails detail) {
-          if (getGRNDetail(detail.getGrnID()) == null) {
+          if (find(detail.getGrnID(), detail.getProduct().getProductID()) == -1) {
                grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length + 1);
                grnDetailsList[count] = detail;
-               count++;
+               this.count++;
           }
      }
 
@@ -142,18 +144,17 @@ public class GRNDetailsBUS {
           GRNDetails[] list = relativeFind(grnID);
           if (list != null) {
                // show all grn detail has been found for user
-              for (GRNDetails grnDetails : list)
-                  System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", 1, grnDetails.getGrnID(),
-                          grnDetails.getProduct().getProductName(), grnDetails.getQuantity(), grnDetails.getPrice(),
-                          grnDetails.getSubTotal());
-               System.out.println("-".repeat(60));
-
+               showAsTable(list);
                // let user decision they want to edit or not
-               int userChoose, productChoose, newQuantity;
+               int userChoose = 1, productChoose, newQuantity;
                BigDecimal newPrice;
                do {
                     System.out.print("choose detail you wanna edit (like 1, 2,etc...): ");
                     String option = input.nextLine().trim();
+                    if (option.equals("0")) {
+                         System.out.println("Exit program.");
+                         return;
+                    }
                     userChoose = Validate.parseChooseHandler(option, list.length);
                } while (userChoose == -1);
 
@@ -233,22 +234,21 @@ public class GRNDetailsBUS {
      }
 
      // remove methods
-     public void remove(String grnID) {
+     public void remove(String grnID, String productID) {
           int size = 0;
           GRNDetails[] reduceArray = new GRNDetails[0];
-         for (GRNDetails grnDetails : grnDetailsList) {
-             if (grnDetails.getGrnID().equals(grnID))
-                 continue;
-             reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
-             reduceArray[size] = grnDetails;
-             size++;
-         }
+          for (GRNDetails grnDetails : grnDetailsList) {
+               if (grnDetails.getGrnID().equals(grnID) && grnDetails.getProduct().getProductID().equals(productID))
+                    continue;
+               reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+               reduceArray[size] = grnDetails;
+               size++;
+          }
 
           if (size == grnDetailsList.length) {
                System.out.println("not found any mid!");
                return;
           }
-
           setCount(size);
           setGrnDetailsList(reduceArray);
      }
@@ -257,30 +257,32 @@ public class GRNDetailsBUS {
      public void showAsTable(GRNDetails[] list) {
           if (list == null)
                return;
-          System.out.println("=".repeat(180));
-          System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", "No.", "GRN ID", "Product", "quantity",
+          System.out.println("=".repeat(140));
+          System.out.printf("| \t%-10s %-21s %-41s %-21s %-21s %-11s |\n", "No.", "GRN ID", "Product", "quantity",
                     "Price", "Sub Total");
-          System.out.println("=".repeat(180));
+          System.out.println("=".repeat(140));
           for (int i = 0; i < list.length; i++) {
                if (i > 0)
-                    System.out.println("|" + "-".repeat(178) + "|");
-               System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", i + 1, list[i].getGrnID(),
-                         list[i].getProduct().getProductName(), list[i].getQuantity(), list[i].getPrice(),
-                         list[i].getSubTotal());
+                    System.out.println("|" + "-".repeat(138) + "|");
+               System.out.printf("| \t%-10s %-11s %-50s %-21s %-21s %-11s |\n", i + 1, list[i].getGrnID(),
+                         list[i].getProduct().getProductName(), list[i].getQuantity(),
+                         Validate.formatPrice(list[i].getPrice()),
+                         Validate.formatPrice(list[i].getSubTotal()));
           }
-          System.out.println("=".repeat(180));
+          System.out.println("=".repeat(140));
      }
 
      public void showAsTable(GRNDetails item) {
           if (item == null)
                return;
-          System.out.println("=".repeat(180));
-          System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", "No.", "GRN ID", "Product", "quantity",
+          System.out.println("=".repeat(140));
+          System.out.printf("| \t%-10s %-21s %-41s %-21s %-21s %-11s |\n", "No.", "GRN ID", "Product", "quantity",
                     "Price", "Sub Total");
-          System.out.println("=".repeat(180));
-          System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", 1, item.getGrnID(),
-                    item.getProduct().getProductName(), item.getQuantity(), item.getPrice(), item.getSubTotal());
-          System.out.println("=".repeat(180));
+          System.out.println("=".repeat(140));
+          System.out.printf("| \t%-10s %-11s %-50s %-21s %-21s %-11s |\n", 1, item.getGrnID(),
+                    item.getProduct().getProductName(), item.getQuantity(), Validate.formatPrice(item.getPrice()),
+                    Validate.formatPrice(item.getSubTotal()));
+          System.out.println("=".repeat(140));
 
      }
 

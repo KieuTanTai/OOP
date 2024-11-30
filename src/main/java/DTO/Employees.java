@@ -93,8 +93,7 @@ public class Employees extends Person {
     public void setInfo() {
         System.out.println("*".repeat(60));
         String id = setID(this);
-
-        System.out.println("-".repeat(60));
+        // name fields
         String firstName = setFirstName();
 
         System.out.println("-".repeat(60));
@@ -116,9 +115,9 @@ public class Employees extends Person {
         String userName = id;
         // auto set password is fullName + dateOfBirth
         String password = id + role.replace(" ", "") + dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).replace("-", "@");
+        System.out.println("*".repeat(60));
 
         int userChoice;
-        System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");

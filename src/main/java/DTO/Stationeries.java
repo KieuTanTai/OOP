@@ -156,7 +156,7 @@ public class Stationeries extends Products {
           String id = setID(this);
           String staID = setStationeriesID();
 
-          System.out.println("-".repeat(60));
+          // name
           String name = setName();
 
           System.out.println("-".repeat(60));
@@ -173,15 +173,16 @@ public class Stationeries extends Products {
 
           System.out.println("-".repeat(60));
           String material = setMaterial();
-
+          
           System.out.println("-".repeat(60));
           int quantity = setQuantity();
 
-          System.out.println("*".repeat(60));
+          System.out.println("-".repeat(60));
           String source = setSource();
-
-          int userChoice;
           System.out.println("*".repeat(60));
+
+          
+          int userChoice;
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
                System.out.print("choose option (1 or 2) : ");

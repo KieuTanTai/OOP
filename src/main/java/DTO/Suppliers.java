@@ -93,15 +93,14 @@ public class Suppliers {
 
     public void setInfo() {
         System.out.println("*".repeat(60));
-        this.supplierID = setID();
+        String supplierID = setID();
+        // name fields
+        String supplierName = setName();
         System.out.println("-".repeat(60));
-        this.supplierName = setName();
-        System.out.println("-".repeat(60));
-        this.phone = setPhone();
+        String phone = setPhone();
         System.out.println("*".repeat(60));
 
         int userChoice;
-        System.out.println("*".repeat(60));
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");
@@ -110,7 +109,7 @@ public class Suppliers {
         } while (userChoice == -1);
         System.out.println("*".repeat(60));
 
-        if (userChoice == 1)
+        if (userChoice == 1) 
             System.out.println("ok!");
         else {
             setSupplierID(supplierID);

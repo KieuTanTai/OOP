@@ -1,3 +1,4 @@
+
 package BUS;
 
 import java.util.Scanner;
@@ -55,7 +56,7 @@ public class BillBus{
         for (int i = 0; i < numberOfDetails; i++) {
             System.out.println("Input details for Bill Detail #" + (i + 1));
             BillDetails detail = new BillDetails();
-            detail.nhap();
+            detail.setInfo();
             detailsBus.add(detail); 
         }
 
@@ -213,26 +214,10 @@ public class BillBus{
         remove(bd);
     }
 
-    public Bill[] find (String customerID) {
-        int count = 0; 
-        Bill[] list = new Bill[0];
-        for (int i = 0; i < this.n; i++) {
-            if (ds[i].getCustomerId().equals(customerID))
-                list = Arrays.copyOf(list, list.length + 1);
-                list[count] = ds[i];
-                count++ ;
-        }
-        if (count == 0) {
-            System.out.println("not found any bill!");
-            return null;
-        }
-        return list;
-    }
-
-    public void findBillId(String newbd){
+    public void searchBillId(String id){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
-            if(ds[i].getBillId().equals(newbd)){
+            if(ds[i].getBillId().equals(id)){
                 ds[i].toString();
                 flag = true;
             }
@@ -242,10 +227,10 @@ public class BillBus{
         }
     }
 
-    public void findEmployeeId(String neweid){
+    public void searchEmployeeId(String id){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
-            if(ds[i].getEmployeeId().equals(neweid)){
+            if(ds[i].getEmployeeId().equals(id)){
                 ds[i].toString();
                 flag = true;
             }
@@ -255,7 +240,7 @@ public class BillBus{
         }
     }
 
-    public void findCustomerId(String id){
+    public void searchCustomerId(String id){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getCustomerId().equals(id)){
@@ -268,9 +253,8 @@ public class BillBus{
         }
     }
 
-
     @SuppressWarnings("unlikely-arg-type")
-    public void findDate(LocalDate date){
+    public void searchDate(LocalDate date){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getDate().equals(date)){
@@ -283,7 +267,7 @@ public class BillBus{
         }
     }
 
-    public void findDiscount(BigDecimal newDiscount){
+    public void searchDiscount(BigDecimal newDiscount){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
             if(ds[i].getDiscount().equals(newDiscount)){
@@ -296,10 +280,10 @@ public class BillBus{
         }
     }
 
-    public void findTotalPrice(BigDecimal newtotal){
+    public void searchTotalPrice(BigDecimal total){
         boolean flag = false;
         for(int i = 0; i < n; ++i){
-            if(ds[i].getTotalPrice().equals(newtotal)){
+            if(ds[i].getTotalPrice().equals(total)){
                 ds[i].toString();
                 flag = true;
             }
@@ -309,7 +293,7 @@ public class BillBus{
         }
     }
 
-    public void findSaleCodeId(String newSaleId){
+    public void searchSaleCodeId(String newSaleId){
         boolean flag = false;
         for(int i = 0 ; i < n; ++i){
             if(ds[i].getSaleCode().getSaleEvId().equals(newSaleId)){
@@ -345,7 +329,7 @@ public class BillBus{
                       bid = "";
                  }
             } while (bid.isEmpty());
-                findBillId(bid);
+                searchBillId(bid);
                 break;
             case 2:
                 String eid;
@@ -357,7 +341,7 @@ public class BillBus{
                       eid = "";
                  }
             } while (eid.isEmpty());
-                findEmployeeId(eid);
+                searchEmployeeId(eid);
                 break;
             case 3:
                 String cid;
@@ -369,7 +353,7 @@ public class BillBus{
                       cid = "";
                  }
             } while (cid.isEmpty());
-                findCustomerId(cid);       
+                searchCustomerId(cid);       
                 break;
             case 4:
             LocalDate date;
@@ -378,7 +362,7 @@ public class BillBus{
                  String dateInput = sc.nextLine().trim();
                  date = Validate.isCorrectDate(dateInput);
             } while (date == null);
-                findDate(date);   
+                searchDate(date);   
                 break;
             case 5:
                 BigDecimal discount;
@@ -387,13 +371,13 @@ public class BillBus{
                  String value = sc.nextLine();
                  discount = Validate.isBigDecimal(value);
             } while (discount == null);
-                findDiscount(discount);        
+                searchDiscount(discount);        
                 break;
             case 6:
                 System.out.println("insert total price you want to search");
                 BigDecimal newTotalPrice = sc.nextBigDecimal();
                 sc.nextLine();
-                findTotalPrice(newTotalPrice);        
+                searchTotalPrice(newTotalPrice);        
                 break;
             case 7:
                 
@@ -401,6 +385,135 @@ public class BillBus{
                 break;
         }
     }
+
+    public Bill[] findByBillId(String billId){
+        int count = 0; 
+        Bill[] list = new Bill[0];
+        for(int i = 0; i < this.n; ++i){
+            if(ds[i].getBillId().equals(billId)){
+                list = Arrays.copyOf(list, list.length + 1);
+                list[count] = ds[i];
+                count++;
+            }
+        }
+        if(count == 0){
+            System.out.println("bill not found");
+            return null;
+        }
+        return list;
+    }
+
+    public Bill[] findByEmployeesId(String emId){
+        int count = 0; 
+        Bill[] list = new Bill[0];
+        for(int i = 0; i < this.n; ++i){
+            if(ds[i].getEmployeeId().equals(emId)){
+                list = Arrays.copyOf(list, list.length + 1);
+                list[count] = ds[i];
+                count++;
+            }
+        }
+        if(count == 0){
+            System.out.println("bill not found");
+            return null;
+        }
+        return list;
+    }
+
+    @SuppressWarnings("unlikely-arg-type")
+    public Bill[] findByDate(LocalDate date){
+        int count = 0; 
+        Bill[] list = new Bill[0];
+        for(int i = 0; i < this.n; ++i){
+            if(ds[i].getDate().equals(date)){
+                list = Arrays.copyOf(list, list.length + 1);
+                list[count] = ds[i];
+                count++;
+            }
+        }
+        if(count == 0){
+            System.out.println("bill not found");
+            return null;
+        }
+        return list;
+    }
+
+    public Bill[] findByCustomerId(String cusId){
+        int count = 0; 
+        Bill[] list = new Bill[0];
+        for(int i = 0; i < this.n; ++i){
+            if(ds[i].getCustomerId().equals(cusId)){
+                list = Arrays.copyOf(list, list.length + 1);
+                list[count] = ds[i];
+                count++;
+            }
+        }
+        if(count == 0){
+            System.out.println("bill not found");
+            return null;
+        }
+        return list;
+    }
+
+    public void findObj(){
+        System.out.println("I. find bill id");
+        System.out.println("II. find employee id");
+        System.out.println("III. find customer id");
+        System.out.println("IV. find date");
+        int m = sc.nextInt();
+        sc.nextInt();
+
+        switch (m) {
+            case 1:
+                String bid;
+            do {
+                 System.out.print("insert bill id : ");
+                 bid = sc.nextLine().trim();
+                 if (Validate.validateID(bid)) {
+                      System.out.println("error id !");
+                      bid = "";
+                 }
+            } while (bid.isEmpty());
+                findByBillId(bid);
+                break;
+            case 2:
+                String eid;
+            do {
+                 System.out.print("set employee id : ");
+                 eid = sc.nextLine().trim();
+                 if (Validate.validateID(eid)) {
+                      System.out.println("error id !");
+                      eid = "";
+                 }
+            } while (eid.isEmpty());
+                findByEmployeesId(eid);
+                break;
+            case 3:
+                String cid;
+            do {
+                 System.out.print("set customer id : ");
+                 cid = sc.nextLine().trim();
+                 if (Validate.validateID(cid)) {
+                      System.out.println("error id !");
+                      cid = "";
+                 }
+            } while (cid.isEmpty());
+                findByCustomerId(cid);       
+                break;
+            case 4:
+                LocalDate date;
+            do {
+                 System.out.print("set date : ");
+                 String dateInput = sc.nextLine().trim();
+                 date = Validate.isCorrectDate(dateInput);
+            } while (date == null);
+                searchDate(date);   
+                break;
+            default:
+                break;
+        }
+    }
+
 
 public void writeFile() throws IOException   {
     try (DataOutputStream file = new DataOutputStream(new FileOutputStream("src/main/resources/Bill ", false))) {
@@ -446,12 +559,17 @@ public void writeFile() throws IOException   {
                 String billId = file.readUTF();
                 String customerId = file.readUTF();
                 String employeeId = file.readUTF();
-                SaleEvents saleCode = file.readUTF();
+                String saleCode = file.readUTF();
                 LocalDate date = LocalDate.parse(file.readUTF());
                 BigDecimal discount = new BigDecimal(file.readUTF());
                 BigDecimal totalPrice = new BigDecimal(file.readUTF());
 
-                Bill fileBill = new Bill(billId,customerId,employeeId,saleCode, discount,totalPrice,date);
+                // find saleEvent
+                SaleEventsBUS listSale = new SaleEventsBUS();
+                listSale.readFile();
+                SaleEvents saleEvent = listSale.findByPromoCode(saleCode);
+
+                Bill fileBill = new Bill(billId,customerId,employeeId, saleEvent, discount,totalPrice,date);
                 
                 // read bill details
                 int detailsCount = file.readInt();

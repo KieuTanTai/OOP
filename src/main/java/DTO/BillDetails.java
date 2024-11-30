@@ -7,8 +7,8 @@ import util.Validate;
 
 public class BillDetails{
     private String billId;
-    private Products product;
     private int quantity;
+    private Products product;
     private BigDecimal price;
     private BigDecimal subTotal;
 
@@ -24,6 +24,10 @@ public class BillDetails{
         this.subTotal = subTotal;
     }
 
+    public Products getProducts() {
+        return this.product;
+    }
+
     public void setBillId(String id){
         this.billId = id;
     }
@@ -34,10 +38,6 @@ public class BillDetails{
 
     public int getQuantity() {
         return this.quantity;
-    }
-
-    public Products getProducts() {
-        return this.product;
     }
 
     public void setQuantity(int quantity) {
@@ -93,16 +93,24 @@ public class BillDetails{
           return price;
     }
 
-    public void nhap(){
+    public void setInfo(){
         quantity = setQuantity();
         price = setPrice();
         billId = setBillId();
+        calcSubTotal();
     }
 
     public BigDecimal calcSubTotal(){
         BigDecimal QuantityDe = BigDecimal.valueOf(quantity);
         this.subTotal = price.multiply(QuantityDe);
         return this.subTotal;
+    }
+
+    public void showInfo(){
+        System.out.println("bill details from bill id: " + getBillId());
+        System.out.println("quantity: " + getQuantity());
+        System.out.println("price: " + getPrice());
+        System.out.println("subtotal: " +getSubTotal());
     }
 
     @Override

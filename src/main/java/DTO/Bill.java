@@ -1,9 +1,14 @@
+
 package DTO;
 
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 import BUS.BillDetailsBus;
+import BUS.BillBus;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,11 +22,11 @@ public class Bill {
     private SaleEvents saleCode;
     private BigDecimal discount;
     private BigDecimal totalPrice;
-    private LocalDate date;
+    private LocalDate date = LocalDate.now() ;
     private BillDetailsBus detailsBus;
-    
     Scanner sc = new Scanner(System.in);
 
+    // constructors
     public Bill() {
         detailsBus = new BillDetailsBus();
     }
@@ -36,18 +41,196 @@ public class Bill {
         this.date = date;
     }
 
+    // getter / setter
+    public String getBillId() {
+        return this.billId;
+    }
+
+    public String getEmployeeId() {
+        return this.employeeId;
+    }
+    public String getCustomerId() {
+        return this.customerId;
+    }
+
+    public SaleEvents getSaleCode(){
+        return this.saleCode;
+    }
+
+    public BigDecimal getDiscount() {
+        return this.discount;
+    }
+
+    public BillDetailsBus getDetailsBus() {
+        return detailsBus;
+    }
+
+    public String getDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return this.date.format(formatter);
+    }
+
+    public BigDecimal getTotalPrice() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (BillDetails detail : detailsBus.getds()) {
+            total = total.add(detail.calcSubTotal());
+        }
+        return total;
+    }
+
+    public void setBillId(String billId) {
+        this.billId = billId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public void setSaleCode(SaleEvents saleCode){
+        this.saleCode = saleCode;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setDetailsBus(BillDetailsBus detailsBus) {
+        this.detailsBus = detailsBus;
+    }
+    
+    // other methods
+    public SaleEvents[] readSaleEvents() {
+    try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/SaleEvents"))) {
+        int count = file.readInt(); 
+        SaleEvents[] tmp = new SaleEvents[count]; 
+
+        for (int i = 0; i < count; i++) {
+            String saleEvId = file.readUTF();
+            String saleEvName = file.readUTF();
+            String description = file.readUTF();
+            LocalDate startDate = LocalDate.parse(file.readUTF());
+            LocalDate endDate = LocalDate.parse(file.readUTF());
+            String promoCode = file.readUTF();
+            BigDecimal minPrice = new BigDecimal(file.readUTF());
+            BigDecimal discount = new BigDecimal(file.readUTF());
+            BigDecimal maxPriceDiscount = new BigDecimal(file.readUTF());
+
+            SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount, maxPriceDiscount);
+            tmp[i] = new SaleEvents(saleEvId, saleEvName, description, startDate, endDate, detail);
+        }
+
+        return tmp;
+    } catch (IOException e) {
+        System.err.println("error reading: " + e.getMessage());
+        return new SaleEvents[0];
+    }
+}
+
+    public void checkSaleValid() {
+        SaleEvents[] saleEvents = readSaleEvents();
+        if (saleEvents == null || saleEvents.length == 0) {
+            System.out.println("no sale events");
+            return;
+        }
+    
+        for (SaleEvents saleEvent : saleEvents) {
+            LocalDate endDate = saleEvent.getEndDate(); 
+            LocalDate startDate = saleEvent.getStartDate();
+            if (endDate.isBefore(this.date) && startDate.isAfter(this.date)) {
+                System.out.println("saleEvent id: " + saleEvent.getSaleEvId() + " expired");
+            } else {
+                System.out.println("saleEvent id: " + saleEvent.getSaleEvId() + " is valid");
+            }
+        }
+    }
+
+    public SaleEvents getValidSaleEvent() {
+        SaleEvents[] saleEvents = readSaleEvents(); 
+        if (saleEvents == null || saleEvents.length == 0) {
+            return null; 
+        }
+    
+        for (SaleEvents saleEvent : saleEvents) {
+            LocalDate today = LocalDate.now();
+            if (!today.isBefore(saleEvent.getStartDate()) && !today.isAfter(saleEvent.getEndDate())) {
+                return saleEvent;
+            }
+        }
+        return null; 
+    }
+
+    public void updateTotalAndDiscount() {
+        //get subtotal
+        BigDecimal total = BigDecimal.ZERO;
+        for (BillDetails detail : detailsBus.getds()) {
+            total = total.add(detail.calcSubTotal());
+        }
+    
+        BigDecimal appliedDiscount = BigDecimal.ZERO;
+    
+        SaleEvents validEvent = getValidSaleEvent();
+        if (validEvent != null && validEvent.getDetail() != null) {
+            SaleEventsDetail detail = validEvent.getDetail();
+    
+           //check min price
+            if (total.compareTo(detail.getMinPrice()) >= 0) {
+                appliedDiscount = total.multiply(detail.getDiscount());
+    
+                //check max price
+                if (appliedDiscount.compareTo(detail.getMaxPriceDiscount()) > 0) {
+                    appliedDiscount = detail.getMaxPriceDiscount();
+                }
+            }
+        }
+    
+        this.totalPrice = total.subtract(appliedDiscount);
+        this.discount = appliedDiscount;
+    }
+
     public String setBillId() {
-        String id;
-          do {
-               System.out.print("set bill id : ");
-               id = sc.nextLine().trim();
-               if (Validate.validateID(id)) {
-                    System.out.println("error id !");
-                    id = "";
-               }
-          } while (id.isEmpty());
-          return id;
-     }
+        String id = "";
+        try {
+                BillBus billList = new BillBus();
+                billList.readFile();
+                Bill[] list = billList.getds();
+    
+                if (list.length == 0) {
+                    return "00000001";
+                } else {
+                    String getID = list[list.length - 1].getBillId();
+                    int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
+                    id = String.format("%d", prevID + 1);
+                    while (id.length() != 8)
+                        id = "0" + id;
+                }
+        } catch (Exception e) {
+            System.out.println("error when execute with file!" + e.getMessage());
+            id = "";
+        }
+        return billIdModifier(id);
+    }
+
+    protected String billIdModifier(String billId) {
+        if (billId.startsWith("Bi") && billId.endsWith("LL") && billId.length() == 12)
+            return billId;
+        if (!Validate.validateID(billId)) {
+            System.out.println("error id!");
+            return "N/A";
+        }
+        return "Bi" + billId + "LL";
+    }
 
     public String setEmployeeId() {
         String id;
@@ -85,93 +268,22 @@ public class Bill {
         return discount;
     }
 
-    public LocalDate setDate() {
-        LocalDate date;
-          do {
-               System.out.print("set date : ");
-               String dateInput = sc.nextLine().trim();
-               date = Validate.isCorrectDate(dateInput);
-          } while (date == null);
-          return date;
-   }
+//     public LocalDate setDate() {
+//         LocalDate date;
+//           do {
+//                System.out.print("set date : ");
+//                String dateInput = sc.nextLine().trim();
+//                date = Validate.isCorrectDate(dateInput);
+//           } while (date == null);
+//           return date;
+//    }
    
     public void nhap(){
         billId = setBillId();
+        saleCode.nhap();
         employeeId = setEmployeeId();
         customerId = setCustomerId();
-        saleCode.nhap();
         discount = setDiscount();
-        date = setDate();
-
-    }
-
-    public String getBillId() {
-        return this.billId;
-    }
-
-    public void setBillId(String billId) {
-        this.billId = billId;
-    }
-
-    public String getEmployeeId() {
-        return this.employeeId;
-    }
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getCustomerId() {
-        return this.customerId;
-    }
-
-    public void setSaleCode(SaleEvents saleCode){
-        this.saleCode = saleCode;
-    }
-
-    public SaleEvents getSaleCode(){
-        return this.saleCode;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public BigDecimal getDiscount() {
-        return this.discount;
-    }
-
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
-    }
-
-    public BigDecimal getTotalPrice() {
-        BigDecimal total = BigDecimal.ZERO;
-        for (BillDetails detail : detailsBus.getds()) {
-            total = total.add(detail.calcSubTotal());
-        }
-        return total;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public String getDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return this.date.format(formatter);
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public BillDetailsBus getDetailsBus() {
-        return detailsBus;
-    }
-
-    public void setDetailsBus(BillDetailsBus detailsBus) {
-        this.detailsBus = detailsBus;
     }
 
     @Override

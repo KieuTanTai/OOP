@@ -67,7 +67,7 @@ public class BillDetailsBus {
         for (int i = 0; i < numberOfDetails; i++) {
             System.out.println("Input details for Bill Detail #" + (i + 1));
             BillDetails detail = new BillDetails();
-            detail.nhap();  
+            detail.setInfo();  
             ds[n] = detail;
             n++;
         }
@@ -84,7 +84,7 @@ public class BillDetailsBus {
 
     public void add(){
         BillDetails ds = new BillDetails();
-        ds.nhap();
+        ds.setInfo();
         add(ds);
     }
 

@@ -179,35 +179,19 @@ public class GRNs {
                                    booksList.showList();
 
                                    do {
-                                        System.out.println("NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
-
-                                        // execute when want to receive new book
-                                        if (productID.equalsIgnoreCase("new"))
-                                             break;
-
+                                        // execute input id
                                         index = booksList.find(productID);
                                         if (index == -1)
                                              productID = "";
                                    } while (productID.isEmpty());
 
-                                   // create new book
-                                   if (productID.equalsIgnoreCase("new")) {
-                                        product = new Books();
-                                        product.setInfo();
-                                        product.showInfo();
-                                   } else
-                                        product = booksList.getBooksList()[index];
-                                        int quantity = setQuantity();
-                                        BigDecimal price = product.getProductPrice();
-
-                                   // add new book
-                                   if (productID.equalsIgnoreCase("new")) {
-                                        booksList.add(product);
-                                        booksList.writeFile();
-                                   }
+                                   product = booksList.getBooksList()[index];
+                                   int quantity = setQuantity();
+                                   BigDecimal price = setPrice();
                                    listGRN.add(new GRNDetails(grnID, product, quantity, price));
+                                   
                                    System.out.println(listGRN.getGrnDetailsList().length);
 
                               } else {
@@ -216,35 +200,20 @@ public class GRNs {
                                    staList.showList();
 
                                    do {
-                                        System.out.println("NOTE : IF YOU WANNA RECEIVE NEW PRODUCT YOUR INPUT SHOULD BE \"new\" ");
                                         System.out.print("product id: ");
                                         productID = input.nextLine().trim();
-
-                                        // execute when want to receive new book
-                                        if (productID.equalsIgnoreCase("new"))
-                                             break;
-
+                                        // execute input id
                                         index = staList.find(productID);
                                         if (index == -1)
                                              productID = "";
                                    } while (productID.isEmpty());
 
-                                   // create new stationary
-                                   if (productID.equalsIgnoreCase("new")) {
-                                        product = new Stationeries();
-                                        product.setInfo();
-                                        product.showInfo();
-                                   } else
-                                        product = staList.getStaList()[index];
+                                   
+                                   product = staList.getStaList()[index];
                                    int quantity = setQuantity();
-                                   BigDecimal price = product.getProductPrice();
-
-                                   // add new stationary
-                                   if (productID.equalsIgnoreCase("new")) {
-                                        staList.add(product);
-                                        staList.writeFile();
-                                   }
+                                   BigDecimal price = setPrice();
                                    listGRN.add(new GRNDetails(grnID, product, quantity, price));
+                                   
                                    System.out.println(listGRN.getGrnDetailsList().length);
                               }
                               break;
@@ -258,7 +227,8 @@ public class GRNs {
                               listGRN.showList();
                               System.out.println("-".repeat(60));
                               do {
-                                   System.out.print("choose grn (like 1, 2,etc...) : ");
+                                   System.out.println("choose 0 to EXIST!");
+                                   System.out.print("choose grn (like 0, 1, 2,etc...) : ");
                                    option = input.nextLine().trim();
                                    if (option.equals("0")) {
                                         System.out.println("Exit program.");
@@ -278,8 +248,7 @@ public class GRNs {
                                    System.out.println("not have any grn detail!");
                                    break;
                               }
-                              if (!option.equals("0"))
-                                   listGRN.edit(listGRN.getGrnDetailsList()[userChoice - 1].getGrnID());
+                              listGRN.edit(listGRN.get);
                               break;
                     }
                } catch (Exception e) {
@@ -290,6 +259,16 @@ public class GRNs {
      }
 
      // private set methods for grn detail
+     private BigDecimal setPrice() {
+          BigDecimal price;
+          do {
+               System.out.print("set price (VND) : ");
+               String value = input.nextLine();
+               price = Validate.isBigDecimal(value);
+          } while (price == null);
+          return price;
+     }
+
      private int setQuantity() {
           int quantity;
           // let new quantity

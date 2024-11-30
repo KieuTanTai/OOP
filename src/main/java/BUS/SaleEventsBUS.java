@@ -70,14 +70,19 @@ public class SaleEventsBUS {
     }
 
     public SaleEvents findById(String id) {
-        SaleEvents result = new SaleEvents();
+        for (int i = 0; i < count; i++) 
+            if (ListSaleEvent[i].getSaleEvId() == id)
+                return ListSaleEvent[i];
+        System.out.println("not found any sale event!");
+        return null;
+    }
 
-        for (int i = 0; i < count; i++) {
-            if (ListSaleEvent[i].getSaleEvId() == id) {
-                result = ListSaleEvent[i];
-            }
-        }
-        return result;
+    public SaleEvents findByPromoCode(String promoCode) {
+        for (SaleEvents sale : ListSaleEvent)
+            if (sale.getDetail().getPromoCode().equals(promoCode))
+                return sale;
+        System.out.println("not found any sale event!");
+        return null;
     }
 
     public SaleEvents findByName(String name) {
@@ -167,7 +172,7 @@ public class SaleEventsBUS {
         return new SaleEvents[0]; // Trả về mảng rỗng nếu có lỗi
     }
 
-    public void docFile() throws IOException {
+    public void readFile() throws IOException {
         // test file
         File testFile = new File("src/main/resources/SaleEvents");
         if (testFile.length() == 0|| !testFile.exists())
@@ -203,7 +208,7 @@ public class SaleEventsBUS {
             }
         }
 
-    public void ghiFile() throws IOException {
+    public void writeFile() throws IOException {
         File testFile = new File("src/main/resources/SaleEvents");
         if (testFile.length() == 0 || !testFile.exists())
             return;

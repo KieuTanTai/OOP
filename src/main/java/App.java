@@ -23,6 +23,7 @@ import DTO.Customers;
 import DTO.Employees;
 import DTO.GRNs;
 import DTO.Publishers;
+import DTO.SaleEvents;
 import DTO.StaTypes;
 import DTO.Stationeries;
 import DTO.Suppliers;
@@ -69,9 +70,9 @@ public class App {
 
 
                 // !INIT VALUE
-                GRNs test = new GRNs();
+                SaleEvents test = new SaleEvents();
                 test.setInfo();
-                test.showInfo();
+                test.showWithDetail();
 
                 // !SHOW BEFORE
                 // SuppliersBUS.showList();

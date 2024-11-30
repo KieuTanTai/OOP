@@ -140,7 +140,7 @@ public class SaleEvents {
         System.out.println("*".repeat(60));
         String saleEvId = setID();
 
-        System.out.print("Enter sale events name:");
+        // field name
         String saleEvName = setName();
 
         System.out.println("-".repeat(60));
@@ -149,6 +149,7 @@ public class SaleEvents {
 
         // set date and validate if start > end
         LocalDate startDate, endDate;
+        Boolean checking = false;
         do {
             System.out.println("-".repeat(60));
             System.out.println("Start date!");
@@ -157,7 +158,11 @@ public class SaleEvents {
             System.out.println("-".repeat(60));
             System.out.println("End date!");
             endDate = setDate();
-        } while (!Validate.isValidRangeDate(startDate, endDate));
+            checking = Validate.isValidRangeDate(startDate, endDate);
+            // check flag
+            if(!checking)
+                System.out.println("Error start and end date !!!");
+        } while (!checking);
         // set sale detail
         SaleEventsDetail tempDetail = new SaleEventsDetail();
         tempDetail.setSaleEvId(saleEvId);

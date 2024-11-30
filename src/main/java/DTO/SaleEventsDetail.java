@@ -80,17 +80,22 @@ public class SaleEventsDetail {
     }
 
     public void setInfo() {
+        System.out.println("-".repeat(60));
         System.out.println("Enter promo code:");
         String promoCode = sc.nextLine();
 
+        System.out.println("-".repeat(60));
         System.out.println("Min price!");
         BigDecimal minPrice = setPrice();
 
+        System.out.println("-".repeat(60));
         System.out.println("Discount!");
-        BigDecimal discount = setPrice();
+        BigDecimal discount = setPrice().divide(new BigDecimal(100));
 
+        System.out.println("-".repeat(60));
         System.out.println("Max price discount!");
         BigDecimal maxPriceDiscount = setPrice();
+        System.out.println("+".repeat(60));
 
         int userChoice;
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
@@ -99,7 +104,7 @@ public class SaleEventsDetail {
             String option = sc.nextLine().trim();
             userChoice = Validate.parseChooseHandler(option, 2);
         } while (userChoice == -1);
-        System.out.println("*".repeat(60));
+        System.out.println("+".repeat(60));
         if (userChoice == 1)
             System.out.println("ok!");
         else {
@@ -115,7 +120,7 @@ public class SaleEventsDetail {
         System.out.printf("| %-22s : %s \n", "Promo Code", this.promoCode != null ? this.promoCode : "N/A");
         System.out.printf("| %-22s : %s \n", "Min Price",
                 this.minPrice != null ? Validate.formatPrice(this.minPrice) : "N/A");
-        System.out.printf("| %-22s : %s \n", "Discount", this.discount != null ? this.discount + "%" : "N/A");
+        System.out.printf("| %-22s : %s \n", "Discount", this.discount != null ? this.discount.multiply(new BigDecimal(100)) + "%" : "N/A");
         System.out.printf("| %-22s : %s \n", "Max Price Discount",
                 this.maxPriceDiscount != null ? Validate.formatPrice(this.maxPriceDiscount) : "N/A");
         System.out.println("-".repeat(140));

@@ -1,35 +1,28 @@
 import java.io.IOException;
 import java.util.Scanner;
 
-import BUS.BookFormatsBUS;
-import BUS.BooksBUS;
-import BUS.GenresBUS;
-import BUS.MidForBooksBUS;
-import BUS.PublishersBUS;
-import BUS.StaTypesBUS;
-import BUS.StationeriesBUS;
-import BUS.TypesBUS;
+import BUS.*;
 
 public class App {
         Scanner input = new Scanner(System.in);
         public static void main(String[] args) throws IOException {
                 // !INIT OBJ
-                MidForBooksBUS testArray = new MidForBooksBUS();
-                GenresBUS initList = new GenresBUS();
-                TypesBUS testList = new TypesBUS();
-                StaTypesBUS newTest = new StaTypesBUS();
-                PublishersBUS testPublishers = new PublishersBUS();
-                BookFormatsBUS listFormat = new BookFormatsBUS();
-                StationeriesBUS listSta = new StationeriesBUS();
-                BooksBUS listBooks = new BooksBUS();
-                newTest.readFile();
-                initList.readFile();
-                testList.readFile();
-                testArray.readFile();
-                listFormat.readFile();
-                testPublishers.readFile();
-                listBooks.readFile();
-                listSta.readFile();
+//                MidForBooksBUS testArray = new MidForBooksBUS();
+//                GenresBUS initList = new GenresBUS();
+//                TypesBUS testList = new TypesBUS();
+//                StaTypesBUS newTest = new StaTypesBUS();
+//                PublishersBUS testPublishers = new PublishersBUS();
+//                BookFormatsBUS listFormat = new BookFormatsBUS();
+//                StationeriesBUS listSta = new StationeriesBUS();
+//                BooksBUS listBooks = new BooksBUS();
+//                newTest.readFile();
+//                initList.readFile();
+//                testList.readFile();
+//                testArray.readFile();
+//                listFormat.readFile();
+//                testPublishers.readFile();
+//                listBooks.readFile();
+//                listSta.readFile();
 
                 // !INIT ARRAY
 
@@ -41,8 +34,8 @@ public class App {
                 // listSta.showList();
                 // StaTypesBUS.showList();
                 // !TEST METHODS
-                System.out.println("*".repeat(80));
-                listBooks.getBooksList()[0].showInfo();
+//                System.out.println("*".repeat(80));
+//                listBooks.getBooksList()[0].showInfo();
                 
                 // !SHOW DURING
                 // listSta.showList();

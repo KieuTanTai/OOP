@@ -91,7 +91,7 @@ public class GRNs {
           GRNs[] list = new GRNsBUS().getListGRN();
 
           if (list.length == 0) {
-               return "00000001";
+               grnID = new StringBuilder("00000001");
           } else {
                String getID = list[list.length - 1].getGrnID();
                int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
@@ -238,7 +238,7 @@ public class GRNs {
                               } while (userChoice == -1);
                               if (!option.equals("0")) {
                                    GRNDetails detail = listGRN.getGrnDetailsList()[userChoice - 1]; 
-                                   listGRN.remove(detail.getGrnID(), detail.getProduct().getProductID());
+                                   listGRN.remove(grnID, detail.getProduct().getProductID());
 
                               }
                               break;
@@ -248,7 +248,7 @@ public class GRNs {
                                    System.out.println("not have any grn detail!");
                                    break;
                               }
-                              listGRN.edit(listGRN.get);
+                              listGRN.edit(grnID);
                               break;
                     }
                } catch (Exception e) {
@@ -296,7 +296,6 @@ public class GRNs {
      public void setInfo() {
           System.out.println("*".repeat(60));
           String id = setID();
-
           // date fields
           LocalDate date = LocalDate.now();
           // employee fields
@@ -351,7 +350,7 @@ public class GRNs {
           String grnID = this.getGrnID(), employeeName = this.getEmployee().getFullName(),
                     supplier = this.getSupplier().getSupplierName();
 
-          System.out.println("=".repeat(160));
+          System.out.println("=".repeat(140));
           System.out.printf("| %-22s : %s \n", "GRN ID", grnID != null ? grnID : "N/A");
           System.out.printf("| %-22s : %s \n", "Release Date",
                     date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
@@ -365,19 +364,20 @@ public class GRNs {
                     String product = grn.getProduct().getProductName();
                     BigDecimal price = grn.getPrice();
                     BigDecimal subTotal = grn.getSubTotal();
+                    System.out.println("|" +  "-".repeat(139));
                     System.out.printf("| %-22s : %s \n", "Product", product != null ? product : "N/A");
                     System.out.printf("| %-22s : %s \n", "Quantity", grn.getQuantity());
                     System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
-                    System.out.printf("| %-22s : %s \n", "Sub Total",
-                              subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
+                    System.out.printf("| %-22s : %s \n", "Sub Total",subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
                }
           } catch (Exception e) {
-               System.out.print("| Error loading genres!");
+               System.out.println("| Error loading grn!\n" + e.getMessage());
           }
-
+          
+          System.out.println("|" +  "*".repeat(139));
           System.out.printf("| %-22s : %s \n", "Total Price",
                     totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
-          System.out.println("=".repeat(160));
+          System.out.println("=".repeat(140));
      }
 
      // calc totalPrice
@@ -399,7 +399,7 @@ public class GRNs {
 
      // modify id
      private String grnIDModifier(String grnID) {
-          if (grnID.startsWith("GRN") && grnID.endsWith("LL") && grnID.length() == 12)
+          if (grnID.startsWith("GRN") && grnID.endsWith("LL") && grnID.length() == 13)
                return grnID;
           if (!Validate.validateID(grnID)) {
                System.out.println("error id!");

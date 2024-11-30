@@ -61,7 +61,9 @@ public class App {
                 // TODO
                 // *Books, MidForBook, Stationeries (DONE)
                 // *Customers, Employees (DONE)
-                // *BookGenres, BookTypes, Publishers, StaTypes, Suppliers
+                // *BookGenres, BookTypes, Publishers, StaTypes, Suppliers (DONE)
+                //  *GRN, GRNDetail (DONE)
+                //  *
 
                 // !INIT ARRAY
 

@@ -53,11 +53,12 @@ public class GRNDetailsBUS {
      }
 
      public void setGrnDetail(GRNDetails now, GRNDetails newDetail) {
-          for (int i = 0; i < this.count; i++ )
-               if ((grnDetailsList[i].getGrnID().equals(now.getGrnID())) && 
+          for (int i = 0; i < this.count; i++) {
+               if ((grnDetailsList[i].getGrnID().equals(now.getGrnID())) &&
                          (grnDetailsList[i].getProduct().getProductID().equals(now.getProduct().getProductID())))
                     grnDetailsList[i] = newDetail;
-
+               System.out.println(grnDetailsList[i].getGrnID());
+          }
      }
 
      public void setGrnDetailsList(GRNDetails[] grnDetailsList) {
@@ -88,12 +89,13 @@ public class GRNDetailsBUS {
      public GRNDetails[] relativeFind(String id) {
           int count = 0;
           GRNDetails[] list = new GRNDetails[0];
-          for (GRNDetails detail : grnDetailsList)
+          for (GRNDetails detail : grnDetailsList) {
                if (detail.getGrnID().equals(id)) {
                     list = Arrays.copyOf(list, list.length + 1);
                     list[count] = detail;
                     count++;
                }
+          }
           if (count == 0) {
                System.out.println("not found any grn detail!");
                return null;
@@ -141,7 +143,6 @@ public class GRNDetailsBUS {
 
      // edit method
      public void edit(String grnID) {
-          System.out.println("Hello");
           GRNDetails[] list = relativeFind(grnID);
           if (list != null) {
                showAsTable(list);
@@ -270,13 +271,13 @@ public class GRNDetailsBUS {
           if (list == null)
                return;
           System.out.println("=".repeat(140));
-          System.out.printf("| \t%-10s %-21s %-41s %-18s %-18s %-15s |\n", "No.", "GRN ID", "Product", "quantity",
-                    "Price", "Sub Total");
+          System.out.printf("| %-6s %-15s %-66s %-12s %-16s %-16s |\n",
+                    "No.", "GRN ID", "Product", "Quantity", "Price (VND)", "Sub Total (VND)");
           System.out.println("=".repeat(140));
           for (int i = 0; i < list.length; i++) {
                if (i > 0)
                     System.out.println("|" + "-".repeat(138) + "|");
-               System.out.printf("| \t%-10s %-8s %-50s %-18s %-18s %-15s |\n", i + 1, list[i].getGrnID(),
+               System.out.printf("| %-6s %-15s %-66s %-12s %-16s %-16s |\n", i + 1, list[i].getGrnID(),
                          list[i].getProduct().getProductName(), list[i].getQuantity(),
                          Validate.formatPrice(list[i].getPrice()),
                          Validate.formatPrice(list[i].getSubTotal()));
@@ -288,10 +289,10 @@ public class GRNDetailsBUS {
           if (item == null)
                return;
           System.out.println("=".repeat(140));
-          System.out.printf("| \t%-10s %-21s %-41s %-18s %-18s %-15s |\n", "No.", "GRN ID", "Product", "quantity",
+          System.out.printf("| %-6s %-15s %-66s %-12s %-16s %-16s |\n", "No.", "GRN ID", "Product", "quantity",
                     "Price", "Sub Total");
           System.out.println("=".repeat(140));
-          System.out.printf("| \t%-10s %-8s %-50s %-18s %-18s %-15s |\n", 1, item.getGrnID(),
+          System.out.printf("| %-6s %-15s %-66s %-12s %-16s %-16s |\n", 1, item.getGrnID(),
                     item.getProduct().getProductName(), item.getQuantity(), Validate.formatPrice(item.getPrice()),
                     Validate.formatPrice(item.getSubTotal()));
           System.out.println("=".repeat(140));
@@ -333,14 +334,21 @@ public class GRNDetailsBUS {
 
                     // execute id
                     Products product;
-                    if (productID.startsWith("ST") && productID.endsWith("PD"))
-                         product = new StationeriesBUS().getStationary(productID);
-                    else if (productID.startsWith("BK") && productID.endsWith("PD"))
-                         product = new BooksBUS().getBook(productID);
+                    if (productID.startsWith("ST") && productID.endsWith("PD")) {
+                         StationeriesBUS staList = new StationeriesBUS();
+                         staList .readFile(); 
+                         product = staList.getStationary(productID);
+                    }
+                    else if (productID.startsWith("BK") && productID.endsWith("PD")) {
+                         BooksBUS bookList = new BooksBUS(); 
+                         bookList.readFile();
+                         product = bookList.getBook(productID);
+                    }
                     else
                          product = null;
                     list[i] = new GRNDetails(grnID, product, quantity, price);
                }
+               setCount(count);
                setGrnDetailsList(list);
           } catch (Exception e) {
                System.out.printf("Error reading file: %s\n", e.getMessage());

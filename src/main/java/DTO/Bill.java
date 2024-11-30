@@ -86,6 +86,49 @@ public class Bill {
         }
     }
 
+    public SaleEvents getValidSaleEvent() {
+        SaleEvents[] saleEvents = readSaleEvents(); 
+        if (saleEvents == null || saleEvents.length == 0) {
+            return null; 
+        }
+    
+        for (SaleEvents saleEvent : saleEvents) {
+            LocalDate today = LocalDate.now();
+            if (!today.isBefore(saleEvent.getStartDate()) && !today.isAfter(saleEvent.getEndDate())) {
+                return saleEvent;
+            }
+        }
+        return null; 
+    }
+
+    public void updateTotalAndDiscount() {
+        //get subtotal
+        BigDecimal total = BigDecimal.ZERO;
+        for (BillDetails detail : detailsBus.getds()) {
+            total = total.add(detail.calcSubTotal());
+        }
+    
+        BigDecimal appliedDiscount = BigDecimal.ZERO;
+    
+        SaleEvents validEvent = getValidSaleEvent();
+        if (validEvent != null && validEvent.getDetail() != null) {
+            SaleEventsDetail detail = validEvent.getDetail();
+    
+           //check min price
+            if (total.compareTo(detail.getMinPrice()) >= 0) {
+                appliedDiscount = total.multiply(detail.getDiscount());
+    
+                //check max price
+                if (appliedDiscount.compareTo(detail.getMaxPriceDiscount()) > 0) {
+                    appliedDiscount = detail.getMaxPriceDiscount();
+                }
+            }
+        }
+    
+        this.totalPrice = total.subtract(appliedDiscount);
+        this.discount = appliedDiscount;
+    }
+
     public String setBillId() {
         String id = "";
         try {

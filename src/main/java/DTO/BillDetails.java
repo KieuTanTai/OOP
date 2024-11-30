@@ -92,12 +92,20 @@ public class BillDetails{
         quantity = setQuantity();
         price = setPrice();
         billId = setBillId();
+        calcSubTotal();
     }
 
     public BigDecimal calcSubTotal(){
         BigDecimal QuantityDe = BigDecimal.valueOf(quantity);
         this.subTotal = price.multiply(QuantityDe);
         return this.subTotal;
+    }
+
+    public void showInfo(){
+        System.out.println("bill details from bill id: " + getBillId());
+        System.out.println("quantity: " + getQuantity());
+        System.out.println("price: " + getPrice());
+        System.out.println("subtotal: " +getSubTotal());
     }
 
     @Override

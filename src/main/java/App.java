@@ -73,13 +73,6 @@ public class App {
                 // SuppliersBUS.showList();
 
                 // !TEST METHODS
-<<<<<<< HEAD:src/main/java/App.java
-
-=======
-//                System.out.println("*".repeat(80));
-//                listBooks.getBooksList()[0].showInfo();
-                
->>>>>>> d780594 (them find):OOP/src/main/java/App.java
                 // !SHOW DURING
                 // SuppliersBUS.showList();
 

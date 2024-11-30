@@ -11,27 +11,48 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class SaleEventsBUS {
-    private static SaleEvents[] ListSaleEvent;
-    private static int count;
+    private SaleEvents[] ListSaleEvent;
+    private int count;
     Scanner sc = new Scanner(System.in);
+
+    // constructors
+    public SaleEventsBUS() {
+        this.count = 0;
+        this.ListSaleEvent = new SaleEvents[0];
+    }
 
     public SaleEventsBUS(SaleEvents[] listSaleEvent, int count) {
         ListSaleEvent = listSaleEvent;
         this.count = count;
     }
 
-    public void nhap(){
-
+    // getter / setter
+    public SaleEvents[] getListSaleEvent() {
+        return this.ListSaleEvent;
     }
 
-    public void add(SaleEvents saleEvents){
+    public int getCount() {
+        return this.count;
+    }
+
+    public void setListSaleEvent(SaleEvents[] list) {
+        this.ListSaleEvent = list;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+
+    // other methods like add, remove, find, search, ......
+    public void add(SaleEvents saleEvents) {
         count++;
         ListSaleEvent = Arrays.copyOf(ListSaleEvent, count);
-        ListSaleEvent[count-1] = saleEvents;
+        ListSaleEvent[count - 1] = saleEvents;
     }
 
-    public void update(String id){
-        for (int i = 0 ; i < count ; i++)
+    public void update(String id) {
+        for (int i = 0; i < count; i++)
             if (ListSaleEvent[i].getSaleEvId() == id)
                 ListSaleEvent[i].nhap();
     }
@@ -41,28 +62,28 @@ public class SaleEventsBUS {
             return false;
 
         count--;
-        for (int x=vt; x<count; x++)
-            ListSaleEvent[x] = ListSaleEvent[x+1];
+        for (int x = vt; x < count; x++)
+            ListSaleEvent[x] = ListSaleEvent[x + 1];
         ListSaleEvent[count] = null;
         ListSaleEvent = Arrays.copyOf(ListSaleEvent, count);
         return true;
     }
 
-    public SaleEvents findById(String  id){
+    public SaleEvents findById(String id) {
         SaleEvents result = new SaleEvents();
 
-        for (int i = 0 ; i < count ; i++){
-            if (ListSaleEvent[i].getSaleEvId() == id){
+        for (int i = 0; i < count; i++) {
+            if (ListSaleEvent[i].getSaleEvId() == id) {
                 result = ListSaleEvent[i];
             }
         }
-        return  result;
+        return result;
     }
 
-    public SaleEvents findByName(String name){
+    public SaleEvents findByName(String name) {
         SaleEvents result = new SaleEvents();
 
-        for (int i=0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             if (ListSaleEvent[i].getSaleEvName() == name)
                 result = ListSaleEvent[i];
 
@@ -94,7 +115,6 @@ public class SaleEventsBUS {
         return new SaleEvents[0]; // Trả về mảng rỗng nếu không tìm thấy
     }
 
-
     public SaleEvents[] findByEndDate(String end) {
         try {
             // Chuyển đổi chuỗi start thành LocalDate
@@ -118,7 +138,6 @@ public class SaleEventsBUS {
         }
         return new SaleEvents[0]; // Trả về mảng rỗng nếu không tìm thấy
     }
-
 
     public SaleEvents[] findByDateRange(String start, String end) {
         try {
@@ -148,110 +167,69 @@ public class SaleEventsBUS {
         return new SaleEvents[0]; // Trả về mảng rỗng nếu có lỗi
     }
 
+    public void docFile() throws IOException {
+        // test file
+        File testFile = new File("src/main/resources/SaleEvents");
+        if (testFile.length() == 0|| !testFile.exists())
+            return;
 
-
-
-    public static void docFile(String nameFile) {
-        try (FileReader file = new FileReader(nameFile);
-             BufferedReader buffer = new BufferedReader(file)) {
-
-            count = 0;
-            ListSaleEvent = new SaleEvents[1]; // Khởi tạo mảng ban đầu với kích thước 1
-            String[] data = new String[10]; // Dữ liệu cần đọc từ file
-
-            String line = buffer.readLine(); // Đọc tiêu đề hoặc dòng mở đầu nếu có
-            System.out.println(line); // In tiêu đề
-
-            while (true) {
-                // Đọc các thuộc tính của SaleEvent
-                data[0] = buffer.readLine(); // saleEvId
-                if (data[0] == null) // Kiểm tra EOF
-                    break;
-
-                count++;
-                ListSaleEvent = Arrays.copyOf(ListSaleEvent, count); // Mở rộng mảng saleEvents
-
-                data[1] = buffer.readLine(); // saleEvName
-                data[2] = buffer.readLine(); // description
-                data[3] = buffer.readLine(); // startDate
-                data[4] = buffer.readLine(); // endDate
-
-                // Đọc các thuộc tính của SaleEventsDetail
-                data[5] = buffer.readLine(); // saleEvId (detail)
-                data[6] = buffer.readLine(); // promoCode
-                data[7] = buffer.readLine(); // minPrice
-                data[8] = buffer.readLine(); // discount
-                data[9] = buffer.readLine(); // maxPriceDiscount
-
-                // Tạo đối tượng SaleEventsDetail
-                SaleEventsDetail detail = new SaleEventsDetail();
-                detail.setSaleEvId(data[5]);
-                detail.setPromoCode(data[6]);
-                detail.setMinPrice(new BigDecimal(data[7]));
-                detail.setDiscount(new BigDecimal(data[8]));
-                detail.setMaxPriceDiscount(new BigDecimal(data[9]));
-
-                // Tạo đối tượng SaleEvent
-                SaleEvents saleEvent = new SaleEvents();
-                saleEvent.setSaleEvId(data[0]);
-                saleEvent.setSaleEvName(data[1]);
-                saleEvent.setDescription(data[2]);
-                saleEvent.setStartDate(LocalDate.parse(data[3]));
-                saleEvent.setEndDate(LocalDate.parse(data[4]));
-                saleEvent.setDetail(detail);
-
-                // Thêm vào mảng
-                ListSaleEvent[count- 1] = saleEvent;
+        try (DataInputStream file = new DataInputStream(
+                new BufferedInputStream(new FileInputStream("src/main/resources/SaleEvents")))) {
+                int count = file.readInt();
+                SaleEvents[] list = new SaleEvents[count];
+                for (int i = 0; i < count; i++) {
+                    String saleEvId = file.readUTF();
+                    String saleEvName = file.readUTF();
+                    String description = file.readUTF();
+                    LocalDate startDate = LocalDate.parse(file.readUTF());
+                    LocalDate endDate = LocalDate.parse(file.readUTF());
+                    
+                    // get saleEvent detail
+                    String promoCode = file.readUTF();
+                    BigDecimal minPrice = new BigDecimal(file.readUTF());
+                    BigDecimal discount = new BigDecimal(file.readUTF());
+                    BigDecimal maxPriceDiscount = new BigDecimal(file.readUTF());
+                    SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount, maxPriceDiscount);
+                    
+                    // set values for temp list
+                    list[i] = new SaleEvents(saleEvId, saleEvName, description, startDate, endDate, detail);
+                }
+                
+                // set fields for BUS
+                setCount(count);
+                setListSaleEvent(list);
+            } catch(Exception ex) {
+                System.out.println("Lỗi dữ liệu: " + ex.getMessage());
             }
-        } catch (IOException ex) {
-            System.out.println("Lỗi khi mở file: " + ex.getMessage());
-        } catch (Exception ex) {
-            System.out.println("Lỗi dữ liệu: " + ex.getMessage());
         }
-    }
 
+    public void ghiFile() throws IOException {
+        File testFile = new File("src/main/resources/SaleEvents");
+        if (testFile.length() == 0 || !testFile.exists())
+            return;
 
-    public void ghiFile(String nameFile) {
-        try {
-            FileWriter file = new FileWriter(nameFile);
-            BufferedWriter buffer = new BufferedWriter(file);
-
+        try (DataOutputStream file = new DataOutputStream(
+                new BufferedOutputStream(new FileOutputStream("src/main/resources/SaleEvents")))) {
+            file.writeInt(count);
             for (SaleEvents event : ListSaleEvent) {
                 // Ghi thông tin SaleEvent
-                buffer.write(event.getSaleEvId());
-                buffer.newLine();
-                buffer.write(event.getSaleEvName());
-                buffer.newLine();
-                buffer.write(event.getDescription());
-                buffer.newLine();
-                buffer.write(event.getStartDate().toString());
-                buffer.newLine();
-                buffer.write(event.getEndDate().toString());
-                buffer.newLine();
+                file.writeUTF(event.getSaleEvId());
+                file.writeUTF(event.getSaleEvName());
+                file.writeUTF(event.getDescription());
+                file.writeUTF(event.getStartDate().toString());
+                file.writeUTF(event.getEndDate().toString());
 
                 // Ghi thông tin SaleEventsDetail
                 SaleEventsDetail detail = event.getDetail();
-                buffer.write(detail.getSaleEvId());
-                buffer.newLine();
-                buffer.write(detail.getPromoCode());
-                buffer.newLine();
-                buffer.write(detail.getMinPrice().toString());
-                buffer.newLine();
-                buffer.write(detail.getDiscount().toString());
-                buffer.newLine();
-                buffer.write(detail.getMaxPriceDiscount().toString());
-                buffer.newLine();
+                // file.writeUTF(detail.getSaleEvId());
+                file.writeUTF(detail.getPromoCode());
+                file.writeUTF(detail.getMinPrice().toString());
+                file.writeUTF(detail.getDiscount().toString());
+                file.writeUTF(detail.getMaxPriceDiscount().toString());
             }
-
-            // Đóng tài nguyên
-            buffer.close();
-            file.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Lỗi khi mở file: " + e.getMessage());
         }
     }
-
-
-
 
 }

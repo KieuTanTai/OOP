@@ -10,7 +10,7 @@ public class SaleEvents {
     private LocalDate startDate;
     private LocalDate endDate;
     private SaleEventsDetail detail;
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     // constructor
     public SaleEvents() {

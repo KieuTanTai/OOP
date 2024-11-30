@@ -43,7 +43,7 @@ public class StaTypes {
         StaTypes[] list = StaTypesBUS.getTypesList();
 
         if (list.length == 0) {
-            return "00000001";
+            id = new StringBuilder("00000001");
         } else {
             String getID = list[list.length - 1].getTypeID();
             int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));

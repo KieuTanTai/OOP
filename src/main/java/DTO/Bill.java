@@ -200,26 +200,26 @@ public class Bill {
     }
 
     public String setBillId() {
-        String id = "";
+        StringBuilder id;
         try {
                 BillBus billList = new BillBus();
                 billList.readFile();
                 Bill[] list = billList.getds();
     
                 if (list.length == 0) {
-                    return "00000001";
+                    id =  new StringBuilder("00000001");
                 } else {
                     String getID = list[list.length - 1].getBillId();
                     int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
-                    id = String.format("%d", prevID + 1);
+                    id = new StringBuilder(String.format("%d", prevID + 1));
                     while (id.length() != 8)
-                        id = "0" + id;
+                        id.insert(0, "0");
                 }
         } catch (Exception e) {
             System.out.println("error when execute with file!" + e.getMessage());
-            id = "";
+            id =  new StringBuilder("00000001");
         }
-        return billIdModifier(id);
+        return billIdModifier(id.toString());
     }
 
     protected String billIdModifier(String billId) {
@@ -278,9 +278,9 @@ public class Bill {
 //           return date;
 //    }
    
-    public void nhap(){
+    public void setInfo(){
         billId = setBillId();
-        saleCode.nhap();
+        saleCode.setInfo();
         employeeId = setEmployeeId();
         customerId = setCustomerId();
         discount = setDiscount();

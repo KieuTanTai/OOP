@@ -79,6 +79,10 @@ public class Validate {
           }
      }
 
+     public static boolean isValidRangeDate(LocalDate start, LocalDate end) {
+          return !start.isAfter(end);
+     }
+
      // return null when input from user have any error or not in option table (DONE)
      public static int parseChooseHandler(String userChoose, int totalOptions) {
           try {

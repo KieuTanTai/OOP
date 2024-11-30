@@ -43,7 +43,7 @@ public class Publishers {
         Publishers[] list = PublishersBUS.getPublishersList();
 
         if (list.length == 0) {
-            return "00000001";
+            id = new StringBuilder("00000001");
         } else {
             String getID = list[list.length - 1].getPublisherID();
             int prevID = Integer.parseInt(getID.substring(3, getID.length() - 3));

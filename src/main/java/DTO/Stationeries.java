@@ -80,7 +80,7 @@ public class Stationeries extends Products {
                Stationeries[] list = stationeriesList.getStaList();
 
                if (list.length == 0) {
-                    return "00000001";
+                    id = new StringBuilder("00000001");
                } else {
                     String getID = list[list.length - 1].getStationeriesID();
                     int prevID = Integer.parseInt(getID.substring(3));
@@ -90,7 +90,7 @@ public class Stationeries extends Products {
                }
           } catch (Exception e) {
                System.out.println("error when execute with file!" + e.getMessage());
-               id = new StringBuilder();
+               id = new StringBuilder("00000001");
           }
           return stationaryIDModifier(id.toString());
      }

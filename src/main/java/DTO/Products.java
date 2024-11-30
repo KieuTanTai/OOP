@@ -82,8 +82,9 @@ public abstract class Products {
                 Books[] list = booksList.getBooksList();
     
                 if (list.length == 0) {
-                    return "00000001";
-                } else {
+                    id = new StringBuilder("00000001");
+                } 
+                else {
                     String getID = list[list.length - 1].getProductID();
                     int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
                     id = new StringBuilder(String.format("%d", prevID + 1));
@@ -97,7 +98,7 @@ public abstract class Products {
                 Stationeries[] list = stationeriesList.getStaList();
                 
                 if (list.length == 0) {
-                    return "00000001";
+                    id = new StringBuilder("00000001");
                 } else {
                     String getID = list[list.length - 1].getProductID();
                     int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
@@ -108,7 +109,7 @@ public abstract class Products {
             }
         } catch (Exception e) {
             System.out.println("error when execute with file!" + e.getMessage());
-            id = new StringBuilder();
+            id = new StringBuilder("00000001");
         }
         return productIDModifier(id.toString());
     }

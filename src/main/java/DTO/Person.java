@@ -89,7 +89,7 @@ public abstract class Person {
                 Customers[] list = booksList.getCustomersList();
 
                 if (list.length == 0) {
-                    return "00000001";
+                    id = new StringBuilder("00000001");
                 } else {
                     String getID = list[list.length - 1].getPersonID();
                     int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
@@ -104,7 +104,7 @@ public abstract class Person {
                 Employees[] list = stationeriesList.getEmployeesList();
 
                 if (list.length == 0) {
-                    return "00000001";
+                    id = new StringBuilder("00000001");
                 } else {
                     String getID = list[list.length - 1].getPersonID();
                     int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
@@ -115,7 +115,7 @@ public abstract class Person {
             }
         } catch (Exception e) {
             System.out.println("error when execute with file!" + e.getMessage());
-            id = new StringBuilder();
+            id = new StringBuilder("00000001");
         }
         return personIDModifier(id.toString());
     }

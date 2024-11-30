@@ -54,7 +54,7 @@ public class SaleEventsBUS {
     public void update(String id) {
         for (int i = 0; i < count; i++)
             if (ListSaleEvent[i].getSaleEvId() == id)
-                ListSaleEvent[i].nhap();
+                ListSaleEvent[i].setInfo();
     }
 
     public boolean delete(int vt) {

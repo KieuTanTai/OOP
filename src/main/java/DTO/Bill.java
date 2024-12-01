@@ -237,7 +237,7 @@ public class Bill {
                 System.out.println("Exit program.");
                 break;
             }
-            userChoice = Validate.parseChooseHandler(option, SuppliersBUS.getCount());
+            userChoice = Validate.parseChooseHandler(option, 3);
 
             // execute userChoice
             try {

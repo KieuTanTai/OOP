@@ -97,26 +97,21 @@ public class SaleEventsBUS {
 
     public SaleEvents[] findByStartDate(String start) {
         try {
-            // Chuyển đổi chuỗi start thành LocalDate
             LocalDate startDate = LocalDate.parse(start);
 
             SaleEvents[] tempResult = new SaleEvents[ListSaleEvent.length];
             int temp = 0;
 
-            // Duyệt qua danh sách SaleEvents
             for (SaleEvents event : ListSaleEvent) {
                 if (event.getStartDate().equals(startDate)) {
-                    tempResult[temp++] = event; // Thêm sự kiện phù hợp vào mảng tạm
+                    tempResult[temp++] = event;
                 }
             }
-
-            // Tạo mảng kết quả với kích thước chính xác
             return Arrays.copyOf(tempResult, temp);
-
         } catch (DateTimeParseException e) {
             System.out.println("Ngày không hợp lệ: " + start);
         }
-        return new SaleEvents[0]; // Trả về mảng rỗng nếu không tìm thấy
+        return new SaleEvents[0];
     }
 
     public SaleEvents[] findByEndDate(String end) {
@@ -227,16 +222,13 @@ public class SaleEventsBUS {
                 new BufferedOutputStream(new FileOutputStream("src/main/resources/SaleEvents")))) {
             file.writeInt(count);
             for (SaleEvents event : ListSaleEvent) {
-                // Ghi thông tin SaleEvent
                 file.writeUTF(event.getSaleEvId());
                 file.writeUTF(event.getSaleEvName());
                 file.writeUTF(event.getDescription());
                 file.writeUTF(event.getStartDate().toString());
                 file.writeUTF(event.getEndDate().toString());
 
-                // Ghi thông tin SaleEventsDetail
                 SaleEventsDetail detail = event.getDetail();
-                // file.writeUTF(detail.getSaleEvId());
                 file.writeUTF(detail.getPromoCode());
                 file.writeUTF(detail.getMinPrice().toString());
                 file.writeUTF(detail.getDiscount().toString());

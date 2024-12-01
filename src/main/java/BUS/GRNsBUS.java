@@ -450,7 +450,7 @@ public class GRNsBUS implements IRuleSets {
                System.out.println("I. Edit date");
                System.out.println("II. Edit employee");
                System.out.println("III. Edit customer");
-               System.out.println("III. Edit Detail");
+               System.out.println("IV. Edit Detail");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");

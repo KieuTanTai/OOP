@@ -1051,7 +1051,7 @@ public class BooksBUS implements IRuleSets {
 
                TypesBUS.showList();
                do {
-                    System.out.print("choose type you want (like \\\"1, 2, 3,etc....\\\"): ");
+                    System.out.print("choose type you want (like \"1, 2, 3,etc....\"): ");
                     String option = input.nextLine().trim();
                     userChoice = Validate.parseChooseHandler(option, TypesBUS.getCount());
                } while (userChoice == -1);

@@ -154,9 +154,9 @@ public class BillBUS implements IRuleSets {
         int choice;
         do {
             System.out.println("*".repeat(60));
-            System.out.println("II. Edit Employee");
-            System.out.println("III. Edit Customer");
-            System.out.println("IV. Edit Date");
+            System.out.println("I. Edit Employee");
+            System.out.println("II. Edit Customer");
+            System.out.println("III. Edit Date");
             System.out.println("0. Exit");
             System.out.println("*".repeat(60));
             System.out.print("Enter your choice: ");

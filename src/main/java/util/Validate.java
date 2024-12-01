@@ -20,33 +20,56 @@ public class Validate {
           return min >= 0 && max >= 0 && min <= max;
      }
 
-     // format type of string price 
-     public static String formatPrice (BigDecimal price) { 
+     // format type of string price
+     public static String formatPrice(BigDecimal price) {
           try {
                NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
                return formatter.format(price);
-          }catch (Exception err) {
+          } catch (Exception err) {
                System.out.println("your input is not correct!\n" + err.getMessage());
                return "";
           }
 
      }
 
+     // check valid price discount
+     public static BigDecimal executePrice(BigDecimal totalPrice, BigDecimal maxDiscount, BigDecimal discount) {
+          BigDecimal result = totalPrice.multiply(discount);
+          return result.compareTo(maxDiscount) > 0 ? result = maxDiscount : result;
+     }
+
+     public static BigDecimal isLargestDiscount (BigDecimal[] discounts) {
+          int length = discounts.length;
+          for (int i = 0; i < length - 1; i++) {
+               int temp = i;
+               for (int j = i + 1; j < length; j++) {
+                    if (discounts[j].compareTo(discounts[i]) > 0)
+                         temp = j;
+               }
+               if (temp != i) {
+                    BigDecimal tempPrice = discounts[i];
+                    discounts[i] = discounts[temp];
+                    discounts[temp] = tempPrice; 
+               }
+          }
+          return discounts[0];
+     }
+
      // check if input null or not (DONE)
-     public static boolean requiredNotNull (Object input) {
+     public static boolean requiredNotNull(Object input) {
           try {
-              return input != null;
+               return input != null;
           } catch (Exception e) {
                System.out.println("something went wrong!" + e.getMessage());
                return false;
           }
      }
 
-     // check duplicate (DONE) 
+     // check duplicate (DONE)
      public static boolean hasDuplicates(String[] options) {
-          for (int i = 0; i < options.length - 1; i++) 
-               for (int j = i + 1; j < options.length; j++) 
-                    if (options[i].equals(options[j])) 
+          for (int i = 0; i < options.length - 1; i++)
+               for (int j = i + 1; j < options.length; j++)
+                    if (options[i].equals(options[j]))
                          return true;
           return false;
      }

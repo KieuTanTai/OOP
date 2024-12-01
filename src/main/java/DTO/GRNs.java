@@ -328,12 +328,30 @@ public class GRNs {
                try {
                     GRNDetailsBUS detailList = new GRNDetailsBUS();
                     detailList.readFile();
-                    for (GRNDetails detail : detailsArray)
-                         if (detailList.find(detail.getGrnID(), detail.getProduct().getProductID()) == -1) {
+                    for (GRNDetails detail : detailsArray) {
+                         String productID = detail.getProduct().getProductID();
+                         if (detailList.find(detail.getGrnID(), productID) == -1) {
+                              if (productID.startsWith(id))
                               totalPrice = totalPrice.add(detail.getSubTotal());
                               detailList.add(detail);
                          }
+
+                         // execute update quantity
+                         if (productID.startsWith("ST") && productID.endsWith("PD")) {
+                              StationeriesBUS staList = new StationeriesBUS();
+                              staList .readFile(); 
+                              staList.updateQuantity(detailsArray);
+                              staList.writeFile();
+                         }
+                         else if (productID.startsWith("BK") && productID.endsWith("PD")) {
+                              BooksBUS bookList = new BooksBUS(); 
+                              bookList.readFile();
+                              bookList.updateQuantity(detailsArray);
+                              bookList.writeFile();
+                         }
+                    }
                     detailList.writeFile();
+
                } catch (Exception e) {
                     System.out.println("error writing or reading file!\n" + e.getMessage());
                }

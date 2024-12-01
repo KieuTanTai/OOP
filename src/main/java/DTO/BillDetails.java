@@ -3,33 +3,27 @@ package DTO;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-import util.Validate;
-
 public class BillDetails{
     private String billId;
     private int quantity;
     private Products product;
     private BigDecimal price;
     private BigDecimal subTotal;
-
     Scanner sc = new Scanner(System.in);
 
     public BillDetails() {
     }
 
-    public BillDetails(String billId, int quantity, BigDecimal price, BigDecimal subTotal) {
+    public BillDetails(String billId, int quantity, Products product, BigDecimal price) {
         this.billId = billId;
         this.quantity = quantity;
+        this.product = product;
         this.price = price;
-        this.subTotal = subTotal;
+        this.subTotal = price.multiply(new BigDecimal(quantity));
     }
 
-    public Products getProducts() {
+    public Products getProduct() {
         return this.product;
-    }
-
-    public void setBillId(String id){
-        this.billId = id;
     }
 
     public String getBillId(){
@@ -40,70 +34,32 @@ public class BillDetails{
         return this.quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public BigDecimal getPrice() {
         return this.price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public BigDecimal getSubTotal() {
         return this.subTotal;
     }
 
+    public void setBillId(String id){
+        this.billId = id;
+    }
+
+    public void setProduct(Products product) {
+         this.product = product;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
-    }
-    
-    public String setBillId() {
-        String id;
-          do {
-               System.out.print("set bill id : ");
-               id = sc.nextLine().trim();
-               if (Validate.validateID(id)) {
-                    System.out.println("error id !");
-                    id = "";
-               }
-          } while (id.isEmpty());
-          return id;
-     }
-
-    public int setQuantity() {
-        int quantity;
-        do {
-             System.out.print("set quantity: ");
-             String quantityInput = sc.nextLine().trim();
-             quantity = Validate.isNumber(quantityInput);
-        } while (quantity == -1);
-        return quantity;
-    }
-
-    public BigDecimal setPrice() {
-        BigDecimal price;
-          do {
-               System.out.print("set price : ");
-               String value = sc.nextLine();
-               price = Validate.isBigDecimal(value);
-          } while (price == null);
-          return price;
-    }
-
-    public void setInfo(){
-        quantity = setQuantity();
-        price = setPrice();
-        billId = setBillId();
-        calcSubTotal();
-    }
-
-    public BigDecimal calcSubTotal(){
-        BigDecimal QuantityDe = BigDecimal.valueOf(quantity);
-        this.subTotal = price.multiply(QuantityDe);
-        return this.subTotal;
     }
 
     public void showInfo(){

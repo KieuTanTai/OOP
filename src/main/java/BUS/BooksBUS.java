@@ -1280,7 +1280,7 @@ public class BooksBUS implements IRuleSets {
 
     public void updateQuantity(BillDetails[] list) {
         for(BillDetails detail : list) {
-            int index = find(detail.getProducts().getProductID());
+            int index = find(detail.getProduct().getProductID());
             if (index != -1)
                 booksList[index].setQuantity(booksList[index].getQuantity() - detail.getQuantity());
         }

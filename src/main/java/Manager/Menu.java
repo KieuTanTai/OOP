@@ -15,6 +15,7 @@ public class Menu {
         new StaTypesBUS();
         new PublishersBUS();
         new MidForBooksBUS();
+        new SuppliersBUS();
 
         // methods handler();
         addHandler();

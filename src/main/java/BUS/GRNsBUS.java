@@ -69,8 +69,8 @@ public class GRNsBUS implements IRuleSets {
      public void showList() {
           if (grnList == null)
                return;
-          for (GRNs book : grnList)
-               book.showInfo();
+          for (GRNs grn : grnList)
+               grn.showInfo();
      }
 
      // find methods
@@ -450,6 +450,7 @@ public class GRNsBUS implements IRuleSets {
                System.out.println("I. Edit date");
                System.out.println("II. Edit employee");
                System.out.println("III. Edit customer");
+               System.out.println("III. Edit Detail");
                System.out.println("0. Exit");
                System.out.println("*".repeat(60));
                System.out.print("Enter your choice : ");
@@ -460,7 +461,7 @@ public class GRNsBUS implements IRuleSets {
                     break;
                }
 
-               choice = Validate.parseChooseHandler(inputChoice, 3);
+               choice = Validate.parseChooseHandler(inputChoice, 4);
                System.out.println("Enter name or id of grn : ");
                String userInput = input.nextLine().trim();
 
@@ -472,6 +473,8 @@ public class GRNsBUS implements IRuleSets {
                          editEmployee(userInput);
                     else if (choice == 3)
                          editSupplier(userInput);
+                    else if (choice == 4)
+                         editDetail(userInput);
                     // update file
                     writeFile();
                } catch (Exception e) {
@@ -569,6 +572,17 @@ public class GRNsBUS implements IRuleSets {
           }
      }
 
+     public void editDetail (String grnID) {
+          try {
+               GRNDetailsBUS listDetails = new GRNDetailsBUS();
+               listDetails.readFile();
+               listDetails.edit(grnID);
+               listDetails.writeFile();
+          } catch (Exception e) {
+               System.out.printf("error reading file!\nt%s\n", e.getMessage());
+          }
+
+     }
      // remove methods
      @Override
      public void remove() {
@@ -653,7 +667,6 @@ public class GRNsBUS implements IRuleSets {
 
           } catch (Exception err) {
                System.out.printf("error reading file!\nt%s\n", err.getMessage());
-
           }
      }
 

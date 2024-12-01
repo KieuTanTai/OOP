@@ -1033,7 +1033,7 @@ public class StationeriesBUS implements IRuleSets {
 
     public void updateQuantity(BillDetails[] list) {
         for(BillDetails detail : list) {
-            int index = find(detail.getProducts().getProductID());
+            int index = find(detail.getProduct().getProductID());
             if (index != -1)
                 staList[index].setQuantity(staList[index].getQuantity() - detail.getQuantity());
         }

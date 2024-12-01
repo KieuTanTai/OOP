@@ -43,7 +43,6 @@ public class SaleEventsBUS {
         this.count = count;
     }
 
-
     // other methods like add, remove, find, search, ......
     public void add(SaleEvents saleEvents) {
         count++;
@@ -70,7 +69,7 @@ public class SaleEventsBUS {
     }
 
     public SaleEvents findById(String id) {
-        for (int i = 0; i < count; i++) 
+        for (int i = 0; i < count; i++)
             if (ListSaleEvent[i].getSaleEvId() == id)
                 return ListSaleEvent[i];
         System.out.println("not found any sale event!");
@@ -122,91 +121,102 @@ public class SaleEventsBUS {
 
     public SaleEvents[] findByEndDate(String end) {
         try {
-            // Chuyển đổi chuỗi start thành LocalDate
             LocalDate startDate = LocalDate.parse(end);
 
             SaleEvents[] tempResult = new SaleEvents[ListSaleEvent.length];
             int temp = 0;
 
-            // Duyệt qua danh sách SaleEvents
             for (SaleEvents event : ListSaleEvent) {
                 if (event.getStartDate().equals(startDate)) {
-                    tempResult[temp++] = event; // Thêm sự kiện phù hợp vào mảng tạm
+                    tempResult[temp++] = event;
                 }
             }
 
-            // Tạo mảng kết quả với kích thước chính xác
             return Arrays.copyOf(tempResult, temp);
 
         } catch (DateTimeParseException e) {
             System.out.println("Ngày không hợp lệ: " + end);
         }
-        return new SaleEvents[0]; // Trả về mảng rỗng nếu không tìm thấy
+        return new SaleEvents[0];
     }
 
-    public SaleEvents[] findByDateRange(String start, String end) {
-        try {
-            // Chuyển đổi chuỗi ngày sang LocalDate
-            LocalDate startDate = LocalDate.parse(start);
-            LocalDate endDate = LocalDate.parse(end);
+    public SaleEvents[] findByDateRange(LocalDate date) {
+        SaleEvents[] tempResult = new SaleEvents[0];
+        int count = 0;
 
-            // Tạo mảng tạm với kích thước bằng số lượng sự kiện
-            SaleEvents[] tempResult = new SaleEvents[ListSaleEvent.length];
-            int count = 0;
-
-            // Duyệt qua danh sách SaleEvent
-            for (SaleEvents event : ListSaleEvent) {
-                // Kiểm tra nếu sự kiện nằm trong khoảng thời gian
-                if ((event.getStartDate().isEqual(startDate) || event.getStartDate().isAfter(startDate)) &&
-                        (event.getEndDate().isEqual(endDate) || event.getEndDate().isBefore(endDate))) {
-                    tempResult[count++] = event; // Thêm sự kiện vào mảng tạm và tăng biến đếm
-                }
+        for (SaleEvents event : ListSaleEvent) {
+            LocalDate eventStart = event.getStartDate();
+            LocalDate eventEnd = event.getEndDate();
+            if ((eventStart.isBefore(date) || eventStart.isEqual(date)) && (eventEnd.isAfter(date) || eventEnd.isEqual(date))) {
+                tempResult = Arrays.copyOf(tempResult, tempResult.length + 1);
+                tempResult[count] = event;
+                count++;
             }
-
-            // Sao chép các sự kiện phù hợp vào mảng kết quả
-            SaleEvents[] result = Arrays.copyOf(tempResult, count);
-            return result; // Trả về mảng kết quả
-        } catch (DateTimeParseException e) {
-            System.out.println("Ngày không hợp lệ: " + e.getMessage());
         }
-        return new SaleEvents[0]; // Trả về mảng rỗng nếu có lỗi
+
+        if (count == 0) {
+            System.out.println("Not found any sale event!");
+            return null;
+        }
+        return tempResult;
+    }
+
+    public SaleEvents[] findByDateRange(LocalDate start, LocalDate end) {
+        SaleEvents[] tempResult = new SaleEvents[0];
+        int count = 0;
+
+        for (SaleEvents event : ListSaleEvent) {
+            if ((event.getStartDate().isEqual(start) || event.getStartDate().isAfter(start)) &&
+                    (event.getEndDate().isEqual(end) || event.getEndDate().isBefore(end))) {
+                tempResult = Arrays.copyOf(tempResult, tempResult.length + 1);
+                tempResult[count] = event;
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            System.out.println("Not found any sale event!");
+            return null;
+        }
+        return tempResult;
     }
 
     public void readFile() throws IOException {
         // test file
         File testFile = new File("src/main/resources/SaleEvents");
-        if (testFile.length() == 0|| !testFile.exists())
+        if (testFile.length() == 0 || !testFile.exists())
             return;
 
         try (DataInputStream file = new DataInputStream(
                 new BufferedInputStream(new FileInputStream("src/main/resources/SaleEvents")))) {
-                int count = file.readInt();
-                SaleEvents[] list = new SaleEvents[count];
-                for (int i = 0; i < count; i++) {
-                    String saleEvId = file.readUTF();
-                    String saleEvName = file.readUTF();
-                    String description = file.readUTF();
-                    LocalDate startDate = LocalDate.parse(file.readUTF());
-                    LocalDate endDate = LocalDate.parse(file.readUTF());
-                    
-                    // get saleEvent detail
-                    String promoCode = file.readUTF();
-                    BigDecimal minPrice = new BigDecimal(file.readUTF());
-                    BigDecimal discount = new BigDecimal(file.readUTF());
-                    BigDecimal maxPriceDiscount = new BigDecimal(file.readUTF());
-                    SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount, maxPriceDiscount);
-                    
-                    // set values for temp list
-                    list[i] = new SaleEvents(saleEvId, saleEvName, description, startDate, endDate, detail);
-                }
-                
-                // set fields for BUS
-                setCount(count);
-                setListSaleEvent(list);
-            } catch(Exception ex) {
-                System.out.println("Lỗi dữ liệu: " + ex.getMessage());
+            int count = file.readInt();
+            SaleEvents[] list = new SaleEvents[count];
+            for (int i = 0; i < count; i++) {
+                String saleEvId = file.readUTF();
+                String saleEvName = file.readUTF();
+                String description = file.readUTF();
+                LocalDate startDate = LocalDate.parse(file.readUTF());
+                LocalDate endDate = LocalDate.parse(file.readUTF());
+
+                // get saleEvent detail
+                String promoCode = file.readUTF();
+                BigDecimal minPrice = new BigDecimal(file.readUTF());
+                BigDecimal discount = new BigDecimal(file.readUTF());
+                BigDecimal maxPriceDiscount = new BigDecimal(file.readUTF());
+                SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount,
+                        maxPriceDiscount);
+
+                // set values for temp list
+                list[i] = new SaleEvents(saleEvId, saleEvName, description, startDate, endDate, detail);
             }
+
+            // set fields for BUS
+            setCount(count);
+            setListSaleEvent(list);
+        } catch (Exception ex) {
+            System.out.println("Lỗi dữ liệu: " + ex.getMessage());
         }
+    }
 
     public void writeFile() throws IOException {
         File testFile = new File("src/main/resources/SaleEvents");

@@ -526,7 +526,7 @@ public class BooksBUS implements IRuleSets {
                               if (choice == 1)
                                    System.out.print("Enter min price (VND) : ");
                               else if (choice == 2)
-                                   System.out.print("Enter max price (VND : ");
+                                   System.out.print("Enter max price (VND) : ");
                               String value = input.nextLine().trim();
                               price = Validate.isBigDecimal(value);
                          } while (price == null);
@@ -539,11 +539,11 @@ public class BooksBUS implements IRuleSets {
                     case 3:
                          BigDecimal maxPrice;
                          do {
-                              System.out.print("Enter min price (VND : ");
+                              System.out.print("Enter min price (VND) : ");
                               String value = input.nextLine().trim();
                               price = Validate.isBigDecimal(value);
 
-                              System.out.print("Enter max price (VND : ");
+                              System.out.print("Enter max price (VND) : ");
                               value = input.nextLine().trim();
                               maxPrice = Validate.isBigDecimal(value);
                          } while (price == null || maxPrice == null);

@@ -21,7 +21,7 @@ public class GRNDetailsBUS {
      private int count;
      private final Scanner input = new Scanner(System.in);
 
-     // constructors
+     // *constructors (TEST DONE)
      public GRNDetailsBUS() {
           count = 0;
           grnDetailsList = new GRNDetails[0];
@@ -32,7 +32,7 @@ public class GRNDetailsBUS {
           this.grnDetailsList = grnDetailsList;
      }
 
-     // getters / setters
+     // *getters / setters (TEST DONE)
      public int getCount() {
           return count;
      }
@@ -85,7 +85,7 @@ public class GRNDetailsBUS {
           return -1;
      }
 
-     // relative find
+     // *relative find (TEST DONE)
      public GRNDetails[] relativeFind(String id) {
           int count = 0;
           GRNDetails[] list = new GRNDetails[0];
@@ -121,7 +121,7 @@ public class GRNDetailsBUS {
                showAsTable(list);
      }
 
-     // add methods
+     // *add methods (TEST DONE)
      public void add(GRNDetails detail) {
           if (find(detail.getGrnID(), detail.getProduct().getProductID()) == -1) {
                grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length + 1);
@@ -141,7 +141,7 @@ public class GRNDetailsBUS {
           this.count = total;
      }
 
-     // edit method
+     // *edit method (TEST DONE)
      public void edit(String grnID) {
           GRNDetails[] list = relativeFind(grnID);
           if (list != null) {
@@ -246,7 +246,7 @@ public class GRNDetailsBUS {
           return product;
      }
 
-     // remove methods
+     // *remove methods (TEST DONE)
      public void remove(String grnID, String productID) {
           int size = 0;
           GRNDetails[] reduceArray = new GRNDetails[0];
@@ -266,7 +266,7 @@ public class GRNDetailsBUS {
           setGrnDetailsList(reduceArray);
      }
 
-     // show as table methods
+     // *show as table methods (TEST DONE)
      public void showAsTable(GRNDetails[] list) {
           if (list == null)
                return;
@@ -300,7 +300,7 @@ public class GRNDetailsBUS {
      }
 
      // execute file resources
-     // write file
+     // *write file (TEST DONE)
      public void writeFile() throws IOException {
           try (DataOutputStream file = new DataOutputStream(
                     new BufferedOutputStream(new FileOutputStream("src/main/resources/GRNDetails", false)))) {
@@ -316,7 +316,7 @@ public class GRNDetailsBUS {
           }
      }
 
-     // read file
+     // *read file (TEST DONE)
      public void readFile() throws IOException {
           File testFile = new File("src/main/resources/GRNDetails");
           if (testFile.length() == 0 || !testFile.exists())

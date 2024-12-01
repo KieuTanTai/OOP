@@ -87,7 +87,7 @@ public class BillBus{
 
     public void add(){
         Bill ds = new Bill();
-        ds.nhap();
+        ds.setInfo();
         System.out.println("Do you want to add details for this bill? (Y/N)");
         String choice = sc.nextLine().trim().toUpperCase();
         if (choice.equals("Y")) {
@@ -116,7 +116,7 @@ public class BillBus{
                 if(ds[i].getBillId().equals(fixBill)){
                     flag = true;
                     System.out.println("*".repeat(60));
-                    System.out.println("I. employeed id");
+                    System.out.println("I. employee id");
                     System.out.println("II. customer id");
                     System.out.println("III. date");
                     System.out.println("IV. discount");
@@ -297,7 +297,7 @@ public class BillBus{
         boolean flag = false;
         for(int i = 0 ; i < n; ++i){
             if(ds[i].getSaleCode().getSaleEvId().equals(newSaleId)){
-                ds[i].getSaleCode().xuatGomDetail();
+                ds[i].getSaleCode().showWithDetail();
                 flag = true;
             }
         }

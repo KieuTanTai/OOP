@@ -17,7 +17,6 @@ import java.util.Scanner;
 import DTO.Employees;
 import DTO.GRNs;
 import DTO.Suppliers;
-import Manager.Menu;
 import util.Validate;
 
 public class GRNsBUS implements IRuleSets {
@@ -95,7 +94,7 @@ public class GRNsBUS implements IRuleSets {
           for (GRNs grn : grnList) {
                if (originalKey instanceof String key) {
 
-                   String employeeID = (grn.getEmployee() != null) ? grn.getEmployee().getPersonID() : "";
+                    String employeeID = (grn.getEmployee() != null) ? grn.getEmployee().getPersonID() : "";
                     String employeeName = (grn.getEmployee() != null) ? grn.getEmployee().getFullName().toLowerCase()
                               : "";
 
@@ -113,9 +112,6 @@ public class GRNsBUS implements IRuleSets {
                          flag = true;
                } else if (originalKey instanceof LocalDate) {
                     if (request.equals("date") && grn.getDate().isEqual((LocalDate) originalKey))
-                         flag = true;
-               } else if (originalKey instanceof BigDecimal) {
-                    if (request.equals("totalprice") && grn.getTotalPrice().compareTo((BigDecimal) originalKey) == 0)
                          flag = true;
                }
 
@@ -135,10 +131,193 @@ public class GRNsBUS implements IRuleSets {
           return resultArray;
      }
 
+     // advanced finds
+     public GRNs[] advancedFind(BigDecimal minPrice, BigDecimal maxPrice, String request) {
+          request = request.toLowerCase().trim();
+          if (minPrice.compareTo(BigDecimal.ZERO) < 0 || maxPrice.compareTo(BigDecimal.ZERO) < 0)
+               return null;
+          if (request.equals("range") && ((minPrice.compareTo(maxPrice) >= 0))) {
+               System.out.println("error range!");
+               return null;
+          }
+
+          int count = 0;
+          boolean flag = false;
+          GRNs[] grnList = new GRNs[0];
+          for (GRNs grn : grnList) {
+               BigDecimal productPrice = grn.getTotalPrice();
+
+               if ((request.equals("min")) && (productPrice.compareTo(minPrice) >= 0))
+                    flag = true;
+
+               else if ((request.equals("max")) && (productPrice.compareTo(maxPrice) <= 0))
+                    flag = true;
+
+               else if (request.equals("range")
+                         && ((productPrice.compareTo(minPrice) >= 0) && (productPrice.compareTo(maxPrice) <= 0)))
+                    flag = true;
+
+               if (flag) {
+                    grnList = Arrays.copyOf(grnList, grnList.length + 1);
+                    grnList[count] = grn;
+                    flag = false;
+                    count++;
+               }
+          }
+          if (count == 0) {
+               System.out.println("not found any books!");
+               return null;
+          }
+          return grnList;
+     }
+
      // search methods
      @Override
      public void search() {
-          Menu.searchHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Strict search");
+               System.out.println("II. Relative search");
+               System.out.println("III. Advanced search");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 3);
+               switch (choice) {
+                    case 1:
+                         System.out.println("Enter id of grn : ");
+                         String userInput = input.nextLine().trim();
+                         search(userInput);
+                         break;
+                    case 2:
+                         caseRelativeSearch();
+                         break;
+                    case 3:
+                         caseAdvancedSearch();
+                         break;
+               }
+          } while (choice != 0);
+     }
+
+     private void caseRelativeSearch() {
+          int choice, tempChoice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Search by Employee");
+               System.out.println("II. Search by Supplier");
+               System.out.println("III. Search by Date");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 3);
+               switch (choice) {
+                    case 1:
+                         try {
+                              EmployeesBUS list = new EmployeesBUS();
+                              list.readFile();
+                              Employees[] tempList = list.relativeFind("Warehouse Keeper", "role");
+                              int length = tempList.length;
+                              for (int i = 0; i < length; i++) {
+                                   System.out.printf("%d : \n", i + 1);
+                                   tempList[i].showInfo();
+                              }
+                              do {
+                                   System.out.print("choose employee (like 1, 2,etc...) : ");
+                                   String option = input.nextLine().trim();
+                                   tempChoice = Validate.parseChooseHandler(option, tempList.length);
+                              } while (tempChoice == -1);
+                              relativeSearch(tempList[tempChoice - 1].getFullName(), "employee");
+                              break;
+                         } catch (IOException e) {
+                              System.out.println("error reading file!\n" + e.getMessage());
+                         }
+                    case 2:
+                         // show list for user choose
+                         SuppliersBUS.showList();
+                         System.out.println("-".repeat(60));
+                         do {
+                              System.out.print("choose supplier (like 1, 2,etc...) : ");
+                              String option = input.nextLine().trim();
+                              tempChoice = Validate.parseChooseHandler(option, SuppliersBUS.getCount());
+                         } while (tempChoice == -1);
+                         relativeFind(SuppliersBUS.getSupplierList()[tempChoice - 1].getSupplierName(), "supplier");
+                         break;
+                    case 3:
+                         LocalDate date;
+                         do {
+                              System.out.print("Enter date (dd-mm-yyyy) : ");
+                              String dateInput = input.nextLine().trim();
+                              date = Validate.isCorrectDate(dateInput);
+                         } while (date == null);
+                         relativeSearch(date, "date");
+                         break;
+               }
+          } while (choice != 0);
+     }
+
+     private void caseAdvancedSearch() {
+          int choice;
+          BigDecimal price;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Search with min price");
+               System.out.println("II. Search with max price");
+               System.out.println("III. Search with range min to max price");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 3);
+               switch (choice) {
+                    case 1:
+                    case 2:
+                         do {
+                              if (choice == 1)
+                                   System.out.print("Enter min price (VND) : ");
+                              else if (choice == 2)
+                                   System.out.print("Enter max price (VND) : ");
+                              String value = input.nextLine().trim();
+                              price = Validate.isBigDecimal(value);
+                         } while (price == null);
+
+                         if (choice == 1)
+                              advancedSearch(price, price, "min");
+                         else if (choice == 2)
+                              advancedSearch(price, price, "max");
+                         break;
+                    case 3:
+                         BigDecimal maxPrice;
+                         do {
+                              System.out.print("Enter min price (VND) : ");
+                              String value = input.nextLine().trim();
+                              price = Validate.isBigDecimal(value);
+
+                              System.out.print("Enter max price (VND) : ");
+                              value = input.nextLine().trim();
+                              maxPrice = Validate.isBigDecimal(value);
+                         } while (price == null || maxPrice == null);
+                         advancedSearch(price, maxPrice, "range");
+                         break;
+               }
+          } while (choice != 0);
      }
 
      @Override
@@ -157,16 +336,91 @@ public class GRNsBUS implements IRuleSets {
                     grn.showInfo();
      }
 
+     // advanced search
+     public void advancedSearch(Object keyI, Object timeOrKey, String request) {
+          GRNs[] list = advancedFind((BigDecimal) keyI, (BigDecimal) timeOrKey, request);
+          if (list != null)
+               for (GRNs grn : list)
+                    grn.showInfo();
+
+     }
+
      // add methods
      @Override
      public void add() {
-          Menu.addHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Add grn");
+               System.out.println("II. Add list of grn");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 2);
+               // try catch for execute file after add
+               try {
+                    switch (choice) {
+                         case 1:
+                              GRNs newGrNs = new GRNs();
+                              newGrNs.setInfo();
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.parseChooseHandler(option, 2);
+                              } while (choice == -1);
+                              if (choice == 1)
+                                   break;
+                              add(newGrNs);
+                              writeFile();
+                              break;
+                         case 2:
+                              int count = 0;
+                              GRNs[] list = new GRNs[0];
+                              do {
+                                   System.out.print("Enter total grn you wanna add : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.isNumber(option);
+                              } while (choice == -1);
+                              // for loop with input time
+                              for (int i = 0; i < choice; i++) {
+                                   GRNs grn = new GRNs();
+                                   grn.setInfo();
+                                   list = Arrays.copyOf(list, list.length + 1);
+                                   list[count] = grn;
+                                   count++;
+                              }
+
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.parseChooseHandler(option, 2);
+                              } while (choice == -1);
+                              if (choice == 1)
+                                   break;
+                              add(list);
+                              writeFile();
+                              break;
+                    }
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+               }
+          } while (choice != 0);
      }
 
      @Override
      public void add(Object newGRN) {
           if (newGRN instanceof GRNs grn) {
-              grn.setGrnID(grn.getGrnID());
+               grn.setGrnID(grn.getGrnID());
                grnList = Arrays.copyOf(grnList, grnList.length + 1);
                grnList[count] = grn;
                count++;
@@ -190,7 +444,40 @@ public class GRNsBUS implements IRuleSets {
      // edit methods
      @Override
      public void edit() {
-          Menu.editHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Edit date");
+               System.out.println("II. Edit employee");
+               System.out.println("III. Edit customer");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+
+               choice = Validate.parseChooseHandler(inputChoice, 3);
+               System.out.println("Enter name or id of grn : ");
+               String userInput = input.nextLine().trim();
+
+               // if case
+               try {
+                    if (choice == 1)
+                         edit(userInput);
+                    else if (choice == 2)
+                         editEmployee(userInput);
+                    else if (choice == 3)
+                         editSupplier(userInput);
+                    // update file
+                    writeFile();
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+               }
+          } while (true);
      }
 
      @Override
@@ -282,34 +569,32 @@ public class GRNsBUS implements IRuleSets {
           }
      }
 
-     public void editTotalPrice(String grnID) {
-          int index = find(grnID);
-          if (index != -1) {
-               int userChoose;
-               grnList[index].showInfo();
-               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
-               do {
-                    System.out.print("choose option (1 or 2) : ");
-                    String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
-                    return;
-
-               BigDecimal price;
-               do {
-                    System.out.print("set price (VND) : ");
-                    String value = input.nextLine();
-                    price = Validate.isBigDecimal(value);
-               } while (price == null);
-               grnList[index].setTotalPrice(price);
-          }
-     }
-
      // remove methods
      @Override
      public void remove() {
-          Menu.removeHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Remove");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 1);
+               try {
+                    System.out.println("Enter name or id of grn : ");
+                    String userInput = input.nextLine().trim();
+                    remove(userInput);
+                    writeFile();
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+               }
+          } while (choice != 0);
      }
 
      @Override

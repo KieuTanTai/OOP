@@ -8,6 +8,7 @@ import BUS.BookFormatsBUS;
 import BUS.BooksBUS;
 import BUS.CustomersBUS;
 import BUS.EmployeesBUS;
+import BUS.GRNsBUS;
 import BUS.GenresBUS;
 import BUS.MidForBooksBUS;
 import BUS.PublishersBUS;
@@ -70,9 +71,8 @@ public class App {
 
 
                 // !INIT VALUE
-                SaleEvents test = new SaleEvents();
-                test.setInfo();
-                test.showWithDetail();
+                GRNsBUS test = new GRNsBUS();
+                test.add();
 
                 // !SHOW BEFORE
                 // SuppliersBUS.showList();

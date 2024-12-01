@@ -22,7 +22,7 @@ public class SaleEvents {
 
     public SaleEvents(String saleEvId, String saleEvName, String description, LocalDate startDate, LocalDate enDate,
             SaleEventsDetail detail) {
-        this.saleEvId = saleEvId;
+        this.saleEvId = saleIDModifier(saleEvId);
         this.saleEvName = saleEvName;
         this.description = description;
         this.startDate = startDate;
@@ -31,7 +31,7 @@ public class SaleEvents {
     }
 
     public SaleEvents(String saleEvId, String saleEvName, String description, LocalDate startDate, LocalDate enDate) {
-        this.saleEvId = saleEvId;
+        this.saleEvId = saleIDModifier(saleEvId);
         this.saleEvName = saleEvName;
         this.description = description;
         this.startDate = startDate;
@@ -65,7 +65,7 @@ public class SaleEvents {
 
     // setter
     public void setSaleEvId(String saleEvId) {
-        this.saleEvId = saleEvId;
+        this.saleEvId = saleIDModifier(saleEvId);
     }
 
     public void setSaleEvName(String saleEvName) {

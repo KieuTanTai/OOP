@@ -12,7 +12,6 @@ import BUS.CustomersBUS;
 import BUS.EmployeesBUS;
 import BUS.SaleEventsBUS;
 import BUS.StationeriesBUS;
-import BUS.SuppliersBUS;
 import BUS.BillBUS;
 
 import java.time.LocalDate;
@@ -206,7 +205,7 @@ public class Bill {
             if (list.getCount() == 0) // if not have any supplier
                 return null;
             do {
-                System.out.print("product id: ");
+                System.out.print("Enter Customer's id: ");
                 customerID = sc.nextLine().trim();
                 // execute sc id
                 index = list.find(customerID);

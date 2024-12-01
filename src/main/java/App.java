@@ -12,6 +12,7 @@ import BUS.GRNsBUS;
 import BUS.GenresBUS;
 import BUS.MidForBooksBUS;
 import BUS.PublishersBUS;
+import BUS.SaleEventsBUS;
 import BUS.StaTypesBUS;
 import BUS.StationeriesBUS;
 import BUS.SuppliersBUS;
@@ -25,6 +26,7 @@ import DTO.Employees;
 import DTO.GRNs;
 import DTO.Publishers;
 import DTO.SaleEvents;
+import DTO.SaleEventsDetail;
 import DTO.StaTypes;
 import DTO.Stationeries;
 import DTO.Suppliers;
@@ -45,6 +47,7 @@ public class App {
                 CustomersBUS cusList = new CustomersBUS();
                 EmployeesBUS empList = new EmployeesBUS();
                 SuppliersBUS supList = new SuppliersBUS();
+                SaleEventsBUS test = new SaleEventsBUS();
 
                 // *READ FILE
                 initList.readFile();
@@ -58,21 +61,19 @@ public class App {
                 empList.readFile();
                 newTest.readFile();
                 listSta.readFile();
-
+                test.readFile();
 
                 // TODO
                 // *Books, MidForBook, Stationeries (DONE)
                 // *Customers, Employees (DONE)
                 // *BookGenres, BookTypes, Publishers, StaTypes, Suppliers (DONE)
-                //  *GRN, GRNDetail (DONE)
-                //  *
+                // *GRN, GRNDetail (DONE)
+                // *
 
                 // !INIT ARRAY
-
+                test.showList();
 
                 // !INIT VALUE
-                GRNsBUS test = new GRNsBUS();
-                test.add();
 
                 // !SHOW BEFORE
                 // SuppliersBUS.showList();

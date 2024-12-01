@@ -11,24 +11,24 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class SaleEventsBUS {
-    private SaleEvents[] ListSaleEvent;
+    private SaleEvents[] listSaleEvents;
     private int count;
     Scanner sc = new Scanner(System.in);
 
     // constructors
     public SaleEventsBUS() {
         this.count = 0;
-        this.ListSaleEvent = new SaleEvents[0];
+        this.listSaleEvents = new SaleEvents[0];
     }
 
     public SaleEventsBUS(SaleEvents[] listSaleEvent, int count) {
-        ListSaleEvent = listSaleEvent;
+        listSaleEvents = listSaleEvent;
         this.count = count;
     }
 
     // getter / setter
     public SaleEvents[] getListSaleEvent() {
-        return this.ListSaleEvent;
+        return this.listSaleEvents;
     }
 
     public int getCount() {
@@ -36,7 +36,7 @@ public class SaleEventsBUS {
     }
 
     public void setListSaleEvent(SaleEvents[] list) {
-        this.ListSaleEvent = list;
+        this.listSaleEvents = list;
     }
 
     public void setCount(int count) {
@@ -44,16 +44,24 @@ public class SaleEventsBUS {
     }
 
     // other methods like add, remove, find, search, ......
+    // show list
+    public void showList() {
+        if (listSaleEvents == null)
+            return;
+        for (SaleEvents saleEvents : listSaleEvents)
+            saleEvents.showInfo();
+    }
+
     public void add(SaleEvents saleEvents) {
         count++;
-        ListSaleEvent = Arrays.copyOf(ListSaleEvent, count);
-        ListSaleEvent[count - 1] = saleEvents;
+        listSaleEvents = Arrays.copyOf(listSaleEvents, count);
+        listSaleEvents[count - 1] = saleEvents;
     }
 
     public void update(String id) {
         for (int i = 0; i < count; i++)
-            if (ListSaleEvent[i].getSaleEvId() == id)
-                ListSaleEvent[i].setInfo();
+            if (listSaleEvents[i].getSaleEvId().equals(id))
+                listSaleEvents[i].setInfo();
     }
 
     public boolean delete(int vt) {
@@ -62,22 +70,22 @@ public class SaleEventsBUS {
 
         count--;
         for (int x = vt; x < count; x++)
-            ListSaleEvent[x] = ListSaleEvent[x + 1];
-        ListSaleEvent[count] = null;
-        ListSaleEvent = Arrays.copyOf(ListSaleEvent, count);
+            listSaleEvents[x] = listSaleEvents[x + 1];
+        listSaleEvents[count] = null;
+        listSaleEvents = Arrays.copyOf(listSaleEvents, count);
         return true;
     }
 
     public SaleEvents findById(String id) {
         for (int i = 0; i < count; i++)
-            if (ListSaleEvent[i].getSaleEvId() == id)
-                return ListSaleEvent[i];
+            if (listSaleEvents[i].getSaleEvId().equals(id))
+                return listSaleEvents[i];
         System.out.println("not found any sale event!");
         return null;
     }
 
     public SaleEvents findByPromoCode(String promoCode) {
-        for (SaleEvents sale : ListSaleEvent)
+        for (SaleEvents sale : listSaleEvents)
             if (sale.getDetail().getPromoCode().equals(promoCode))
                 return sale;
         System.out.println("not found any sale event!");
@@ -88,9 +96,8 @@ public class SaleEventsBUS {
         SaleEvents result = new SaleEvents();
 
         for (int i = 0; i < count; i++) {
-            if (ListSaleEvent[i].getSaleEvName() == name)
-                result = ListSaleEvent[i];
-
+            if (listSaleEvents[i].getSaleEvName().equals(name))
+                result = listSaleEvents[i];
         }
         return result;
     }
@@ -99,10 +106,10 @@ public class SaleEventsBUS {
         try {
             LocalDate startDate = LocalDate.parse(start);
 
-            SaleEvents[] tempResult = new SaleEvents[ListSaleEvent.length];
+            SaleEvents[] tempResult = new SaleEvents[listSaleEvents.length];
             int temp = 0;
 
-            for (SaleEvents event : ListSaleEvent) {
+            for (SaleEvents event : listSaleEvents) {
                 if (event.getStartDate().equals(startDate)) {
                     tempResult[temp++] = event;
                 }
@@ -118,10 +125,10 @@ public class SaleEventsBUS {
         try {
             LocalDate startDate = LocalDate.parse(end);
 
-            SaleEvents[] tempResult = new SaleEvents[ListSaleEvent.length];
+            SaleEvents[] tempResult = new SaleEvents[listSaleEvents.length];
             int temp = 0;
 
-            for (SaleEvents event : ListSaleEvent) {
+            for (SaleEvents event : listSaleEvents) {
                 if (event.getStartDate().equals(startDate)) {
                     tempResult[temp++] = event;
                 }
@@ -139,10 +146,11 @@ public class SaleEventsBUS {
         SaleEvents[] tempResult = new SaleEvents[0];
         int count = 0;
 
-        for (SaleEvents event : ListSaleEvent) {
+        for (SaleEvents event : listSaleEvents) {
             LocalDate eventStart = event.getStartDate();
             LocalDate eventEnd = event.getEndDate();
-            if ((eventStart.isBefore(date) || eventStart.isEqual(date)) && (eventEnd.isAfter(date) || eventEnd.isEqual(date))) {
+            if ((eventStart.isBefore(date) || eventStart.isEqual(date))
+                    && (eventEnd.isAfter(date) || eventEnd.isEqual(date))) {
                 tempResult = Arrays.copyOf(tempResult, tempResult.length + 1);
                 tempResult[count] = event;
                 count++;
@@ -160,7 +168,7 @@ public class SaleEventsBUS {
         SaleEvents[] tempResult = new SaleEvents[0];
         int count = 0;
 
-        for (SaleEvents event : ListSaleEvent) {
+        for (SaleEvents event : listSaleEvents) {
             if ((event.getStartDate().isEqual(start) || event.getStartDate().isAfter(start)) &&
                     (event.getEndDate().isEqual(end) || event.getEndDate().isBefore(end))) {
                 tempResult = Arrays.copyOf(tempResult, tempResult.length + 1);
@@ -214,14 +222,10 @@ public class SaleEventsBUS {
     }
 
     public void writeFile() throws IOException {
-        File testFile = new File("src/main/resources/SaleEvents");
-        if (testFile.length() == 0 || !testFile.exists())
-            return;
-
         try (DataOutputStream file = new DataOutputStream(
                 new BufferedOutputStream(new FileOutputStream("src/main/resources/SaleEvents")))) {
-            file.writeInt(count);
-            for (SaleEvents event : ListSaleEvent) {
+            System.out.println(count);
+            for (SaleEvents event : listSaleEvents) {
                 file.writeUTF(event.getSaleEvId());
                 file.writeUTF(event.getSaleEvName());
                 file.writeUTF(event.getDescription());

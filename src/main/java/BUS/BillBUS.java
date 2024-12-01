@@ -177,7 +177,7 @@ public class BillBUS implements IRuleSets {
                 } else if (choice == 2) {
                     editCustomer(billId);
                 } else if (choice == 3) {
-                    editDate(billId);
+                    edit(billId);
                 }
                 // Update the file after modification
                 writeFile();
@@ -254,7 +254,8 @@ public class BillBUS implements IRuleSets {
         }
     }
 
-    public void editDate(String billId) {
+    @Override 
+    public void edit(String billId) {
         int index = find(billId);
         if (index != -1) {
             Bill bill = ds[index];
@@ -617,11 +618,5 @@ public class BillBUS implements IRuleSets {
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
-    }
-
-    @Override
-    public void edit(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'edit'");
     }
 }

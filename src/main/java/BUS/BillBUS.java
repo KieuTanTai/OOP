@@ -168,7 +168,7 @@ public class BillBUS implements IRuleSets {
             }
 
             choice = Validate.parseChooseHandler(inputChoice, 3);
-            System.out.print("Enter Bill ID: ");
+            System.out.print("Enter Bill ID : ");
             String billId = sc.nextLine().trim();
 
             try {

@@ -1,5 +1,6 @@
 package Manager;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import BUS.*;
@@ -8,14 +9,14 @@ import util.Validate;
 public class Menu {
     private final Scanner input = new Scanner(System.in);
 
-    public Menu() {
+    public Menu() throws IOException {
         // create static fields
-        new TypesBUS();
-        new GenresBUS();
-        new StaTypesBUS();
-        new PublishersBUS();
-        new MidForBooksBUS();
-        new SuppliersBUS();
+        new TypesBUS().readFile();
+        new GenresBUS().readFile();
+        new StaTypesBUS().readFile();
+        new PublishersBUS().readFile();
+        new MidForBooksBUS().readFile();
+        new SuppliersBUS().readFile();
 
         // methods handler();
         addHandler();

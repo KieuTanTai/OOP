@@ -30,11 +30,10 @@ public class Menu {
         int choice;
         do {
             System.out.println("=".repeat(140));
-            System.out.println("1. Add new");
-            System.out.println("2. Search");
-            System.out.println("3. Remove");
-            System.out.println("4. Edit");
-            System.out.println("5. Find");
+            System.out.println("I. Add new");
+            System.out.println("II. Search");
+            System.out.println("III. Remove");
+            System.out.println("IV. Edit");
             System.out.println("0. Exit");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -43,7 +42,7 @@ public class Menu {
                 System.out.println("See you later!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 5);
+            choice = Validate.parseChooseHandler(option, 4);
             switch (choice) {
                 case 1:
                     addHandler();

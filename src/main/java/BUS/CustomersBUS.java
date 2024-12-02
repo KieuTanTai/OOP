@@ -202,7 +202,7 @@ public class CustomersBUS implements IRuleSets {
                choice = Validate.parseChooseHandler(inputChoice, 3);
                switch (choice) {
                     case 1:
-                         System.out.println("Enter name or id of customer : ");
+                         System.out.print("Enter name or id of customer : ");
                          String userInput = input.nextLine().trim();
                          search(userInput);
                          break;
@@ -283,7 +283,7 @@ public class CustomersBUS implements IRuleSets {
 
                          if (monthOrYear == 1)
                               do {
-                                   System.out.println("Enter Month value : ");
+                                   System.out.print("Enter Month value : ");
                                    inputDate = input.nextLine().trim();
                                    valueFlag = true;
                                    // validate input
@@ -295,7 +295,7 @@ public class CustomersBUS implements IRuleSets {
                               } while (!valueFlag);
                          else if (monthOrYear == 2)
                               do {
-                                   System.out.println("Enter Year value : ");
+                                   System.out.print("Enter Year value : ");
                                    inputDate = input.nextLine().trim();
                                    // validate input
                                    valueFlag = true;
@@ -537,7 +537,7 @@ public class CustomersBUS implements IRuleSets {
                     break;
                }
                choice = Validate.parseChooseHandler(inputChoice, 5);
-               System.out.println("Enter name or id of customer : ");
+               System.out.print("Enter name or id of customer : ");
                String userInput = input.nextLine().trim();
 
                // if case
@@ -725,7 +725,7 @@ public class CustomersBUS implements IRuleSets {
                choice = Validate.parseChooseHandler(inputChoice, 1);
                if (choice == 1) {
                     try {
-                         System.out.println("Enter name or id of customer : ");
+                         System.out.print("Enter name or id of customer : ");
                          String userInput = input.nextLine().trim();
                          remove(userInput);
                          writeFile();

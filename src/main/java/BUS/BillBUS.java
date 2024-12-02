@@ -480,22 +480,26 @@ public class BillBUS implements IRuleSets {
         request = request.toLowerCase().trim();
 
         for (Bill bill : ds) {
-            if (originalKey instanceof Employees employee) {
-                String employeeId = (bill.getEmployee() != null) ? bill.getEmployee().getPersonID() : "";
-                String employeeName = (bill.getEmployee() != null) ? bill.getEmployee().getFullName().toLowerCase()
-                        : "";
+            if (originalKey instanceof String key) {
+                key = key.toLowerCase();
 
-                if (request.equals("employee") && (employeeId.equals(employee.getPersonID())
-                        || employeeName.contains(employee.getFullName().toLowerCase())))
-                    flag = true;
-            } else if (originalKey instanceof Customers customer) {
-                String customerId = (bill.getCustomer() != null) ? bill.getCustomer().getPersonID() : "";
-                String customerName = (bill.getCustomer() != null) ? bill.getCustomer().getFullName().toLowerCase()
-                        : "";
+                if (request.equals("employee")) {
+                    String employeeId = (bill.getEmployee() != null) ? bill.getEmployee().getPersonID().toLowerCase()
+                            : "";
+                    String employeeName = (bill.getEmployee() != null) ? bill.getEmployee().getFullName().toLowerCase()
+                            : "";
 
-                if (request.equals("customer") && (customerId.equals(customer.getPersonID())
-                        || customerName.contains(customer.getFullName().toLowerCase())))
-                    flag = true;
+                    if (employeeId.equals(key) || employeeName.contains(key))
+                        flag = true;
+                } else if (request.equals("customer")) {
+                    String customerId = (bill.getCustomer() != null) ? bill.getCustomer().getPersonID().toLowerCase()
+                            : "";
+                    String customerName = (bill.getCustomer() != null) ? bill.getCustomer().getFullName().toLowerCase()
+                            : "";
+
+                    if (customerId.equals(key) || customerName.contains(key))
+                        flag = true;
+                }
             } else if (originalKey instanceof LocalDate) {
                 if (request.equals("date") && bill.getDate().isEqual((LocalDate) originalKey))
                     flag = true;
@@ -597,7 +601,6 @@ public class BillBUS implements IRuleSets {
                 BigDecimal discount = new BigDecimal(file.readUTF());
                 String saleCode = file.readUTF(); // read before set object
                 BigDecimal totalPrice = new BigDecimal(file.readUTF());
-
 
                 // Execute id
                 CustomersBUS customersList = new CustomersBUS();

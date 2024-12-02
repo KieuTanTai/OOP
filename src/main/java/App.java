@@ -55,7 +55,7 @@ public class App {
                 grnList.readFile();
                 billList.readFile();
 
-                // for (int i = 0; i < 1; i++) {
+                // for (int i = 0; i < 3; i++) {
                 //         Bill bill = new Bill();
                 //         bill.setInfo();
                 //         billList.add(bill);

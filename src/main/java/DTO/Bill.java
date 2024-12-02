@@ -417,6 +417,7 @@ public class Bill {
     public void showInfo() {
         LocalDate date = this.getDate();
         BigDecimal totalPrice = this.getTotalPrice();
+        BigDecimal discount = this.getDiscount();
         String billId = this.getBillId(), employeeName = this.getEmployee().getFullName(),
                 customerName = this.getCustomer().getFullName();
 
@@ -426,11 +427,22 @@ public class Bill {
                 date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
         System.out.printf("| %-22s : %s \n", "Employee", employeeName != null ? employeeName : "N/A");
         System.out.printf("| %-22s : %s \n", "Customer", customerName != null ? customerName : "N/A");
-        System.out.println("-".repeat(139));
-        System.out.printf("| %-22s : %s \n", "Discount",
-                totalPrice != null ? Validate.formatPrice(totalPrice.multiply(this.getDiscount())) : "N/A");
+
+        try {
+            BillDetailsBUS detailList = new BillDetailsBUS();
+            detailList.readFile();
+            BillDetails[] list = detailList.relativeFind(this.getBillId());
+            for (BillDetails detail : list) {
+                detail.showInfo();
+            }
+        } catch (Exception e) {
+            System.out.println("| Error loading bill details!\n" + e.getMessage());
+        }
+
+        System.out.printf("| %-22s : %s \n", "Discount", discount != null ? Validate.formatPrice(discount) : "N/A");
+        System.out.println("|" + "*".repeat(139));
         System.out.printf("| %-22s : %s \n", "Total Price",
-                totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
+                totalPrice != null ? Validate.formatPrice(totalPrice.subtract(discount)) : "N/A");
         System.out.println("=".repeat(140));
     }
 

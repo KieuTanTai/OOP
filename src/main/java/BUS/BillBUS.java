@@ -561,17 +561,17 @@ public class BillBUS implements IRuleSets {
     // write file
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(
-            new BufferedOutputStream(new FileOutputStream("src/main/resources/Bill", false)))) {
+                new BufferedOutputStream(new FileOutputStream("src/main/resources/Bill", false)))) {
             file.writeInt(n);
             for (int i = 0; i < n; ++i) {
-                SaleEvents saleCode = ds[i].getSaleCode(); 
+                SaleEvents saleCode = ds[i].getSaleCode();
                 // write bill
                 file.writeUTF(ds[i].getBillId());
                 file.writeUTF(ds[i].getCustomer().getPersonID());
                 file.writeUTF(ds[i].getEmployee().getPersonID());
-                file.writeUTF(saleCode != null ? saleCode.getDetail().getPromoCode() : "");
                 file.writeUTF(ds[i].getDate().toString());
                 file.writeUTF(ds[i].getDiscount().toString());
+                file.writeUTF(saleCode != null ? saleCode.getDetail().getPromoCode() : "");
                 file.writeUTF(ds[i].getTotalPrice().toString());
             }
         } catch (Exception e) {
@@ -586,20 +586,18 @@ public class BillBUS implements IRuleSets {
             return;
 
         try (DataInputStream file = new DataInputStream(
-            new BufferedInputStream(new FileInputStream("src/main/resources/Bill")))) {
+                new BufferedInputStream(new FileInputStream("src/main/resources/Bill")))) {
             int billCount = file.readInt();
             Bill[] tmpBill = new Bill[billCount];
-
             for (int i = 0; i < billCount; i++) {
-                // read bill
                 String billId = file.readUTF();
                 String customerId = file.readUTF();
                 String employeeId = file.readUTF();
-                String promoCode = file.readUTF();
-                String getDate = file.readUTF();
-                LocalDate date = !getDate.isEmpty() ? LocalDate.parse(getDate) : null;
+                LocalDate date = LocalDate.parse(file.readUTF());
                 BigDecimal discount = new BigDecimal(file.readUTF());
+                String saleCode = file.readUTF(); // read before set object
                 BigDecimal totalPrice = new BigDecimal(file.readUTF());
+
 
                 // Execute id
                 CustomersBUS customersList = new CustomersBUS();
@@ -612,7 +610,7 @@ public class BillBUS implements IRuleSets {
                 // get object
                 Customers customer = customersList.getCustomer(customerId);
                 Employees employee = employeesList.getEmployee(employeeId);
-                SaleEvents saleEvent = salesList.findByPromoCode(promoCode);
+                SaleEvents saleEvent = salesList.findByPromoCode(saleCode);
 
                 tmpBill[i] = new Bill(billId, employee, customer, saleEvent, discount, totalPrice, date);
             }

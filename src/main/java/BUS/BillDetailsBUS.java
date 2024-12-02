@@ -116,7 +116,7 @@ public class BillDetailsBUS {
             do {
                 System.out.println("Choose product type!");
                 System.out.println("I. Book");
-                System.out.println("II. Stationery");
+                System.out.println("II. Stationary");
                 System.out.print("Your choice (1 or 2): ");
                 String choice = sc.nextLine().trim();
                 productChoose = Validate.parseChooseHandler(choice, 2);
@@ -130,8 +130,7 @@ public class BillDetailsBUS {
             }
             // set quantity and calc other BigDecimal fields
             newQuantity = setQuantity();
-            BigDecimal subTotal = product.getProductPrice().multiply(BigDecimal.valueOf(newQuantity));
-            setBillDetail(list[userChoose - 1], new BillDetails(billID, newQuantity, product, subTotal));
+            setBillDetail(list[userChoose - 1], new BillDetails(billID, newQuantity, product, product.getProductPrice()));
             System.out.println("Bill details updated successfully!");
         } 
     }

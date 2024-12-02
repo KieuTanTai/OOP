@@ -1,12 +1,12 @@
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.security.PublicKey;
-import java.time.LocalDate;
 import java.util.Scanner;
+
+import BUS.BillBUS;
 import BUS.BookFormatsBUS;
 import BUS.BooksBUS;
 import BUS.CustomersBUS;
 import BUS.EmployeesBUS;
+import BUS.GRNDetailsBUS;
 import BUS.GRNsBUS;
 import BUS.GenresBUS;
 import BUS.MidForBooksBUS;
@@ -16,19 +16,7 @@ import BUS.StaTypesBUS;
 import BUS.StationeriesBUS;
 import BUS.SuppliersBUS;
 import BUS.TypesBUS;
-import DTO.BookFormats;
-import DTO.BookGenres;
-import DTO.BookTypes;
-import DTO.Books;
-import DTO.Customers;
-import DTO.Employees;
-import DTO.GRNs;
-import DTO.Publishers;
-import DTO.SaleEvents;
-import DTO.SaleEventsDetail;
-import DTO.StaTypes;
-import DTO.Stationeries;
-import DTO.Suppliers;
+
 
 public class App {
         Scanner input = new Scanner(System.in);
@@ -46,6 +34,9 @@ public class App {
                 EmployeesBUS employeeList = new EmployeesBUS();
                 SuppliersBUS supplierList = new SuppliersBUS();
                 SaleEventsBUS saleEventList = new SaleEventsBUS();
+                GRNsBUS grnList = new GRNsBUS();
+                BillBUS billList = new BillBUS();
+
                 // *READ FILE
                 genreList.readFile();
                 bookTypeList.readFile();
@@ -59,7 +50,8 @@ public class App {
                 staTypeList.readFile();
                 stationaryList.readFile();
                 saleEventList.readFile();
+                grnList.readFile();
+                billList.readFile();
 
-                employeeList.showList();
         }
 }

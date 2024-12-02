@@ -116,7 +116,7 @@ public class SaleEventsBUS {
             }
             return Arrays.copyOf(tempResult, temp);
         } catch (DateTimeParseException e) {
-            System.out.println("Ngày không hợp lệ: " + start);
+            System.out.println("Invalid date! : " + start);
         }
         return new SaleEvents[0];
     }
@@ -137,7 +137,7 @@ public class SaleEventsBUS {
             return Arrays.copyOf(tempResult, temp);
 
         } catch (DateTimeParseException e) {
-            System.out.println("Ngày không hợp lệ: " + end);
+            System.out.println("Invalid date! : " + end);
         }
         return new SaleEvents[0];
     }
@@ -217,7 +217,7 @@ public class SaleEventsBUS {
             setCount(count);
             setListSaleEvent(list);
         } catch (Exception ex) {
-            System.out.println("Lỗi dữ liệu: " + ex.getMessage());
+            System.out.println("Error when read file or something ! : " + ex.getMessage());
         }
     }
 
@@ -239,7 +239,7 @@ public class SaleEventsBUS {
                 file.writeUTF(detail.getMaxPriceDiscount().toString());
             }
         } catch (Exception e) {
-            System.out.println("Lỗi khi mở file: " + e.getMessage());
+            System.out.println("Error when write file or something ! : " + e.getMessage());
         }
     }
 

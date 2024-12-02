@@ -95,13 +95,11 @@ public class GRNsBUS implements IRuleSets {
                if (originalKey instanceof String key) {
 
                     String employeeID = (grn.getEmployee() != null) ? grn.getEmployee().getPersonID() : "";
-                    String employeeName = (grn.getEmployee() != null) ? grn.getEmployee().getFullName().toLowerCase()
-                              : "";
+                    String employeeName = (grn.getEmployee() != null) ? grn.getEmployee().getFullName().toLowerCase() : "";
 
                     String supplierID = (grn.getSupplier() != null) ? grn.getSupplier().getSupplierID() : "";
                     String supplierName = (grn.getSupplier() != null)
-                              ? grn.getSupplier().getSupplierName().toLowerCase()
-                              : "";
+                              ? grn.getSupplier().getSupplierName().toLowerCase() : "";
 
                     if (request.equals("employee")
                               && (employeeID.equals(key) || employeeName.contains(key.toLowerCase())))
@@ -192,7 +190,7 @@ public class GRNsBUS implements IRuleSets {
                choice = Validate.parseChooseHandler(inputChoice, 3);
                switch (choice) {
                     case 1:
-                         System.out.println("Enter id of grn : ");
+                         System.out.print("Enter id of grn : ");
                          String userInput = input.nextLine().trim();
                          search(userInput);
                          break;
@@ -462,7 +460,7 @@ public class GRNsBUS implements IRuleSets {
                }
 
                choice = Validate.parseChooseHandler(inputChoice, 4);
-               System.out.println("Enter name or id of grn : ");
+               System.out.print("Enter name or id of grn : ");
                String userInput = input.nextLine().trim();
 
                // if case
@@ -601,7 +599,7 @@ public class GRNsBUS implements IRuleSets {
                }
                choice = Validate.parseChooseHandler(inputChoice, 1);
                try {
-                    System.out.println("Enter name or id of grn : ");
+                    System.out.print("Enter name or id of grn : ");
                     String userInput = input.nextLine().trim();
                     remove(userInput);
                     writeFile();

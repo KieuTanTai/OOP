@@ -133,7 +133,7 @@ public class SuppliersBUS implements IRuleSets {
             if (choice == -1)
                 break;
 
-            System.out.println("Enter name or id of publisher : ");
+            System.out.print("Enter name or id of publisher : ");
             String userInput = input.nextLine().trim();
             // if case
             if (choice == 1)
@@ -273,7 +273,7 @@ public class SuppliersBUS implements IRuleSets {
             choice = Validate.parseChooseHandler(inputChoice, 1);
             if (choice == 1) {
                 try {
-                    System.out.println("Enter name or id of supplier : ");
+                    System.out.print("Enter name or id of supplier : ");
                     String userInput = input.nextLine().trim();
                     edit(userInput);
                     writeFile();
@@ -362,7 +362,7 @@ public class SuppliersBUS implements IRuleSets {
             choice = Validate.parseChooseHandler(inputChoice, 1);
             if (choice == 1) {
                 try {
-                    System.out.println("Enter name or id of supplier : ");
+                    System.out.print("Enter name or id of supplier : ");
                     String userInput = input.nextLine().trim();
                     remove(userInput);
                     writeFile();

@@ -382,7 +382,7 @@ public class BooksBUS implements IRuleSets {
                choice = Validate.parseChooseHandler(inputChoice, 3);
                switch (choice) {
                     case 1:
-                         System.out.println("Enter name or id of book : ");
+                         System.out.print("Enter name or id of book : ");
                          String userInput = input.nextLine().trim();
                          search(userInput);
                          break;
@@ -464,12 +464,12 @@ public class BooksBUS implements IRuleSets {
                          relativeSearch(PublishersBUS.getPublishersList()[choice - 1], "publisher");
                          break;
                     case 5:
-                         System.out.println("Enter book's name : ");
+                         System.out.print("Enter book's name : ");
                          String name = input.nextLine().trim();
                          relativeSearch(name, "name");
                          break;
                     case 6:
-                         System.out.println("Enter book's author : ");
+                         System.out.print("Enter book's author : ");
                          String author = input.nextLine().trim();
                          relativeSearch(author, "author");
                          break;
@@ -564,7 +564,7 @@ public class BooksBUS implements IRuleSets {
                          } while (monthOrYear == -1);
                          if (monthOrYear == 1)
                               do {
-                                   System.out.println("Enter Month value : ");
+                                   System.out.print("Enter Month value : ");
                                    inputDate = input.nextLine().trim();
                                    valueFlag = true;
                                    // validate input
@@ -576,7 +576,7 @@ public class BooksBUS implements IRuleSets {
                               } while (!valueFlag);
                          else if (monthOrYear == 2)
                               do {
-                                   System.out.println("Enter Year value : ");
+                                   System.out.print("Enter Year value : ");
                                    inputDate = input.nextLine().trim();
                                    // validate input
                                    valueFlag = true;
@@ -595,7 +595,7 @@ public class BooksBUS implements IRuleSets {
                     case 13:
                          // get other fields (use for both case 4 - > 7 and case 8 -> 9 so if case have multiple choices)
                          if (choice == 4 || choice == 8 || choice == 9 || choice == 10) {
-                              System.out.println("Enter book's author : ");
+                              System.out.print("Enter book's author : ");
                               author = input.nextLine().trim();
                          }
 
@@ -824,7 +824,7 @@ public class BooksBUS implements IRuleSets {
                }
 
                choice = Validate.parseChooseHandler(inputChoice, 10);
-               System.out.println("Enter name or id of book : ");
+               System.out.print("Enter name or id of book : ");
                String userInput = input.nextLine().trim();
 
                // if case
@@ -1213,7 +1213,7 @@ public class BooksBUS implements IRuleSets {
                }
                choice = Validate.parseChooseHandler(inputChoice, 1);
                try {
-                    System.out.println("Enter name or id of book : ");
+                    System.out.print("Enter name or id of book : ");
                     String userInput = input.nextLine().trim();
                     remove(userInput);
                     writeFile();

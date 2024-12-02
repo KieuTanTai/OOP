@@ -144,7 +144,7 @@ public class SaleEvents {
         String saleEvName = setName();
 
         System.out.println("-".repeat(60));
-        System.out.println("Enter description:");
+        System.out.print("Enter description : ");
         String description = sc.nextLine();
 
         // set date and validate if start > end

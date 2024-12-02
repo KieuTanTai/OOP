@@ -1,9 +1,6 @@
 package DTO;
 
 import java.math.BigDecimal;
-import java.util.Scanner;
-
-import util.Validate;
 
 public class GRNDetails {
      private String grnID;
@@ -11,7 +8,6 @@ public class GRNDetails {
      private int quantity;
      private BigDecimal price;
      private BigDecimal subTotal;
-     private Scanner input = new Scanner(System.in);
 
      // Constructors
      public GRNDetails() {
@@ -64,21 +60,7 @@ public class GRNDetails {
           this.subTotal = price.multiply(new BigDecimal(this.quantity));
      }
 
-     public void setSubTotal(BigDecimal subTotal) {
-          BigDecimal tempNowTotal = this.price.multiply(new BigDecimal(quantity));
-          if ((subTotal.compareTo(tempNowTotal) > 0) || (subTotal.compareTo(tempNowTotal) < 0)) {
-               int userChoose;
-               System.out.printf("*".repeat(60) + "\n");
-               System.out.println("something wrong with your total price! Are you sure you wanna set it!");
-               System.out.printf("-".repeat(60) + "\n");
-               System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Set");
-               do {
-                    System.out.print("choose option (1 or 2) : ");
-                    String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-
-          }
-          this.subTotal = subTotal;
-     }
+     // public void setSubTotal(BigDecimal subTotal) {
+     //      this.subTotal = subTotal;
+     // }
 }

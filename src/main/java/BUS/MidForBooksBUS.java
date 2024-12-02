@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,7 +18,7 @@ import util.Validate;
 public class MidForBooksBUS {
      private static MidForBooks[] midList;
      private static int count;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
      // constructors
      public MidForBooksBUS() {
@@ -86,12 +87,14 @@ public class MidForBooksBUS {
      public MidForBooks[] relativeFind(String id) {
           int count = 0;
           MidForBooks[] list = new MidForBooks[0];
-          for (MidForBooks mid : midList)
+          for (MidForBooks mid : midList) {
+               // System.out.println(mid.getBookID());                
                if (mid.getBookID().equals(id)) {
                     list = Arrays.copyOf(list, list.length + 1);
                     list[count] = mid;
                     count++;
                }
+          }
           if (count == 0) {
                System.out.println("not found any mid!");
                return null;
@@ -142,16 +145,16 @@ public class MidForBooksBUS {
      public void edit(String bookID) {
           MidForBooks[] list = relativeFind(bookID);
           if (list != null) {
-               int userChoose;
-               // show list for user choose
+               int userChoice;
+               // show list for user choice
                showAsTable(list);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                int count = list.length;
@@ -163,8 +166,8 @@ public class MidForBooksBUS {
                do {
                     System.out.print("choose book you wanna edit (like 1, 2,etc...): ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, list.length);
-               } while (userChoose == -1);
+                    userChoice = Validate.parseChooseHandler(option, list.length);
+               } while (userChoice == -1);
                // set new genre for specified book
                GenresBUS.showList();
                System.out.println("-".repeat(60));
@@ -174,7 +177,7 @@ public class MidForBooksBUS {
                     genreChoose = Validate.parseChooseHandler(option, GenresBUS.getCount());
                } while (genreChoose == -1);
                MidForBooks newMid = new MidForBooks(bookID, GenresBUS.getGenresList()[genreChoose - 1]);
-               setMid(list[userChoose - 1], newMid);
+               setMid(list[userChoice - 1], newMid);
           }
      }
 
@@ -182,13 +185,13 @@ public class MidForBooksBUS {
      public void remove(String bookID) {
           int size = 0;
           MidForBooks[] reduceArray = new MidForBooks[0];
-          for (int i = 0; i < midList.length; i++) {
-               if (midList[i].getBookID().equals(bookID))
-                    continue;
-               reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
-               reduceArray[size] = midList[i];
-               size++;
-          }
+         for (MidForBooks midForBooks : midList) {
+             if (midForBooks.getBookID().equals(bookID))
+                 continue;
+             reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+             reduceArray[size] = midForBooks;
+             size++;
+         }
 
           if (size == midList.length) {
                System.out.println("not found any mid!");
@@ -205,16 +208,16 @@ public class MidForBooksBUS {
                System.out.println("404 not found!");
                return;
           }
-          int userChoose;
-          // show list for user choose
+          int userChoice;
+          // show list for user choice
           showAsTable(midList[index]);
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
           do {
                System.out.print("choose option (1 or 2) : ");
                String option = input.nextLine().trim();
-               userChoose = Validate.parseChooseHandler(option, 2);
-          } while (userChoose == -1);
-          if (userChoose == 1)
+               userChoice = Validate.parseChooseHandler(option, 2);
+          } while (userChoice == -1);
+          if (userChoice == 1)
                return;
 
           int size = midList.length;
@@ -268,6 +271,10 @@ public class MidForBooksBUS {
 
      // *read file (TEST DONE)
      public void readFile() throws IOException {
+          File testFile = new File("src/main/resources/MidForBooks");
+          if (testFile.length() == 0 || !testFile.exists())
+               return;
+
           try (DataInputStream file = new DataInputStream(
                     new BufferedInputStream(new FileInputStream("src/main/resources/MidForBooks")))) {
                count = file.readInt();

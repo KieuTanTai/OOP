@@ -1,13 +1,13 @@
 package BUS;
 
 import DTO.BookGenres;
-import Manager.Menu;
 import util.Validate;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -85,11 +85,6 @@ public class GenresBUS implements IRuleSets {
 
      // find methods (DONE)
      @Override
-     public void find() {
-          Menu.findHandler();
-     }
-
-     @Override
      public int find(String nameOrID) {
           for (int i = 0; i < genresList.length; i++) {
                if (genresList[i].getGenreID().equals(nameOrID)
@@ -119,7 +114,33 @@ public class GenresBUS implements IRuleSets {
      // search methods (DONE)
      @Override
      public void search() {
-          Menu.searchHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Strict search");
+               System.out.println("II. Relative search");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 2);
+               if (choice == -1)
+                    break;
+
+               System.out.print("Enter name or id of genre : ");
+               String userInput = input.nextLine().trim();
+               // if case
+               if (choice == 1)
+                    search(userInput);
+               else if (choice == 2)
+                    relativeSearch(userInput);
+
+          } while (choice != 0);
      }
 
      @Override
@@ -131,57 +152,151 @@ public class GenresBUS implements IRuleSets {
 
      public void relativeSearch(String name) {
           BookGenres[] list = relativeFind(name);
-          if (list != null) 
+          if (list != null)
                showAsTable(list);
      }
 
      // adds methods (DONE)
      @Override
      public void add() {
-          Menu.addHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Add genre");
+               System.out.println("II. Add list of genres");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 2);
+
+               try {
+                    switch (choice) {
+                         case 1:
+                              BookGenres newGenre = new BookGenres();
+                              newGenre.setInfo();
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.parseChooseHandler(option, 2);
+                              } while (choice == -1);
+                              if (choice == 1)
+                                   break;
+                              add(newGenre);
+                              writeFile();
+                              break;
+                         case 2:
+                              int count = 0;
+                              BookGenres[] list = new BookGenres[0];
+                              do {
+                                   System.out.print("Enter total genres you wanna add : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.isNumber(option);
+                              } while (choice == -1);
+                              // for loop with input time
+                              for (int i = 0; i < choice; i++) {
+                                   BookGenres genre = new BookGenres();
+                                   genre.setInfo();
+                                   list = Arrays.copyOf(list, list.length + 1);
+                                   list[count] = genre;
+                                   count++;
+                              }
+
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.parseChooseHandler(option, 2);
+                              } while (choice == -1);
+                              if (choice == 1)
+                                   break;
+                              add(list);
+                              writeFile();
+                              break;
+                    }
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+               }
+
+          } while (choice != 0);
      }
 
      @Override
      public void add(Object genre) {
-          if (genre instanceof BookGenres) {
+          if (genre instanceof BookGenres newGenre) {
+              newGenre.setGenreID(newGenre.getGenreID());
                genresList = Arrays.copyOf(genresList, genresList.length + 1);
-               genresList[count] = (BookGenres) genre;
+               genresList[count] = newGenre;
                count++;
           } else
                System.out.println("your new genre is not correct!");
      }
 
-     public void add(BookGenres[] newGenres, int size) {
+     public void add(BookGenres[] newGenres) {
           int tempIndex = 0, newListLength = newGenres.length;
           int initCount = getCount();
           int total = initCount + newListLength;
           genresList = Arrays.copyOf(genresList, genresList.length + newListLength);
 
-          for (int i = initCount; i < total; i++, tempIndex++)
+          for (int i = initCount; i < total; i++, tempIndex++) {
+               newGenres[tempIndex].setGenreID(newGenres[tempIndex].getGenreID());
                genresList[i] = newGenres[tempIndex];
+          }
           GenresBUS.count = total;
      }
 
      // edit methods (DONE)
      @Override
      public void edit() {
-          Menu.editHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Edit");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 1);
+               if (choice == 1) {
+                    try {
+                         System.out.print("Enter name or id of genre : ");
+                         String userInput = input.nextLine().trim();
+                         edit(userInput);
+                         writeFile();
+                    } catch (Exception e) {
+                         System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                    }
+               }
+          } while (choice != 0);
      }
 
      @Override
      public void edit(String id) {
           int index = find(id);
           if (index != -1) {
-               int userChoose;
-               // show list for user choose
+               int userChoice;
+               // show list for user choice
                showAsTable(genresList[index]);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                String newName;
@@ -189,7 +304,7 @@ public class GenresBUS implements IRuleSets {
                     System.out.print("Enter new name: ");
                     newName = input.nextLine().trim();
                     if (!Validate.checkName(newName)) {
-                         System.out.println("name is wrong format!");
+                         System.out.println("name is wrong genre!");
                          newName = "";
                     }
                } while (newName.isEmpty());
@@ -200,23 +315,47 @@ public class GenresBUS implements IRuleSets {
      // remove methods (DONE)
      @Override
      public void remove() {
-          Menu.removeHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Remove");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 1);
+               if (choice == 1) {
+                    try {
+                         System.out.print("Enter name or id of genre : ");
+                         String userInput = input.nextLine().trim();
+                         remove(userInput);
+                         writeFile();
+                    } catch (Exception e) {
+                         System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                    }
+               }
+          } while (choice != 0);
      }
 
      @Override
      public void remove(String id) {
           int index = find(id);
           if (index != -1) {
-               int userChoose;
-               // show list for user choose
+               int userChoice;
+               // show list for user choice
                showAsTable(genresList[index]);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                for (int i = index; i < genresList.length - 1; i++)
@@ -262,7 +401,8 @@ public class GenresBUS implements IRuleSets {
 
      // write file
      public void writeFile() throws IOException {
-          try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/BookGenres", false)))) {
+          try (DataOutputStream file = new DataOutputStream(
+                    new BufferedOutputStream(new FileOutputStream("src/main/resources/BookGenres", false)))) {
                file.writeInt(count);
                for (BookGenres genre : genresList) {
                     file.writeUTF(genre.getGenreID());
@@ -275,7 +415,12 @@ public class GenresBUS implements IRuleSets {
 
      // read file
      public void readFile() throws IOException {
-          try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/BookGenres")))) {
+          File testFile = new File("src/main/resources/BookGenres");
+          if (testFile.length() == 0 || !testFile.exists())
+               return;
+
+          try (DataInputStream file = new DataInputStream(
+                    new BufferedInputStream(new FileInputStream("src/main/resources/BookGenres")))) {
                int count = file.readInt();
                BookGenres[] list = new BookGenres[count];
                for (int i = 0; i < count; i++) {

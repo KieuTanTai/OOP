@@ -2,19 +2,19 @@ package DTO;
 
 import java.util.Scanner;
 
-import BUS.TypesBUS;
+import BUS.BookFormatsBUS;
 import util.Validate;
 
 public class BookFormats {
      private String formatID;
      private String formatName;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
      public BookFormats() {
      }
 
      public BookFormats(String formatID, String formatName) {
-          this.formatID = formatID;
+          this.formatID = formatIDModifier(formatID);
           this.formatName = formatName;
      }
 
@@ -27,7 +27,7 @@ public class BookFormats {
      }
 
      public void setFormatID(String formatID) {
-          this.formatID = formatID;
+          this.formatID = formatIDModifier(formatID);
      }
 
      public void setFormatName(String formatName) {
@@ -36,17 +36,20 @@ public class BookFormats {
 
      // set not param
      public String setID() {
-          String id = "";
-          BookTypes[] list = TypesBUS.getTypesList();
+          StringBuilder id;
+          BookFormats[] list = BookFormatsBUS.getFormatsList();
 
-          if (list.length == 0 || list == null) {
-               return "00000001";
+          if (list.length == 0) {
+               id = new StringBuilder("00000001");
           } else {
-               int prevID = Integer
-                         .parseInt((list[list.length - 1]).getTypeID().substring(3, list.length - 2));
-               id = String.format("%d", prevID + 1);
+               String getID = list[list.length - 1].getFormatID();
+               int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
+               id = new StringBuilder(String.format("%d", prevID + 1));
+               // check if id length < 8
+               while (id.length() != 8)
+                    id.insert(0, "0");
           }
-          return formatIDModifier(id);
+          return formatIDModifier(id.toString());
      }
 
      public String setName() {
@@ -65,9 +68,26 @@ public class BookFormats {
      public void setInfo() {
           System.out.println("*".repeat(60));
           this.formatID = setID();
-          System.out.println("-".repeat(60));
+          // name fields
           this.formatName = setName();
           System.out.println("*".repeat(60));
+
+          int userChoose;
+          System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+          do {
+               System.out.print("choose option (1 or 2) : ");
+              String option = input.nextLine().trim();
+              userChoose = Validate.parseChooseHandler(option, 2);
+          } while (userChoose == -1);
+          System.out.println("*".repeat(60));
+  
+          if (userChoose == 1)
+              System.out.println("ok!");
+          else {
+               setFormatID(formatID);
+               setFormatName(formatName);
+               System.out.println("create and set fields success");
+          }
      }
 
      private String formatIDModifier(String formatID) {

@@ -52,23 +52,12 @@ public class Customers extends Person {
         return address;
     }
 
-    public BigDecimal setPoint() {
-        BigDecimal point;
-        do {
-            System.out.print("customer point: ");
-            String level = input.nextLine().trim();
-            point = Validate.isBigDecimal(level);
-        } while (point == null);
-        return point;
-    }
-
     // Override methods
     @Override
     public void setInfo() {
         System.out.println("*".repeat(60));
         String id = setID(this);
-
-        System.out.println("-".repeat(60));
+        // name fields
         String firstName = setFirstName();
 
         System.out.println("-".repeat(60));
@@ -84,22 +73,20 @@ public class Customers extends Person {
         String address = setAddress();
         
         System.out.println("-".repeat(60));
-        BigDecimal point = setPoint();
-        
-        int userChoose;               
+        BigDecimal point = new BigDecimal(0);
         System.out.println("*".repeat(60));
+        
+        int userChoice;               
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
-
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, 2);
-        } while (userChoose == -1);
-        System.out.printf("*".repeat(60) + "\n");
-        if (userChoose == 1) {
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
+        System.out.println("*".repeat(60));
+        if (userChoice == 1)
             System.out.println("ok!");
-            return;
-        } else {
+        else {
             setPersonID(id);
             setFullName(firstName, lastName);
             setDateOfBirth(dateOfBirth);

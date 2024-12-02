@@ -63,56 +63,29 @@ public class Employees extends Person {
     // setter no params
     public String setStatus() {
         String[] status = { "Active", "Inactive" };
-        int userChoose;
+        int userChoice;
         System.out.printf("| %s %s %s |\n", "I.Active", "-".repeat(20), "II.Inactive");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, 2);
-        } while (userChoose == -1);
-        return status[userChoose - 1];
-    }
-
-    public String setUsername() {
-        String userName;
-        do {
-            System.out.print("set username: ");
-            userName = input.nextLine().trim();
-            if (!Validate.checkName(userName)) {
-                System.out.println("invalid username!");
-                userName = "";
-            }
-        } while (userName.isEmpty());
-        return userName;
-    }
-
-    public String setPassword() {
-        String password;
-        do {
-            System.out.print("set password: ");
-            password = input.nextLine().trim();
-            if (!Validate.checkName(password)) {
-                System.out.println("invalid password!");
-                password = "";
-            }
-        } while (password.isEmpty());
-        return password;
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
+        return status[userChoice - 1];
     }
 
     public String setRole() {
-        int userChoose;
+        int userChoice;
         String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
         // show list for user choose
-        System.out.printf("=".repeat(160) + "\n");
-        System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20),
-                roles[2]);
+        System.out.println("=".repeat(88));
+        System.out.printf("I.%s \nII.%s \nIII.%s\n", roles[0], roles[1], roles[2]);
         do {
             System.out.print("choose role (like 1, 2,etc...): ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, role.length());
-        } while (userChoose == -1);
+            userChoice = Validate.parseChooseHandler(option, roles.length);
+        } while (userChoice == -1);
 
-        return roles[userChoose - 1];
+        return roles[userChoice - 1];
     }
 
     // other methods
@@ -120,9 +93,8 @@ public class Employees extends Person {
     public void setInfo() {
         System.out.println("*".repeat(60));
         String id = setID(this);
-
-        System.out.println("-".repeat(60));
-        String fistName = setFirstName();
+        // name fields
+        String firstName = setFirstName();
 
         System.out.println("-".repeat(60));
         String lastName = setLastName();
@@ -137,29 +109,27 @@ public class Employees extends Person {
         String status = setStatus();
 
         System.out.println("-".repeat(60));
-        String userName = setUsername();
-
-        System.out.println("-".repeat(60));
-        String password = setPassword();
-
-        System.out.println("-".repeat(60));
         String role = setRole();
 
-        int userChoose;
+        // let userName is id of this employees
+        String userName = id;
+        // auto set password is fullName + dateOfBirth
+        String password = id + role.replace(" ", "") + dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).replace("-", "@");
         System.out.println("*".repeat(60));
+
+        int userChoice;
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, 2);
-        } while (userChoose == -1);
-        System.out.printf("*".repeat(60) + "\n");
-        if (userChoose == 1) {
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
+        System.out.println("*".repeat(60));
+        if (userChoice == 1)
             System.out.println("ok!");
-            return;
-        } else {
+        else {
             setPersonID(id);
-            setFullName(fistName, lastName);
+            setFullName(firstName, lastName);
             setDateOfBirth(dateOfBirth);
             setPhoneNumber(phone);
             setStatus(status);
@@ -178,8 +148,7 @@ public class Employees extends Person {
         System.out.printf("| %-22s : %s \n", "ID", employeeID != null ? employeeID : "N/A");
         System.out.printf("| %-22s : %s \n", "Username", this.username != null ? this.username : "N/A");
         System.out.printf("| %-22s : %s \n", "Full Name", employeeName != null ? employeeName : "N/A");
-        System.out.printf("| %-22s : %s \n", "Birthday",
-                dateOfBirth != null ? dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Birthday", dateOfBirth != null ? dateOfBirth.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
         System.out.printf("| %-22s : %s \n", "Phone", phone != null ? phone : "N/A");
         System.out.printf("| %-22s : %s \n", "Status", this.status != null ? this.status : "N/A");
         System.out.printf("| %-22s : %s \n", "Role", this.role != null ? this.role : "N/A");
@@ -200,10 +169,15 @@ public class Employees extends Person {
     // hash password / check password
     private String hashPassword(String password) {
         // check if password has been hashed or not
-        if (!password.startsWith("EMP") && !password.startsWith("PS") && password.length() != 13)
+        if (isHashed(password))
             return password;
         return BCrypt.hashpw(password, BCrypt.gensalt(8));
     }
+
+    private boolean isHashed(String password) {
+        return password != null && password.length() == 60 && (password.startsWith("$2a$") || password.startsWith("$2b$") || password.startsWith("$2y$"));
+    }
+    
 
     @SuppressWarnings("unused")
     private boolean checkPassword(String password) {

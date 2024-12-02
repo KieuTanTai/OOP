@@ -16,7 +16,7 @@ public abstract class Person {
     private String phoneNumber;
     protected static final Scanner input = new Scanner(System.in);
 
-    // constructors 
+    // constructors
     public Person() {
     }
 
@@ -79,41 +79,46 @@ public abstract class Person {
         this.phoneNumber = phoneNumber;
     }
 
-    // Setters no params 
+    // Setters no params
     public String setID(Object key) {
-        String id = "";
+        StringBuilder id = new StringBuilder();
         try {
             if (key instanceof Customers) {
-                CustomersBUS booksList = new CustomersBUS();;
+                CustomersBUS booksList = new CustomersBUS();
                 booksList.readFile();
                 Customers[] list = booksList.getCustomersList();
-    
+
                 if (list.length == 0) {
-                    return "00000001";
+                    id = new StringBuilder("00000001");
                 } else {
-                    int prevID = Integer.parseInt((list[list.length - 1]).getPersonID().substring(3, list.length - 2));
-                    id = String.format("%d", prevID + 1);
+                    String getID = list[list.length - 1].getPersonID();
+                    int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
+                    id = new StringBuilder(String.format("%d", prevID + 1));
+                    // check if id length < 8
+                    while (id.length() != 8)
+                        id.insert(0, "0");
                 }
-            }
-            else if (key instanceof Employees) {
+            } else if (key instanceof Employees) {
                 EmployeesBUS stationeriesList = new EmployeesBUS();
                 stationeriesList.readFile();
                 Employees[] list = stationeriesList.getEmployeesList();
-                
+
                 if (list.length == 0) {
-                    return "00000001";
+                    id = new StringBuilder("00000001");
                 } else {
-                    int prevID = Integer.parseInt((list[list.length - 1]).getPersonID().substring(3, list.length - 2));
-                    id = String.format("%d", prevID + 1);
+                    String getID = list[list.length - 1].getPersonID();
+                    int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
+                    id = new StringBuilder(String.format("%d", prevID + 1));
+                    while (id.length() != 8)
+                        id.insert(0, "0");
                 }
             }
         } catch (Exception e) {
             System.out.println("error when execute with file!" + e.getMessage());
-            id = "";
+            id = new StringBuilder("00000001");
         }
-        return personIDModifier(id);
+        return personIDModifier(id.toString());
     }
-
 
     public String setFirstName() {
         String name;
@@ -166,6 +171,8 @@ public abstract class Person {
 
     // Abstract methods
     public abstract void setInfo();
+
     public abstract void showInfo();
+
     protected abstract String personIDModifier(String personID);
 }

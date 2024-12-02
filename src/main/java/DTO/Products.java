@@ -74,18 +74,22 @@ public abstract class Products {
 
     // set not param
     public String setID(Object key) {
-        String id = "";
+        StringBuilder id = new StringBuilder();
         try {
             if (key instanceof Books) {
-                BooksBUS booksList = new BooksBUS();;
+                BooksBUS booksList = new BooksBUS();
                 booksList.readFile();
                 Books[] list = booksList.getBooksList();
     
                 if (list.length == 0) {
-                    return "00000001";
-                } else {
-                    int prevID = Integer.parseInt((list[list.length - 1]).getProductID().substring(2, list.length - 2));
-                    id = String.format("%d", prevID + 1);
+                    id = new StringBuilder("00000001");
+                } 
+                else {
+                    String getID = list[list.length - 1].getProductID();
+                    int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
+                    id = new StringBuilder(String.format("%d", prevID + 1));
+                    while (id.length() != 8)
+                        id.insert(0, "0");
                 }
             }
             else if (key instanceof Stationeries) {
@@ -94,17 +98,20 @@ public abstract class Products {
                 Stationeries[] list = stationeriesList.getStaList();
                 
                 if (list.length == 0) {
-                    return "00000001";
+                    id = new StringBuilder("00000001");
                 } else {
-                    int prevID = Integer.parseInt((list[list.length - 1]).getProductID().substring(2, list.length - 2));
-                    id = String.format("%d", prevID + 1);
+                    String getID = list[list.length - 1].getProductID();
+                    int prevID = Integer.parseInt(getID.substring(2, getID.length() - 2));
+                    id = new StringBuilder(String.format("%d", prevID + 1));
+                    while (id.length() != 8)
+                        id.insert(0, "0");
                 }
             }
         } catch (Exception e) {
             System.out.println("error when execute with file!" + e.getMessage());
-            id = "";
+            id = new StringBuilder("00000001");
         }
-        return productIDModifier(id);
+        return productIDModifier(id.toString());
     }
 
 

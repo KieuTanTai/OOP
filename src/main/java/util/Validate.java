@@ -9,42 +9,67 @@ import java.util.regex.Pattern;
 
 public class Validate {
      // private static final Scanner input = new Scanner(System.in);
-     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
      // check quantity (DONE)
      public static boolean checkQuantity(int quantity) {
           return quantity > 0;
      }
 
-     // format type of string price 
-     public static String formatPrice (BigDecimal price) { 
+     public static boolean checkValidRange(int min, int max) {
+          return min >= 0 && max >= 0 && min <= max;
+     }
+
+     // format type of string price
+     public static String formatPrice(BigDecimal price) {
           try {
                NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
                return formatter.format(price);
-          }catch (Exception err) {
+          } catch (Exception err) {
                System.out.println("your input is not correct!\n" + err.getMessage());
                return "";
           }
 
      }
 
+     // check valid price discount
+     public static BigDecimal executePrice(BigDecimal totalPrice, BigDecimal maxDiscount, BigDecimal discount) {
+          BigDecimal result = totalPrice.multiply(discount);
+          return result.compareTo(maxDiscount) > 0 ? result = maxDiscount : result;
+     }
+
+     public static BigDecimal isLargestDiscount (BigDecimal[] discounts) {
+          int length = discounts.length;
+          for (int i = 0; i < length - 1; i++) {
+               int temp = i;
+               for (int j = i + 1; j < length; j++) {
+                    if (discounts[j].compareTo(discounts[i]) > 0)
+                         temp = j;
+               }
+               if (temp != i) {
+                    BigDecimal tempPrice = discounts[i];
+                    discounts[i] = discounts[temp];
+                    discounts[temp] = tempPrice; 
+               }
+          }
+          return discounts[0];
+     }
+
      // check if input null or not (DONE)
-     public static boolean requiredNotNull (Object input) {
+     public static boolean requiredNotNull(Object input) {
           try {
-               if (input == null)
-                    return false;
-               return true;
+               return input != null;
           } catch (Exception e) {
                System.out.println("something went wrong!" + e.getMessage());
                return false;
           }
      }
 
-     // check duplicate (DONE) 
+     // check duplicate (DONE)
      public static boolean hasDuplicates(String[] options) {
-          for (int i = 0; i < options.length - 1; i++) 
-               for (int j = i + 1; j < options.length; j++) 
-                    if (options[i].equals(options[j])) 
+          for (int i = 0; i < options.length - 1; i++)
+               for (int j = i + 1; j < options.length; j++)
+                    if (options[i].equals(options[j]))
                          return true;
           return false;
      }
@@ -77,11 +102,15 @@ public class Validate {
           }
      }
 
+     public static boolean isValidRangeDate(LocalDate start, LocalDate end) {
+          return !start.isAfter(end);
+     }
+
      // return null when input from user have any error or not in option table (DONE)
      public static int parseChooseHandler(String userChoose, int totalOptions) {
           try {
                int parseChoose = Integer.parseInt(userChoose);
-               if ((parseChoose >= 0) && (parseChoose <= totalOptions))
+               if ((parseChoose > 0) && (parseChoose <= totalOptions))
                     return parseChoose;
                else {
                     // System.out.print("\033\143");
@@ -118,7 +147,7 @@ public class Validate {
 
      // (DONE)
      public static boolean validateID(String inputId) {
-          String regex = "^(?=[a-zA-Z0-9_-]{8}$)[^%+\\/#'::\":]+$";
+          String regex = "^(?=[0-9_-]{8}$)[^%+\\/#'::\":]+$";
           Pattern pattern = Pattern.compile(regex);
           return pattern.matcher(inputId).matches();
      }

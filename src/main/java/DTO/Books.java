@@ -116,7 +116,7 @@ public class Books extends Products {
 
     // set format
     public BookFormats setFormat() {
-        int userChoose;
+        int userChoice;
         // show list for user choose
         BookFormatsBUS.showList();
         if (BookFormatsBUS.getCount() == 0) // if not have any format
@@ -125,11 +125,11 @@ public class Books extends Products {
         do {
             System.out.print("choose format (like 1, 2,etc...) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, BookFormatsBUS.getCount());
-        } while (userChoose == -1);
+            userChoice = Validate.parseChooseHandler(option, BookFormatsBUS.getCount());
 
-        BookFormats format = BookFormatsBUS.getFormatsList()[userChoose - 1];
-        return format;
+        } while (userChoice == -1);
+
+        return BookFormatsBUS.getFormatsList()[userChoice - 1];
     }
 
     // set packaging size
@@ -149,7 +149,7 @@ public class Books extends Products {
 
     // set book type
     public BookTypes setType() {
-        int userChoose;
+        int userChoice;
         // show list for user choose
         TypesBUS.showList();
         if (TypesBUS.getCount() == 0) // if not have any types
@@ -158,16 +158,15 @@ public class Books extends Products {
         do {
             System.out.print("choose type you want (like \"1, 2, 3,etc....\") : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, TypesBUS.getCount());
-        } while (userChoose == -1);
+            userChoice = Validate.parseChooseHandler(option, TypesBUS.getCount());
+        } while (userChoice == -1);
 
-        BookTypes type = TypesBUS.getTypesList()[userChoose - 1];
-        return type;
+        return TypesBUS.getTypesList()[userChoice - 1];
     }
 
     // set publisher
     public Publishers setPublisher() {
-        int userChoose;
+        int userChoice;
         // show list for user choose
         PublishersBUS.showList();
         if (PublishersBUS.getCount() == 0) // if not have any publisher
@@ -176,16 +175,15 @@ public class Books extends Products {
         do {
             System.out.print("choose publisher (like 1, 2,etc...) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, PublishersBUS.getCount());
-        } while (userChoose == -1);
+            userChoice = Validate.parseChooseHandler(option, PublishersBUS.getCount());
+        } while (userChoice == -1);
 
-        Publishers publisher = PublishersBUS.getPublishersList()[userChoose - 1];
-        return publisher;
+        return PublishersBUS.getPublishersList()[userChoice - 1];
     }
 
     // set multiple genres and return genres array
     public BookGenres[] setBookGenres() {
-        int userChoose, count = 0;
+        int userChoice, count = 0;
         int[] list = new int[0];
         BookGenres[] listGenres = new BookGenres[0];
         // show list for user choose
@@ -200,22 +198,20 @@ public class Books extends Products {
 
             if (Validate.hasDuplicates(splitOptions)) {
                 System.out.println("has duplicate! please try again!");
-                count = 0;
                 continue;
             }
 
             for (String item : splitOptions) {
-                userChoose = Validate.parseChooseHandler(item, GenresBUS.getCount());
-                if (userChoose == -1) {
+                userChoice = Validate.parseChooseHandler(item, GenresBUS.getCount());
+                if (userChoice == -1) {
                     count = 0;
                     break;
                 }
                 list = Arrays.copyOf(list, list.length + 1);
-                list[count] = userChoose;
+                list[count] = userChoice;
                 count++;
             }
         } while (count == 0);
-
         for (int i = 0; i < count; i++) {
             int option = list[i];
             BookGenres genre = GenresBUS.getGenresList()[option - 1];
@@ -225,9 +221,10 @@ public class Books extends Products {
         return listGenres;
     }
 
+    // execute list of genres for product
     public void execGenres(String bookID, BookGenres[] genres) {
-        // execute list of genres for product
         int count = 0;
+        bookID = productIDModifier(bookID);
         MidForBooks[] hashArray = new MidForBooks[0];
         if (genres == null)
             return;
@@ -256,8 +253,7 @@ public class Books extends Products {
     public void setInfo() {
         System.out.println("*".repeat(60));
         String id = setID(this);
-
-        System.out.println("-".repeat(60));
+        // name fields
         String name = setName();
 
         System.out.println("-".repeat(60));
@@ -286,21 +282,20 @@ public class Books extends Products {
         
         System.out.println("-".repeat(60));
         String packagingSize = setPackagingSize();
+        System.out.println("*".repeat(60));
 
-        int userChoose;
-        System.out.printf("*".repeat(60) + "\n");
+        int userChoice;
         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
         do {
             System.out.print("choose option (1 or 2) : ");
             String option = input.nextLine().trim();
-            userChoose = Validate.parseChooseHandler(option, 2);
-        } while (userChoose == -1);
-        System.out.printf("*".repeat(60) + "\n");
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
+        System.out.println("*".repeat(60));
 
-        if (userChoose == 1) {
+        if (userChoice == 1)
             System.out.println("ok!");
-            return;
-        } else {
+        else {
             // set fields for product
             setProductID(id);
             setProductName(name);

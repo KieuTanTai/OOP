@@ -1,6 +1,5 @@
 package BUS;
 
-import Manager.Menu;
 import util.Validate;
 import DTO.Customers;
 
@@ -8,6 +7,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -67,11 +67,6 @@ public class CustomersBUS implements IRuleSets {
 
      // *find methods (TEST DONE)
      @Override
-     public void find() {
-          Menu.addHandler();
-     }
-
-     @Override
      public int find(String nameOrID) {
           for (int i = 0; i < customersList.length; i++)
                if (customersList[i].getPersonID().equals(nameOrID) ||
@@ -88,16 +83,15 @@ public class CustomersBUS implements IRuleSets {
           request = request.toLowerCase().trim();
 
           for (Customers customer : customersList) {
-               if (originalKey instanceof String) {
+               if (originalKey instanceof String key) {
                     int month, year;
-                    String key = (String) originalKey;
-                    String firstName = customer.getFirstName();
+                   String firstName = customer.getFirstName();
                     String lastName = customer.getLastName();
                     String fullName = customer.getFullName();
                     String phone = customer.getPhoneNumber();
                     String address = customer.getAddress();
-                    LocalDate dateOfBirth = customer.getDateOfBirth(); 
-                    
+                    LocalDate dateOfBirth = customer.getDateOfBirth();
+
                     // assign and check null
                     phone = Validate.requiredNotNull(phone) ? phone : "";
                     address = Validate.requiredNotNull(address) ? address.toLowerCase() : "";
@@ -190,7 +184,218 @@ public class CustomersBUS implements IRuleSets {
      // *search methods (TEST DONE)
      @Override
      public void search() {
-          Menu.searchHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Strict search");
+               System.out.println("II. Relative search");
+               System.out.println("III. Advanced search");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 3);
+               switch (choice) {
+                    case 1:
+                         System.out.print("Enter name or id of customer : ");
+                         String userInput = input.nextLine().trim();
+                         search(userInput);
+                         break;
+                    case 2:
+                         caseRelativeSearch();
+                         break;
+                    case 3:
+                         caseAdvancedSearch();
+                         break;
+               }
+          } while (choice != 0);
+     }
+
+     // case handler for relative search
+     private void caseRelativeSearch() {
+          int choice, monthOrYear;
+          String inputDate;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Search by First name");
+               System.out.println("II. Search by Last name");
+               System.out.println("III. Search by Full name");
+               System.out.println("IV. Search by Phone");
+               System.out.println("V. Search by Address");
+               System.out.println("VI. Search by Month (Year)");
+               System.out.println("VII. Search by Date of birth");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 7);
+               switch (choice) {
+                    case 1:
+                         relativeSearch(getInputFirstName(), "firstName");
+                         break;
+                    case 2:
+                         relativeSearch(getInputLastName(), "lastName");
+                         break;
+                    case 3:
+                         relativeSearch(getInputFirstName() + " " + getInputLastName(), "fullName");
+                         break;
+                    case 4:
+                         String phone;
+                         do {
+                              System.out.print("Enter phone number: ");
+                              phone = input.nextLine().trim();
+                              if (!Validate.validatePhone(phone)) {
+                                   System.out.println("invalid phone number!");
+                                   phone = "";
+                              }
+                         } while (phone.isEmpty());
+                         relativeSearch(phone, "phone");
+                         break;
+                    case 5:
+                         String address;
+                         do {
+                              System.out.print("Enter address: ");
+                              address = input.nextLine().trim();
+                              if (address.isEmpty()) {
+                                   System.out.println("Address cannot be empty!");
+                              }
+                         } while (address.isEmpty());
+                         relativeSearch(address, "address");
+                         break;
+                    case 6:
+                         int isNumber = 0;
+                         boolean valueFlag;
+                         do {
+                              System.out.println("I. Month || II.Year");
+                              System.out.print("Enter your choice : ");
+                              monthOrYear = Validate.parseChooseHandler(input.nextLine().trim(), 2);
+                         } while (monthOrYear == -1);
+
+                         if (monthOrYear == 1)
+                              do {
+                                   System.out.print("Enter Month value : ");
+                                   inputDate = input.nextLine().trim();
+                                   valueFlag = true;
+                                   // validate input
+                                   isNumber = Validate.isNumber(inputDate);
+                                   if (isNumber > 12 || isNumber < 1) {
+                                        System.out.println("Error value!");
+                                        valueFlag = false;
+                                   }
+                              } while (!valueFlag);
+                         else if (monthOrYear == 2)
+                              do {
+                                   System.out.print("Enter Year value : ");
+                                   inputDate = input.nextLine().trim();
+                                   // validate input
+                                   valueFlag = true;
+                                   isNumber = Validate.isNumber(inputDate);
+                                   if (isNumber == -1 || isNumber > LocalDate.now().getYear() || isNumber < 1900) {
+                                        System.out.println("Error value!");
+                                        valueFlag = false;
+                                   }
+                              } while (!valueFlag);
+                         relativeSearch(isNumber, monthOrYear == 1 ? "month" : "year");
+                         break;
+                    case 7:
+                         LocalDate date;
+                         do {
+                              System.out.print("Enter date of birth (dd-mm-yyyy) : ");
+                              String dateInput = input.nextLine().trim();
+                              date = Validate.isCorrectDate(dateInput);
+                         } while (date == null);
+                         relativeSearch(date, "date");
+                         break;
+               }
+          } while (choice != 0);
+     }
+
+     // case handler for relative search
+     private void caseAdvancedSearch() {
+          int choice;
+          BigDecimal point;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Search with min point");
+               System.out.println("II. Search with max point");
+               System.out.println("III. Search with range min to max point");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 3);
+               switch (choice) {
+                    case 1:
+                    case 2:
+                         do {
+                              if (choice == 1)
+                                   System.out.print("Enter min point : ");
+                              else if (choice == 2)
+                                   System.out.print("Enter max point : ");
+                              String value = input.nextLine().trim();
+                              point = Validate.isBigDecimal(value);
+                         } while (point == null);
+                         if (choice == 1)
+                              search(point, point, "min");
+                         else if (choice == 2)
+                              search(point, point, "max");
+                         break;
+                    case 3:
+                         BigDecimal maxPoint;
+                         do {
+                              System.out.print("Enter min point (VND : ");
+                              String value = input.nextLine().trim();
+                              point = Validate.isBigDecimal(value);
+
+                              System.out.print("Enter max point (VND : ");
+                              value = input.nextLine().trim();
+                              maxPoint = Validate.isBigDecimal(value);
+                         } while (point == null || maxPoint == null);
+                         search(point, maxPoint, "range");
+                         break;
+               }
+          } while (choice != 0);
+     }
+
+     private String getInputFirstName() {
+          String firstName;
+          do {
+               System.out.print("Enter first name : ");
+               firstName = input.nextLine().trim();
+               if (!Validate.checkHumanName(firstName)) {
+                    System.out.println("invalid first name!");
+                    firstName = "";
+               }
+          } while (firstName.isEmpty());
+          return firstName;
+     }
+
+     private String getInputLastName() {
+          String lastName;
+          do {
+               System.out.print("Enter last lastName : ");
+               lastName = input.nextLine().trim();
+               if (!Validate.checkHumanName(lastName)) {
+                    System.out.println("invalid last name!");
+                    lastName = "";
+               }
+          } while (lastName.isEmpty());
+          return lastName;
      }
 
      @Override
@@ -218,14 +423,81 @@ public class CustomersBUS implements IRuleSets {
      // *add methods (TEST DONE)
      @Override
      public void add() {
-          Menu.addHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Add customer");
+               System.out.println("II. Add list of customers");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 2);
+               // try catch for execute file after add
+               try {
+                    switch (choice) {
+                         case 1:
+                              Customers newCustomer = new Customers();
+                              newCustomer.setInfo();
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.parseChooseHandler(option, 2);
+                              } while (choice == -1);
+                              if (choice == 1)
+                                   break;
+                              add(newCustomer);
+                              writeFile();
+                              break;
+                         case 2:
+                              int count = 0;
+                              Customers[] list = new Customers[0];
+                              do {
+                                   System.out.print("Enter total customers you wanna add : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.isNumber(option);
+                              } while (choice == -1);
+                              // for loop with input time
+                              for (int i = 0; i < choice; i++) {
+                                   Customers customer = new Customers();
+                                   customer.setInfo();
+                                   list = Arrays.copyOf(list, list.length + 1);
+                                   list[count] = customer;
+                                   count++;
+                              }
+
+                              // confirm
+                              System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                              do {
+                                   System.out.print("choose option (1 or 2) : ");
+                                   String option = input.nextLine().trim();
+                                   choice = Validate.parseChooseHandler(option, 2);
+                              } while (choice == -1);
+                              if (choice == 1)
+                                   break;
+                              add(list);
+                              writeFile();
+                              break;
+                    }
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+               }
+          } while (choice != 0);
      }
 
      @Override
      public void add(Object customer) {
-          if (customer instanceof Customers) {
+          if (customer instanceof Customers newCustomer) {
+              newCustomer.setPersonID(newCustomer.getPersonID());
                customersList = Arrays.copyOf(customersList, customersList.length + 1);
-               customersList[count] = (Customers) customer;
+               customersList[count] = newCustomer;
                count++;
           } else
                System.out.println("Your customer is not correct!");
@@ -237,31 +509,73 @@ public class CustomersBUS implements IRuleSets {
           int total = initCount + newListLength;
           customersList = Arrays.copyOf(customersList, customersList.length + newListLength);
 
-          for (int i = initCount; i < total; i++, tempIndex++)
+          for (int i = initCount; i < total; i++, tempIndex++) {
+               newCustomers[tempIndex].setPersonID(newCustomers[tempIndex].getPersonID());
                customersList[i] = newCustomers[tempIndex];
+          }
           this.count = total;
      }
 
      // *edit methods (TEST DONE)
      @Override
      public void edit() {
-          Menu.editHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Edit name");
+               System.out.println("II. Edit date of birth");
+               System.out.println("III. Edit phone");
+               System.out.println("IV. Edit point");
+               System.out.println("V. Edit address");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 5);
+               System.out.print("Enter name or id of customer : ");
+               String userInput = input.nextLine().trim();
+
+               // if case
+               try {
+                    if (choice == 1)
+                         edit(userInput);
+                    else if (choice == 2)
+                         editDateOfBirth(userInput);
+                    else if (choice == 3)
+                         editPhone(userInput);
+                    else if (choice == 4)
+                         editPoint(userInput);
+                    else if (choice == 5)
+                         editAddress(userInput);
+                    else 
+                         break;
+                    // update file
+                    writeFile();
+               } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+               }
+          } while (true);
      }
 
      @Override
      public void edit(String customerID) {
           int index = find(customerID);
           if (index != -1) {
-               int userChoose;
+               int userChoice;
                // show list for user choose
                customersList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                String firstName, lastName;
@@ -290,16 +604,16 @@ public class CustomersBUS implements IRuleSets {
           int index = find(customerID);
           if (index != -1) {
                LocalDate date;
-               int userChoose;
+               int userChoice;
                // show list for user choose
                customersList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -314,7 +628,7 @@ public class CustomersBUS implements IRuleSets {
      public void editPhone(String customerID) {
           int index = find(customerID);
           if (index != -1) {
-               int userChoose;
+               int userChoice;
                String phone;
                // show list for user choose
                customersList[index].showInfo();
@@ -322,9 +636,9 @@ public class CustomersBUS implements IRuleSets {
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -343,16 +657,16 @@ public class CustomersBUS implements IRuleSets {
           int index = find(customerID);
           if (index != -1) {
                BigDecimal point;
-               int userChoose;
+               int userChoice;
                // show list for user choose
                customersList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -368,16 +682,16 @@ public class CustomersBUS implements IRuleSets {
           int index = find(customerID);
           if (index != -1) {
                String address;
-               int userChoose;
+               int userChoice;
                // show list for user choose
                customersList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                do {
@@ -395,23 +709,47 @@ public class CustomersBUS implements IRuleSets {
      // *remove methods (TEST DONE)
      @Override
      public void remove() {
-          Menu.removeHandler();
+          int choice;
+          do {
+               System.out.println("*".repeat(60));
+               System.out.println("I. Remove");
+               System.out.println("0. Exit");
+               System.out.println("*".repeat(60));
+               System.out.print("Enter your choice : ");
+               String inputChoice = input.nextLine().trim();
+               // validate if user choose 0
+               if (inputChoice.equals("0")) {
+                    System.out.println("Exit program.");
+                    break;
+               }
+               choice = Validate.parseChooseHandler(inputChoice, 1);
+               if (choice == 1) {
+                    try {
+                         System.out.print("Enter name or id of customer : ");
+                         String userInput = input.nextLine().trim();
+                         remove(userInput);
+                         writeFile();
+                    } catch (Exception e) {
+                         System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                    }
+               }
+          } while (choice != 0);
      }
 
      @Override
      public void remove(String nameOrID) {
           int index = find(nameOrID);
           if (index != -1) {
-               int userChoose;
+               int userChoice;
                // show list for user choose
                customersList[index].showInfo();
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
                do {
                     System.out.print("choose option (1 or 2) : ");
                     String option = input.nextLine().trim();
-                    userChoose = Validate.parseChooseHandler(option, 2);
-               } while (userChoose == -1);
-               if (userChoose == 1)
+                    userChoice = Validate.parseChooseHandler(option, 2);
+               } while (userChoice == -1);
+               if (userChoice == 1)
                     return;
 
                for (int i = index; i < customersList.length - 1; i++)
@@ -441,6 +779,10 @@ public class CustomersBUS implements IRuleSets {
      }
 
      public void readFile() throws IOException {
+          File testFile = new File("src/main/resources/Customers");
+          if (testFile.length() == 0 || !testFile.exists())
+               return;
+
           try (DataInputStream file = new DataInputStream(
                     new BufferedInputStream(new FileInputStream("src/main/resources/Customers")))) {
                count = file.readInt();

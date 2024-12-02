@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,18 +12,16 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import DTO.Books;
 import DTO.GRNDetails;
 import DTO.Products;
-import DTO.Stationeries;
 import util.Validate;
 
 public class GRNDetailsBUS {
      private GRNDetails[] grnDetailsList;
      private int count;
-     private Scanner input = new Scanner(System.in);
+     private final Scanner input = new Scanner(System.in);
 
-     // constructors
+     // *constructors (TEST DONE)
      public GRNDetailsBUS() {
           count = 0;
           grnDetailsList = new GRNDetails[0];
@@ -33,7 +32,7 @@ public class GRNDetailsBUS {
           this.grnDetailsList = grnDetailsList;
      }
 
-     // getters / setters
+     // *getters / setters (TEST DONE)
      public int getCount() {
           return count;
      }
@@ -54,9 +53,12 @@ public class GRNDetailsBUS {
      }
 
      public void setGrnDetail(GRNDetails now, GRNDetails newDetail) {
-          for (GRNDetails detail : grnDetailsList)
-               if ((detail.getGrnID().equals(now.getGrnID())))
-                    detail = newDetail;
+          for (int i = 0; i < this.count; i++) {
+               if ((grnDetailsList[i].getGrnID().equals(now.getGrnID())) &&
+                         (grnDetailsList[i].getProduct().getProductID().equals(now.getProduct().getProductID())))
+                    grnDetailsList[i] = newDetail;
+               System.out.println(grnDetailsList[i].getGrnID());
+          }
      }
 
      public void setGrnDetailsList(GRNDetails[] grnDetailsList) {
@@ -66,6 +68,7 @@ public class GRNDetailsBUS {
      // all others methods like: add remove edit find....
      // show list
      public void showList() {
+          System.out.println(grnDetailsList.length);
           if (grnDetailsList == null)
                return;
           showAsTable(grnDetailsList);
@@ -75,22 +78,24 @@ public class GRNDetailsBUS {
      // strict find
      public int find(String grnID, String productID) {
           for (int i = 0; i < grnDetailsList.length; i++) {
-               if (grnDetailsList[i].getGrnID().equals(grnID))
+               if (grnDetailsList[i].getGrnID().equals(grnID)
+                         && grnDetailsList[i].getProduct().getProductID().equals(productID))
                     return i;
           }
           return -1;
      }
 
-     // relative find
+     // *relative find (TEST DONE)
      public GRNDetails[] relativeFind(String id) {
           int count = 0;
           GRNDetails[] list = new GRNDetails[0];
-          for (GRNDetails detail : grnDetailsList)
+          for (GRNDetails detail : grnDetailsList) {
                if (detail.getGrnID().equals(id)) {
                     list = Arrays.copyOf(list, list.length + 1);
                     list[count] = detail;
                     count++;
                }
+          }
           if (count == 0) {
                System.out.println("not found any grn detail!");
                return null;
@@ -116,12 +121,12 @@ public class GRNDetailsBUS {
                showAsTable(list);
      }
 
-     // add methods
+     // *add methods (TEST DONE)
      public void add(GRNDetails detail) {
-          if (getGRNDetail(detail.getGrnID()) == null) {
+          if (find(detail.getGrnID(), detail.getProduct().getProductID()) == -1) {
                grnDetailsList = Arrays.copyOf(grnDetailsList, grnDetailsList.length + 1);
                grnDetailsList[count] = detail;
-               count++;
+               this.count++;
           }
      }
 
@@ -136,29 +141,28 @@ public class GRNDetailsBUS {
           this.count = total;
      }
 
-     // edit method
+     // *edit method (TEST DONE)
      public void edit(String grnID) {
           GRNDetails[] list = relativeFind(grnID);
           if (list != null) {
-               int count = list.length;
-               // show all grn detail has been found for user
-               for (int i = 0; i < count; i++)
-                    System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", 1, list[i].getGrnID(),
-                              list[i].getProduct().getProductName(), list[i].getQuantity(), list[i].getPrice(),
-                              list[i].getSubTotal());
-               System.out.println("-".repeat(60));
-
-               // let user decision they wanna edit or not
-               int userChoose, productChoose, newQuantity;
+               showAsTable(list);
+               // let user decision they want to edit or not
+               Products product = null;
                BigDecimal newPrice;
+               int userChoose = 1, productChoose, newQuantity;
                do {
-                    System.out.print("choose detail you wanna edit (like 1, 2,etc...): ");
+                    System.out.println("choose 0 to EXIST!");
+                    System.out.print("choose detail you wanna edit (like 0, 1, 2,etc...): ");
                     String option = input.nextLine().trim();
+                    if (option.equals("0")) {
+                         System.out.println("Exit program.");
+                         return;
+                    }
                     userChoose = Validate.parseChooseHandler(option, list.length);
                } while (userChoose == -1);
 
-               // let user decision they wanna change now product to books or stationeries
-               System.out.printf("| %s %s %s |\n", "I.Books", "-".repeat(20), "II.Stationeries");
+               // let user decision they want to change now product to books or stationer
+               System.out.printf("| %s %s %s |\n", "I.Book", "-".repeat(20), "II.Stationary");
                System.out.println("-".repeat(60));
                do {
                     System.out.print("choose product (1 or 2): ");
@@ -166,81 +170,91 @@ public class GRNDetailsBUS {
                     productChoose = Validate.parseChooseHandler(option, 2);
                } while (productChoose == -1);
 
-               // let new quantity
-               System.out.println("-".repeat(60));
-               do {
-                    System.out.print("set quantity : ");
-                    String quantityInput = input.nextLine().trim();
-                    newQuantity = Validate.isNumber(quantityInput);
-               } while (newQuantity == -1);
-
-               // let new price
-               System.out.println("-".repeat(60));
-               do {
-                    System.out.print("set price (VND) : ");
-                    String value = input.nextLine();
-                    newPrice = Validate.isBigDecimal(value);
-               } while (newPrice == null);
-
-               // try catch for execute product that user had been chosen
-               System.out.println("-".repeat(60));
+               // show list of products (BLOCK TRY _ CATCH)
                try {
-                    GRNDetails newGrnDetails = null;
                     if (productChoose == 1) {
-                         int tempChoose;
-                         BooksBUS bookList = new BooksBUS();
-                         bookList.readFile();
-                         Books book = new Books();
-                         book.setInfo();
-                         newGrnDetails = new GRNDetails(grnID, book, newQuantity, newPrice);
-
-                         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
-                         do {
-                              System.out.print("choose option (1 or 2) : ");
-                              String option = input.nextLine().trim();
-                              tempChoose = Validate.parseChooseHandler(option, list.length);
-                         } while (tempChoose == -1);
-
-                         if (tempChoose == 1)
-                              return;
-                         bookList.add(book);
-                         bookList.writeFile();
+                         BooksBUS listBooks = new BooksBUS();
+                         listBooks.readFile();
+                         listBooks.showList();
+                         product = getProductOnList(listBooks);
                     } else {
-                         int tempChoose;
-                         StationeriesBUS staList = new StationeriesBUS();
-                         staList.readFile();
-                         Stationeries stationary = new Stationeries();
-                         stationary.setInfo();
-                         newGrnDetails = new GRNDetails(grnID, stationary, newQuantity, newPrice);
-
-                         System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
-                         do {
-                              System.out.print("choose option (1 or 2) : ");
-                              String option = input.nextLine().trim();
-                              tempChoose = Validate.parseChooseHandler(option, list.length);
-                         } while (tempChoose == -1);
-                         if (tempChoose == 1)
-                              return;
-                         staList.add(stationary);
-                         staList.writeFile();
+                         StationeriesBUS listStationeries = new StationeriesBUS();
+                         listStationeries.readFile();
+                         listStationeries.showList();
+                         product = getProductOnList(listStationeries);
                     }
-
-                    setGrnDetail(list[userChoose - 1], newGrnDetails);
                } catch (Exception e) {
-                    System.out.println("error reading file!\n" + e.getMessage());
+                    System.out.printf("Error reading file: %s\n", e.getMessage());
                }
+
+               // get new quantity and calc new Price
+               newQuantity = setQuantity();
+               newPrice = setPrice();
+
+               // calc methods setter
+               setGrnDetail(list[userChoose - 1], new GRNDetails(grnID, product, newQuantity, newPrice));
           }
      }
 
-     // remove methods
-     public void remove(String grnID) {
+     // some private methods for execute specific value
+     private BigDecimal setPrice() {
+          BigDecimal price;
+          do {
+               System.out.print("set price (VND) : ");
+               String value = input.nextLine();
+               price = Validate.isBigDecimal(value);
+          } while (price == null);
+          return price;
+     }
+
+     private int setQuantity() {
+          int quantity;
+          do {
+               System.out.print("set quantity : ");
+               String quantityInput = input.nextLine().trim();
+               quantity = Validate.isNumber(quantityInput);
+          } while (quantity == -1);
+          return quantity;
+     }
+
+     private Products getProductOnList(Object list) {
+          String productID;
+          boolean isBook = list instanceof BooksBUS;
+          boolean isStationary = list instanceof StationeriesBUS;
+          do {
+               System.out.print("product id: ");
+               productID = input.nextLine().trim();
+
+               // execute when want to receive new book
+               if (productID.equalsIgnoreCase("new"))
+                    break;
+
+               if (isBook)
+                    if (((BooksBUS) list).find(productID) == -1)
+                         productID = "";
+                    else if (isStationary)
+                         if (((StationeriesBUS) list).find(productID) == -1)
+                              productID = "";
+          } while (productID.isEmpty());
+
+          // return product
+          Products product = null;
+          if (isBook)
+               product = ((BooksBUS) list).getBook(productID);
+          else if (isStationary)
+               product = ((StationeriesBUS) list).getStationary(productID);
+          return product;
+     }
+
+     // *remove methods (TEST DONE)
+     public void remove(String grnID, String productID) {
           int size = 0;
           GRNDetails[] reduceArray = new GRNDetails[0];
-          for (int i = 0; i < grnDetailsList.length; i++) {
-               if (grnDetailsList[i].getGrnID().equals(grnID))
+          for (GRNDetails grnDetails : grnDetailsList) {
+               if (grnDetails.getGrnID().equals(grnID) && grnDetails.getProduct().getProductID().equals(productID))
                     continue;
                reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
-               reduceArray[size] = grnDetailsList[i];
+               reduceArray[size] = grnDetails;
                size++;
           }
 
@@ -248,44 +262,45 @@ public class GRNDetailsBUS {
                System.out.println("not found any mid!");
                return;
           }
-
           setCount(size);
           setGrnDetailsList(reduceArray);
      }
 
-     // show as table methods
+     // *show as table methods (TEST DONE)
      public void showAsTable(GRNDetails[] list) {
           if (list == null)
                return;
-          System.out.println("=".repeat(180));
-          System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", "No.", "GRN ID", "Product", "quantity",
-                    "Price", "Sub Total");
-          System.out.println("=".repeat(180));
+          System.out.println("=".repeat(140));
+          System.out.printf("| %-6s %-15s %-66s %-12s %-16s %-16s |\n",
+                    "No.", "GRN ID", "Product", "Quantity", "Price (VND)", "Sub Total (VND)");
+          System.out.println("=".repeat(140));
           for (int i = 0; i < list.length; i++) {
                if (i > 0)
-                    System.out.println("|" + "-".repeat(178) + "|");
-               System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", i + 1, list[i].getGrnID(),
-                         list[i].getProduct().getProductName(), list[i].getQuantity(), list[i].getPrice(),
-                         list[i].getSubTotal());
+                    System.out.println("|" + "-".repeat(138) + "|");
+               System.out.printf("| %-6s %-15s %-66s %-12s %-16s %-16s |\n", i + 1, list[i].getGrnID(),
+                         list[i].getProduct().getProductName(), list[i].getQuantity(),
+                         Validate.formatPrice(list[i].getPrice()),
+                         Validate.formatPrice(list[i].getSubTotal()));
           }
-          System.out.println("=".repeat(180));
+          System.out.println("=".repeat(140));
      }
 
      public void showAsTable(GRNDetails item) {
           if (item == null)
                return;
-          System.out.println("=".repeat(180));
-          System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", "No.", "GRN ID", "Product", "quantity",
+          System.out.println("=".repeat(140));
+          System.out.printf("| %-6s %-15s %-66s %-12s %-16s %-16s |\n", "No.", "GRN ID", "Product", "quantity",
                     "Price", "Sub Total");
-          System.out.println("=".repeat(180));
-          System.out.printf("| \t%-20s %-21s %-21s %-21s %-21s %-21s |\n", 1, item.getGrnID(),
-                    item.getProduct().getProductName(), item.getQuantity(), item.getPrice(), item.getSubTotal());
-          System.out.println("=".repeat(180));
+          System.out.println("=".repeat(140));
+          System.out.printf("| %-6s %-15s %-66s %-12s %-16s %-16s |\n", 1, item.getGrnID(),
+                    item.getProduct().getProductName(), item.getQuantity(), Validate.formatPrice(item.getPrice()),
+                    Validate.formatPrice(item.getSubTotal()));
+          System.out.println("=".repeat(140));
 
      }
 
      // execute file resources
-     // write file
+     // *write file (TEST DONE)
      public void writeFile() throws IOException {
           try (DataOutputStream file = new DataOutputStream(
                     new BufferedOutputStream(new FileOutputStream("src/main/resources/GRNDetails", false)))) {
@@ -301,8 +316,12 @@ public class GRNDetailsBUS {
           }
      }
 
-     // read file
+     // *read file (TEST DONE)
      public void readFile() throws IOException {
+          File testFile = new File("src/main/resources/GRNDetails");
+          if (testFile.length() == 0 || !testFile.exists())
+               return;
+
           try (DataInputStream file = new DataInputStream(
                     new BufferedInputStream(new FileInputStream("src/main/resources/GRNDetails")))) {
                count = file.readInt();
@@ -315,14 +334,21 @@ public class GRNDetailsBUS {
 
                     // execute id
                     Products product;
-                    if (productID.startsWith("ST") && productID.endsWith("PD"))
-                         product = new StationeriesBUS().getStationary(productID);
-                    else if (productID.startsWith("BK") && productID.endsWith("PD"))
-                         product = new BooksBUS().getBook(productID);
+                    if (productID.startsWith("ST") && productID.endsWith("PD")) {
+                         StationeriesBUS staList = new StationeriesBUS();
+                         staList .readFile(); 
+                         product = staList.getStationary(productID);
+                    }
+                    else if (productID.startsWith("BK") && productID.endsWith("PD")) {
+                         BooksBUS bookList = new BooksBUS(); 
+                         bookList.readFile();
+                         product = bookList.getBook(productID);
+                    }
                     else
                          product = null;
                     list[i] = new GRNDetails(grnID, product, quantity, price);
                }
+               setCount(count);
                setGrnDetailsList(list);
           } catch (Exception e) {
                System.out.printf("Error reading file: %s\n", e.getMessage());

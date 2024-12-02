@@ -3,14 +3,14 @@ package DTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.regex.Pattern;
 
 import BUS.StaTypesBUS;
+import BUS.StationeriesBUS;
 import util.Validate;
 
 public class Stationeries extends Products {
      private String stationaryID;
-     private StaTypes staTypes;
+     private StaTypes type;
      private String brand;
      private String material;
      private String source;
@@ -19,11 +19,11 @@ public class Stationeries extends Products {
      public Stationeries() {
      }
 
-     public Stationeries(String productId, String stationaryID, String productName, LocalDate releaseDate, BigDecimal productPrice,
-               int quantity, StaTypes type, String brand, String material, String source) {
+     public Stationeries(String productId, String stationaryID, String productName, LocalDate releaseDate,
+               BigDecimal productPrice, int quantity, StaTypes type, String brand, String material, String source) {
           super(productId, productName, releaseDate, productPrice, quantity);
           this.stationaryID = stationaryIDModifier(stationaryID);
-          this.staTypes = type;
+          this.type = type;
           this.brand = brand;
           this.material = material;
           this.source = source;
@@ -35,7 +35,7 @@ public class Stationeries extends Products {
      }
 
      public StaTypes getType() {
-          return this.staTypes;
+          return this.type;
      }
 
      public String getBrand() {
@@ -56,7 +56,7 @@ public class Stationeries extends Products {
      }
 
      public void setType(StaTypes type) {
-          this.staTypes = type;
+          this.type = type;
      }
 
      public void setBrand(String brand) {
@@ -73,20 +73,30 @@ public class Stationeries extends Products {
 
      // setter no params
      public String setStationeriesID() {
-          String id;
-          do {
-               System.out.print("set stationary id : ");
-               id = input.nextLine().trim();
-               if (Validate.validateID(id)) {
-                    System.out.println("error id!");
-                    id = "";
+          StringBuilder id;
+          try {
+               StationeriesBUS stationeriesList = new StationeriesBUS();
+               stationeriesList.readFile();
+               Stationeries[] list = stationeriesList.getStaList();
+
+               if (list.length == 0) {
+                    id = new StringBuilder("00000001");
+               } else {
+                    String getID = list[list.length - 1].getStationeriesID();
+                    int prevID = Integer.parseInt(getID.substring(3));
+                    id = new StringBuilder(String.format("%d", prevID + 1));
+                    while (id.length() != 8)
+                         id.insert(0, "0");
                }
-          } while (id.isEmpty());
-          return id;
+          } catch (Exception e) {
+               System.out.println("error when execute with file!" + e.getMessage());
+               id = new StringBuilder("00000001");
+          }
+          return stationaryIDModifier(id.toString());
      }
 
      public StaTypes setType() {
-          int userChoose;
+          int userChoice;
           StaTypesBUS.showList();
           if (StaTypesBUS.getCount() == 0) // if not have any types
                return null;
@@ -94,11 +104,10 @@ public class Stationeries extends Products {
           do {
                System.out.print("choose type (like 1, 2,etc...) : ");
                String option = input.nextLine().trim();
-               userChoose = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
-          } while (userChoose == -1);
+               userChoice = Validate.parseChooseHandler(option, StaTypesBUS.getCount());
+          } while (userChoice == -1);
 
-          StaTypes type = StaTypesBUS.getTypesList()[userChoose - 1];
-          return type;
+         return StaTypesBUS.getTypesList()[userChoice - 1];
      }
 
      public String setBrand() {
@@ -143,49 +152,47 @@ public class Stationeries extends Products {
      // *other methods (TEST DONE)
      @Override
      public void setInfo() {
-        System.out.println("*".repeat(60));
+          System.out.println("*".repeat(60));
           String id = setID(this);
-
-        System.out.println("-".repeat(60));
           String staID = setStationeriesID();
 
-        System.out.println("-".repeat(60));
+          // name
           String name = setName();
 
-        System.out.println("-".repeat(60));
+          System.out.println("-".repeat(60));
           BigDecimal price = setPrice();
 
-        System.out.println("-".repeat(60));
+          System.out.println("-".repeat(60));
           LocalDate releaseDate = setRelDate();
 
-        System.out.println("-".repeat(60));
+          System.out.println("-".repeat(60));
           StaTypes type = setType();
 
-        System.out.println("-".repeat(60));
+          System.out.println("-".repeat(60));
           String brand = setBrand();
 
-        System.out.println("-".repeat(60));
+          System.out.println("-".repeat(60));
           String material = setMaterial();
-
-        System.out.println("-".repeat(60));
-          int quantity = setQuantity();
           
-        System.out.println("*".repeat(60));
-          String source = setSource();
+          System.out.println("-".repeat(60));
+          int quantity = setQuantity();
 
-          int userChoose;
-          System.out.printf("*".repeat(60) + "\n");
+          System.out.println("-".repeat(60));
+          String source = setSource();
+          System.out.println("*".repeat(60));
+
+          
+          int userChoice;
           System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
           do {
                System.out.print("choose option (1 or 2) : ");
                String option = input.nextLine().trim();
-               userChoose = Validate.parseChooseHandler(option, 2);
-          } while (userChoose == -1);
+               userChoice = Validate.parseChooseHandler(option, 2);
+          } while (userChoice == -1);
 
-          if (userChoose == 1) {
+          if (userChoice == 1)
                System.out.println("ok!");
-               return;
-          } else {
+          else {
                // set fields for product
                setProductID(id);
                setStationeriesID(staID);
@@ -211,8 +218,9 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "ID", productID != null ? productID : "N/A");
           System.out.printf("| %-22s : %s \n", "Stationeries ID", stationaryID != null ? stationaryID : "N/A");
           System.out.printf("| %-22s : %s \n", "Name", productName != null ? productName : "N/A");
-          System.out.printf("| %-22s : %s \n", "Release Date", date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
-          System.out.printf("| %-22s : %s \n", "Type", this.staTypes != null ? this.staTypes.getTypeName() : "N/A");
+          System.out.printf("| %-22s : %s \n", "Release Date",
+                    date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+          System.out.printf("| %-22s : %s \n", "Type", this.type != null ? this.type.getTypeName() : "N/A");
           System.out.printf("| %-22s : %s \n", "Material", this.material != null ? this.material : "N/A");
           System.out.printf("| %-22s : %s \n", "Source", this.source != null ? this.source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");
@@ -222,11 +230,9 @@ public class Stationeries extends Products {
      }
 
      private String stationaryIDModifier(String stationaryID) {
-          if (stationaryID.startsWith("STA") && stationaryID.length() == 8)
+          if (stationaryID.startsWith("STA") && stationaryID.length() == 11)
                return stationaryID;
-          String regex = "^(?=[a-zA-Z0-9_-]{5}$)[^%+\\/#'::\":]+$";
-          Pattern pattern = Pattern.compile(regex);
-          if (!pattern.matcher(stationaryID).matches()) {
+          if (!Validate.validateID(stationaryID)) {
                System.out.println("error id!");
                return "N/A";
           }

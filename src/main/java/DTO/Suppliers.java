@@ -2,21 +2,21 @@ package DTO;
 
 import java.util.Scanner;
 
-import BUS.TypesBUS;
+import BUS.SuppliersBUS;
 import util.Validate;
 
 public class Suppliers {
     private String supplierID;
     private String supplierName;
     private String phone;
-    private Scanner input = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
     // constructor
     public Suppliers() {
     }
 
     public Suppliers(String supplierID, String supplierName, String phone) {
-        this.supplierID = supplierID;
+        this.supplierID = supplierIDModifier(supplierID);
         this.supplierName = supplierName;
         this.phone = phone;
     }
@@ -36,7 +36,7 @@ public class Suppliers {
 
     // setter
     public void setSupplierID(String supplierID) {
-        this.supplierID = supplierID;
+        this.supplierID = supplierIDModifier(supplierID);
     }
 
     public void setSupplierName(String supplierName) {
@@ -49,17 +49,20 @@ public class Suppliers {
 
     // set not param
     public String setID() {
-        String id = "";
-        BookTypes[] list = TypesBUS.getTypesList();
+        StringBuilder id;
+        Suppliers[] list = SuppliersBUS.getSupplierList();
 
-        if (list.length == 0 || list == null) {
-            return "00000001";
+        if (list.length == 0) {
+            id = new StringBuilder("00000001");
         } else {
-            int prevID = Integer
-                    .parseInt((list[list.length - 1]).getTypeID().substring(3, list.length - 3));
-            id = String.format("%d", prevID + 1);
+            String getID = list[list.length - 1].getSupplierID();
+            int prevID = Integer.parseInt(getID.substring(3, getID.length() - 3));
+            id = new StringBuilder(String.format("%d", prevID + 1));
+            // check if id length < 8
+            while (id.length() != 8)
+                id.insert(0, "0");
         }
-        return supplierIDModifier(id);
+        return supplierIDModifier(id.toString());
     }
 
     public String setName() {
@@ -75,12 +78,45 @@ public class Suppliers {
         return name;
     }
 
+    public String setPhone() {
+        String phone;
+        do {
+            System.out.print("set phone number: ");
+            phone = input.nextLine().trim();
+            if (!Validate.validatePhone(phone)) {
+                System.out.println("invalid phone number!");
+                phone = "";
+            }
+        } while (phone.isEmpty());
+        return phone;
+    }
+
     public void setInfo() {
         System.out.println("*".repeat(60));
-        this.supplierID = setID();
+        String supplierID = setID();
+        // name fields
+        String supplierName = setName();
         System.out.println("-".repeat(60));
-        this.supplierName = setName();
+        String phone = setPhone();
         System.out.println("*".repeat(60));
+
+        int userChoice;
+        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+        do {
+            System.out.print("choose option (1 or 2) : ");
+            String option = input.nextLine().trim();
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
+        System.out.println("*".repeat(60));
+
+        if (userChoice == 1) 
+            System.out.println("ok!");
+        else {
+            setSupplierID(supplierID);
+            setSupplierName(supplierName);
+            setPhone(phone);
+            System.out.println("create and set fields success");
+        }
     }
 
     private String supplierIDModifier(String supplierID) {

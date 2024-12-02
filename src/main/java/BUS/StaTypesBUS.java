@@ -1,13 +1,13 @@
 package BUS;
 
 import DTO.StaTypes;
-import Manager.Menu;
 import util.Validate;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class StaTypesBUS implements IRuleSets {
     public static StaTypes[] getTypes(int start, int end) {
         int size = 0;
         StaTypes[] list = new StaTypes[0];
-        if (start <= end)
+        if (!Validate.checkValidRange(start, end))
             return null;
         for (int i = start; i < end; i++) {
             list = Arrays.copyOf(list, list.length + 1);
@@ -85,11 +85,6 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Find methods (TEST DONE)
     @Override
-    public void find() {
-        Menu.findHandler();
-    }
-
-    @Override
     public int find(String nameOrID) {
         for (int i = 0; i < typesList.length; i++) {
             if (typesList[i].getTypeID().equals(nameOrID)
@@ -119,7 +114,33 @@ public class StaTypesBUS implements IRuleSets {
     // *Search methods (TEST DONE)
     @Override
     public void search() {
-        Menu.searchHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Strict search");
+            System.out.println("II. Relative search");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice : ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                 System.out.println("Exit program.");
+                 break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 2);
+            if (choice == -1)
+                break;
+
+            System.out.print("Enter name or id of type : ");
+            String userInput = input.nextLine().trim();
+            // if case
+            if (choice == 1)
+                search(userInput);
+            else if (choice == 2)
+                relativeSearch(userInput);
+
+        } while (choice != 0);
     }
 
     @Override
@@ -131,21 +152,89 @@ public class StaTypesBUS implements IRuleSets {
 
     public void relativeSearch(String name) {
         StaTypes[] list = relativeFind(name);
-        if (list != null) 
+        if (list != null)
             showAsTable(list);
     }
 
     // *Add methods (TEST DONE)
     @Override
     public void add() {
-        Menu.addHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Add type");
+            System.out.println("II. Add list of types");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice : ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                 System.out.println("Exit program.");
+                 break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 2);
+
+            try {
+                switch (choice) {
+                    case 1:
+                        StaTypes newType = new StaTypes();
+                        newType.setInfo();
+                        // confirm
+                        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                        do {
+                            System.out.print("choose option (1 or 2) : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.parseChooseHandler(option, 2);
+                        } while (choice == -1);
+                        if (choice == 1)
+                            break;
+                        add(newType);
+                        writeFile();
+                        break;
+                    case 2:
+                        int count = 0;
+                        StaTypes[] list = new StaTypes[0];
+                        do {
+                            System.out.print("Enter total types you wanna add : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.isNumber(option);
+                        } while (choice == -1);
+                        // for loop with input time
+                        for (int i = 0; i < choice; i++) {
+                            StaTypes type = new StaTypes();
+                            type.setInfo();
+                            list = Arrays.copyOf(list, list.length + 1);
+                            list[count] = type;
+                            count++;
+                        }
+
+                        // confirm
+                        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                        do {
+                            System.out.print("choose option (1 or 2) : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.parseChooseHandler(option, 2);
+                        } while (choice == -1);
+                        if (choice == 1)
+                            break;
+                        add(list);
+                        writeFile();
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.printf("error writing file!\nt%s\n", e.getMessage());
+            }
+
+        } while (choice != 0);
     }
 
     @Override
     public void add(Object type) {
-        if (type instanceof StaTypes) {
+        if (type instanceof StaTypes newType) {
+            newType.setTypeID(newType.getTypeID());
             typesList = Arrays.copyOf(typesList, typesList.length + 1);
-            typesList[count] = (StaTypes) type;
+            typesList[count] = newType;
             count++;
         } else {
             System.out.println("your type is not correct!");
@@ -153,41 +242,67 @@ public class StaTypesBUS implements IRuleSets {
     }
 
     public void add(StaTypes[] newTypes) {
-        int tempIndex = 0;
+        int tempIndex = 0, newListLength = newTypes.length;
         int initCount = getCount();
-        int total = initCount + newTypes.length;
-        typesList = Arrays.copyOf(typesList, typesList.length + newTypes.length);
+        int total = initCount + newListLength;
+        typesList = Arrays.copyOf(typesList, typesList.length + newListLength);
 
-        for (int i = initCount; i < total; i++, tempIndex++)
+        for (int i = initCount; i < total; i++, tempIndex++) {
+            newTypes[tempIndex].setTypeID(newTypes[tempIndex].getTypeID());
             typesList[i] = newTypes[tempIndex];
+        }
         StaTypesBUS.count = total;
     }
 
     // *Edit methods (TEST DONE)
     @Override
     public void edit() {
-        Menu.editHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Edit");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice : ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                 System.out.println("Exit program.");
+                 break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 1);
+            if (choice == 1) {
+                try {
+                    System.out.print("Enter name or id of type : ");
+                    String userInput = input.nextLine().trim();
+                    edit(userInput);
+                    writeFile();
+                } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                }
+            }
+        } while (choice != 0);
     }
 
     @Override
     public void edit(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1) {
-            int userChoose;
+            int userChoice;
             // show list for user choose
             showAsTable(typesList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
-                 System.out.print("choose option (1 or 2) : ");
-                 String option = input.nextLine().trim();
-                 userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
-                 return;
+                System.out.print("choose option (1 or 2) : ");
+                String option = input.nextLine().trim();
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
+                return;
 
             String newName;
             do {
-                System.out.print("Enter new name: ");
+                System.out.print("Enter new name : ");
                 newName = input.nextLine().trim();
                 if (!Validate.checkName(newName)) {
                     System.out.println("name is wrong format!");
@@ -201,24 +316,48 @@ public class StaTypesBUS implements IRuleSets {
     // *Remove methods (TEST DONE)
     @Override
     public void remove() {
-        Menu.removeHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Remove");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice : ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                 System.out.println("Exit program.");
+                 break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 1);
+            if (choice == 1) {
+                try {
+                    System.out.print("Enter name or id of type : ");
+                    String userInput = input.nextLine().trim();
+                    remove(userInput);
+                    writeFile();
+                } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                }
+            }
+        } while (choice != 0);
     }
 
     @Override
     public void remove(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1) {
-            int userChoose;
+            int userChoice;
             // show list for user choose
             showAsTable(typesList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
-                 System.out.print("choose option (1 or 2) : ");
-                 String option = input.nextLine().trim();
-                 userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
-                 return;
+                System.out.print("choose option (1 or 2) : ");
+                String option = input.nextLine().trim();
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
+                return;
 
             for (int i = index; i < typesList.length - 1; i++)
                 typesList[i] = typesList[i + 1];
@@ -255,7 +394,8 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Write file (TEST DONE)
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("src/main/resources/StaTypes", false)))) {
+        try (DataOutputStream file = new DataOutputStream(
+                new BufferedOutputStream(new FileOutputStream("src/main/resources/StaTypes", false)))) {
             file.writeInt(count);
             for (StaTypes type : typesList) {
                 file.writeUTF(type.getTypeID());
@@ -268,7 +408,12 @@ public class StaTypesBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
-        try (DataInputStream file = new DataInputStream(new BufferedInputStream(new FileInputStream("src/main/resources/StaTypes")))) {
+        File testFile = new File("src/main/resources/StaTypes");
+        if (testFile.length() == 0 || !testFile.exists())
+            return;
+
+        try (DataInputStream file = new DataInputStream(
+                new BufferedInputStream(new FileInputStream("src/main/resources/StaTypes")))) {
             int count = file.readInt();
             StaTypes[] list = new StaTypes[count];
             for (int i = 0; i < count; i++) {

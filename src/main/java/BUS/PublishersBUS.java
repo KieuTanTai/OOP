@@ -1,13 +1,13 @@
 package BUS;
 
 import DTO.Publishers;
-import Manager.Menu;
 import util.Validate;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -72,11 +72,6 @@ public class PublishersBUS implements IRuleSets {
 
     // *Find methods (TEST DONE)
     @Override
-    public void find() {
-        Menu.findHandler();
-    }
-
-    @Override
     public int find(String nameOrID) {
         for (int i = 0; i < publishersList.length; i++) {
             if (publishersList[i].getPublisherID().equals(nameOrID)
@@ -106,7 +101,33 @@ public class PublishersBUS implements IRuleSets {
     // *Search methods (TEST DONE)
     @Override
     public void search() {
-        Menu.searchHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Strict search");
+            System.out.println("II. Relative search");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice: ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                 System.out.println("Exit program.");
+                 break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 2);
+            if (choice == -1)
+                break;
+
+            System.out.print("Enter name or id of publisher: ");
+            String userInput = input.nextLine().trim();
+            // if case
+            if (choice == 1)
+                search(userInput);
+            else if (choice == 2)
+                relativeSearch(userInput);
+
+        } while (choice != 0);
     }
 
     @Override
@@ -125,51 +146,145 @@ public class PublishersBUS implements IRuleSets {
     // *Add methods (TEST DONE)
     @Override
     public void add() {
-        Menu.addHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Add publisher");
+            System.out.println("II. Add list of publishers");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice: ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                 System.out.println("Exit program.");
+                 break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 2);
+
+            try {
+                switch (choice) {
+                    case 1:
+                        Publishers newPublisher = new Publishers();
+                        newPublisher.setInfo();
+                        // confirm
+                        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                        do {
+                            System.out.print("choose option (1 or 2) : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.parseChooseHandler(option, 2);
+                        } while (choice == -1);
+                        if (choice == 1)
+                            break;
+                        add(newPublisher);
+                        writeFile();
+                        break;
+                    case 2:
+                        int count = 0;
+                        Publishers[] list = new Publishers[0];
+                        do {
+                            System.out.print("Enter total format you wanna add : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.isNumber(option);
+                        } while (choice == -1);
+                        // for loop with input time
+                        for (int i = 0; i < choice; i++) {
+                            Publishers publisher = new Publishers();
+                            publisher.setInfo();
+                            list = Arrays.copyOf(list, list.length + 1);
+                            list[count] = publisher;
+                            count++;
+                        }
+
+                        // confirm
+                        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                        do {
+                            System.out.print("choose option (1 or 2) : ");
+                            String option = input.nextLine().trim();
+                            choice = Validate.parseChooseHandler(option, 2);
+                        } while (choice == -1);
+                        if (choice == 1)
+                            break;
+                        add(list);
+                        writeFile();
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.printf("error writing file!\nt%s\n", e.getMessage());
+            }
+
+        } while (choice != 0);
     }
 
     @Override
     public void add(Object publisher) {
-        if (publisher instanceof Publishers) {
+        if (publisher instanceof Publishers newPublisher) {
+            newPublisher.setPublisherID(newPublisher.getPublisherID());
             publishersList = Arrays.copyOf(publishersList, publishersList.length + 1);
-            publishersList[count] = (Publishers) publisher;
+            publishersList[count] = newPublisher;
             count++;
         } else {
             System.out.println("your new publisher is not correct!");
         }
     }
 
-    public void add(Publishers[] newPublishers, int size) {
-        int tempIndex = 0;
+    public void add(Publishers[] newPublishers) {
+        int tempIndex = 0, newListLength = newPublishers.length;
         int initCount = getCount();
-        int total = initCount + size;
-        publishersList = Arrays.copyOf(publishersList, publishersList.length + newPublishers.length);
+        int total = initCount + newListLength;
+        publishersList = Arrays.copyOf(publishersList, publishersList.length + newListLength);
 
-        for (int i = initCount; i < total; i++, tempIndex++)
+        for (int i = initCount; i < total; i++, tempIndex++) {
+            newPublishers[tempIndex].setPublisherID(newPublishers[tempIndex].getPublisherID());
             publishersList[i] = newPublishers[tempIndex];
+        }
         PublishersBUS.count = total;
     }
 
     // *Edit methods (TEST DONE)
     @Override
     public void edit() {
-        Menu.editHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Edit");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice: ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                 System.out.println("Exit program.");
+                 break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 1);
+            if (choice == 1) {
+                try {
+                    System.out.print("Enter name or id of publisher: ");
+                    String userInput = input.nextLine().trim();
+                    edit(userInput);
+                    writeFile();
+                } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                }
+            }
+        } while (choice != 0);
     }
 
     @Override
     public void edit(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1) {
-            int userChoose;
-            // show list for user choose
+            int userChoice;
+            // show list for user choice
             showAsTable(publishersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             String newName;
@@ -188,23 +303,47 @@ public class PublishersBUS implements IRuleSets {
     // *Remove methods (TEST DONE)
     @Override
     public void remove() {
-        Menu.removeHandler();
+        int choice;
+        do {
+            System.out.println("*".repeat(60));
+            System.out.println("I. Remove");
+            System.out.println("0. Exit");
+            System.out.println("*".repeat(60));
+            System.out.print("Enter your choice: ");
+            String inputChoice = input.nextLine().trim();
+            // validate if user choose 0
+            if (inputChoice.equals("0")) {
+                 System.out.println("Exit program.");
+                 break;
+            }
+            choice = Validate.parseChooseHandler(inputChoice, 1);
+            if (choice == 1) {
+                try {
+                    System.out.print("Enter name or id of publisher: ");
+                    String userInput = input.nextLine().trim();
+                    remove(userInput);
+                    writeFile();
+                } catch (Exception e) {
+                    System.out.printf("error writing file!\nt%s\n", e.getMessage());
+                }
+            }
+        } while (choice != 0);
     }
 
     @Override
     public void remove(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1) {
-            int userChoose;
-            // show list for user choose
+            int userChoice;
+            // show list for user choice
             showAsTable(publishersList[index]);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
                 System.out.print("choose option (1 or 2) : ");
                 String option = input.nextLine().trim();
-                userChoose = Validate.parseChooseHandler(option, 2);
-            } while (userChoose == -1);
-            if (userChoose == 1)
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
                 return;
 
             for (int i = index; i < publishersList.length - 1; i++)
@@ -256,6 +395,10 @@ public class PublishersBUS implements IRuleSets {
 
     // *Read file (TEST DONE)
     public void readFile() throws IOException {
+        File testFile = new File("src/main/resources/Publishers");
+        if (testFile.length() == 0 || !testFile.exists())
+            return;
+
         try (DataInputStream file = new DataInputStream(
                 new BufferedInputStream(new FileInputStream("src/main/resources/Publishers")))) {
             int count = file.readInt();

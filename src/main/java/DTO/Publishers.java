@@ -2,20 +2,20 @@ package DTO;
 
 import java.util.Scanner;
 
-import BUS.TypesBUS;
+import BUS.PublishersBUS;
 import util.Validate;
 
 public class Publishers {
     private String publisherID;
     private String publisherName;
-    private Scanner input = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
 
     // constructor
     public Publishers() {
     }
 
     public Publishers(String publisherID, String publisherName) {
-        this.publisherID = publisherID;
+        this.publisherID = publisherIDModifier(publisherID);
         this.publisherName = publisherName;
     }
 
@@ -30,7 +30,7 @@ public class Publishers {
 
     // setter
     public void setPublisherID(String publisherID) {
-        this.publisherID = publisherID;
+        this.publisherID = publisherIDModifier(publisherID);
     }
 
     public void setPublisherName(String publisherName) {
@@ -39,17 +39,20 @@ public class Publishers {
 
     // set not param
     public String setID() {
-        String id = "";
-        BookTypes[] list = TypesBUS.getTypesList();
+        StringBuilder id;
+        Publishers[] list = PublishersBUS.getPublishersList();
 
-        if (list.length == 0 || list == null) {
-            return "00000001";
+        if (list.length == 0) {
+            id = new StringBuilder("00000001");
         } else {
-            int prevID = Integer
-                    .parseInt((list[list.length - 1]).getTypeID().substring(3, list.length - 3));
-            id = String.format("%d", prevID + 1);
+            String getID = list[list.length - 1].getPublisherID();
+            int prevID = Integer.parseInt(getID.substring(3, getID.length() - 3));
+            id = new StringBuilder(String.format("%d", prevID + 1));
+            // check if id length < 8
+            while (id.length() != 8)
+                id.insert(0, "0");
         }
-        return publisherIDModifier(id);
+        return publisherIDModifier(id.toString());
     }
 
     public String setName() {
@@ -67,10 +70,27 @@ public class Publishers {
 
     public void setInfo() {
         System.out.println("*".repeat(60));
-        this.publisherID = setID();
-        System.out.println("-".repeat(60));
-        this.publisherName = setName();
+        String publisherID = setID();
+        // name fields
+        String publisherName = setName();
         System.out.println("*".repeat(60));
+
+        int userChoice;
+        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+        do {
+            System.out.print("choose option (1 or 2) : ");
+            String option = input.nextLine().trim();
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
+        System.out.println("*".repeat(60));
+
+        if (userChoice == 1)
+            System.out.println("ok!");
+        else {
+            setPublisherID(publisherID);
+            setPublisherName(publisherName);
+            System.out.println("create and set fields success");
+        }
     }
 
     private String publisherIDModifier(String publisherID) {

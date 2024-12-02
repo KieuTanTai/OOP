@@ -2,6 +2,7 @@ package BUS;
 
 import DTO.SaleEvents;
 import DTO.SaleEventsDetail;
+import util.Validate;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -59,29 +60,38 @@ public class SaleEventsBUS {
     }
 
     public void update(String id) {
-        for (int i = 0; i < count; i++)
-            if (listSaleEvents[i].getSaleEvId().equals(id))
-                listSaleEvents[i].setInfo();
+        int index = findById(id);
+        if (index != -1) 
+            listSaleEvents[index].setInfo();
     }
 
-    public boolean delete(int vt) {
-        if (vt >= count)
-            return false;
+    public void delete(String id) {
+        int index = findById(id);
+        if (index != -1) {
+            int userChoice;
+            listSaleEvents[index].showInfo();
+            System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
+            do {
+                System.out.print("choose option (1 or 2) : ");
+                String option = sc.nextLine().trim();
+                userChoice = Validate.parseChooseHandler(option, 2);
+            } while (userChoice == -1);
+            if (userChoice == 1)
+                return;
 
-        count--;
-        for (int x = vt; x < count; x++)
-            listSaleEvents[x] = listSaleEvents[x + 1];
-        listSaleEvents[count] = null;
-        listSaleEvents = Arrays.copyOf(listSaleEvents, count);
-        return true;
+            for (int i = index; i < listSaleEvents.length - 1; i++)
+                listSaleEvents[i] = listSaleEvents[i + 1];
+            listSaleEvents = Arrays.copyOf(listSaleEvents, listSaleEvents.length - 1);
+            count--;
+        }
     }
 
-    public SaleEvents findById(String id) {
+    public int findById(String id) {
         for (int i = 0; i < count; i++)
             if (listSaleEvents[i].getSaleEvId().equals(id))
-                return listSaleEvents[i];
+                return i;
         System.out.println("not found any sale event!");
-        return null;
+        return -1;
     }
 
     public SaleEvents findByPromoCode(String promoCode) {
@@ -205,7 +215,8 @@ public class SaleEventsBUS {
                 BigDecimal minPrice = new BigDecimal(file.readUTF());
                 BigDecimal discount = new BigDecimal(file.readUTF());
                 BigDecimal maxPriceDiscount = new BigDecimal(file.readUTF());
-                SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount, maxPriceDiscount);
+                SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount,
+                        maxPriceDiscount);
 
                 // set values for temp list
                 list[i] = new SaleEvents(saleEvId, saleEvName, description, startDate, endDate, detail);

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import BUS.*;
+import DTO.SaleEvents;
 import util.Validate;
 
 public class Menu {
@@ -77,6 +78,7 @@ public class Menu {
             System.out.println("VIII. Add new BookTypes");
             System.out.println("IX. Add new Genre");
             System.out.println("X. Add new StaTypes");
+            System.out.println("XI. Add new sale event");
             System.out.println("0. Exit");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -85,7 +87,7 @@ public class Menu {
                 System.out.println("Exit program!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 10);
+            choice = Validate.parseChooseHandler(option, 11);
 
             try {
                 switch (choice) {
@@ -177,6 +179,25 @@ public class Menu {
                         staTypesList.add();
                         staTypesList.writeFile();
                         break;
+                    case 11:
+                        int userChoice;
+                        SaleEventsBUS salesList = new SaleEventsBUS();
+                        salesList.readFile();
+                        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Add");
+                        do {
+                            System.out.print("choose option (1 or 2) : ");
+                            String userInput = input.nextLine().trim();
+                            userChoice = Validate.parseChooseHandler(userInput, 2);
+                        } while (userChoice == -1);
+                        if (userChoice == 1)
+                            break;
+                        // add methods
+                        SaleEvents sale = new SaleEvents();
+                        sale.setInfo();
+                        if (sale != null)
+                            salesList.add(sale);
+                        salesList.writeFile();
+                        break;
                 }
             } catch (Exception e) {
                 System.out.println("An error occurred: " + e.getMessage());
@@ -198,6 +219,7 @@ public class Menu {
             System.out.println("VIII. Search BookTypes");
             System.out.println("IX. Search Genre");
             System.out.println("X. Search StaTypes");
+            System.out.println("XI. Search sale event");
             System.out.println("0. Exit");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -206,7 +228,7 @@ public class Menu {
                 System.out.println("Exit program!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 10);
+            choice = Validate.parseChooseHandler(option, 11);
 
             try {
                 switch (choice) {
@@ -298,6 +320,17 @@ public class Menu {
                         staTypesList.search();
                         staTypesList.writeFile();
                         break;
+                    case 11:
+                        int index;
+                        SaleEventsBUS salesList = new SaleEventsBUS();
+                        salesList.readFile();
+                        System.out.print("Enter name or id of sale event : ");
+                        String userInput = input.nextLine().trim();
+                        index  = salesList.findById(userInput);
+                        if (index != -1) {
+                            salesList.getListSaleEvent()[index].showInfo();
+                        }
+                        break;
                 }
             } catch (Exception e) {
                 System.out.println("An error occurred: " + e.getMessage());
@@ -319,6 +352,7 @@ public class Menu {
             System.out.println("VIII. Remove BookTypes");
             System.out.println("IX. Remove Genre");
             System.out.println("X. Remove StaTypes");
+            System.out.println("XI. Remove sale event");
             System.out.println("0. Exit");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -327,7 +361,7 @@ public class Menu {
                 System.out.println("Exit program!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 10);
+            choice = Validate.parseChooseHandler(option, 11);
 
             try {
                 switch (choice) {
@@ -420,6 +454,14 @@ public class Menu {
                         staTypesList.remove();
                         staTypesList.writeFile();
                         break;
+                    case 11:
+                        SaleEventsBUS salesList = new SaleEventsBUS();
+                        salesList.readFile();
+                        System.out.print("Enter name or id of sale event : ");
+                        String userInput = input.nextLine().trim();
+                        salesList.delete(userInput);
+                        salesList.writeFile();
+                        break;
                 }
             } catch (Exception e) {
                 System.out.println("An error occurred: " + e.getMessage());
@@ -441,6 +483,7 @@ public class Menu {
             System.out.println("VIII. Edit BookTypes");
             System.out.println("IX. Edit Genre");
             System.out.println("X. Edit StaTypes");
+            System.out.println("XI. Edit sale event");
             System.out.println("0. Exit");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -449,7 +492,7 @@ public class Menu {
                 System.out.println("Exit program!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 10);
+            choice = Validate.parseChooseHandler(option, 11);
 
             try {
                 switch (choice) {
@@ -541,6 +584,14 @@ public class Menu {
                         staTypesList.readFile();
                         staTypesList.edit();
                         staTypesList.writeFile();
+                        break;
+                    case 11:
+                        SaleEventsBUS salesList = new SaleEventsBUS();
+                        salesList.readFile();
+                        System.out.print("Enter name or id of sale event : ");
+                        String userInput = input.nextLine().trim();
+                        salesList.update(userInput);
+                        salesList.writeFile();
                         break;
                 }
             } catch (Exception e) {

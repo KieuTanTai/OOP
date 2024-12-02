@@ -169,7 +169,7 @@ public class EmployeesBUS implements IRuleSets {
             choice = Validate.parseChooseHandler(inputChoice, 2);
             switch (choice) {
                 case 1:
-                    System.out.print("Enter name or id of customer : ");
+                    System.out.println("Enter name or id of customer : ");
                     String userInput = input.nextLine().trim();
                     search(userInput);
                     break;
@@ -265,7 +265,7 @@ public class EmployeesBUS implements IRuleSets {
 
                     if (monthOrYear == 1)
                         do {
-                            System.out.print("Enter Month value : ");
+                            System.out.println("Enter Month value : ");
                             inputDate = input.nextLine().trim();
                             valueFlag = true;
                             // validate input
@@ -277,7 +277,7 @@ public class EmployeesBUS implements IRuleSets {
                         } while (!valueFlag);
                     else if (monthOrYear == 2)
                         do {
-                            System.out.print("Enter Year value : ");
+                            System.out.println("Enter Year value : ");
                             inputDate = input.nextLine().trim();
                             // validate input
                             valueFlag = true;
@@ -460,7 +460,7 @@ public class EmployeesBUS implements IRuleSets {
                  break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 5);
-            System.out.print("Enter name or id of employee : ");
+            System.out.println("Enter name or id of employee : ");
             String userInput = input.nextLine().trim();
 
             // if case
@@ -655,7 +655,7 @@ public class EmployeesBUS implements IRuleSets {
             choice = Validate.parseChooseHandler(inputChoice, 1);
             if (choice == 1) {
                 try {
-                    System.out.print("Enter name or id of employee : ");
+                    System.out.println("Enter name or id of employee : ");
                     String userInput = input.nextLine().trim();
                     remove(userInput);
                     writeFile();

@@ -321,7 +321,7 @@ public class StationeriesBUS implements IRuleSets {
             choice = Validate.parseChooseHandler(inputChoice, 3);
             switch (choice) {
                 case 1:
-                    System.out.print("Enter name or id of stationary: ");
+                    System.out.println("Enter name or id of stationary: ");
                     String userInput = input.nextLine().trim();
                     search(userInput);
                     break;
@@ -376,22 +376,22 @@ public class StationeriesBUS implements IRuleSets {
                     relativeSearch(date, "released");
                     break;
                 case 3:
-                    System.out.print("Enter brand's name : ");
+                    System.out.println("Enter brand's name : ");
                     String brand = input.nextLine().trim();
                     relativeSearch(brand, "brand");
                     break;
                 case 4:
-                    System.out.print("Enter source's name : ");
+                    System.out.println("Enter source's name : ");
                     String source = input.nextLine().trim();
                     relativeSearch(source, "source");
                     break;
                 case 5:
-                    System.out.print("Enter material's name: ");
+                    System.out.println("Enter material's name: ");
                     String material = input.nextLine().trim();
                     relativeSearch(material, "material");
                     break;
                 case 6:
-                    System.out.print("Enter stationary name: ");
+                    System.out.println("Enter stationary name: ");
                     String name = input.nextLine().trim();
                     relativeSearch(name, "name");
                     break;
@@ -414,6 +414,7 @@ public class StationeriesBUS implements IRuleSets {
             System.out.println("V. Search by Brand & Month (Year) of release date");
             System.out.println("VI. Search by Source & Month (Year) of release date");
             System.out.println("VII. Search by Type & Month (Year) of release date");
+
             System.out.println("VIII. Search by Type & Brand");
             System.out.println("IX. Search by Type & Material");
             System.out.println("X. Search by Type &  Source");
@@ -473,7 +474,7 @@ public class StationeriesBUS implements IRuleSets {
                     } while (monthOrYear == -1);
                     if (monthOrYear == 1)
                         do {
-                            System.out.print("Enter Month value : ");
+                            System.out.println("Enter Month value : ");
                             inputDate = input.nextLine().trim();
                             valueFlag = true;
                             // validate input
@@ -485,7 +486,7 @@ public class StationeriesBUS implements IRuleSets {
                         } while (!valueFlag);
                     else if (monthOrYear == 2)
                         do {
-                            System.out.print("Enter Year value : ");
+                            System.out.println("Enter Year value : ");
                             inputDate = input.nextLine().trim();
                             // validate input
                             valueFlag = true;
@@ -503,17 +504,17 @@ public class StationeriesBUS implements IRuleSets {
                 case 13:
                     // get other fields
                     if (choice == 4 || choice == 9 || choice == 12 || choice == 13) {
-                        System.out.print("Enter material's name : ");
+                        System.out.println("Enter material's name : ");
                         material = input.nextLine().trim();
                     }
 
                     if (choice == 5 || choice == 8 || choice == 11 || choice == 13) {
-                        System.out.print("Enter brand's name : ");
+                        System.out.println("Enter brand's name : ");
                         brand = input.nextLine().trim();
                     }
 
                     if (choice == 6 || choice == 10 || choice == 11 || choice == 12) {
-                        System.out.print("Enter source's name : ");
+                        System.out.println("Enter source's name : ");
                         source = input.nextLine().trim();
                     }
 
@@ -710,7 +711,7 @@ public class StationeriesBUS implements IRuleSets {
                 break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 8);
-            System.out.print("Enter name or id of stationary : ");
+            System.out.println("Enter name or id of stationary : ");
             String userInput = input.nextLine().trim();
 
             // if case
@@ -986,7 +987,7 @@ public class StationeriesBUS implements IRuleSets {
             choice = Validate.parseChooseHandler(inputChoice, 1);
             if (choice == 1) {
                 try {
-                    System.out.print("Enter name or id of stationary: ");
+                    System.out.println("Enter name or id of stationary: ");
                     String userInput = input.nextLine().trim();
                     remove(userInput);
                     writeFile();

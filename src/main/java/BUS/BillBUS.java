@@ -345,7 +345,7 @@ public class BillBUS implements IRuleSets {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter Bill ID: ");
+                    System.out.println("Enter Bill ID: ");
                     String billId = sc.nextLine().trim();
                     search(billId);
                     break;
@@ -381,12 +381,12 @@ public class BillBUS implements IRuleSets {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter Employee ID or Name: ");
+                    System.out.println("Enter Employee ID or Name: ");
                     String employeeSearchInput = sc.nextLine().trim();
                     relativeSearch(employeeSearchInput, "employee");
                     break;
                 case 2:
-                    System.out.print("Enter Customer ID or Name: ");
+                    System.out.println("Enter Customer ID or Name: ");
                     String customerSearchInput = sc.nextLine().trim();
                     relativeSearch(customerSearchInput, "customer");
                     break;

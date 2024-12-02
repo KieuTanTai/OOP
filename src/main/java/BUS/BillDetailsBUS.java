@@ -114,9 +114,9 @@ public class BillDetailsBUS {
             // for set type of product
             int productChoose = -1;
             do {
-                System.out.println("Choose product type!");
-                System.out.println("I. Book");
-                System.out.println("II. Stationery");
+                System.out.println("Choose product type:");
+                System.out.println("1. Book");
+                System.out.println("2. Stationery");
                 System.out.print("Your choice (1 or 2): ");
                 String choice = sc.nextLine().trim();
                 productChoose = Validate.parseChooseHandler(choice, 2);

@@ -87,20 +87,27 @@ public class GRNs {
      // setters no params
      // set id
      public String setID() {
-          StringBuilder grnID;
-          GRNs[] list = new GRNsBUS().getListGRN();
+          try {
+               StringBuilder grnID;
+               GRNsBUS listGRN = new GRNsBUS();
+               listGRN.readFile();
+               GRNs[] list = listGRN.getListGRN();
 
-          if (list.length == 0) {
-               grnID = new StringBuilder("00000001");
-          } else {
-               String getID = list[list.length - 1].getGrnID();
-               int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
-               grnID = new StringBuilder(String.format("%d", prevID + 1));
-               // check if id length < 8
-               while (grnID.length() != 8)
-                    grnID.insert(0, "0");
+               if (list.length == 0) {
+                    grnID = new StringBuilder("00000001");
+               } else {
+                    String getID = list[list.length - 1].getGrnID();
+                    int prevID = Integer.parseInt(getID.substring(3, getID.length() - 2));
+                    grnID = new StringBuilder(String.format("%d", prevID + 1));
+                    // check if id length < 8
+                    while (grnID.length() != 8)
+                         grnID.insert(0, "0");
+               }
+               return grnIDModifier(grnID.toString());
+          } catch (Exception e) {
+               System.out.printf("error reading file!\nt%s\n", e.getMessage());
+               return grnIDModifier("00000001");
           }
-          return grnIDModifier(grnID.toString());
      }
 
      // set employee
@@ -143,7 +150,7 @@ public class GRNs {
                userChoice = Validate.parseChooseHandler(option, SuppliersBUS.getCount());
           } while (userChoice == -1);
 
-         return SuppliersBUS.getSupplierList()[userChoice - 1];
+          return SuppliersBUS.getSupplierList()[userChoice - 1];
      }
 
      // set grn detail (NEED TO FIX)
@@ -191,7 +198,7 @@ public class GRNs {
                                    int quantity = setQuantity();
                                    BigDecimal price = setPrice();
                                    listGRN.add(new GRNDetails(grnID, product, quantity, price));
-                                   
+
                                    System.out.println(listGRN.getGrnDetailsList().length);
 
                               } else {
@@ -208,13 +215,10 @@ public class GRNs {
                                              productID = "";
                                    } while (productID.isEmpty());
 
-                                   
                                    product = staList.getStaList()[index];
                                    int quantity = setQuantity();
                                    BigDecimal price = setPrice();
                                    listGRN.add(new GRNDetails(grnID, product, quantity, price));
-                                   
-                                   System.out.println(listGRN.getGrnDetailsList().length);
                               }
                               break;
 
@@ -237,7 +241,7 @@ public class GRNs {
                                    userChoice = Validate.parseChooseHandler(option, listGRN.getCount());
                               } while (userChoice == -1);
                               if (!option.equals("0")) {
-                                   GRNDetails detail = listGRN.getGrnDetailsList()[userChoice - 1]; 
+                                   GRNDetails detail = listGRN.getGrnDetailsList()[userChoice - 1];
                                    listGRN.remove(grnID, detail.getProduct().getProductID());
 
                               }
@@ -331,7 +335,6 @@ public class GRNs {
                     for (GRNDetails detail : detailsArray) {
                          String productID = detail.getProduct().getProductID();
                          if (detailList.find(detail.getGrnID(), productID) == -1) {
-                              if (productID.startsWith(id))
                               totalPrice = totalPrice.add(detail.getSubTotal());
                               detailList.add(detail);
                          }
@@ -339,12 +342,11 @@ public class GRNs {
                          // execute update quantity
                          if (productID.startsWith("ST") && productID.endsWith("PD")) {
                               StationeriesBUS staList = new StationeriesBUS();
-                              staList .readFile(); 
+                              staList.readFile();
                               staList.updateQuantity(detailsArray);
                               staList.writeFile();
-                         }
-                         else if (productID.startsWith("BK") && productID.endsWith("PD")) {
-                              BooksBUS bookList = new BooksBUS(); 
+                         } else if (productID.startsWith("BK") && productID.endsWith("PD")) {
+                              BooksBUS bookList = new BooksBUS();
                               bookList.readFile();
                               bookList.updateQuantity(detailsArray);
                               bookList.writeFile();
@@ -382,24 +384,25 @@ public class GRNs {
                     String product = grn.getProduct().getProductName();
                     BigDecimal price = grn.getPrice();
                     BigDecimal subTotal = grn.getSubTotal();
-                    System.out.println("|" +  "-".repeat(139));
+                    System.out.println("|" + "-".repeat(139));
                     System.out.printf("| %-22s : %s \n", "Product", product != null ? product : "N/A");
                     System.out.printf("| %-22s : %s \n", "Quantity", grn.getQuantity());
                     System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
-                    System.out.printf("| %-22s : %s \n", "Sub Total",subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
+                    System.out.printf("| %-22s : %s \n", "Sub Total",
+                              subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
                }
           } catch (Exception e) {
                System.out.println("| Error loading grn!\n" + e.getMessage());
           }
-          
-          System.out.println("|" +  "*".repeat(139));
+
+          System.out.println("|" + "*".repeat(139));
           System.out.printf("| %-22s : %s \n", "Total Price",
                     totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
           System.out.println("=".repeat(140));
      }
 
      // calc totalPrice
-     private BigDecimal totalPrice (String grnID) {
+     private BigDecimal totalPrice(String grnID) {
           BigDecimal total = new BigDecimal(0);
           try {
                GRNDetailsBUS detailList = new GRNDetailsBUS();

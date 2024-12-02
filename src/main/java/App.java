@@ -16,6 +16,7 @@ import BUS.StaTypesBUS;
 import BUS.StationeriesBUS;
 import BUS.SuppliersBUS;
 import BUS.TypesBUS;
+import DTO.GRNs;
 
 
 public class App {
@@ -53,5 +54,7 @@ public class App {
                 grnList.readFile();
                 billList.readFile();
 
+
+                grnList.showList();
         }
 }

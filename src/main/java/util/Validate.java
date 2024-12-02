@@ -35,7 +35,7 @@ public class Validate {
      // check valid price discount
      public static BigDecimal executePrice(BigDecimal totalPrice, BigDecimal maxDiscount, BigDecimal discount) {
           BigDecimal result = totalPrice.multiply(discount);
-          return result.compareTo(maxDiscount) > 0 ? result = maxDiscount : result;
+          return result.compareTo(maxDiscount) > 0 ? maxDiscount : result;
      }
 
      public static BigDecimal isLargestDiscount (BigDecimal[] discounts) {

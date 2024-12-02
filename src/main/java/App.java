@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 import BUS.BillBUS;
@@ -18,6 +19,7 @@ import BUS.SuppliersBUS;
 import BUS.TypesBUS;
 import DTO.Bill;
 import DTO.GRNs;
+import util.Validate;
 
 public class App {
         Scanner input = new Scanner(System.in);
@@ -55,13 +57,12 @@ public class App {
                 grnList.readFile();
                 billList.readFile();
 
-                // for (int i = 0; i < 3; i++) {
-                //         Bill bill = new Bill();
-                //         bill.setInfo();
-                //         billList.add(bill);
-                //         billList.writeFile();
-                // }
-
+                for (int i = 0; i < 3; i++) {
+                        Bill bill = new Bill();
+                        bill.setInfo();
+                        billList.add(bill);
+                        billList.writeFile();
+                }
                 billList.showList();
         }
 }

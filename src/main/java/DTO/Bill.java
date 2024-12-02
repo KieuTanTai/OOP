@@ -123,7 +123,7 @@ public class Bill {
             // filter validSale with totalPrice for get best discount
             int count = 0;
             BigDecimal[] discounts = new BigDecimal[0];
-            SaleEvents[] requiredSale = new SaleEvents[0];
+            SaleEvents[] sales = new SaleEvents[0];
             for (SaleEvents event : validSale) {
                 SaleEventsDetail detail = event.getDetail();
                 BigDecimal minPrice = detail.getMinPrice();
@@ -134,19 +134,18 @@ public class Bill {
                 if (totalPrice.compareTo(minPrice) < 0)
                     continue;
                 discounts = Arrays.copyOf(discounts, discounts.length + 1);
-                requiredSale = Arrays.copyOf(requiredSale, requiredSale.length + 1);
+                sales = Arrays.copyOf(sales, sales.length + 1);
                 discounts[count] = Validate.executePrice(totalPrice, maxDiscount, evDiscount);
-                requiredSale[count] = event;
+                sales[count] = event;
                 count++;
             }
 
             // get best saleEvent
-            System.out.println(count);
             BigDecimal largest = Validate.isLargestDiscount(discounts);
             for (int i = 0; i < count; i++)
                 if (largest.compareTo(discounts[i]) == 0)
-                    return requiredSale[i];
-            return requiredSale[0];
+                    return sales[i];
+            return sales[0];
         } catch (Exception e) {
             System.out.printf("error reading file!\n%s\n", e.getMessage());
             return null;
@@ -404,7 +403,7 @@ public class Bill {
             SaleEvents saleCode = getValidSale(date, totalPrice);
             BigDecimal discount;
             if (saleCode != null)
-                discount = totalPrice.multiply(saleCode.getDetail().getDiscount());
+                discount = Validate.executePrice(totalPrice, saleCode.getDetail().getMaxPriceDiscount(), saleCode.getDetail().getDiscount());
             else
                 discount = BigDecimal.ZERO;
             setTotalPrice(totalPrice);

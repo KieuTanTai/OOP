@@ -49,7 +49,7 @@ public class SaleEventsBUS {
         if (listSaleEvents == null)
             return;
         for (SaleEvents saleEvents : listSaleEvents)
-            saleEvents.showInfo();
+            saleEvents.showWithDetail();
     }
 
     public void add(SaleEvents saleEvents) {

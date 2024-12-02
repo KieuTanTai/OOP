@@ -128,7 +128,7 @@ public class BookFormatsBUS implements IRuleSets {
                if (choice == - 1)
                     break;
 
-               System.out.print("Enter name or id of format : ");
+               System.out.println("Enter name or id of format : ");
                String userInput = input.nextLine().trim();
                // if case
                if (choice == 1)
@@ -261,7 +261,7 @@ public class BookFormatsBUS implements IRuleSets {
                choice = Validate.parseChooseHandler(inputChoice, 1);
                if (choice == 1) {
                     try {
-                         System.out.print("Enter name or id of format : ");
+                         System.out.println("Enter name or id of format : ");
                          String userInput = input.nextLine().trim();
                          edit(userInput);
                          writeFile();
@@ -307,7 +307,7 @@ public class BookFormatsBUS implements IRuleSets {
                choice = Validate.parseChooseHandler(inputChoice, 1);
                if (choice == 1) {
                     try {
-                         System.out.print("Enter name or id of format : ");
+                         System.out.println("Enter name or id of format : ");
                          String userInput = input.nextLine().trim();
                          remove(userInput);
                          writeFile();

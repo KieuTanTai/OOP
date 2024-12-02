@@ -81,7 +81,7 @@ public class SaleEventsDetail {
 
     public void setInfo() {
         System.out.println("-".repeat(60));
-        System.out.print("Enter promo code :");
+        System.out.println("Enter promo code:");
         String promoCode = sc.nextLine();
 
         System.out.println("-".repeat(60));

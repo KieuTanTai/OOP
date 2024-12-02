@@ -254,7 +254,7 @@ public class BillBUS implements IRuleSets {
         }
     }
 
-    @Override 
+    @Override
     public void edit(String billId) {
         int index = find(billId);
         if (index != -1) {
@@ -581,6 +581,10 @@ public class BillBUS implements IRuleSets {
 
     // read file
     public void readFile() throws IOException {
+        File testFile = new File("src/main/resources/Bill");
+        if (testFile.length() == 0 || !testFile.exists())
+            return;
+
         try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Bill"))) {
             int billCount = file.readInt();
             Bill[] tmpBill = new Bill[billCount];

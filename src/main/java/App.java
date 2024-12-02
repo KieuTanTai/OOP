@@ -1,8 +1,60 @@
 import java.io.IOException;
+import java.util.Scanner;
 
-import Manager.Menu;
+import BUS.BillBUS;
+import BUS.BookFormatsBUS;
+import BUS.BooksBUS;
+import BUS.CustomersBUS;
+import BUS.EmployeesBUS;
+import BUS.GRNDetailsBUS;
+import BUS.GRNsBUS;
+import BUS.GenresBUS;
+import BUS.MidForBooksBUS;
+import BUS.PublishersBUS;
+import BUS.SaleEventsBUS;
+import BUS.StaTypesBUS;
+import BUS.StationeriesBUS;
+import BUS.SuppliersBUS;
+import BUS.TypesBUS;
+import DTO.GRNs;
+
+
 public class App {
+        Scanner input = new Scanner(System.in);
         public static void main(String[] args) throws IOException {
-                Menu menu = new Menu();
+                // !INIT OBJ
+                MidForBooksBUS midForBook = new MidForBooksBUS();
+                GenresBUS genreList = new GenresBUS();
+                TypesBUS bookTypeList = new TypesBUS();
+                StaTypesBUS staTypeList = new StaTypesBUS();
+                PublishersBUS publisherList = new PublishersBUS();
+                BookFormatsBUS formatList = new BookFormatsBUS();
+                StationeriesBUS stationaryList = new StationeriesBUS();
+                BooksBUS booksList = new BooksBUS();
+                CustomersBUS customerList = new CustomersBUS();
+                EmployeesBUS employeeList = new EmployeesBUS();
+                SuppliersBUS supplierList = new SuppliersBUS();
+                SaleEventsBUS saleEventList = new SaleEventsBUS();
+                GRNsBUS grnList = new GRNsBUS();
+                BillBUS billList = new BillBUS();
+
+                // *READ FILE
+                genreList.readFile();
+                bookTypeList.readFile();
+                publisherList.readFile();
+                formatList.readFile();
+                supplierList.readFile();
+                booksList.readFile();
+                midForBook.readFile();
+                customerList.readFile();
+                employeeList.readFile();
+                staTypeList.readFile();
+                stationaryList.readFile();
+                saleEventList.readFile();
+                grnList.readFile();
+                billList.readFile();
+
+
+                grnList.showList();
         }
 }

@@ -370,8 +370,7 @@ public class Bill {
                 for (BillDetails detail : detailsArray) {
                     String productID = detail.getProduct().getProductID();
                     if (detailList.find(detail.getBillId(), productID) == -1) {
-                        if (productID.startsWith(id))
-                            totalPrice = totalPrice.add(detail.getSubTotal());
+                        totalPrice = totalPrice.add(detail.getSubTotal());
                         detailList.add(detail);
                     }
 

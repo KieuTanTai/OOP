@@ -68,9 +68,10 @@ public class GRNsBUS implements IRuleSets {
      // methods showList
      public void showList() {
           if (grnList == null)
-               return;
-          for (GRNs grn : grnList)
+          return;
+          for (GRNs grn : grnList) {
                grn.showInfo();
+          }
      }
 
      // find methods
@@ -421,7 +422,7 @@ public class GRNsBUS implements IRuleSets {
                grn.setGrnID(grn.getGrnID());
                grnList = Arrays.copyOf(grnList, grnList.length + 1);
                grnList[count] = grn;
-               count++;
+               this.count++;
           } else
                System.out.println("your new book have something not like book!");
      }
@@ -662,7 +663,8 @@ public class GRNsBUS implements IRuleSets {
                     Suppliers supplier = SuppliersBUS.getSupplier(supplierID);
                     list[i] = new GRNs(grnID, date, employee, supplier, totalPrice);
                }
-
+               setCount(count);
+               setListGRN(list);
           } catch (Exception err) {
                System.out.printf("error reading file!\nt%s\n", err.getMessage());
           }

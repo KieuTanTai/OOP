@@ -72,7 +72,7 @@ public class SaleEventsDetail {
     public BigDecimal setPrice() {
         BigDecimal price;
         do {
-            System.out.print("set price (VND) : ");
+            System.out.print("set price (type % like 0.2 , 0.6,...)  : ");
             String value = sc.nextLine();
             price = Validate.isBigDecimal(value);
         } while (price == null);
@@ -90,7 +90,8 @@ public class SaleEventsDetail {
 
         System.out.println("-".repeat(60));
         System.out.println("Discount!");
-        BigDecimal discount = setPrice().divide(new BigDecimal(100));
+        BigDecimal discount = setPrice();
+        discount = discount.compareTo(new BigDecimal(1)) > 0 ? discount.divide(new BigDecimal(100)) : discount;
 
         System.out.println("-".repeat(60));
         System.out.println("Max price discount!");

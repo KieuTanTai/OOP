@@ -560,21 +560,21 @@ public class BillBUS implements IRuleSets {
     // execute file resources
     // write file
     public void writeFile() throws IOException {
-        try (DataOutputStream file = new DataOutputStream(new FileOutputStream("src/main/resources/Bill ", false))) {
+        try (DataOutputStream file = new DataOutputStream(
+                new BufferedOutputStream(new FileOutputStream("src/main/resources/Bill", false)))) {
             file.writeInt(n);
             for (int i = 0; i < n; ++i) {
+                SaleEvents saleCode = ds[i].getSaleCode();
                 // write bill
                 file.writeUTF(ds[i].getBillId());
                 file.writeUTF(ds[i].getCustomer().getPersonID());
                 file.writeUTF(ds[i].getEmployee().getPersonID());
-                file.writeUTF(ds[i].getSaleCode().getSaleEvId());
-                file.writeUTF(ds[i].getSaleCode().getDetail().getPromoCode());
                 file.writeUTF(ds[i].getDate().toString());
                 file.writeUTF(ds[i].getDiscount().toString());
+                file.writeUTF(saleCode != null ? saleCode.getDetail().getPromoCode() : "");
                 file.writeUTF(ds[i].getTotalPrice().toString());
             }
-            System.out.println("Write to file successfully!");
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error writing file: " + e.getMessage());
         }
     }
@@ -585,19 +585,19 @@ public class BillBUS implements IRuleSets {
         if (testFile.length() == 0 || !testFile.exists())
             return;
 
-        try (DataInputStream file = new DataInputStream(new FileInputStream("src/main/resources/Bill"))) {
+        try (DataInputStream file = new DataInputStream(
+                new BufferedInputStream(new FileInputStream("src/main/resources/Bill")))) {
             int billCount = file.readInt();
             Bill[] tmpBill = new Bill[billCount];
-
             for (int i = 0; i < billCount; i++) {
-                // read bill
                 String billId = file.readUTF();
                 String customerId = file.readUTF();
                 String employeeId = file.readUTF();
-                String saleCode = file.readUTF();
                 LocalDate date = LocalDate.parse(file.readUTF());
                 BigDecimal discount = new BigDecimal(file.readUTF());
+                String saleCode = file.readUTF(); // read before set object
                 BigDecimal totalPrice = new BigDecimal(file.readUTF());
+
 
                 // Execute id
                 CustomersBUS customersList = new CustomersBUS();
@@ -614,11 +614,8 @@ public class BillBUS implements IRuleSets {
 
                 tmpBill[i] = new Bill(billId, employee, customer, saleEvent, discount, totalPrice, date);
             }
-
             setList(tmpBill);
             setCount(billCount);
-
-            System.out.println("Read from file successfully!");
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }

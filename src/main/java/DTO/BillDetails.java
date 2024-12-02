@@ -3,7 +3,9 @@ package DTO;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-public class BillDetails{
+import util.Validate;
+
+public class BillDetails {
     private String billId;
     private int quantity;
     private Products product;
@@ -26,7 +28,7 @@ public class BillDetails{
         return this.product;
     }
 
-    public String getBillId(){
+    public String getBillId() {
         return this.billId;
     }
 
@@ -42,12 +44,12 @@ public class BillDetails{
         return this.subTotal;
     }
 
-    public void setBillId(String id){
+    public void setBillId(String id) {
         this.billId = id;
     }
 
     public void setProduct(Products product) {
-         this.product = product;
+        this.product = product;
     }
 
     public void setQuantity(int quantity) {
@@ -62,21 +64,25 @@ public class BillDetails{
         this.subTotal = subTotal;
     }
 
-    public void showInfo(){
-        System.out.println("bill details from bill id: " + getBillId());
-        System.out.println("quantity: " + getQuantity());
-        System.out.println("price: " + getPrice());
-        System.out.println("subtotal: " +getSubTotal());
+    public void showInfo() {
+        String productName = getProduct().getProductName();
+        BigDecimal price = getPrice();
+        BigDecimal subTotal = getSubTotal();
+
+        System.out.println("|" + "-".repeat(139));
+        System.out.printf("| %-22s : %s \n", "Product", productName != null ? productName : "N/A");
+        System.out.printf("| %-22s : %s \n", "Quantity", getQuantity());
+        System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Sub Total", subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
+        System.out.println("|" + "-".repeat(139));
     }
 
     @Override
     public String toString() {
-        return "{" + "billId='" + getBillId() + 
-            " quantity='" + getQuantity() + "'" +
-            ", price='" + getPrice() + "'" +
-            ", subTotal='" + getSubTotal() + "'" + "}";
+        return "{" + "billId='" + getBillId() +
+                " quantity='" + getQuantity() + "'" +
+                ", price='" + getPrice() + "'" +
+                ", subTotal='" + getSubTotal() + "'" + "}";
     }
 
-
-    
 }

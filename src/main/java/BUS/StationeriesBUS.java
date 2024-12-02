@@ -538,7 +538,8 @@ public class StationeriesBUS implements IRuleSets {
                         else if (!source.isEmpty())
                             advancedSearch(source, inputDate, monthOrYear == 1 ? "source-month" : "source-year");
                         else if (type != null)
-                            advancedSearch(type.getTypeName(), inputDate, monthOrYear == 1 ? "type-month" : "type-year");
+                            advancedSearch(type.getTypeName(), inputDate,
+                                    monthOrYear == 1 ? "type-month" : "type-year");
                         break;
                     }
 
@@ -1022,20 +1023,16 @@ public class StationeriesBUS implements IRuleSets {
     }
 
     // update quantity
-    public void updateQuantity(GRNDetails[] list) {
-        for (GRNDetails detail : list) {
-            int index = find(detail.getProduct().getProductID());
-            if (index != -1)
-                staList[index].setQuantity(staList[index].getQuantity() + detail.getQuantity());
-        }
+    public void updateQuantity(GRNDetails detail) {
+        int index = find(detail.getProduct().getProductID());
+        if (index != -1)
+            staList[index].setQuantity(staList[index].getQuantity() + detail.getQuantity());
     }
 
-    public void updateQuantity(BillDetails[] list) {
-        for(BillDetails detail : list) {
-            int index = find(detail.getProduct().getProductID());
-            if (index != -1)
-                staList[index].setQuantity(staList[index].getQuantity() - detail.getQuantity());
-        }
+    public void updateQuantity(BillDetails detail) {
+        int index = find(detail.getProduct().getProductID());
+        if (index != -1)
+            staList[index].setQuantity(staList[index].getQuantity() - detail.getQuantity());
     }
 
     // *execute files (TEST DONE)
@@ -1064,7 +1061,7 @@ public class StationeriesBUS implements IRuleSets {
     // read file
     public void readFile() throws IOException {
         File testFile = new File("src/main/resources/Stationeries");
-        if (testFile.length() == 0|| !testFile.exists())
+        if (testFile.length() == 0 || !testFile.exists())
             return;
 
         try (DataInputStream file = new DataInputStream(

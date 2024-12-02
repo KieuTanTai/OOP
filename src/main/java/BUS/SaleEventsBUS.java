@@ -49,7 +49,7 @@ public class SaleEventsBUS {
         if (listSaleEvents == null)
             return;
         for (SaleEvents saleEvents : listSaleEvents)
-            saleEvents.showInfo();
+            saleEvents.showWithDetail();
     }
 
     public void add(SaleEvents saleEvents) {
@@ -88,7 +88,6 @@ public class SaleEventsBUS {
         for (SaleEvents sale : listSaleEvents)
             if (sale.getDetail().getPromoCode().equals(promoCode))
                 return sale;
-        System.out.println("not found any sale event!");
         return null;
     }
 
@@ -206,8 +205,7 @@ public class SaleEventsBUS {
                 BigDecimal minPrice = new BigDecimal(file.readUTF());
                 BigDecimal discount = new BigDecimal(file.readUTF());
                 BigDecimal maxPriceDiscount = new BigDecimal(file.readUTF());
-                SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount,
-                        maxPriceDiscount);
+                SaleEventsDetail detail = new SaleEventsDetail(saleEvId, promoCode, minPrice, discount, maxPriceDiscount);
 
                 // set values for temp list
                 list[i] = new SaleEvents(saleEvId, saleEvName, description, startDate, endDate, detail);
@@ -224,7 +222,7 @@ public class SaleEventsBUS {
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(
                 new BufferedOutputStream(new FileOutputStream("src/main/resources/SaleEvents")))) {
-            System.out.println(count);
+            file.writeInt(count);
             for (SaleEvents event : listSaleEvents) {
                 file.writeUTF(event.getSaleEvId());
                 file.writeUTF(event.getSaleEvName());

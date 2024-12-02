@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 import BUS.BillBUS;
@@ -16,11 +17,13 @@ import BUS.StaTypesBUS;
 import BUS.StationeriesBUS;
 import BUS.SuppliersBUS;
 import BUS.TypesBUS;
+import DTO.Bill;
 import DTO.GRNs;
-
+import util.Validate;
 
 public class App {
         Scanner input = new Scanner(System.in);
+
         public static void main(String[] args) throws IOException {
                 // !INIT OBJ
                 MidForBooksBUS midForBook = new MidForBooksBUS();
@@ -54,7 +57,12 @@ public class App {
                 grnList.readFile();
                 billList.readFile();
 
-
-                grnList.showList();
+                for (int i = 0; i < 3; i++) {
+                        Bill bill = new Bill();
+                        bill.setInfo();
+                        billList.add(bill);
+                        billList.writeFile();
+                }
+                billList.showList();
         }
 }

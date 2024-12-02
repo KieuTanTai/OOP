@@ -34,7 +34,8 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(String billId, Employees employee, Customers customer, SaleEvents saleCode, BigDecimal discount, LocalDate date) {
+    public Bill(String billId, Employees employee, Customers customer, SaleEvents saleCode, BigDecimal discount,
+            LocalDate date) {
         this.billId = billId;
         this.employee = employee;
         this.customer = customer;
@@ -43,7 +44,8 @@ public class Bill {
         this.date = date;
     }
 
-    public Bill(String billId, Employees employee, Customers customer, SaleEvents saleCode, BigDecimal discount, BigDecimal totalPrice, LocalDate date) {
+    public Bill(String billId, Employees employee, Customers customer, SaleEvents saleCode, BigDecimal discount,
+            BigDecimal totalPrice, LocalDate date) {
         this.billId = billId;
         this.employee = employee;
         this.customer = customer;
@@ -116,11 +118,12 @@ public class Bill {
             SaleEventsBUS saleList = new SaleEventsBUS();
             saleList.readFile();
             SaleEvents[] validSale = saleList.findByDateRange(date);
-
+            if (validSale == null)
+                return null;
             // filter validSale with totalPrice for get best discount
             int count = 0;
             BigDecimal[] discounts = new BigDecimal[0];
-            SaleEvents[] requiredSale = new SaleEvents[0];
+            SaleEvents[] sales = new SaleEvents[0];
             for (SaleEvents event : validSale) {
                 SaleEventsDetail detail = event.getDetail();
                 BigDecimal minPrice = detail.getMinPrice();
@@ -131,8 +134,9 @@ public class Bill {
                 if (totalPrice.compareTo(minPrice) < 0)
                     continue;
                 discounts = Arrays.copyOf(discounts, discounts.length + 1);
+                sales = Arrays.copyOf(sales, sales.length + 1);
                 discounts[count] = Validate.executePrice(totalPrice, maxDiscount, evDiscount);
-                requiredSale[count] = event;
+                sales[count] = event;
                 count++;
             }
 
@@ -140,10 +144,10 @@ public class Bill {
             BigDecimal largest = Validate.isLargestDiscount(discounts);
             for (int i = 0; i < count; i++)
                 if (largest.compareTo(discounts[i]) == 0)
-                    return requiredSale[i];
-            return requiredSale[0];
+                    return sales[i];
+            return sales[0];
         } catch (Exception e) {
-            System.out.printf("error reading file!\nt%s\n", e.getMessage());
+            System.out.printf("error reading file!\n%s\n", e.getMessage());
             return null;
         }
     }
@@ -243,7 +247,7 @@ public class Bill {
                 switch (userChoice) {
                     case 1: // add
                         Products product = getProducts();
-                        int quantity = setQuantity();
+                        int quantity = setQuantity(product);
                         listBills.add(new BillDetails(billId, quantity, product, product.getProductPrice()));
                         break;
 
@@ -316,13 +320,17 @@ public class Bill {
 
     }
 
-    private int setQuantity() {
+    private int setQuantity(Products product) {
         int quantity;
         // let new quantity
         do {
             System.out.print("set bill quantity : ");
             String quantityInput = sc.nextLine().trim();
             quantity = Validate.isNumber(quantityInput);
+            if (quantity > product.getQuantity()) {
+                System.out.println("This quantity is more than real quantity of this product !");
+                quantity = -1;
+            }
         } while (quantity == -1);
         return quantity;
     }
@@ -366,29 +374,28 @@ public class Bill {
             // execute bill detail
             try {
                 BillDetailsBUS detailList = new BillDetailsBUS();
+                StationeriesBUS staList = new StationeriesBUS();
+                BooksBUS bookList = new BooksBUS();
+                bookList.readFile();
+                staList.readFile();
                 detailList.readFile();
                 for (BillDetails detail : detailsArray) {
                     String productID = detail.getProduct().getProductID();
                     if (detailList.find(detail.getBillId(), productID) == -1) {
                         totalPrice = totalPrice.add(detail.getSubTotal());
                         detailList.add(detail);
-                    }
 
-                    // execute update quantity
-                    if (productID.startsWith("ST") && productID.endsWith("PD")) {
-                        StationeriesBUS staList = new StationeriesBUS();
-                        staList.readFile();
-                        staList.updateQuantity(detailsArray);
-                        staList.writeFile();
-                    } else if (productID.startsWith("BK") && productID.endsWith("PD")) {
-                        BooksBUS bookList = new BooksBUS();
-                        bookList.readFile();
-                        bookList.updateQuantity(detailsArray);
-                        bookList.writeFile();
+                        // execute update quantity
+                        if (productID.startsWith("ST") && productID.endsWith("PD"))
+                            staList.updateQuantity(detail);
+
+                        else if (productID.startsWith("BK") && productID.endsWith("PD"))
+                            bookList.updateQuantity(detail);
                     }
                 }
+                staList.writeFile();
+                bookList.writeFile();
                 detailList.writeFile();
-
             } catch (Exception e) {
                 System.out.println("error writing or reading file!\n" + e.getMessage());
             }
@@ -396,40 +403,46 @@ public class Bill {
             SaleEvents saleCode = getValidSale(date, totalPrice);
             BigDecimal discount;
             if (saleCode != null)
-                discount = totalPrice.multiply(saleCode.getDetail().getDiscount());
+                discount = Validate.executePrice(totalPrice, saleCode.getDetail().getMaxPriceDiscount(), saleCode.getDetail().getDiscount());
             else
                 discount = BigDecimal.ZERO;
             setTotalPrice(totalPrice);
             setSaleCode(saleCode);
             setDiscount(discount);
-
             System.out.println("create and set fields success");
         }
     }
 
-    public String showInfo() {
+    public void showInfo() {
         LocalDate date = this.getDate();
         BigDecimal totalPrice = this.getTotalPrice();
-        String billId = this.getBillId(), employeeName = this.getEmployee().getFullName(), customerName = this.getCustomer().getFullName();
+        BigDecimal discount = this.getDiscount();
+        String billId = this.getBillId(), employeeName = this.getEmployee().getFullName(),
+                customerName = this.getCustomer().getFullName();
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("=".repeat(140)).append("\n");
+        System.out.println("=".repeat(140));
+        System.out.printf("| %-22s : %s \n", "Bill ID", billId != null ? billId : "N/A");
+        System.out.printf("| %-22s : %s \n", "Date",
+                date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Employee", employeeName != null ? employeeName : "N/A");
+        System.out.printf("| %-22s : %s \n", "Customer", customerName != null ? customerName : "N/A");
 
-        stringBuilder.append(String.format("| %-22s : %s \n", "Bill ID", billId != null ? billId : "N/A"));
-        stringBuilder.append(String.format("| %-22s : %s \n", "Date",
-                date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A"));
-        stringBuilder.append(String.format("| %-22s : %s \n", "Employee", employeeName != null ? employeeName : "N/A"));
-        stringBuilder.append(String.format("| %-22s : %s \n", "Customer", customerName != null ? customerName : "N/A"));
+        try {
+            BillDetailsBUS detailList = new BillDetailsBUS();
+            detailList.readFile();
+            BillDetails[] list = detailList.relativeFind(this.getBillId());
+            for (BillDetails detail : list) {
+                detail.showInfo();
+            }
+        } catch (Exception e) {
+            System.out.println("| Error loading bill details!\n" + e.getMessage());
+        }
 
-        stringBuilder.append("-".repeat(139)).append("\n");
-
-        stringBuilder.append(String.format("| %-22s : %s \n", "Discount",
-                totalPrice != null ? Validate.formatPrice(totalPrice.multiply(this.getDiscount())) : "N/A"));
-        stringBuilder.append(String.format("| %-22s : %s \n", "Total Price",
-                totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A"));
-
-        stringBuilder.append("=".repeat(140));
-        return stringBuilder.toString();
+        System.out.printf("| %-22s : %s \n", "Discount", discount != null ? Validate.formatPrice(discount) : "N/A");
+        System.out.println("|" + "*".repeat(139));
+        System.out.printf("| %-22s : %s \n", "Total Price",
+                totalPrice != null ? Validate.formatPrice(totalPrice.subtract(discount)) : "N/A");
+        System.out.println("=".repeat(140));
     }
 
     // modify bill id

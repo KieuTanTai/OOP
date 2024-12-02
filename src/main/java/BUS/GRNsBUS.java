@@ -68,10 +68,9 @@ public class GRNsBUS implements IRuleSets {
      // methods showList
      public void showList() {
           if (grnList == null)
-          return;
-          for (GRNs grn : grnList) {
+               return;
+          for (GRNs grn : grnList)
                grn.showInfo();
-          }
      }
 
      // find methods

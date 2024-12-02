@@ -16,11 +16,12 @@ import BUS.StaTypesBUS;
 import BUS.StationeriesBUS;
 import BUS.SuppliersBUS;
 import BUS.TypesBUS;
+import DTO.Bill;
 import DTO.GRNs;
-
 
 public class App {
         Scanner input = new Scanner(System.in);
+
         public static void main(String[] args) throws IOException {
                 // !INIT OBJ
                 MidForBooksBUS midForBook = new MidForBooksBUS();
@@ -54,7 +55,13 @@ public class App {
                 grnList.readFile();
                 billList.readFile();
 
+                // for (int i = 0; i < 1; i++) {
+                //         Bill bill = new Bill();
+                //         bill.setInfo();
+                //         billList.add(bill);
+                //         billList.writeFile();
+                // }
 
-                grnList.showList();
+                billList.showList();
         }
 }

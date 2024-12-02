@@ -295,7 +295,7 @@ public class BillDetailsBUS {
                 file.writeUTF(billDetail.getPrice().toString());
             }
         } catch (Exception err) {
-            System.out.printf("error writing file!\nt%s\n", err.getMessage());
+            System.out.printf("error writing file!\n%s\n", err.getMessage());
         }
     }
 
@@ -331,7 +331,7 @@ public class BillDetailsBUS {
             setCount(n);
             setList(list);
         } catch (Exception err) {
-            System.out.printf("error reading file!\nt%s\n", err.getMessage());
+            System.out.printf("error reading file!\n%s\n", err.getMessage());
         }
     }
 

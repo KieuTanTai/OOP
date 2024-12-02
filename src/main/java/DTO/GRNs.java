@@ -330,28 +330,29 @@ public class GRNs {
                setSupplier(supplier);
                // execute grn detail
                try {
+                    BooksBUS bookList = new BooksBUS();
+                    StationeriesBUS staList = new StationeriesBUS();
                     GRNDetailsBUS detailList = new GRNDetailsBUS();
+                    staList.readFile();
                     detailList.readFile();
+                    bookList.readFile();
                     for (GRNDetails detail : detailsArray) {
                          String productID = detail.getProduct().getProductID();
                          if (detailList.find(detail.getGrnID(), productID) == -1) {
                               totalPrice = totalPrice.add(detail.getSubTotal());
                               detailList.add(detail);
-                         }
 
-                         // execute update quantity
-                         if (productID.startsWith("ST") && productID.endsWith("PD")) {
-                              StationeriesBUS staList = new StationeriesBUS();
-                              staList.readFile();
-                              staList.updateQuantity(detailsArray);
-                              staList.writeFile();
-                         } else if (productID.startsWith("BK") && productID.endsWith("PD")) {
-                              BooksBUS bookList = new BooksBUS();
-                              bookList.readFile();
-                              bookList.updateQuantity(detailsArray);
-                              bookList.writeFile();
+                              // execute update quantity
+                              if (productID.startsWith("ST") && productID.endsWith("PD")) 
+                                   staList.updateQuantity(detail);
+
+                              else if (productID.startsWith("BK") && productID.endsWith("PD")) 
+                                   bookList.updateQuantity(detail);
+                              
                          }
                     }
+                    bookList.writeFile();
+                    staList.writeFile();
                     detailList.writeFile();
 
                } catch (Exception e) {

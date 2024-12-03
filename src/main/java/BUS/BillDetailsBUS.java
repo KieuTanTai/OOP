@@ -187,6 +187,8 @@ public class BillDetailsBUS {
             System.out.print("Set new quantity: ");
             String quantityInput = sc.nextLine().trim();
             quantity = Validate.isNumber(quantityInput);
+            if (!Validate.checkQuantity(quantity))
+                quantity = -1;
         } while (quantity == -1);
         return quantity;
     }

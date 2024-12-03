@@ -277,9 +277,11 @@ public class GRNs {
           int quantity;
           // let new quantity
           do {
-               System.out.print("set grn quantity : ");
+               System.out.print("set quantity : ");
                String quantityInput = input.nextLine().trim();
                quantity = Validate.isNumber(quantityInput);
+               if (!Validate.checkQuantity(quantity))
+                    quantity = -1;
           } while (quantity == -1);
           return quantity;
      }

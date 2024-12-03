@@ -977,6 +977,8 @@ public class BooksBUS implements IRuleSets {
                     System.out.print("new quantity: ");
                     String quantityInput = input.nextLine().trim();
                     quantity = Validate.isNumber(quantityInput);
+                    if (!Validate.checkQuantity(quantity))
+                         quantity = -1;
                } while (quantity == -1);
                booksList[index].setQuantity(quantity);
           }

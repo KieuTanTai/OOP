@@ -186,7 +186,7 @@ public class Validate {
      public static boolean checkHumanName(String inputName) {
           String regex = "^[\\p{M}\\p{L}][\\p{M}\\p{L} '\\-]{0,48}[\\p{M}\\p{L}]$";
           Pattern pattern = Pattern.compile(regex);
-          if (inputName.length() < 3)
+          if (inputName.length() < 1)
                return false;
           return pattern.matcher(inputName).matches();
      }

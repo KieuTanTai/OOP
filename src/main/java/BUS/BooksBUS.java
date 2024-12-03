@@ -122,51 +122,60 @@ public class BooksBUS implements IRuleSets {
           Books[] booksArray = new Books[0];
           request = request.toLowerCase().trim();
 
+          // relative find genres
+          if (originalKey instanceof BookGenres && request.equals("genre"))
+               return relativeFind((BookGenres) originalKey);
+
           for (Books book : booksList) {
-               if (originalKey instanceof String) {
-                    BookTypes types = book.getType();
-                    BookFormats formats = book.getFormat();
-                    Publishers publishers = book.getPublisher();
+               if (originalKey instanceof String key) {
                     String author = book.getAuthor();
                     String bookName = book.getProductName();
-                    String key = (String) originalKey;
 
                     // assign and check null
                     author = Validate.requiredNotNull(author) ? author.toLowerCase() : "";
                     bookName = Validate.requiredNotNull(bookName) ? bookName.toLowerCase() : "";
-
-                    String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
-                              typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase() : "";
-
-                    String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
-                              formatName = (Validate.requiredNotNull(formats)) ? formats.getFormatName().toLowerCase()
-                                        : "";
-
-                    String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
-                              publisherName = (Validate.requiredNotNull(publishers))
-                                        ? publishers.getPublisherName().toLowerCase()
-                                        : "";
 
                     if (request.equals("name") && bookName.contains(key.toLowerCase()))
                          flag = true;
 
                     else if (request.equals("author") && author.contains(key.toLowerCase()))
                          flag = true;
-
-                    else if (request.equals("format")
-                              && (formatID.equals(key) || formatName.contains(key.toLowerCase())))
+               } else if (originalKey instanceof LocalDate && request.equals("released"))
+                    if (book.getReleaseDate().isEqual((LocalDate) originalKey))
                          flag = true;
 
-                    else if (request.equals("type") && (typeID.equals(key) || typeName.contains(key.toLowerCase())))
-                         flag = true;
+                    else if (originalKey instanceof BookTypes key && request.equals("type")) {
+                         BookTypes types = book.getType();
+                         String typeID = (Validate.requiredNotNull(types)) ? types.getTypeID() : "",
+                                   typeName = (Validate.requiredNotNull(types)) ? types.getTypeName().toLowerCase()
+                                             : "";
+                         if (key != null)
+                              if (typeID.equals(key.getTypeID()) && typeName.equals(key.getTypeName().toLowerCase()))
+                                   flag = true;
+                    }
 
-                    else if (request.equals("publisher")
-                              && (publisherID.equals(key) || publisherName.contains(key.toLowerCase())))
-                         flag = true;
+                    else if (originalKey instanceof BookFormats key && request.equals("format")) {
+                         BookFormats formats = book.getFormat();
+                         String formatID = (Validate.requiredNotNull(formats)) ? formats.getFormatID() : "",
+                                   formatName = (Validate.requiredNotNull(formats))
+                                             ? formats.getFormatName().toLowerCase()
+                                             : "";
+                         if (key != null)
+                              if (formatID.equals(key.getFormatID()) && formatName.equals(key.getFormatName()))
+                                   flag = true;
+                    }
 
-               } else if (originalKey instanceof LocalDate)
-                    if (request.equals("released") && (book.getReleaseDate().isEqual((LocalDate) originalKey)))
-                         flag = true;
+                    else if (originalKey instanceof Publishers key && request.equals("publisher")) {
+                         Publishers publishers = book.getPublisher();
+                         String publisherID = (Validate.requiredNotNull(publishers)) ? publishers.getPublisherID() : "",
+                                   publisherName = (Validate.requiredNotNull(publishers))
+                                             ? publishers.getPublisherName().toLowerCase()
+                                             : "";
+                         if (key != null)
+                              if (publisherID.equals(key.getPublisherID())
+                                        && publisherName.equals(key.getPublisherName()))
+                                   flag = true;
+                    }
 
                if (flag) {
                     booksArray = Arrays.copyOf(booksArray, booksArray.length + 1);
@@ -175,6 +184,7 @@ public class BooksBUS implements IRuleSets {
                     count++;
                }
           }
+
           if (count == 0) {
                System.out.println("not found any books!");
                return null;

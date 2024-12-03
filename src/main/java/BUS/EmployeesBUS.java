@@ -163,8 +163,8 @@ public class EmployeesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 2);
             switch (choice) {
@@ -200,8 +200,8 @@ public class EmployeesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 8);
             switch (choice) {
@@ -227,22 +227,23 @@ public class EmployeesBUS implements IRuleSets {
                     relativeSearch(phone, "phone");
                     break;
                 case 5:
-                    String address;
+                    String[] status = { "Active", "Inactive" };
+                    int statusChoice;
+                    System.out.printf("| %s %s %s |\n", "I.Active", "-".repeat(20), "II.Inactive");
                     do {
-                        System.out.print("Enter address: ");
-                        address = input.nextLine().trim();
-                        if (address.isEmpty()) {
-                            System.out.println("status cannot be empty!");
-                        }
-                    } while (address.isEmpty());
-                    relativeSearch(address, "address");
+                        System.out.print("choose option (1 or 2) : ");
+                        String option = input.nextLine().trim();
+                        statusChoice = Validate.parseChooseHandler(option, 2);
+                    } while (statusChoice == -1);
+                    relativeSearch(status[statusChoice - 1], "status");
                     break;
                 case 6:
                     int userChoice;
                     String[] roles = { "Manager", "Employee", "Warehouse Keeper" };
                     // show list for user choose
                     System.out.println("=".repeat(160));
-                    System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1], "-".repeat(20), roles[2]);
+                    System.out.printf("| I.%s %s II.%s %s III.%s |\n", roles[0], "-".repeat(20), roles[1],
+                            "-".repeat(20), roles[2]);
                     do {
                         System.out.print("choose role (like 1, 2,etc...): ");
                         String option = input.nextLine().trim();
@@ -357,8 +358,8 @@ public class EmployeesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 2);
             // try catch for execute file after add
@@ -456,8 +457,8 @@ public class EmployeesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 5);
             System.out.print("Enter name or id of employee : ");
@@ -475,7 +476,7 @@ public class EmployeesBUS implements IRuleSets {
                     editStatus(userInput);
                 else if (choice == 5)
                     editRole(userInput);
-                else 
+                else
                     break;
                 // update file
                 writeFile();
@@ -649,8 +650,8 @@ public class EmployeesBUS implements IRuleSets {
             String inputChoice = input.nextLine().trim();
             // validate if user choose 0
             if (inputChoice.equals("0")) {
-                 System.out.println("Exit program.");
-                 break;
+                System.out.println("Exit program.");
+                break;
             }
             choice = Validate.parseChooseHandler(inputChoice, 1);
             if (choice == 1) {

@@ -138,7 +138,8 @@ public class Validate {
      // (DONE)
      public static BigDecimal isBigDecimal(String value) {
           try {
-               return new BigDecimal(value);
+               BigDecimal number = new BigDecimal(value);
+               return number.compareTo(BigDecimal.ZERO) >= 0 ? number : null;
           } catch (Exception err) {
                System.out.println("your input is not correct!\n" + err.getMessage());
                return null;

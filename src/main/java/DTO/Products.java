@@ -154,6 +154,10 @@ public abstract class Products {
             System.out.print("set quantity : ");
             String quantityInput = input.nextLine().trim();
             quantity = Validate.isNumber(quantityInput);
+            if (!Validate.checkQuantity(quantity)) {
+                System.out.println("Error quantity! What the **** are you cooking!");
+                quantity = -1;
+            }
         } while (quantity == -1);
         return quantity;
     }

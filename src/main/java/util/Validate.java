@@ -192,7 +192,7 @@ public class Validate {
      }
 
      // (DONE)
-     public static boolean checkPackagingSize(String packagingSize) {
+     public static boolean checkPackagingSize(String packagingSize)    {
           String regex = "^\\d+(\\.\\d+)?\\s+x\\s+\\d+(\\.\\d+)?\\s+cm$";
           Pattern pattern = Pattern.compile(regex);
           return pattern.matcher(packagingSize).matches();

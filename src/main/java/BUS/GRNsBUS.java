@@ -610,13 +610,23 @@ public class GRNsBUS implements IRuleSets {
      }
 
      @Override
-     public void remove(String nameOrID) {
-          int index = find(nameOrID);
+     public void remove(String grnID) {
+          int index = find(grnID);
           if (index != -1) {
                for (int i = index; i < grnList.length - 1; i++)
                     grnList[i] = grnList[i + 1];
                grnList = Arrays.copyOf(grnList, grnList.length - 1);
                count--;
+
+               // for details 
+               try {
+                    GRNDetailsBUS listDetails = new GRNDetailsBUS();
+                    listDetails.readFile();
+                    listDetails.remove(grnID);
+                    listDetails.writeFile();
+               } catch (Exception e) {
+                    System.out.printf("error when execute file!\n%s\n", e.getMessage());
+               }
           }
      }
 

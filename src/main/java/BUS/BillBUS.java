@@ -255,8 +255,8 @@ public class BillBUS implements IRuleSets {
     }
 
     @Override
-    public void edit(String billId) {
-        int index = find(billId);
+    public void edit(String billD) {
+        int index = find(billD);
         if (index != -1) {
             Bill bill = ds[index];
             bill.showInfo();
@@ -273,22 +273,24 @@ public class BillBUS implements IRuleSets {
     }
 
     // remove methods
-    public void remove(String bd) {
-        int index = -1;
-        for (int i = 0; i < n; ++i) {
-            if (ds[i].getBillId().equals(bd)) {
-                index = i;
-                break;
-            }
-        }
+    public void remove(String billID) {
+        int index = find(billID);
         if (index != -1) {
             for (int i = index; i < n - 1; ++i) {
                 ds[i] = ds[i + 1];
             }
             ds = Arrays.copyOf(ds, ds.length - 1);
             n--;
-        } else {
-            System.out.println("not found!!!");
+
+            // for remove detail 
+            try {
+                BillDetailsBUS listDetails = new BillDetailsBUS();
+                listDetails.readFile();
+                listDetails.remove(billID);
+                listDetails.writeFile();
+            } catch (Exception e) {
+                System.out.printf("error when execute file!\n%s\n", e.getMessage());
+            }
         }
     }
 

@@ -159,6 +159,7 @@ public class GRNs {
           int userChoice;
 
           do {
+               System.out.println("-".repeat(60));
                System.out.println("I. Add detail");
                System.out.println("II. Remove detail");
                System.out.println("III. Edit detail");
@@ -280,8 +281,10 @@ public class GRNs {
                System.out.print("set quantity : ");
                String quantityInput = input.nextLine().trim();
                quantity = Validate.isNumber(quantityInput);
-               if (!Validate.checkQuantity(quantity))
+               if (!Validate.checkQuantity(quantity)) {
+                    System.out.println("Error quantity! What the **** are you cooking!");
                     quantity = -1;
+               }
           } while (quantity == -1);
           return quantity;
      }
@@ -310,7 +313,6 @@ public class GRNs {
           System.out.println("-".repeat(60));
           Suppliers supplier = setSupplier();
 
-          System.out.println("-".repeat(60));
           GRNDetails[] detailsArray = setGRNDetails(id);
           BigDecimal totalPrice = new BigDecimal(0);
 

@@ -229,6 +229,7 @@ public class Bill {
         int userChoice;
 
         do {
+            System.out.println("-".repeat(60));
             System.out.println("I. Add detail");
             System.out.println("II. Remove detail");
             System.out.println("III. Edit detail");
@@ -348,7 +349,6 @@ public class Bill {
         System.out.println("-".repeat(60));
         Customers customer = setCustomer();
 
-        System.out.println("-".repeat(60));
         BillDetails[] detailsArray = setBillDetails(id);
         BigDecimal totalPrice = new BigDecimal(0);
 

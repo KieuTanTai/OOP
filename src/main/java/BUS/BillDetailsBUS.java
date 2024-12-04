@@ -187,13 +187,35 @@ public class BillDetailsBUS {
             System.out.print("Set new quantity: ");
             String quantityInput = sc.nextLine().trim();
             quantity = Validate.isNumber(quantityInput);
-            if (!Validate.checkQuantity(quantity))
+            if (!Validate.checkQuantity(quantity)) {
+                System.out.println("Error quantity! What the **** are you cooking!");
                 quantity = -1;
+            }
         } while (quantity == -1);
         return quantity;
     }
 
     // remove methods
+     public void remove(String billID) {
+          int size = 0;
+          BillDetails[] reduceArray = new BillDetails[0];
+         for (BillDetails detail : ds) {
+             if (detail.getBillId().equals(billID))
+                 continue;
+             reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+             reduceArray[size] = detail;
+             size++;
+         }
+
+          if (size == ds.length) {
+               System.out.println("not found any mid!");
+               return;
+          }
+          setCount(size);
+          setList(reduceArray);
+     }
+
+
     public void remove(String billID, String productID) {
         int size = 0;
         BillDetails[] reducedArray = new BillDetails[0];

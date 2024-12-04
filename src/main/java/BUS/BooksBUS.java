@@ -977,8 +977,10 @@ public class BooksBUS implements IRuleSets {
                     System.out.print("new quantity: ");
                     String quantityInput = input.nextLine().trim();
                     quantity = Validate.isNumber(quantityInput);
-                    if (!Validate.checkQuantity(quantity))
+                    if (!Validate.checkQuantity(quantity)) {
+                         System.out.println("Error quantity! What the **** are you cooking!");
                          quantity = -1;
+                    }
                } while (quantity == -1);
                booksList[index].setQuantity(quantity);
           }
@@ -1261,6 +1263,17 @@ public class BooksBUS implements IRuleSets {
                     booksList[i] = booksList[i + 1];
                booksList = Arrays.copyOf(booksList, booksList.length - 1);
                count--;
+
+               // for remove all mid for this book
+               try {
+                    MidForBooksBUS listGenres = new MidForBooksBUS();
+                    listGenres.readFile();
+                    listGenres.remove(booksList[index].getProductID());
+                    listGenres.writeFile();
+               } catch (Exception e) {
+                    System.out.printf("error when execute file!\n%s\n", e.getMessage());
+               }
+
           }
      }
 

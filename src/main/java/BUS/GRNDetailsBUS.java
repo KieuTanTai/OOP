@@ -213,8 +213,10 @@ public class GRNDetailsBUS {
                System.out.print("set quantity : ");
                String quantityInput = input.nextLine().trim();
                quantity = Validate.isNumber(quantityInput);
-               if (!Validate.checkQuantity(quantity))
+               if (!Validate.checkQuantity(quantity)) {
+                    System.out.println("Error quantity! What the **** are you cooking!");
                     quantity = -1;
+               }
           } while (quantity == -1);
           return quantity;
      }
@@ -249,6 +251,25 @@ public class GRNDetailsBUS {
      }
 
      // *remove methods (TEST DONE)
+     public void remove(String grnID) {
+          int size = 0;
+          GRNDetails[] reduceArray = new GRNDetails[0];
+         for (GRNDetails detail : grnDetailsList) {
+             if (detail.getGrnID().equals(grnID))
+                 continue;
+             reduceArray = Arrays.copyOf(reduceArray, reduceArray.length + 1);
+             reduceArray[size] = detail;
+             size++;
+         }
+
+          if (size == grnDetailsList.length) {
+               System.out.println("not found any mid!");
+               return;
+          }
+          setCount(size);
+          setGrnDetailsList(reduceArray);
+     }
+
      public void remove(String grnID, String productID) {
           int size = 0;
           GRNDetails[] reduceArray = new GRNDetails[0];

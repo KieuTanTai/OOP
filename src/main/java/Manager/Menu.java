@@ -19,10 +19,6 @@ public class Menu {
         new MidForBooksBUS().readFile();
         new SuppliersBUS().readFile();
         new BookFormatsBUS().readFile();
-
-        // methods handler();
-        mainHandler();
-
     }
 
     public void mainHandler() {

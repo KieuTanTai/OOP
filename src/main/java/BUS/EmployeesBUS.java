@@ -703,7 +703,8 @@ public class EmployeesBUS implements IRuleSets {
         int index = find(userName);
         if (index == -1)
             return false;
-        if (!employeesList[index].getRole().equals("Manager") || !employeesList[index].checkPassword(password))
+        if (!employeesList[index].getRole().equals("Manager") || !employeesList[index].checkPassword(password) ||
+                !employeesList[index].getStatus().equals("Active"))
             return false;
         return true;
     }

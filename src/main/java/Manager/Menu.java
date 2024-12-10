@@ -21,7 +21,37 @@ public class Menu {
         new BookFormatsBUS().readFile();
     }
 
-    public void mainHandler() {
+    public void login() {
+        int choice;
+        do {
+            System.out.println("=".repeat(140));
+            System.out.println("I. Login");
+            System.out.println("0. Exit");
+            System.out.println("=".repeat(140));
+            System.out.print("Enter your choice: ");
+            String option = input.nextLine().trim();
+            if (option.equals("0")) {
+                System.out.println("I'll auto-logout for you! See ya -_-'");
+                return;
+            }
+            choice = Validate.parseChooseHandler(option, 1);
+
+            try {
+                if (choice == 1) {
+                    EmployeesBUS list = new EmployeesBUS();
+                    list.readFile();
+                    if (list.login()) {
+                        System.out.println("Yay ! Finally you can login -_-'");
+                        mainHandler();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        } while (true);
+    }
+
+    private void mainHandler() {
         int choice;
         do {
             System.out.println("=".repeat(140));
@@ -60,7 +90,7 @@ public class Menu {
         } while (true);
     }
 
-    public void addHandler() {
+    private void addHandler() {
         int choice;
         do {
             System.out.println("=".repeat(140));
@@ -201,7 +231,7 @@ public class Menu {
         } while (true);
     }
 
-    public void searchHandler() {
+    private void searchHandler() {
         int choice;
         do {
             System.out.println("=".repeat(140));
@@ -322,7 +352,7 @@ public class Menu {
                         salesList.readFile();
                         System.out.print("Enter name or id of sale event : ");
                         String userInput = input.nextLine().trim();
-                        index  = salesList.findById(userInput);
+                        index = salesList.findById(userInput);
                         if (index != -1) {
                             salesList.getListSaleEvent()[index].showInfo();
                         }
@@ -334,7 +364,7 @@ public class Menu {
         } while (true);
     }
 
-    public void removeHandler() {
+    private void removeHandler() {
         int choice;
         do {
             System.out.println("=".repeat(140));
@@ -465,7 +495,7 @@ public class Menu {
         } while (true);
     }
 
-    public void editHandler() {
+    private void editHandler() {
         int choice;
         do {
             System.out.println("=".repeat(140));

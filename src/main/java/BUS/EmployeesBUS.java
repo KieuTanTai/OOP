@@ -67,10 +67,10 @@ public class EmployeesBUS implements IRuleSets {
     // *find methods(TEST DONE)
     @Override
     public int find(String nameOrID) {
-        for (int i = 0; i < employeesList.length; i++)
-            if (employeesList[i].getPersonID().equals(nameOrID) ||
-                    employeesList[i].getFullName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
+        for (int i = 0; i < employeesList.length; i++) {
+            if (employeesList[i].getPersonID().equals(nameOrID) || employeesList[i].getFullName().toLowerCase().equals(nameOrID.toLowerCase().trim()))
                 return i;
+        }
         System.out.println("Your employee is not found!");
         return -1;
     }
@@ -688,6 +688,27 @@ public class EmployeesBUS implements IRuleSets {
             employeesList = Arrays.copyOf(employeesList, employeesList.length - 1);
             count--;
         }
+    }
+
+    public boolean login() {
+        String userName, password = "";
+        // login username
+        System.out.print("Enter username : ");
+        userName = input.nextLine().trim();
+        // password
+        System.out.print("Enter password : ");
+        password = input.nextLine().trim();
+
+        // check id by role
+        int index = find(userName);
+        if (index == -1)
+            return false;
+            if (!employeesList[index].getRole().equals("Manager") || !employeesList[index].checkPassword(password)) {
+                System.out.println(employeesList[index].getPassword());
+                System.out.println(employeesList[index].checkPassword(password));
+            return false;
+        }
+        return true;
     }
 
     // *execute file resources (TEST DONE)

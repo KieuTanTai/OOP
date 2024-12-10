@@ -179,8 +179,7 @@ public class Employees extends Person {
     }
     
 
-    @SuppressWarnings("unused")
-    private boolean checkPassword(String password) {
+    public boolean checkPassword(String password) {
         return BCrypt.checkpw(password, this.password);
     }
 }

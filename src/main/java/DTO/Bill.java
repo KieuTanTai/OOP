@@ -208,14 +208,17 @@ public class Bill {
             list.readFile();
             if (list.getCount() == 0) // if not have any supplier
                 return null;
-            do {
                 System.out.print("Enter Customer's id: ");
                 customerID = sc.nextLine().trim();
                 // execute sc id
                 index = list.find(customerID);
-                if (index == -1)
-                    customerID = "";
-            } while (customerID.isEmpty());
+                if (index == -1) {
+                    Customers newCustomer = new Customers();
+                    newCustomer.setInfo();
+                    list.add(newCustomer);
+                    list.writeFile();
+                    customerID = newCustomer.getPersonID();
+                }
             return list.getCustomersList()[index];
         } catch (IOException e) {
             System.out.println("error reading file!\n" + e.getMessage());
@@ -413,6 +416,85 @@ public class Bill {
         }
     }
 
+    public void setInfo(Products[] product, int[] quantity) {
+        System.out.println("*".repeat(60));
+        String id = setBillId();
+
+        // fields date
+        LocalDate date = LocalDate.now();
+        System.out.println("-".repeat(60));
+        Employees employee = setEmployee();
+
+        System.out.println("-".repeat(60));
+        Customers customer = setCustomer();
+
+        int length = product.length;
+        BillDetails[] detailsArray = new BillDetails[length - 1];
+        for (int i = 0; i < length; i++)
+            detailsArray[i] = new BillDetails(id, quantity[i], product[i]);
+        BigDecimal totalPrice = new BigDecimal(0);
+
+        int userChoice;
+        System.out.println("*".repeat(60));
+        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+
+        do {
+            System.out.print("choose option (1 or 2) : ");
+            String option = sc.nextLine().trim();
+            userChoice = Validate.parseChooseHandler(option, 2);
+        } while (userChoice == -1);
+        System.out.println("*".repeat(60));
+
+        if (userChoice == 1)
+            System.out.println("ok!");
+        else {
+            setBillId(id);
+            setDate(date);
+            setEmployee(employee);
+            setCustomer(customer);
+
+            // execute bill detail
+            try {
+                BillDetailsBUS detailList = new BillDetailsBUS();
+                StationeriesBUS staList = new StationeriesBUS();
+                BooksBUS bookList = new BooksBUS();
+                bookList.readFile();
+                staList.readFile();
+                detailList.readFile();
+                for (BillDetails detail : detailsArray) {
+                    String productID = detail.getProduct().getProductID();
+                    if (detailList.find(detail.getBillId(), productID) == -1) {
+                        totalPrice = totalPrice.add(detail.getSubTotal());
+                        detailList.add(detail);
+
+                        // execute update quantity
+                        if (productID.startsWith("ST") && productID.endsWith("PD"))
+                            staList.updateQuantity(detail);
+
+                        else if (productID.startsWith("BK") && productID.endsWith("PD"))
+                            bookList.updateQuantity(detail);
+                    }
+                }
+                staList.writeFile();
+                bookList.writeFile();
+                detailList.writeFile();
+            } catch (Exception e) {
+                System.out.println("error writing or reading file!\n" + e.getMessage());
+            }
+            // set all fields BigDecimal
+            SaleEvents saleCode = getValidSale(date, totalPrice);
+            BigDecimal discount;
+            if (saleCode != null)
+                discount = Validate.executePrice(totalPrice, saleCode.getDetail().getMaxPriceDiscount(), saleCode.getDetail().getDiscount());
+            else
+                discount = BigDecimal.ZERO;
+            setTotalPrice(totalPrice);
+            setSaleCode(saleCode);
+            setDiscount(discount);
+            System.out.println("create and set fields success");
+        }
+    }
+    
     public void showInfo() {
         LocalDate date = this.getDate();
         BigDecimal totalPrice = this.getTotalPrice();

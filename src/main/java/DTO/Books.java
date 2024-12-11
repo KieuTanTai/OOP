@@ -190,7 +190,7 @@ public class Books extends Products {
         GenresBUS.showList();
         if (GenresBUS.getCount() == 0) // if not have any genres
             return null;
-        System.out.println("----------------------------");
+        System.out.println("-".repeat(140));
         do {
             System.out.print("choose genres (like 1, 2,etc...) : ");
             String options = input.nextLine().trim();
@@ -316,6 +316,8 @@ public class Books extends Products {
     // *show info (TEST DONE)
     @Override
     public void showInfo() {
+        int quantity = this.getQuantity();
+        if (quantity <= 0) return;
         LocalDate date = this.getReleaseDate();
         BigDecimal price = this.getProductPrice();
         String productID = this.getProductID(), productName = this.getProductName();
@@ -356,7 +358,7 @@ public class Books extends Products {
         }
 
         System.out.println();
-        System.out.printf("| %-22s : %s \n", "Quantity", this.getQuantity());
+        System.out.printf("| %-22s : %s \n", "Quantity", quantity);
         System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
         System.out.println("=".repeat(140));
     }

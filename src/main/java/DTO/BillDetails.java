@@ -24,6 +24,14 @@ public class BillDetails {
         this.subTotal = price.multiply(new BigDecimal(quantity));
     }
 
+    public BillDetails(String billId, int quantity, Products product) {
+        this.billId = billId;
+        this.quantity = quantity;
+        this.product = product;
+        this.price = product.getProductPrice();
+        this.subTotal = price.multiply(new BigDecimal(quantity));
+    }
+
     public Products getProduct() {
         return this.product;
     }

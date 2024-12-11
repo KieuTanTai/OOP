@@ -210,6 +210,8 @@ public class Stationeries extends Products {
 
      @Override
      public void showInfo() {
+          int quantity = this.getQuantity();
+          if (quantity <= 0) return;
           LocalDate date = this.getReleaseDate();
           BigDecimal price = this.getProductPrice();
           String productID = this.getProductID(), productName = this.getProductName();
@@ -224,7 +226,7 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Material", this.material != null ? this.material : "N/A");
           System.out.printf("| %-22s : %s \n", "Source", this.source != null ? this.source : "N/A");
           System.out.printf("| %-22s : %s \n", "Brand", this.brand != null ? this.brand : "N/A");
-          System.out.printf("| %-22s : %d \n", "Quantity", this.getQuantity());
+          System.out.printf("| %-22s : %d \n", "Quantity", quantity);
           System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
           System.out.println("=".repeat(140));
      }

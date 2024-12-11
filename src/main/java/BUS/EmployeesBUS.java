@@ -690,7 +690,8 @@ public class EmployeesBUS implements IRuleSets {
         }
     }
 
-    public boolean login() {
+    // methods login
+    public String login(String role) {
         String userName, password = "";
         // login username
         System.out.print("Enter username : ");
@@ -702,11 +703,11 @@ public class EmployeesBUS implements IRuleSets {
         // check id by role
         int index = find(userName);
         if (index == -1)
-            return false;
-        if (!employeesList[index].getRole().equals("Manager") || !employeesList[index].checkPassword(password) ||
+            return "";
+        if (!employeesList[index].getRole().equals(role) || !employeesList[index].checkPassword(password) ||
                 employeesList[index].getStatus().equals("Inactive"))
-            return false;
-        return true;
+            return "";
+        return userName;
     }
 
     // *execute file resources (TEST DONE)

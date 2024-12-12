@@ -1,6 +1,7 @@
 package Manager;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -611,7 +612,7 @@ public class Menu {
         int choice;
         do {
             System.out.println("=".repeat(140));
-            System.out.println("I. Sales");
+            System.out.println("I. Sales for Customers");
             System.out.println("0. Get off work");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -620,11 +621,15 @@ public class Menu {
                 try {
                     BillBUS list = new BillBUS();
                     list.readFile();
-                    int index = list.find(accountID);
-                    if (index != -1)
-                        System.out.printf("Total price : %s\n",
-                                Validate.formatPrice(list.getList()[index].getTotalPrice()).toString());
-                    System.out.println("See ya -_-'!");
+                    Bill[] totalBills = list.find(accountID, "employee");
+                    if (totalBills != null) {
+                        BigDecimal totalPrice = new BigDecimal(0);
+                        for (Bill bill : totalBills)
+                            totalPrice = totalPrice.add(bill.getTotalPrice());
+                        System.out.printf("Total price : %s ! See ya -_-'!\n", Validate.formatPrice(totalPrice));
+                        return;
+                    }
+                    System.out.printf("Wao ! You working just for fun huh -_-'!");
                     return;
                 } catch (Exception e) {
                     System.out.println("An error occurred: " + e.getMessage());
@@ -648,7 +653,7 @@ public class Menu {
             System.out.println("=".repeat(140));
             System.out.println("I. Show Books");
             System.out.println("II. Show Stationeries");
-            System.out.println("III. Buy");
+            System.out.println("III. Customer buy");
             System.out.println("IV.Search Books");
             System.out.println("V.Search Stationeries");
             System.out.println("0. Back to main menu");
@@ -703,8 +708,7 @@ public class Menu {
                                     System.out.print("set quantity : ");
                                     String quantityInput = input.nextLine().trim();
                                     quantity[i] = Validate.isNumber(quantityInput);
-                                    if (!Validate.checkQuantity(quantity[i])
-                                            || quantity[i] > listProducts[i].getQuantity()) {
+                                    if (!Validate.checkQuantity(quantity[i]) || quantity[i] > listProducts[i].getQuantity()) {
                                         System.out.println("Error quantity! What the **** are you cooking!");
                                         quantity[i] = -1;
                                     }
@@ -715,9 +719,11 @@ public class Menu {
                             Bill newBill = new Bill();
                             bills.readFile();
                             newBill.setInfo(accountID, listProducts, quantity);
-                            bills.add(newBill);
-                            bills.writeFile();
-                            newBill.showInfo();
+                            if (newBill.getEmployee() != null || newBill.getCustomer() != null) {
+                                bills.add(newBill);
+                                bills.writeFile();
+                                newBill.showInfo();
+                            }
                         }
                         break;
                     case 4:

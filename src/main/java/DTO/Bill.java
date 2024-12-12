@@ -214,12 +214,15 @@ public class Bill {
                 if (index == -1) {
                     Customers newCustomer = new Customers();
                     newCustomer.setInfo();
+                    if (newCustomer.getPersonID() == null)
+                        return null;
                     list.add(newCustomer);
                     list.writeFile();
                     customerID = newCustomer.getPersonID();
+                    index = list.getCount() - 1;
                 }
                 Customers[] customers = list.getCustomersList();
-            return customers[customers.length - 1];
+            return customers[index];
         } catch (IOException e) {
             System.out.println("error reading file!\n" + e.getMessage());
             return null;
@@ -351,6 +354,10 @@ public class Bill {
 
         System.out.println("-".repeat(60));
         Customers customer = setCustomer();
+        if (customer == null) {
+            System.out.println("Cancel create bill cuz not have any customer -_-' !");
+            return;
+        }
 
         BillDetails[] detailsArray = setBillDetails(id);
         BigDecimal totalPrice = new BigDecimal(0);
@@ -431,7 +438,12 @@ public class Bill {
         // fields date
         LocalDate date = LocalDate.now();
         System.out.println("-".repeat(60));
+        // fields cus
         Customers customer = setCustomer();
+        if (customer == null) {
+            System.out.println("Cancel create bill cuz not have any customer -_-' !");
+            return;
+        }
 
         int length = product.length;
         BillDetails[] detailsArray = new BillDetails[length];
@@ -508,8 +520,7 @@ public class Bill {
 
         System.out.println("=".repeat(140));
         System.out.printf("| %-22s : %s \n", "Bill ID", billId != null ? billId : "N/A");
-        System.out.printf("| %-22s : %s \n", "Date",
-                date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Date", date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
         System.out.printf("| %-22s : %s \n", "Employee", employeeName != null ? employeeName : "N/A");
         System.out.printf("| %-22s : %s \n", "Customer", customerName != null ? customerName : "N/A");
 

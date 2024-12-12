@@ -3,6 +3,7 @@ package BUS;
 
 import java.util.Scanner;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.*;
@@ -479,27 +480,21 @@ public class BillBUS implements IRuleSets {
         int count = 0;
         boolean flag = false;
         Bill[] resultArray = new Bill[0];
-        request = request.toLowerCase().trim();
+        request = request.toLowerCase();
 
         for (Bill bill : ds) {
             if (originalKey instanceof String key) {
-                key = key.toLowerCase();
-
                 if (request.equals("employee")) {
-                    String employeeId = (bill.getEmployee() != null) ? bill.getEmployee().getPersonID().toLowerCase()
-                            : "";
-                    String employeeName = (bill.getEmployee() != null) ? bill.getEmployee().getFullName().toLowerCase()
-                            : "";
+                    String employeeId = (bill.getEmployee() != null) ? bill.getEmployee().getPersonID(): "";
+                    String employeeName = (bill.getEmployee() != null) ? bill.getEmployee().getFullName().toLowerCase() : "";
 
-                    if (employeeId.equals(key) || employeeName.contains(key))
+                    if (employeeId.equals(key) || employeeName.contains(key.toLowerCase()))
                         flag = true;
                 } else if (request.equals("customer")) {
-                    String customerId = (bill.getCustomer() != null) ? bill.getCustomer().getPersonID().toLowerCase()
-                            : "";
-                    String customerName = (bill.getCustomer() != null) ? bill.getCustomer().getFullName().toLowerCase()
-                            : "";
+                    String customerId = (bill.getCustomer() != null) ? bill.getCustomer().getPersonID() : "";
+                    String customerName = (bill.getCustomer() != null) ? bill.getCustomer().getFullName().toLowerCase() : "";
 
-                    if (customerId.equals(key) || customerName.contains(key))
+                    if (customerId.equals(key) || customerName.contains(key.toLowerCase()))
                         flag = true;
                 }
             } else if (originalKey instanceof LocalDate) {
@@ -568,21 +563,17 @@ public class BillBUS implements IRuleSets {
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(
                 new BufferedOutputStream(new FileOutputStream("src/main/resources/Bill", false)))) {
-            for (int i = 0; i < this.getCount(); i++)
-                    System.out.println(ds[i].getEmployee());
-
             file.writeInt(n);
             for (int i = 0; i < n; ++i) {
                 SaleEvents saleCode = ds[i].getSaleCode();
                 // write bill
-                System.out.println(ds[i].getEmployee());
                 file.writeUTF(ds[i].getBillId());
                 file.writeUTF(ds[i].getCustomer().getPersonID());
                 file.writeUTF(ds[i].getEmployee().getPersonID());
                 file.writeUTF(ds[i].getDate().toString());
                 file.writeUTF(ds[i].getDiscount().toString());
                 file.writeUTF(saleCode != null ? saleCode.getDetail().getPromoCode() : "");
-                file.writeUTF(ds[i].getTotalPrice().toString());
+                file.writeUTF(ds[i].getTotalPrice().setScale(0, RoundingMode.UNNECESSARY).toString());
             }
         } catch (Exception e) {
             System.out.println("Error writing file: " + e.getMessage());

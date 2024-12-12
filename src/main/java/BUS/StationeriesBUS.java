@@ -62,11 +62,11 @@ public class StationeriesBUS implements IRuleSets {
 
     // all others methods like: add remove edit find show....
     // *show list (TEST DONE)
-    public void showList() {
+    public void showList(boolean showOutStock) {
         if (staList == null)
             return;
         for (Stationeries stationary : staList)
-            stationary.showInfo();
+            stationary.showInfo(showOutStock);
     }
 
     // *find methods (TEST DONE)
@@ -565,7 +565,7 @@ public class StationeriesBUS implements IRuleSets {
     public void search(String nameOrID) {
         int index = find(nameOrID);
         if (index != -1)
-            staList[index].showInfo();
+            staList[index].showInfo(true);
     }
 
     // relative search
@@ -573,7 +573,7 @@ public class StationeriesBUS implements IRuleSets {
         Stationeries[] indexList = relativeFind(key, request);
         if (indexList != null)
             for (Stationeries stationary : indexList)
-                stationary.showInfo();
+                stationary.showInfo(true);
     }
 
     // advanced search
@@ -585,7 +585,7 @@ public class StationeriesBUS implements IRuleSets {
             indexList = advancedFind(keyI, timeOrKey, request);
         if (indexList != null)
             for (Stationeries stationary : indexList)
-                stationary.showInfo();
+                stationary.showInfo(true);
     }
 
     // *add methods (TEST DONE)
@@ -749,7 +749,7 @@ public class StationeriesBUS implements IRuleSets {
             String name;
             int userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
@@ -778,7 +778,7 @@ public class StationeriesBUS implements IRuleSets {
             LocalDate date;
             int userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
@@ -804,7 +804,7 @@ public class StationeriesBUS implements IRuleSets {
             BigDecimal price;
             int userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
@@ -829,7 +829,7 @@ public class StationeriesBUS implements IRuleSets {
         if (index != -1) {
             int quantity, userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
@@ -861,7 +861,7 @@ public class StationeriesBUS implements IRuleSets {
         if (index != -1) {
             int userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
@@ -890,7 +890,7 @@ public class StationeriesBUS implements IRuleSets {
             String brand;
             int userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
@@ -919,7 +919,7 @@ public class StationeriesBUS implements IRuleSets {
             String source;
             int userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
@@ -948,7 +948,7 @@ public class StationeriesBUS implements IRuleSets {
             String material;
             int userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
             do {
                 System.out.print("choose option (1 or 2) : ");
@@ -1006,7 +1006,7 @@ public class StationeriesBUS implements IRuleSets {
         if (index != -1) {
             int userChoice;
             // show list for user choose
-            staList[index].showInfo();
+            staList[index].showInfo(true);
             System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
             do {
                 System.out.print("choose option (1 or 2) : ");

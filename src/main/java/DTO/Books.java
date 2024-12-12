@@ -279,7 +279,7 @@ public class Books extends Products {
 
         System.out.println("-".repeat(60));
         BookFormats format = setFormat();
-        
+
         System.out.println("-".repeat(60));
         String packagingSize = setPackagingSize();
         System.out.println("*".repeat(60));
@@ -315,9 +315,12 @@ public class Books extends Products {
 
     // *show info (TEST DONE)
     @Override
-    public void showInfo() {
+    public void showInfo(boolean showOutStock) {
         int quantity = this.getQuantity();
-        if (quantity <= 0) return;
+        if (!showOutStock && quantity <= 0) {
+            System.out.println("Products is out of stock |`-_-`| !");
+            return;
+        }
         LocalDate date = this.getReleaseDate();
         BigDecimal price = this.getProductPrice();
         String productID = this.getProductID(), productName = this.getProductName();
@@ -332,8 +335,7 @@ public class Books extends Products {
         System.out.printf("| %-22s : %s \n", "Author", this.author != null ? this.author : "N/A");
         System.out.printf("| %-22s : %s \n", "Format", this.format != null ? this.format.getFormatName() : "N/A");
         System.out.printf("| %-22s : %s \n", "Packaging Size", this.packagingSize != null ? this.packagingSize : "N/A");
-        System.out.printf("| %-22s : %s \n", "Book Type",
-                this.bookType != null ? this.bookType.getTypeName() : "N/A");
+        System.out.printf("| %-22s : %s \n", "Book Type", this.bookType != null ? this.bookType.getTypeName() : "N/A");
 
         System.out.printf("| %-22s : ", "Genres");
         try {
@@ -363,6 +365,19 @@ public class Books extends Products {
         System.out.println("=".repeat(140));
     }
 
+    public void showShortInfo() {
+        int quantity = this.getQuantity();
+        BigDecimal price = this.getProductPrice();
+        String productID = this.getProductID(), productName = this.getProductName();
+
+        System.out.println("=".repeat(60));
+        System.out.printf("| %-10s : %s \n", "ID", productID != null ? productID : "N/A");
+        System.out.printf("| %-10s : %s \n", "Name", productName != null ? productName : "N/A");
+        System.out.printf("| %-10s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
+        System.out.printf("| %-10s : %s \n", "Quantity", quantity);
+        System.out.println("=".repeat(60));
+    }
+    
     @Override
     protected String productIDModifier(String bookID) {
         if (bookID.startsWith("BK") && bookID.endsWith("PD") && bookID.length() == 12)
@@ -373,4 +388,5 @@ public class Books extends Products {
         }
         return "BK" + bookID + "PD";
     }
+
 }

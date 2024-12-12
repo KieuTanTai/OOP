@@ -2,13 +2,17 @@ package Manager;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 
 import BUS.*;
 import DTO.Bill;
+import DTO.Books;
+import DTO.GRNs;
 import DTO.Products;
 import DTO.SaleEvents;
+import DTO.Stationeries;
 import util.Validate;
 
 public class Menu {
@@ -79,10 +83,11 @@ public class Menu {
         int choice;
         do {
             System.out.println("=".repeat(140));
-            System.out.println("I. Add new");
-            System.out.println("II. Search");
-            System.out.println("III. Remove");
-            System.out.println("IV. Edit");
+            System.out.println("I. Add Handler");
+            System.out.println("II. Search Handler");
+            System.out.println("III. Remove Handler");
+            System.out.println("IV. Edit Handler");
+            System.out.println("V. Business statistics");
             System.out.println("0. Exit");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -91,7 +96,7 @@ public class Menu {
                 System.out.println("See you later!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 4);
+            choice = Validate.parseChooseHandler(option, 5);
 
             try {
                 switch (choice) {
@@ -107,7 +112,70 @@ public class Menu {
                     case 4:
                         editHandler();
                         break;
+                    case 5:
+                        businessStatistic();
+                        break;
+
                 }
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        } while (true);
+    }
+
+    private void businessStatistic() {
+        int choice;
+        do {
+            System.out.println("=".repeat(140));
+            System.out.println("I. By month");
+            System.out.println("II. By year");
+            System.out.println("III. Every time");
+            System.out.println("0.Exit");
+            System.out.println("=".repeat(140));
+            System.out.print("Enter your choice: ");
+            String option = input.nextLine().trim();
+            if (option.equals("0")) {
+                System.out.println("See you later!");
+                return;
+            }
+            choice = Validate.parseChooseHandler(option, 3);
+
+            try {
+                BillBUS list = new BillBUS();
+                list.readFile();
+                Bill[] totalBills = null;
+                switch (choice) {
+                    case 1:
+                        int month;
+                        do {
+                            System.out.print("Enter month you want: ");
+                            option = input.nextLine();
+                            month = Validate.isNumber(option);
+                        } while (month == -1);
+                        totalBills = list.find(option, "month");
+                        break;
+                    case 2:
+                        int year;
+                        do {
+                            System.out.print("Enter year you want: ");
+                            option = input.nextLine();
+                            year = Validate.isNumber(option);
+                        } while (year == -1);
+                        totalBills = list.find(option, "year");
+                        break;
+                    case 3:
+                        totalBills = list.getList();
+                        break;
+                }
+
+                if (totalBills != null) {
+                    BigDecimal totalPrice = new BigDecimal(0);
+                    for (Bill bill : totalBills)
+                        totalPrice = totalPrice.add(bill.getTotalPrice());
+                    System.out.printf("Total price : %s ! See ya -_-'!\n", Validate.formatPrice(totalPrice));
+                    break;
+                }
+                System.out.printf("Wao ! You working just for fun huh -_-'!");
             } catch (Exception e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
@@ -282,7 +350,7 @@ public class Menu {
                                 System.out.println("Exit program!");
                                 return;
                             }
-                            productChoice = Validate.parseChooseHandler(chooseProduct, 4);
+                            productChoice = Validate.parseChooseHandler(chooseProduct, 2);
                             try {
                                 switch (productChoice) {
                                     case 1:
@@ -379,7 +447,7 @@ public class Menu {
         do {
             System.out.println("=".repeat(140));
             System.out.println("I. Remove product");
-            System.out.println("II. Remove employee");
+            System.out.println("II. Disable employee");
             System.out.println("III. Remove customer");
             System.out.println("IV. Remove supplier");
             System.out.println("V. Remove publisher");
@@ -437,7 +505,9 @@ public class Menu {
                     case 2:
                         EmployeesBUS employeesList = new EmployeesBUS();
                         employeesList.readFile();
-                        employeesList.remove();
+                        System.out.println("Enter Employee id: ");
+                        String id = input.nextLine().trim();
+                        employeesList.editStatus(id);
                         employeesList.writeFile();
                         break;
                     case 3:
@@ -479,7 +549,7 @@ public class Menu {
                     case 9:
                         SaleEventsBUS salesList = new SaleEventsBUS();
                         salesList.readFile();
-                        System.out.print("Enter name or id of sale event : ");
+                        System.out.print("Enter id of sale event : ");
                         String userInput = input.nextLine().trim();
                         salesList.delete(userInput);
                         salesList.writeFile();
@@ -500,9 +570,9 @@ public class Menu {
             System.out.println("III. Edit customer");
             System.out.println("IV. Edit supplier");
             System.out.println("V. Edit publisher");
-            System.out.println("VI. Edit BookTypes");
-            System.out.println("VII. Edit Genre");
-            System.out.println("VIII. Edit StaTypes");
+            System.out.println("VI. Edit Genre");
+            System.out.println("VII. Edit type of book");
+            System.out.println("VIII. Edit type of stationary");
             System.out.println("IX. Edit sale event");
             System.out.println("0. Exit");
             System.out.println("=".repeat(140));
@@ -576,16 +646,16 @@ public class Menu {
                         publishersList.writeFile();
                         break;
                     case 6:
-                        TypesBUS typesList = new TypesBUS();
-                        typesList.readFile();
-                        typesList.edit();
-                        typesList.writeFile();
-                        break;
-                    case 7:
                         GenresBUS genresList = new GenresBUS();
                         genresList.readFile();
                         genresList.edit();
                         genresList.writeFile();
+                        break;
+                    case 7:
+                        TypesBUS typesList = new TypesBUS();
+                        typesList.readFile();
+                        typesList.edit();
+                        typesList.writeFile();
                         break;
                     case 8:
                         StaTypesBUS staTypesList = new StaTypesBUS();
@@ -617,11 +687,12 @@ public class Menu {
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
             String option = input.nextLine().trim();
+            choice = Validate.parseChooseHandler(option, 1);
             if (option.equals("0")) {
                 try {
                     BillBUS list = new BillBUS();
                     list.readFile();
-                    Bill[] totalBills = list.find(accountID, "employee");
+                    Bill[] totalBills = list.find(accountID, LocalDate.now());
                     if (totalBills != null) {
                         BigDecimal totalPrice = new BigDecimal(0);
                         for (Bill bill : totalBills)
@@ -635,8 +706,6 @@ public class Menu {
                     System.out.println("An error occurred: " + e.getMessage());
                 }
             }
-            choice = Validate.parseChooseHandler(option, 1);
-
             try {
                 if (choice == 1)
                     sales();
@@ -671,11 +740,11 @@ public class Menu {
                 switch (choice) {
                     case 1:
                         booksList.readFile();
-                        booksList.showList();
+                        booksList.showList(false);
                         break;
                     case 2:
                         staList.readFile();
-                        staList.showList();
+                        staList.showList(false);
                         break;
                     case 3:
                         int inputChoice;
@@ -685,7 +754,7 @@ public class Menu {
                             option = input.nextLine().trim();
                             inputChoice = Validate.parseChooseHandler(option, 2);
                         } while (inputChoice == -1);
-                        Products[] listProducts = customerBought(inputChoice == 1 ? "Books" : "Stationeries");
+                        Products[] listProducts = cartForCustomer(inputChoice == 1 ? "Books" : "Stationeries");
                         if (listProducts != null) {
                             int length = listProducts.length;
                             int[] quantity = new int[length];
@@ -703,12 +772,13 @@ public class Menu {
                             }
                             // set quantity
                             for (int i = 0; i < length; i++) {
-                                listProducts[i].showInfo();
+                                listProducts[i].showInfo(false);
                                 do {
                                     System.out.print("set quantity : ");
                                     String quantityInput = input.nextLine().trim();
                                     quantity[i] = Validate.isNumber(quantityInput);
-                                    if (!Validate.checkQuantity(quantity[i]) || quantity[i] > listProducts[i].getQuantity()) {
+                                    if (!Validate.checkQuantity(quantity[i])
+                                            || quantity[i] > listProducts[i].getQuantity()) {
                                         System.out.println("Error quantity! What the **** are you cooking!");
                                         quantity[i] = -1;
                                     }
@@ -741,7 +811,7 @@ public class Menu {
         } while (true);
     }
 
-    private Products[] customerBought(String request) {
+    private Products[] cartForCustomer(String request) {
         int userChoice = 0, count = 0;
         Products[] listProducts = new Products[0];
         request = request.toLowerCase();
@@ -757,7 +827,7 @@ public class Menu {
                     int length = list.length;
                     for (int i = 0; i < length; i++) {
                         System.out.printf("%d:\n", i + 1);
-                        list[i].showInfo();
+                        list[i].showInfo(false);
                     }
                     // get user choice
                     System.out.println("-".repeat(60));
@@ -766,11 +836,13 @@ public class Menu {
                         String options = input.nextLine().trim();
                         String[] splitOptions = options.split(" ");
 
+                        // check duplicate
                         if (Validate.hasDuplicates(splitOptions)) {
                             System.out.println("has duplicate! please try again!");
                             continue;
                         }
 
+                        // exec list of options
                         for (String item : splitOptions) {
                             userChoice = Validate.parseChooseHandler(item, list.length);
                             if (userChoice == -1) {
@@ -794,7 +866,7 @@ public class Menu {
                     int length = list.length;
                     for (int i = 0; i < length; i++) {
                         System.out.printf("%d:\n", i + 1);
-                        list[i].showInfo();
+                        list[i].showInfo(false);
                     }
                     // get user choice
                     System.out.println("-".repeat(60));
@@ -835,11 +907,9 @@ public class Menu {
         int choice;
         do {
             System.out.println("=".repeat(140));
-            System.out.println("I. Add new");
-            System.out.println("II. Search");
-            System.out.println("III. Remove");
-            System.out.println("IV. Edit");
-            System.out.println("0. Exit");
+            System.out.println("I. Goods receipt");
+            System.out.println("II. Inventory check");
+            System.out.println("0. Back to main menu");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
             String option = input.nextLine().trim();
@@ -847,21 +917,15 @@ public class Menu {
                 System.out.println("See you later!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 4);
+            choice = Validate.parseChooseHandler(option, 2);
 
             try {
                 switch (choice) {
                     case 1:
-                        addHandler();
+                        goodsReceipt();
                         break;
                     case 2:
-                        searchHandler();
-                        break;
-                    case 3:
-                        removeHandler();
-                        break;
-                    case 4:
-                        editHandler();
+                        inventoryCheck();
                         break;
                 }
             } catch (Exception e) {
@@ -870,4 +934,108 @@ public class Menu {
         } while (true);
     }
 
+    // goods receipt
+    private void goodsReceipt() {
+        int choice;
+        do {
+            System.out.println("=".repeat(140));
+            System.out.println("I. Create GRN");
+            System.out.println("II. Show list GRN");
+            System.out.println("0. Back to main menu");
+            System.out.println("=".repeat(140));
+            System.out.print("Enter your choice: ");
+            String chooseProduct = input.nextLine().trim();
+            if (chooseProduct.equals("0")) {
+                System.out.println("Exit program!");
+                return;
+            }
+            choice = Validate.parseChooseHandler(chooseProduct, 2);
+            try {
+                GRNsBUS listGRNs = new GRNsBUS();
+                listGRNs.readFile();
+                switch (choice) {
+                    case 1:
+                        int userChoice;
+                        System.out.println("Are you sure that your products have been received at your store -_-' ?");
+                        System.out.println("If you sure that so we'll start to create GRN |`-_-`|");
+                        System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Submit");
+                        do {
+                            System.out.print("choose option (1 or 2) : ");
+                            String option = input.nextLine().trim();
+                            userChoice = Validate.parseChooseHandler(option, 2);
+                        } while (userChoice == -1);
+                        if (userChoice == 1) {
+                            System.out.println("ok!");
+                            break;
+                        }
+                        GRNs grn = new GRNs();
+                        grn.setInfo();
+                        if (grn.getEmployee() != null || grn.getSupplier() != null) {
+                            listGRNs.add(grn);
+                            listGRNs.writeFile();
+                            grn.showInfo();
+                        }
+                        break;
+                    case 2:
+                        listGRNs.showList();
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        } while (true);
+    }
+
+    // inventory check
+    private void inventoryCheck() {
+        int choice;
+        do {
+            System.out.println("=".repeat(140));
+            System.out.println("I. Search Book");
+            System.out.println("II. Search Stationary");
+            System.out.println("0. Exit");
+            System.out.println("=".repeat(140));
+            System.out.print("Enter your choice: ");
+            String chooseProduct = input.nextLine().trim();
+            if (chooseProduct.equals("0")) {
+                System.out.println("Exit program!");
+                return;
+            }
+            choice = Validate.parseChooseHandler(chooseProduct, 2);
+            try {
+                int userChoice;
+                System.out.println("show short info or detail info |`-_-`| ?");
+                System.out.printf("| %s %s %s |\n", "I.Short", "-".repeat(20), "II.Detail");
+                do {
+                    System.out.print("choose option (1 or 2) : ");
+                    String option = input.nextLine().trim();
+                    userChoice = Validate.parseChooseHandler(option, 2);
+                } while (userChoice == -1);
+                switch (choice) {
+                    case 1:
+                        BooksBUS booksList = new BooksBUS();
+                        booksList.readFile();
+                        Books[] list = booksList.getBooksList();
+                        for (Books book : list)
+                            if (userChoice == 1)
+                                book.showShortInfo();
+                            else
+                                book.showInfo(true);
+                        break;
+                    case 2:
+                        StationeriesBUS staList = new StationeriesBUS();
+                        staList.readFile();
+                        Stationeries[] stationeriesList = staList.getStaList();
+                        for (Stationeries sta : stationeriesList)
+                            if (userChoice == 1)
+                                sta.showShortInfo();
+                            else
+                                sta.showInfo(true);
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        } while (true);
+    }
 }

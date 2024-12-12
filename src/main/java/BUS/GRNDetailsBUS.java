@@ -175,12 +175,12 @@ public class GRNDetailsBUS {
                     if (productChoose == 1) {
                          BooksBUS listBooks = new BooksBUS();
                          listBooks.readFile();
-                         listBooks.showList();
+                         listBooks.showList(true);
                          product = getProductOnList(listBooks);
                     } else {
                          StationeriesBUS listStationeries = new StationeriesBUS();
                          listStationeries.readFile();
-                         listStationeries.showList();
+                         listStationeries.showList(true);
                          product = getProductOnList(listStationeries);
                     }
                } catch (Exception e) {

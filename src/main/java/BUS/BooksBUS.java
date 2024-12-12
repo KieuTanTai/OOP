@@ -72,11 +72,11 @@ public class BooksBUS implements IRuleSets {
 
      // all others methods like: add remove edit find show....
      // *methods showList (TEST DONE)
-     public void showList() {
+     public void showList(boolean showOutStock) {
           if (booksList == null)
                return;
           for (Books book : booksList)
-               book.showInfo();
+               book.showInfo(showOutStock);
      }
 
      // *find methods (TEST DONE)
@@ -693,7 +693,7 @@ public class BooksBUS implements IRuleSets {
      public void search(String nameOrID) {
           int index = find(nameOrID);
           if (index != -1)
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
      }
 
      // relative search
@@ -701,7 +701,7 @@ public class BooksBUS implements IRuleSets {
           Books[] list = relativeFind(key, request);
           if (list != null)
                for (Books book : list)
-                    book.showInfo();
+                    book.showInfo(true);
      }
 
      // advanced search
@@ -713,7 +713,7 @@ public class BooksBUS implements IRuleSets {
                list = advancedFind(keyI, timeOrKey, request);
           if (list != null)
                for (Books book : list)
-                    book.showInfo();
+                    book.showInfo(true);
 
      }
 
@@ -883,7 +883,7 @@ public class BooksBUS implements IRuleSets {
                String name;
                int userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -912,7 +912,7 @@ public class BooksBUS implements IRuleSets {
                LocalDate date;
                int userChoice;
                // show option for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -938,7 +938,7 @@ public class BooksBUS implements IRuleSets {
                BigDecimal price;
                int userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -963,7 +963,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                int quantity, userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -993,7 +993,7 @@ public class BooksBUS implements IRuleSets {
                String authorName;
                int userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -1026,7 +1026,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                int userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -1059,7 +1059,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                int userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -1161,7 +1161,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                int userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -1192,7 +1192,7 @@ public class BooksBUS implements IRuleSets {
                String packagingSize;
                int userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Edit");
                do {
                     System.out.print("choose option (1 or 2) : ");
@@ -1249,7 +1249,7 @@ public class BooksBUS implements IRuleSets {
           if (index != -1) {
                int userChoice;
                // show list for user choice
-               booksList[index].showInfo();
+               booksList[index].showInfo(true);
                System.out.printf("| %s %s %s |\n", "I.Cancel", "-".repeat(20), "II.Remove");
                do {
                     System.out.print("choose option (1 or 2) : ");

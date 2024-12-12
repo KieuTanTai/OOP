@@ -166,7 +166,7 @@ public abstract class Products {
 
     public abstract void setInfo();
 
-    public abstract void showInfo();
+    public abstract void showInfo(boolean showOutStock);
 
     protected abstract String productIDModifier(String productID);
 }

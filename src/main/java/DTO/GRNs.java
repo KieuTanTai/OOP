@@ -184,7 +184,7 @@ public class GRNs {
                               if (chooseTypeProduct() == 1) {
                                    BooksBUS booksList = new BooksBUS();
                                    booksList.readFile();
-                                   booksList.showList();
+                                   booksList.showList(true);
 
                                    do {
                                         System.out.print("product id: ");
@@ -205,7 +205,7 @@ public class GRNs {
                               } else {
                                    StationeriesBUS staList = new StationeriesBUS();
                                    staList.readFile();
-                                   staList.showList();
+                                   staList.showList(true);
 
                                    do {
                                         System.out.print("product id: ");
@@ -377,8 +377,7 @@ public class GRNs {
 
           System.out.println("=".repeat(140));
           System.out.printf("| %-22s : %s \n", "GRN ID", grnID != null ? grnID : "N/A");
-          System.out.printf("| %-22s : %s \n", "Release Date",
-                    date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
+          System.out.printf("| %-22s : %s \n", "Release Date", date != null ? date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : "N/A");
           System.out.printf("| %-22s : %s \n", "Employee", employeeName != null ? employeeName : "N/A");
           System.out.printf("| %-22s : %s \n", "Supplier", supplier != null ? supplier : "N/A");
           try {
@@ -393,16 +392,14 @@ public class GRNs {
                     System.out.printf("| %-22s : %s \n", "Product", product != null ? product : "N/A");
                     System.out.printf("| %-22s : %s \n", "Quantity", grn.getQuantity());
                     System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
-                    System.out.printf("| %-22s : %s \n", "Sub Total",
-                              subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
+                    System.out.printf("| %-22s : %s \n", "Sub Total", subTotal != null ? Validate.formatPrice(subTotal) : "N/A");
                }
           } catch (Exception e) {
                System.out.println("| Error loading grn!\n" + e.getMessage());
           }
 
           System.out.println("|" + "*".repeat(139));
-          System.out.printf("| %-22s : %s \n", "Total Price",
-                    totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
+          System.out.printf("| %-22s : %s \n", "Total Price", totalPrice != null ? Validate.formatPrice(totalPrice) : "N/A");
           System.out.println("=".repeat(140));
      }
 

@@ -490,14 +490,20 @@ public class BillBUS implements IRuleSets {
 
                     if (employeeId.equals(key) || employeeName.contains(key.toLowerCase()))
                         flag = true;
-                } else if (request.equals("customer")) {
+                } 
+                else if (request.equals("customer")) {
                     String customerId = (bill.getCustomer() != null) ? bill.getCustomer().getPersonID() : "";
                     String customerName = (bill.getCustomer() != null) ? bill.getCustomer().getFullName().toLowerCase() : "";
 
                     if (customerId.equals(key) || customerName.contains(key.toLowerCase()))
                         flag = true;
                 }
-            } else if (originalKey instanceof LocalDate) {
+                else if (request.equals("month") && bill.getDate().getDayOfMonth() == Validate.isNumber(key))
+                    flag = true;
+                else if (request.equals("year") && bill.getDate().getYear() == Validate.isNumber(key))
+                    flag = true;
+            } 
+            else if (originalKey instanceof LocalDate) {
                 if (request.equals("date") && bill.getDate().isEqual((LocalDate) originalKey))
                     flag = true;
             }
@@ -556,6 +562,23 @@ public class BillBUS implements IRuleSets {
             return null;
         }
         return billList;
+    }
+
+    public Bill[] find(String employeeID, LocalDate date) {
+        int count = 0;
+        Bill[] list = new Bill[0];
+        for (Bill bill : ds) {
+            if (bill.getEmployee().getPersonID().equals(employeeID) && bill.getDate().equals(date)) {
+                list = Arrays.copyOf(list, list.length + 1);
+                list[count] = bill;
+                count ++;
+            }
+        }
+        if (count == 0) {
+            System.out.println("Not found any Bill!");
+            return null;
+        }
+        return list;
     }
 
     // execute file resources

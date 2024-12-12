@@ -209,9 +209,12 @@ public class Stationeries extends Products {
      }
 
      @Override
-     public void showInfo() {
+     public void showInfo(boolean showOutStock) {
           int quantity = this.getQuantity();
-          if (quantity <= 0) return;
+          if (!showOutStock && quantity <= 0) {
+               System.out.println("Products is out of stock |`-_-`| !");
+               return;
+          } 
           LocalDate date = this.getReleaseDate();
           BigDecimal price = this.getProductPrice();
           String productID = this.getProductID(), productName = this.getProductName();
@@ -230,6 +233,19 @@ public class Stationeries extends Products {
           System.out.printf("| %-22s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
           System.out.println("=".repeat(140));
      }
+
+     public void showShortInfo() {
+          int quantity = this.getQuantity(); 
+          BigDecimal price = this.getProductPrice();
+          String productID = this.getProductID(), productName = this.getProductName();
+      
+          System.out.println("=".repeat(60));
+          System.out.printf("| %-10s : %s \n", "ID", productID != null ? productID : "N/A");
+          System.out.printf("| %-10s : %s \n", "Name", productName != null ? productName : "N/A");
+          System.out.printf("| %-10s : %s \n", "Price", price != null ? Validate.formatPrice(price) : "N/A");
+          System.out.printf("| %-10s : %d \n", "Quantity", quantity);
+          System.out.println("=".repeat(60));
+      }      
 
      private String stationaryIDModifier(String stationaryID) {
           if (stationaryID.startsWith("STA") && stationaryID.length() == 11)

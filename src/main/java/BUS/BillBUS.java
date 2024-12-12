@@ -282,7 +282,7 @@ public class BillBUS implements IRuleSets {
             ds = Arrays.copyOf(ds, ds.length - 1);
             n--;
 
-            // for remove detail 
+            // for remove detail
             try {
                 BillDetailsBUS listDetails = new BillDetailsBUS();
                 listDetails.readFile();
@@ -568,10 +568,14 @@ public class BillBUS implements IRuleSets {
     public void writeFile() throws IOException {
         try (DataOutputStream file = new DataOutputStream(
                 new BufferedOutputStream(new FileOutputStream("src/main/resources/Bill", false)))) {
+            for (int i = 0; i < this.getCount(); i++)
+                    System.out.println(ds[i].getEmployee());
+
             file.writeInt(n);
             for (int i = 0; i < n; ++i) {
                 SaleEvents saleCode = ds[i].getSaleCode();
                 // write bill
+                System.out.println(ds[i].getEmployee());
                 file.writeUTF(ds[i].getBillId());
                 file.writeUTF(ds[i].getCustomer().getPersonID());
                 file.writeUTF(ds[i].getEmployee().getPersonID());

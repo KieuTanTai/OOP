@@ -34,8 +34,7 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(String billId, Employees employee, Customers customer, SaleEvents saleCode, BigDecimal discount,
-            LocalDate date) {
+    public Bill(String billId, Employees employee, Customers customer, SaleEvents saleCode, BigDecimal discount, LocalDate date) {
         this.billId = billId;
         this.employee = employee;
         this.customer = customer;
@@ -219,7 +218,8 @@ public class Bill {
                     list.writeFile();
                     customerID = newCustomer.getPersonID();
                 }
-            return list.getCustomersList()[index];
+                Customers[] customers = list.getCustomersList();
+            return customers[customers.length - 1];
         } catch (IOException e) {
             System.out.println("error reading file!\n" + e.getMessage());
             return null;
@@ -416,20 +416,25 @@ public class Bill {
         }
     }
 
-    public void setInfo(Products[] product, int[] quantity) {
+    public void setInfo(String employeeID, Products[] product, int[] quantity) {
         System.out.println("*".repeat(60));
         String id = setBillId();
-
+        Employees employee = null;
+        try {
+            EmployeesBUS list = new EmployeesBUS();
+            list.readFile();
+            employee = list.getEmployee(employeeID);
+            
+        } catch (Exception e) {
+            System.out.printf("Error reading file!\n%s\n", e.getMessage());
+        }
         // fields date
         LocalDate date = LocalDate.now();
-        System.out.println("-".repeat(60));
-        Employees employee = setEmployee();
-
         System.out.println("-".repeat(60));
         Customers customer = setCustomer();
 
         int length = product.length;
-        BillDetails[] detailsArray = new BillDetails[length - 1];
+        BillDetails[] detailsArray = new BillDetails[length];
         for (int i = 0; i < length; i++)
             detailsArray[i] = new BillDetails(id, quantity[i], product[i]);
         BigDecimal totalPrice = new BigDecimal(0);
@@ -499,8 +504,7 @@ public class Bill {
         LocalDate date = this.getDate();
         BigDecimal totalPrice = this.getTotalPrice();
         BigDecimal discount = this.getDiscount();
-        String billId = this.getBillId(), employeeName = this.getEmployee().getFullName(),
-                customerName = this.getCustomer().getFullName();
+        String billId = this.getBillId(), employeeName = this.getEmployee().getFullName(), customerName = this.getCustomer().getFullName();
 
         System.out.println("=".repeat(140));
         System.out.printf("| %-22s : %s \n", "Bill ID", billId != null ? billId : "N/A");
@@ -522,8 +526,7 @@ public class Bill {
 
         System.out.printf("| %-22s : %s \n", "Discount", discount != null ? Validate.formatPrice(discount) : "N/A");
         System.out.println("|" + "*".repeat(139));
-        System.out.printf("| %-22s : %s \n", "Total Price",
-                totalPrice != null ? Validate.formatPrice(totalPrice.subtract(discount)) : "N/A");
+        System.out.printf("| %-22s : %s \n", "Total Price", totalPrice != null ? Validate.formatPrice(totalPrice.subtract(discount)) : "N/A");
         System.out.println("=".repeat(140));
     }
 

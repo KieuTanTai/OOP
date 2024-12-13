@@ -10,8 +10,8 @@ import BUS.EmployeesBUS;
 
 public abstract class Person {
     private String personID;
-    private String firstName;
     private String lastName;
+    private String firstName;
     private LocalDate dateOfBirth;
     private String phoneNumber;
     protected static final Scanner input = new Scanner(System.in);
@@ -20,10 +20,10 @@ public abstract class Person {
     public Person() {
     }
 
-    public Person(String personID, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber) {
+    public Person(String personID, String lastName, String firstName, LocalDate dateOfBirth, String phoneNumber) {
         this.personID = personIDModifier(personID);
-        this.firstName = firstName;
         this.lastName = lastName;
+        this.firstName = firstName;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
     }
@@ -33,16 +33,16 @@ public abstract class Person {
         return this.personID;
     }
 
-    public String getFirstName() {
-        return this.firstName;
-    }
-
     public String getLastName() {
         return this.lastName;
     }
 
+    public String getFirstName() {
+        return this.firstName;
+    }
+
     public String getFullName() {
-        return this.firstName + " " + this.lastName;
+        return this.lastName + " " + this.firstName;
     }
 
     public LocalDate getDateOfBirth() {
@@ -58,17 +58,17 @@ public abstract class Person {
         this.personID = personIDModifier(personID);
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public void setFullName(String firstName, String lastName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public void setFullName(String lastName, String firstName) {
         this.lastName = lastName;
+        this.firstName = firstName;
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
@@ -120,7 +120,7 @@ public abstract class Person {
         return personIDModifier(id.toString());
     }
 
-    public String setFirstName() {
+    public String setLastName() {
         String name;
         do {
             System.out.print("set first name : ");
@@ -133,7 +133,7 @@ public abstract class Person {
         return name;
     }
 
-    public String setLastName() {
+    public String setFirstName() {
         String name;
         do {
             System.out.print("set last name : ");

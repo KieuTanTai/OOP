@@ -79,6 +79,27 @@ public class Menu {
         } while (true);
     }
 
+    private void changePassword() {
+        String newPassword;
+        do {
+            System.out.print("Enter new password: ");
+            newPassword = input.nextLine().trim();
+            if (!Validate.checkPassword(newPassword)) {
+                System.out.println("Wrong format password! password should have at least 8 character [-^-] !");
+                newPassword = "";
+            }
+        } while (newPassword.isEmpty());
+        // update password
+        try {
+            EmployeesBUS list = new EmployeesBUS();
+            list.readFile();
+            list.getEmployee(accountID).setPassword(newPassword);
+            list.writeFile();
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
     private void menuManagers() {
         int choice;
         do {
@@ -88,6 +109,7 @@ public class Menu {
             System.out.println("III. Remove Handler");
             System.out.println("IV. Edit Handler");
             System.out.println("V. Business statistics");
+            System.out.println("VI.Change password");
             System.out.println("0. Exit");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -96,7 +118,7 @@ public class Menu {
                 System.out.println("See you later!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 5);
+            choice = Validate.parseChooseHandler(option, 6);
 
             try {
                 switch (choice) {
@@ -114,6 +136,9 @@ public class Menu {
                         break;
                     case 5:
                         businessStatistic();
+                        break;
+                    case 6:
+                        changePassword();
                         break;
 
                 }
@@ -683,11 +708,12 @@ public class Menu {
         do {
             System.out.println("=".repeat(140));
             System.out.println("I. Sales for Customers");
+            System.out.println("II. Change password");
             System.out.println("0. Get off work");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
             String option = input.nextLine().trim();
-            choice = Validate.parseChooseHandler(option, 1);
+            choice = Validate.parseChooseHandler(option, 2);
             if (option.equals("0")) {
                 try {
                     BillBUS list = new BillBUS();
@@ -709,6 +735,8 @@ public class Menu {
             try {
                 if (choice == 1)
                     sales();
+                else if (choice == 2)
+                    changePassword();
             } catch (Exception e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
@@ -909,6 +937,7 @@ public class Menu {
             System.out.println("=".repeat(140));
             System.out.println("I. Goods receipt");
             System.out.println("II. Inventory check");
+            System.out.println("III. Change password");
             System.out.println("0. Back to main menu");
             System.out.println("=".repeat(140));
             System.out.print("Enter your choice: ");
@@ -917,7 +946,7 @@ public class Menu {
                 System.out.println("See you later!");
                 return;
             }
-            choice = Validate.parseChooseHandler(option, 2);
+            choice = Validate.parseChooseHandler(option, 3);
 
             try {
                 switch (choice) {
@@ -926,6 +955,9 @@ public class Menu {
                         break;
                     case 2:
                         inventoryCheck();
+                        break;
+                    case 3: 
+                        changePassword();
                         break;
                 }
             } catch (Exception e) {

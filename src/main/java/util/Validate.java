@@ -174,11 +174,17 @@ public class Validate {
           return pattern.matcher(address).matches();
      }
 
+     public static boolean checkPassword(String password) {
+          String regex = "^[\\p{L}\\p{M}0-9][\\p{L}\\p{M}0-9 '\\-&^()$_!@#%*`\\[\\]]{8,48}$";
+          Pattern pattern = Pattern.compile(regex);
+          return pattern.matcher(password).matches();
+     }
+
      // (DONE)
      public static boolean checkName(String inputName) {
           String regex = "^[\\p{L}\\p{M}0-9][\\p{L}\\p{M}0-9 '\\-&^()$_!@#%*`\\[\\]]{0,48}$";
           Pattern pattern = Pattern.compile(regex);
-          if (inputName.length() < 2)
+          if (inputName.length() < 1)
                return false;
           return pattern.matcher(inputName).matches();
      }

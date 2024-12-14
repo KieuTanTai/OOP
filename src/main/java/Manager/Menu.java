@@ -952,7 +952,11 @@ public class Menu {
             choice = Validate.parseChooseHandler(chooseProduct, 2);
             try {
                 GRNsBUS listGRNs = new GRNsBUS();
+                SuppliersBUS suppliersList = new SuppliersBUS();
+                EmployeesBUS employeesList = new EmployeesBUS();
                 listGRNs.readFile();
+                employeesList.readFile();
+                suppliersList.readFile();
                 switch (choice) {
                     case 1:
                         int userChoice;
